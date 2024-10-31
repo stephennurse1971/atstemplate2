@@ -58,6 +58,8 @@
         <h4>SQL Export</h4>
         {{ form_row(form.sqlDatabase) }}
         {{ form_row(form.databasePassword) }}
+        <a class="btn btn-outline-danger" href="{{ path('export_live_database') }}">Export database</a>
+
     </div>
 
     <div class="col-2">
