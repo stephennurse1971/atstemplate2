@@ -48,14 +48,6 @@ class BusinessContacts
     private $company;
 
 
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $gpsLocation;
-
-
-
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -88,7 +80,7 @@ class BusinessContacts
 
     /**
      * @ORM\ManyToOne(targetEntity=BusinessTypes::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $businessType;
 
@@ -101,6 +93,36 @@ class BusinessContacts
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $status;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $locationLatitude;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $locationLongitude;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $files;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $notes;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $addressCounty;
 
     public function getId(): ?int
     {
@@ -181,17 +203,6 @@ class BusinessContacts
 
 
 
-    public function getGpsLocation(): ?string
-    {
-        return $this->gpsLocation;
-    }
-
-    public function setGpsLocation(?string $gpsLocation): self
-    {
-        $this->gpsLocation = $gpsLocation;
-
-        return $this;
-    }
 
 
     public function getPublicPrivate(): ?string
@@ -298,6 +309,78 @@ class BusinessContacts
     public function setStatus(?string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getLocationLatitude(): ?float
+    {
+        return $this->locationLatitude;
+    }
+
+    public function setLocationLatitude(?float $locationLatitude): self
+    {
+        $this->locationLatitude = $locationLatitude;
+
+        return $this;
+    }
+
+    public function getLocationLongitude(): ?float
+    {
+        return $this->locationLongitude;
+    }
+
+    public function setLocationLongitude(?float $locationLongitude): self
+    {
+        $this->locationLongitude = $locationLongitude;
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): self
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getFiles(): ?string
+    {
+        return $this->files;
+    }
+
+    public function setFiles(?string $files): self
+    {
+        $this->files = $files;
+
+        return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function setNotes(?string $notes): self
+    {
+        $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function getAddressCounty(): ?string
+    {
+        return $this->addressCounty;
+    }
+
+    public function setAddressCounty(?string $addressCounty): self
+    {
+        $this->addressCounty = $addressCounty;
 
         return $this;
     }

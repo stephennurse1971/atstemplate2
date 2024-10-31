@@ -2,6 +2,10 @@
     .ck-content {
         height: 500px;
     }
+
+    #company_details_companyAddressMapLink {
+        height: 300px;
+    }
 </style>
 {{ form_start(form) }}
 <div class="row">
@@ -45,14 +49,18 @@
         </div>
     </div>
 
-    <div class="col-1">
+    <div class="col-2">
         {{ form_row(form.companyEmail) }}
         {{ form_row(form.companyEmailPassword) }}
         {{ form_row(form.companyEmailImportDirectory) }}
         {{ form_row(form.companyEmailImportProcessedDirectory) }}
+        <hr>
+        <h4>SQL Export</h4>
+        {{ form_row(form.sqlDatabase) }}
+        {{ form_row(form.databasePassword) }}
     </div>
 
-    <div class="col-1">
+    <div class="col-2">
         {{ form_row(form.companyAddressStreet) }}
         {{ form_row(form.companyAddressTown) }}
         {{ form_row(form.companyAddressCity) }}
@@ -60,20 +68,27 @@
         {{ form_row(form.companyAddressCountry) }}
         <a target="_blank" href="{{ path('office_address') }}">
             <i style="color: red" class="fa fa-map-marker mr-3"></i></a>
-
+        <hr>
+        <i title="Please note, weather scrape is controlled by Company longitude & latitude" class="fa fa-info-circle"></i>
         {{ form_row(form.weatherLocation) }}
         {{ form_row(form.companyTimeZone) }}
         {{ form_row(form.currency) }}
-
     </div>
 
     <div class="col-2">
         {{ form_row(form.companyAddressLatitude) }}
         {{ form_row(form.companyAddressLongitude) }}
         {{ form_row(form.companyAddressMapLink) }}
+    </div>
+
+    <div class="col-3">
         {{ form_row(form.companyAddressInstructions) }}
     </div>
-    <div class="col-1">
+
+</div>
+<hr>
+<div class="row">
+    <div class="col-2">
         {{ form_row(form.linkedIn) }}
         {{ form_row(form.facebook) }}
         {{ form_row(form.instagram) }}
@@ -96,24 +111,7 @@
             {{ form_row(form.companyQrCode) }}
         </div>
     </div>
-    <div class="col-1">
-        <h4>Header: Display...</h4>
-        {{ form_row(form.headerDisplayLogin) }}
-        {{ form_row(form.headerDisplayContactDetails) }}
-        {{ form_row(form.headerDisplayProducts) }}
-        {{ form_row(form.headerDisplaySubProducts) }}
-        {{ form_row(form.headerDisplayTandCs) }}
-        {{ form_row(form.headerDisplayPricing) }}
-        {{ form_row(form.headerDisplayInstructions) }}
-
-        <h4>Footer: Display...</h4>
-        {{ form_row(form.footerDisplayProducts) }}
-        {{ form_row(form.footerDisplaySubProducts) }}
-        {{ form_row(form.footerDisplaySocialMedia) }}
-        {{ form_row(form.footerDisplayContactDetails) }}
-        {{ form_row(form.footerDisplayAddress) }}
-        {{ form_row(form.footerDisplayTelNumbers) }}
-
+    <div class="col-2">
         <h4>Header/Footer Titles</h4>
         {{ form_row(form.titleProducts) }}
         {{ form_row(form.titleSubProducts) }}
@@ -124,15 +122,32 @@
         {{ form_row(form.homePagePhotosOnly) }}
     </div>
     <div class="col-2">
+        <h4>Header: Display...</h4>
+        {{ form_row(form.headerDisplayLogin) }}
+        {{ form_row(form.headerDisplayContactDetails) }}
+        {{ form_row(form.headerDisplayProducts) }}
+        {{ form_row(form.headerDisplaySubProducts) }}
+        {{ form_row(form.headerDisplayTandCs) }}
+        {{ form_row(form.headerDisplayPricing) }}
+        {{ form_row(form.headerDisplayInstructions) }}
+        {{ form_row(form.headerDisplayBusinessContacts) }}
+        {{ form_row(form.headerDisplayWeather) }}
+    </div>
+    <div class="col-2">
+        <h4>Footer: Display...</h4>
+        {{ form_row(form.footerDisplayProducts) }}
+        {{ form_row(form.footerDisplaySubProducts) }}
+        {{ form_row(form.footerDisplaySocialMedia) }}
+        {{ form_row(form.footerDisplayContactDetails) }}
+        {{ form_row(form.footerDisplayAddress) }}
+        {{ form_row(form.footerDisplayTelNumbers) }}
+    </div>
+
+    <div class="col-3">
         <h4>Registration:</h4>
         {{ form_row(form.multiLingual) }}
         {{ form_row(form.enableUserRegistration) }}
         {{ form_row(form.registrationEmail) }}
-    </div>
-    <div class="col-1">
-        <h4>SQL Database Export</h4>
-        {{ form_row(form.sqlDatabase) }}
-        {{ form_row(form.databasePassword) }}
     </div>
 
 </div>

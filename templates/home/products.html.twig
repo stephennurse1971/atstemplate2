@@ -31,9 +31,9 @@
 
             <div class="row">
                 {% if cms_photo_array is not empty %}
-                <div class="col-6">
+                <div class="col-md-6">
                     {% else %}
-                    <div class="col-12">
+                    <div class="col-12 p-4">
                         {% endif %}
                         {% for cms_copy in cms_copy_array|sort((a, b) => a.ranking <=> b.ranking) %}
                             <div class="row">
@@ -49,12 +49,11 @@
                             </div>
                         {% endfor %}
                     </div>
-
-                    <div class="col-6">
+                    <div class="col-md-6">
                         {% for cms_photo in cms_photo_array|sort((a, b) => a.ranking <=> b.ranking) %}
                             <div class="row">
                                 <div class="col-12 mb-5">
-                                    <div class="justify-content-center d-flex py-1 product-image-container m-auto">
+                                    <div class="justify-content-center d-flex py-1 p-sm-2 product-image-container m-auto">
                                         {% include 'home/products_page/photo_or_video.html.twig' %}
                                     </div>
                                 </div>
@@ -62,7 +61,6 @@
                         {% endfor %}
                     </div>
                     <!------------------ END FIRST GROUP OF PHOTOS --------------->
-
                     <div class="row">
                         <div class="col-12">
                             {% for sub_page in sub_pages %}

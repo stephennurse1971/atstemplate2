@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit: Business Type{% endblock %}
+{% block title %} Business Type: {{ business_type.businessType }}{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit: Business Type</h1>
+    <h1 style="color: red">Business Type: {{ business_type.businessType }}</h1>
 
     {{ include('business_types/_form.html.twig', {'button_label': 'Update'}) }}
 

@@ -195,33 +195,6 @@ class   HomeController extends AbstractController
         ]);
     }
 
-
-    /**
-     * @Route("/office_address", name="office_address", methods={"GET"})
-     */
-    public function officeAddress(CompanyDetailsRepository $companyDetailsRepository): Response
-    {
-        return $this->render('home/officeAddress.html.twig');
-    }
-
-
-    /**
-     * @Route("/gps_location", name="gps_location", methods={"GET"})
-     */
-    public function gpsLocation(CompanyDetailsRepository $companyDetailsRepository): Response
-    {
-        $companyDetails = $companyDetailsRepository->find('1');
-
-        $longitude = $companyDetails->getCompanyAddressLongitude();
-        $latitude = $companyDetails->getCompanyAddressLatitude();
-
-        return $this->render('home/gpsLocation.html.twig', [
-            'longitude' => $longitude,
-            'latitude' => $latitude,
-        ]);
-    }
-
-
     /**
      * @Route("/view/file/{filetype}/{id}", name="attachments_viewfile", methods={"GET"})
      */

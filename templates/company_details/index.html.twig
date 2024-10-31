@@ -16,7 +16,6 @@
             <th>Mobile</th>
             <th>Skype</th>
             <th>Address</th>
-            <th>GPS</th>
             <th>Time<br>Zone</th>
             <th>Ccy</th>
             <th>Multi<br>Language</th>
@@ -76,7 +75,6 @@
                        href="https://wa.me/{{ company_detail.companyTel | replace({' ': ''}) }}">
                         <i style="color: green" class="fab fa-whatsapp"></i>
                     </a>
-                    {#                    {{ company_detail.companyTel }} #}
                 </td>
                 <td style="text-align: center">
                     <a title="{{ company_detail.companyMobile }}"
@@ -95,16 +93,12 @@
                     {#                    {{ company_detail.companySkype }} #}
                 </td>
                 <td>
+                    <a target="_blank" href="{{ path('office_address') }}">
+                        <i style="color: red" class="fa fa-map-marker ml-2"></i></a>
                     {{ company_detail.companyAddressStreet }}, <br>
                     {{ company_detail.companyAddressTown }},
                     {{ company_detail.companyAddressCity }}
                     {{ company_detail.companyAddressPostalCode }}
-                    <a target="_blank" href="{{ path('office_address') }}">
-                        <i style="color: red" class="fa fa-map-marker ml-2"></i></a>
-                </td>
-                <td style="text-align: center">
-                    <a target="_blank" href="{{ path('gps_location') }}">
-                        <i style="color: blue" class="fa fa-map-marker ml-2"></i></a>
                 </td>
                 <td style="text-align: center">
                     {{ company_detail.companyTimeZone }}
@@ -123,7 +117,8 @@
 
                 <td style="text-align: center">
                     {% if company_detail.enableUserRegistration ==1 %}
-                        <i title="{{ company_detail.registrationEmail|raw }}" class="fa fa-check" style="color: green" class="fa fa-check"></i>
+                        <i title="{{ company_detail.registrationEmail|raw }}" class="fa fa-check" style="color: green"
+                           class="fa fa-check"></i>
                     {% else %}
                         <i class="fa fa-check" style="color: red" class="fa fa-remove"></i>
                     {% endif %}
@@ -134,8 +129,11 @@
                     {{ company_detail.weatherLocation }}
                 </td>
                 <td>
-                    {% set addressInstructions = (company_detail.companyAddressInstructions|slice(0,70)) %}
-                    {{ addressInstructions |raw  }}....
+                    {% set addressInstructionsRaw = company_detail.companyAddressInstructions|striptags %}
+                    {% set addressInstructionsSliced = (addressInstructionsRaw|slice(0,70)) %}
+
+                    <i title="{{ addressInstructionsRaw }}" style="color: blue" class="fa fa-info-circle"></i>
+                    {{ addressInstructionsSliced |raw }}....
                 </td>
 
                 <td style="text-align: center">
@@ -202,6 +200,9 @@
         <a target="_blank" class="btn btn-success btn-sm" href="{{ path('company_details_new') }}">New</a>
     {% endif %}
 {% endblock %}
+
+
+
 
 {% block datatable %}
     <script>

@@ -1,11 +1,61 @@
+
 {% extends 'base.html.twig' %}
+{% block title %}{{ business.company }} {% endblock %}
 {% block body %}
 {{ app.request.server.get('GOOGLE_MAP_API') }}
+    <h3 style="color: red">{{ business.company }}</h3>
     <div class="row">
         <div class="col-md-12 text-center">
             <iframe src="https://maps.google.com/maps?q={{ latitude }},{{ longitude }} &hl=es;z=14&amp;output=embed"
-                    width="700" height="700"  style="border:0"></iframe>
+                    width="100%" height="700"  style="border:0">allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-12">
+            <b>Address is: </b>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a target="_blank" href="{{ path('business_contacts_edit', {id:business.id}) }}">
+                    <i style="color: red" class="fa fa-pencil"></i>
+                </a>
+            {% endif %}
+            {{ business.addressStreet }},
+            {{ business.addressStreet|raw }},
+            {{ business.addressCity|raw }}
+            {{ business.addressCountry|raw }}
+            {{ business.addressPostCode|raw }}
+            <br>
+            <br>
+            <b>Notes:</b> <br>
+            {{ business.notes|raw }}
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 {% endblock %}

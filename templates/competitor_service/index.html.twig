@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Competitor Services{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Competitor Services</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Competitor</th>
+                <th>Service</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for competitor_service in competitor_services %}
+            <tr>
+                <td><a target="_blank" href="{{ competitor_service.competitor.webSite }}"></a>{{ competitor_service.competitor.name }}</td>
+                <td>
+                    <a href="{{ path('competitor_service_edit', {'id': competitor_service.id}) }}">  {{ competitor_service.service.serviceOffered }}</a>
+                </td>
+                <td style="width: 1050px">{{ competitor_service.description|raw }}</td>
+                <td style="text-align: right">{{ competitor_service.price |number_format(0) }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('competitor_service_new') }}">New</a>
+{% endblock %}
+
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[1, 'asc'], [0, 'asc'],],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

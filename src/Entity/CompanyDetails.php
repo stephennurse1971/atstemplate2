@@ -70,12 +70,6 @@ class CompanyDetails
     private $companyAddressCountry;
 
 
-
-
-
-
-
-
     /**
      * @ORM\Column(type="text", nullable=true)
      */
@@ -299,6 +293,16 @@ class CompanyDetails
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $headerDisplayContactDetails;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $headerDisplayBusinessContacts;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $headerDisplayWeather;
 
 
     public function getId(): ?int
@@ -950,6 +954,30 @@ class CompanyDetails
     public function setHeaderDisplayContactDetails(?bool $headerDisplayContactDetails): self
     {
         $this->headerDisplayContactDetails = $headerDisplayContactDetails;
+
+        return $this;
+    }
+
+    public function isHeaderDisplayBusinessContacts(): ?bool
+    {
+        return $this->headerDisplayBusinessContacts;
+    }
+
+    public function setHeaderDisplayBusinessContacts(?bool $headerDisplayBusinessContacts): self
+    {
+        $this->headerDisplayBusinessContacts = $headerDisplayBusinessContacts;
+
+        return $this;
+    }
+
+    public function isHeaderDisplayWeather(): ?bool
+    {
+        return $this->headerDisplayWeather;
+    }
+
+    public function setHeaderDisplayWeather(?bool $headerDisplayWeather): self
+    {
+        $this->headerDisplayWeather = $headerDisplayWeather;
 
         return $this;
     }

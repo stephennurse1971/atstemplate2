@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Facebook Groups Reviews{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Facebook Groups Reviews</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ facebook_groups_review.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ facebook_groups_review.date ? facebook_groups_review.date|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Comment</th>
+                <td>{{ facebook_groups_review.comment }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('facebook_groups_reviews_index') }}">Return to list</a>
+
+    <a class="btn btn-outline-danger btn-sm" href="{{ path('facebook_groups_reviews_edit', {'id': facebook_groups_review.id}) }}">edit</a>
+
+    {{ include('facebook_groups_reviews/_delete_form.html.twig') }}
+{% endblock %}

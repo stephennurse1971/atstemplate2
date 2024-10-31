@@ -1,5 +1,5 @@
-{% if is_granted('ROLE_STAFF') %}
-    <td style="text-align: center">
+{% if is_granted('ROLE_ADMIN') %}
+    <td style="text-align: center; border-left: 1px dotted">
         {% if business_contact.publicPrivate == "Public" %}
             <i class="fa fa-circle" style="color: green; text-align: center"></i>
         {% elseif business_contact.publicPrivate == "Private" %}
@@ -8,11 +8,7 @@
             <i class="fa fa-circle" style="color: grey; text-align: center"></i>
         {% endif %}
     </td>
-    <td>
-        <a class="btn btn-outline-danger btn-sm"
-           href="{{ path('business_contacts_edit', {'id': business_contact.id}) }}">Edit</a>
-    </td>
-    <td>...</td>
+
     <td style="text-align: center;">
         {{ CountBusinessContactReferrals.countReferrals(business_contact.id, null,null, 'Website') }}
     </td>
@@ -27,5 +23,9 @@
     </td>
     <td style="text-align: center;">
         {{ CountBusinessContactReferrals.countReferrals(business_contact.id, null,null, 'VCF') }}
+    </td>
+    <td>
+        <a class="btn btn-outline-danger btn-sm" target="_blank"
+           href="{{ path('business_contacts_edit', {'id': business_contact.id}) }}">Edit</a>
     </td>
 {% endif %}

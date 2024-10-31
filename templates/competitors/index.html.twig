@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Competitors{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Competitors</h1>
+    <div class="row">
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="col-1">
+                <a class="btn btn-success btn-sm" href="{{ path('competitors_new') }}">New</a>
+            </div>
+            <div class="col-4">
+                <a class="btn btn-outline-primary btn-sm" href="{{ path('business_types_export') }}">Export</a>
+                <a class="btn btn-outline-primary btn-sm" href="{{ path('business_types_import') }}">Import</a>
+                <a href="{{ asset('administration/import_export/business_types/business-types-import-template.csv') }}">(Template)</a>
+            </div>
+            <div class="col-2">
+                <a class="btn btn-outline-danger btn-sm" href="{{ path('business_types_delete_all') }}">Delete All</a>
+            </div>
+        {% endif %}
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>WebSite</th>
+            <th>Address</th>
+            <th>Telephone</th>
+            <th>Facebook</th>
+            <th>LinkedIn</th>
+            <th>Instagram</th>
+            <th>Twitter</th>
+            <th>Service</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for competitor in competitors %}
+            <tr>
+                <td>
+                    <a href="{{ path('competitors_edit', {'id': competitor.id}) }}">{{ competitor.name }}</a>
+                    <a target="_blank" href="{{ path('competitor_service_new') }}">+</a>
+                </td>
+                <td>{{ competitor.type }}</td>
+                <td style="text-align: center">
+                    {% if competitor.webSite is not null %}
+                        <a title="{{ competitor.webSite }}" target="_blank" href={{ competitor.webSite }}><span
+                                    style="color : #1da1f2; font-size: 16px; padding:6px"><i class="fa fa-link" style="font-size:14px"></i> </span></a>
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if competitor.competitorAddressStreet is not empty %}
+                        <i class="fa fa-home"
+                           title="{{ competitor.competitorAddressStreet }}, {{ competitor.competitorAddressCity }} {{ competitor.competitorAddressPostalCode }}"></i>
+                    {% endif %}
+                </td>
+                <td>
+                    {{ competitor.telephone }}
+                </td>
+                <td style="text-align: center">
+                    {% if competitor.facebook is not null %}
+                        <a title="{{ competitor.facebook }}" target="_blank" href={{ competitor.facebook }}><span
+                                    style="color : #1da1f2; font-size: 16px; padding:6px"><i class="fab fa-facebook"
+                                                                                             style="font-size:24px"></i> </span></a>
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if competitor.linkedIN is not null %}
+                        <a title="{{ competitor.linkedIn }}" target="_blank" href={{ competitor.linkedIN }}><span
+                                    style="color : #1da1f2; font-size: 16px; padding:6px"><i class="fab fa-linkedin"
+                                                                                             style="font-size:24px"></i> </span></a>
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if competitor.instagram is not null %}
+                        <a title="{{ competitor.instagram }}" target="_blank" href={{ competitor.instagram }}><span
+                                    style="color : #1da1f2; font-size: 16px; padding:6px"><i class="fab fa-instagram"
+                                                                                             style="font-size:24px"></i> </span></a>
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if competitor.twitter is not null %}
+                        <a title="{{ competitor.twitter }}" target="_blank" href={{ competitor.twitter }}><span
+                                    style="color : #1da1f2; font-size: 16px; padding:6px"><i class="fab fa-twitter"
+                                                                                             style="font-size:24px"></i> </span></a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% for competitor_service in competitor_services %}
+                        {% if competitor_service.competitor.name == competitor.name %}
+                            <li>
+                               <a>  <i style="color: red" title="{{ competitor_service.description|raw }}" class="fa fa-info-circle"></i>
+                                <a href="{{ path('competitor_service_edit', {id: competitor_service.id}) }}" target="_blank">{{ competitor_service.service.serviceOffered }}</a>
+                                (€ {{ competitor_service.price|number_format() }})
+                                  </li>
+                        {% endif %}
+                    {% endfor %}
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[0, 'asc'], [1, 'asc'],],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

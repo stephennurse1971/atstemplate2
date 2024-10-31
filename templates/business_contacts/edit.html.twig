@@ -1,9 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit: Business Contacts{% endblock %}
+{% block title %}Edit: {{ business_contact.company }}
+{% if business_contact.firstName !=null or business_contact.lastName !=null %}
+({{ business_contact.firstName }} {{ business_contact.lastName }})
+    {% endif %}
+{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit: Business Contacts</h1>
+    <h1 style="color: red">Edit: {{business_contact.company }}</h1>
     <button class="btn btn-primary " onclick="getLocation()">Get Coordinates</button>
 
     {{ include('business_contacts/_form.html.twig', {'button_label': 'Update'}) }}
@@ -13,3 +17,12 @@
     {{ include('business_contacts/_delete_form.html.twig') }}
 {% endblock %}
 
+{% block additionaljs %}
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#business_contacts_notes'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+{% endblock %}

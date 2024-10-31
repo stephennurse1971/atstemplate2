@@ -33,6 +33,7 @@
                         </a>
                     </li>
 
+                    <!-- Nav Item #2 - Dashboard -->
                     {% if is_granted('ROLE_ADMIN') %}
                         <li class="nav-item">
                             <a class="nav-link" target="_blank" href="{{ path('dashboard') }}"><i
@@ -51,7 +52,7 @@
                         {% endif %}
                     {% endif %}
 
-                    <!-- Nav Item #2 - Products -->
+                    <!-- Nav Item #3 - Products -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -80,9 +81,11 @@
                             {% endfor %}
                         </div>
                     </li>
+
+
+                    <!-- Nav Item #4 - SubProducts -->
                     {% if CompanyDetails.companyDetails is not null %}
                         {% if CompanyDetails.companyDetails.headerDisplaySubProducts ==1 %}
-                            <!-- Nav Item #2 - Sub-Products -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -126,10 +129,37 @@
                         {% endif %}
                     {% endif %}
 
+                    <!-- Nav Item #5 - Useful Contacts And Weather -->
+                    {% if CompanyDetails.companyDetails is not null %}
+                        {% if CompanyDetails.companyDetails.headerDisplayBusinessContacts ==1
+                            or CompanyDetails.companyDetails.headerDisplayWeather ==1 %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Useful links
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    {% if CompanyDetails.companyDetails.headerDisplayBusinessContacts ==1 %}
+                                        <a target="_blank" class="dropdown-item text-gray-600 ml-3"
+                                           href="{{ path('business_contacts_index') }}">Useful contacts
+                                        </a>
+                                    {% endif %}
+                                    {% if  CompanyDetails.companyDetails.headerDisplayWeather ==1 %}
+                                    <a target="_blank" class="dropdown-item text-gray-600 ml-3"
+                                       href="{{ path('weather_index') }}">Weather
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endif %}
+
+
+
 
                     {% include 'template_parts_project_specific/header_project_specific1.html.twig' %}
 
-                    <!-- Nav Item #5 - Contact -->
+                    <!-- Nav Item #6 - Contact -->
                     {% if CompanyDetails.getCompanyDetails is not null %}
                         {% if CompanyDetails.companyDetails.headerDisplayContactDetails ==1 %}
                             <li class="nav-item dropdown">
@@ -181,7 +211,6 @@
                                             </a>
                                         {% endif %}
                                     {% endif %}
-
                                     <a class="dropdown-item" title="Contact details"
                                        href="{{ path('create_vcard_company') }}">
                                         <i class="fa fa-credit-card"></i> Business Card
@@ -191,18 +220,15 @@
                         {% endif %}
                     {% endif %}
 
-
                     {% include 'template_parts_project_specific/header_project_specific2.html.twig' %}
 
-                    <!-- Nav Item #10 - Login -->
+                    <!-- Nav Item #7 - Login -->
                     {% if CompanyDetails.getCompanyDetails is not null and CompanyDetails.companyDetails.headerDisplayLogin ==1 %}
                         {% if app.user %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {{ app.user.fullName }}
-
-
                                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                                         <i title="Super-Admin" style="color: green" class="fa fa-hat-wizard"></i>
                                     {% endif %}

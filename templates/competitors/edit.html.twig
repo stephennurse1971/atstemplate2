@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Competitors{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Edit Competitors</h1>
+
+    {{ include('competitors/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('competitors_index') }}">Return to list</a>
+
+    {{ include('competitors/_delete_form.html.twig') }}
+{% endblock %}

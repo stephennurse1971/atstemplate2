@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Facebook Groups{% endblock %}
+
+{% block body %}
+    <style>
+        .sub-table, .sub-table td {
+            border: none
+        }
+    </style>
+    <h1 style="color: red">Facebook Groups
+        <a href="{{ path('facebook_groups_reviews_index') }}">+</a></h1>
+    <table class="table main-table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Link</th>
+            <th>Comments</th>
+            <th>Reviews</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for facebook_group in facebook_groups %}
+            <tr>
+                <td>
+                    <a href="{{ path('facebook_groups_edit', {'id': facebook_group.id}) }}">{{ facebook_group.name }}</a>
+                </td>
+                <td style="text-align: center">
+                    {% if facebook_group.link is not null %}
+                        <a title="{{ facebook_group.link }}" target="_blank" href={{ facebook_group.link }}><span
+                                    style="color : #1da1f2; font-size: 16px; padding:6px"><i class="fa fa-link"
+                                                                                             style="font-size:24px"></i> </span></a>
+                    {% endif %}
+                </td>
+                <td>{{ facebook_group.comments }}</td>
+                <td>
+                    <table class="sub-table">
+                        <tbody>
+                        {% for facebook_group_review in facebook_group_reviews %}
+                            {% if facebook_group_review.facebookGroup == facebook_group %}
+                                <tr>
+                                    <td data-sort="{{ facebook_group_review.date|date('y-m-d') }}">
+                                        {{ facebook_group_review.date|date('d-M-Y') }}
+                                        {% if facebook_group_review.reviewer is not null %}
+                                            ({{ facebook_group_review.reviewer.firstName|slice(0,1) }}{{ facebook_group_review.reviewer.lastName|slice(0,1) }})
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a target="_blank"
+                                           href="{{ path('facebook_groups_reviews_edit', {id:facebook_group_review.id }) }}">
+                                            <i style="color: blue;" title="{{ facebook_group_review.comment }}"
+                                               class="fa fa-pen"></i></a>
+                                        {{ facebook_group_review.comment }}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+
+
+                <td>
+                    <a class="btn btn-outline-success btn-sm"
+                       href="{{ path('facebook_groups_reviews_new',{facebookGroupId: facebook_group.id}) }}">Review</a>
+                </td>
+
+
+                <td>
+                    <a class="btn btn-outline-primary btn-sm"
+                       href="{{ path('facebook_groups_reviews_new_nothing_of_note',{facebookGroupId: facebook_group.id}) }}">Checked
+                        - Nothing of note</a>
+                </td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm" href="{{ path('facebook_groups_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.main-table').DataTable({
+                'pageLength': 100,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+
+
+        });
+    </script>
+{% endblock datatable %}

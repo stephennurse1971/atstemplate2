@@ -3,28 +3,84 @@
 {% block title %}Business Categories{% endblock %}
 
 {% block body %}
+
     <h1 style="color: red">Business Categories</h1>
+
+    <div class="row">
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="col-1">
+                <a target="_blank" class="btn btn-success btn-sm" href="{{ path('business_types_new') }}">New</a>
+            </div>
+            <div class="col-4">
+                <a class="btn btn-outline-primary btn-sm" href="{{ path('business_types_import') }}">Import</a>
+                <a class="btn btn-outline-primary btn-sm" href="{{ path('business_types_export') }}">Export</a>
+                <a href="{{ asset('administration/import_export/business_types/business-types-import-template.csv') }}">(Template)</a>
+            </div>
+
+            <div class="col-3">
+                <a class="btn btn-outline-primary btn-sm" href="{{ path('update_business_type_ranking') }}">Re-number</a>
+                <a class="btn btn-outline-primary btn-sm" href="{{ path('business_contacts_index') }}">Business
+                    Contacts</a>
+            </div>
+            <div class="col-2">
+                <a class="btn btn-outline-danger btn-sm" href="{{ path('business_types_delete_all') }}">Delete All</a>
+            </div>
+        {% endif %}
+    </div>
 
     <table class="table table-responsive">
         <thead>
-            <tr>
-                <th>Category</th>
-                <th>Type</th>
-                <th>#</th>
-            </tr>
+        <tr>
+            <th>#</th>
+            <th></th>
+            <th></th>
+            <th>Type</th>
+            <th>Map Icon</th>
+            <th>Colour</th>
+            <th>Icon</th>
+            <th>Map<br>Display #</th>
+            <th>#</th>
+        </tr>
         </thead>
         <tbody>
         {% for business_type in business_types %}
             <tr>
-                <td>{{ business_type.businessCategory }}</td>
-                <td>{{ business_type.businessType }}</td>
-                <td><a class="btn btn-outline-danger btn-sm" href="{{ path('business_types_edit', {'id': business_type.id}) }}">Edit</a></td>
+                <td style="text-align: center">{{ business_type.ranking |number_format(2, '.', ',') }}</td>
+                <td>
+                    <a class="btn btn-outline-success btn-sm"
+                       href="{{ path('business_type_change_ranking', {'id':business_type.id, 'change':'Up'}) }}">
+                        <i style="color: green" class="fas fa-arrow-up"></i>
+                    </a>
+                </td>
+                <td>
+                    <a class="btn btn-outline-secondary btn-sm"
+                       href="{{ path('business_type_change_ranking', {'id':business_type.id, 'change':'Down'}) }}">
+                        <i style="color: red" class="fa fa-arrow-down"></i>
+                    </a>
+                </td>
+                <td>
+                    {{ business_type.businessType }}
+                </td>
+                <td>
+                    {{ business_type.mapIcon }}
+                </td>
+                <td>
+                    {{ business_type.mapIconColour }}
+                </td>
+                <td style="text-align: center">
+                    <i style="color: {{ business_type.mapIconColour }}" class="{{ business_type.mapIcon }}"></i>
+                </td>
+                <td style="text-align: center">
+                    {{ business_type.mapDisplay }}
+                </td>
+                <td><a class="btn btn-outline-danger btn-sm"
+                       href="{{ path('business_types_edit', {'id': business_type.id}) }}">Edit</a></td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a class="btn btn-success btn-sm" href="{{ path('business_types_new') }}">New</a>
+
 {% endblock %}
 
 {% block datatable %}

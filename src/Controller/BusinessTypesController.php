@@ -3,12 +3,25 @@
 namespace App\Controller;
 
 use App\Entity\BusinessTypes;
+use App\Entity\ToDoListItems;
 use App\Form\BusinessTypesType;
+use App\Form\ImportType;
+use App\Repository\BusinessContactsRepository;
 use App\Repository\BusinessTypesRepository;
+use App\Repository\ToDoListItemsRepository;
+use App\Repository\ToDoListRepository;
+use App\Services\BusinessContactsImportService;
+use App\Services\BusinessTypesImportService;
+use Doctrine\ORM\EntityManagerInterface;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @Route("/business/types")
@@ -16,7 +29,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BusinessTypesController extends AbstractController
 {
     /**
-     * @Route("/", name="business_types_index", methods={"GET"})
+     * @Route("/index", name="business_types_index", methods={"GET"})
      */
     public function index(BusinessTypesRepository $businessTypesRepository): Response
     {
@@ -47,7 +60,7 @@ class BusinessTypesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="business_types_show", methods={"GET"})
+     * @Route("/show/{id}", name="business_types_show", methods={"GET"})
      */
     public function show(BusinessTypes $businessType): Response
     {
@@ -57,7 +70,7 @@ class BusinessTypesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="business_types_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="business_types_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, BusinessTypes $businessType, BusinessTypesRepository $businessTypesRepository): Response
     {
@@ -77,14 +90,148 @@ class BusinessTypesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="business_types_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="business_types_delete", methods={"POST"})
      */
     public function delete(Request $request, BusinessTypes $businessType, BusinessTypesRepository $businessTypesRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$businessType->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $businessType->getId(), $request->request->get('_token'))) {
             $businessTypesRepository->remove($businessType, true);
         }
 
         return $this->redirectToRoute('business_types_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @Route("/delete_all", name="business_types_delete_all")
+     */
+    public function deleteAllBusinessTypes(BusinessTypesRepository $businessTypesRepository, EntityManagerInterface $entityManager): Response
+    {
+        $business_contacts = $businessTypesRepository->findAll();
+        foreach ($business_contacts as $business_contact) {
+            $entityManager->remove($business_contact);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('business_contacts_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @Route("/change_ranking/{change}/{id}", name="business_type_change_ranking", methods={"GET", "POST"})
+     */
+    public
+    function changePriority(Request $request, $change, BusinessTypes $businessTypes, EntityManagerInterface $manager): Response
+    {
+        $referer = $request->headers->get('Referer');
+        $currentRanking = $businessTypes->getRanking();
+        if ($change == "Up") {
+            $newRanking = $currentRanking - 1.01;
+        }
+        if ($change == "Down") {
+            $newRanking = $currentRanking + 1.01;
+        }
+        $businessTypes->setRanking($newRanking);
+        $manager->flush();
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/update_business_type_ranking", name="update_business_type_ranking", methods={"GET", "POST"})
+     */
+    public function updateRankingWithInteger(BusinessTypesRepository $businessTypesRepository, Request $request, EntityManagerInterface $manager): Response
+    {
+        $referer = $request->headers->get('Referer');
+        $business_types = $businessTypesRepository->findAll();
+        foreach ($business_types as $business_type) {
+            $rankingContainer = [];
+            foreach ($business_type as $item) {
+                $rankingContainer[] = ['id' => $item->getId(), 'ranking' => $item->getRanking()];
+            }
+            array_multisort(array_column($rankingContainer, 'ranking'), SORT_ASC, $rankingContainer);
+            $minRank = 1;
+            foreach ($rankingContainer as $sortedItem) {
+                $record = $businessTypesRepository->find($sortedItem['id']);
+                $record->setRanking($minRank);
+                $manager->flush();
+                $minRank = $minRank + 1;
+            }
+        }
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route ("/export/business_types", name="business_types_export" )
+     */
+    public function businessTypes(BusinessTypesRepository $businessTypesRepository)
+    {
+        $data = [];
+        $exported_date = new \DateTime('now');
+        $exported_date_formatted = $exported_date->format('d-M-Y');
+        $exported_date_formatted_for_file = $exported_date->format('d-m-Y');
+        $fileName = 'business_types_export_' . $exported_date_formatted_for_file . '.csv';
+
+        $count = 0;
+        $business_types_list = $businessTypesRepository->findAll();
+        foreach ($business_types_list as $business_type) {
+            $data[] = [
+                $business_type->getRanking(),
+                $business_type->getBusinessType(),
+                $business_type->getMapIcon(),
+                $business_type->getMapIconColour(),
+                $business_type->getMapDisplay(),
+            ];
+        }
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Business Types');
+        $sheet->getCell('A1')->setValue('Ranking');
+        $sheet->getCell('B1')->setValue('Business Type');
+        $sheet->getCell('C1')->setValue('Map Icon');
+        $sheet->getCell('D1')->setValue('Map Icon Colour');
+        $sheet->getCell('E1')->setValue('Map Display');
+
+        $sheet->fromArray($data, null, 'A2', true);
+        $total_rows = $sheet->getHighestRow();
+        for ($i = 2; $i <= $total_rows; $i++) {
+            $cell = "L" . $i;
+            $sheet->getCell($cell)->getHyperlink()->setUrl("https://google.com");
+        }
+        $writer = new Csv($spreadsheet);
+        $response = new StreamedResponse(function () use ($writer) {
+            $writer->save('php://output');
+        });
+        $response->headers->set('Content-Type', 'application/vnd.ms-excel');
+        $response->headers->set('Content-Disposition', sprintf('attachment;filename="%s"', $fileName));
+        $response->headers->set('Cache-Control', 'max-age=0');
+        return $response;
+    }
+
+    /**
+     * @Route ("/import/business_types", name="business_types_import" )
+     */
+    public function businessTypesImport(Request $request, SluggerInterface $slugger, BusinessTypesRepository $businessTypesRepository, BusinessTypesImportService $businessTypesImportService): Response
+    {
+        $form = $this->createForm(ImportType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $importFile = $form->get('File')->getData();
+            if ($importFile) {
+                $originalFilename = pathinfo($importFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '.' . 'csv';
+                try {
+                    $importFile->move(
+                        $this->getParameter('business_contacts_import_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+                $businessTypesImportService->importBusinessTypes($newFilename);
+                return $this->redirectToRoute('business_types_index');
+            }
+        }
+        return $this->render('business_contacts/import.html.twig', [
+            'form' => $form->createView(),
+            'heading' => 'Business Types Import',
+        ]);
     }
 }

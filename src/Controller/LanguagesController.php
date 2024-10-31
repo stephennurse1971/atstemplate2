@@ -182,15 +182,13 @@ class LanguagesController extends AbstractController
     /**
      * @Route("/update_ranking", name="update_ranking", methods={"GET", "POST"})
      */
-    public function updateRanking(LanguagesRepository $languagesRepository, Request $request, EntityManagerInterface $manager): Response
+    public function updateLanguageRanking(LanguagesRepository $languagesRepository, Request $request, EntityManagerInterface $manager): Response
     {
         $referer = $request->headers->get('Referer');
         $rankingContainer = [];
         $languages = $languagesRepository->findAll();
         foreach ($languages as $language) {
-
-                $rankingContainer[] = ['id' => $language->getId(), 'ranking' => $language->getRanking()];
-
+            $rankingContainer[] = ['id' => $language->getId(), 'ranking' => $language->getRanking()];
             array_multisort(array_column($rankingContainer, 'ranking'), SORT_ASC, $rankingContainer);
             $minRank = 1;
 
@@ -211,14 +209,14 @@ class LanguagesController extends AbstractController
     {
         $referer = $request->headers->get('Referer');
         $language = $languagesRepository->find($id);
-        $current_status= $language->isIsActive();
+        $current_status = $language->isIsActive();
 
-        if($current_status == 1){
+        if ($current_status == 1) {
             $language->setIsActive(0);
             $manager->persist($language);
             $manager->flush();
         }
-        if($current_status == 0 ){
+        if ($current_status == 0) {
             $language->setIsActive(1);
             $manager->persist($language);
             $manager->flush();

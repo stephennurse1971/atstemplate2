@@ -61,11 +61,10 @@ class CompanyDetailsType extends AbstractType
             ->add('companyAddressCountry')
             ->add('companyTimeZone', ChoiceType::class, [
                 'multiple' => false,
-                'placeholder' => 'GMT',
                 'expanded' => FALSE,
                 'required' => false,
                 'choices' => [
-                    'SST' => 'GMT',
+                    'SST' => 'SST',
                     'HST' => 'GMT',
                     'AKST' => 'GMT',
                     'PST' => 'PST',
@@ -128,6 +127,12 @@ class CompanyDetailsType extends AbstractType
                 'required' => false])
             ->add('headerDisplayTandCs', CheckboxType::class, [
                 'label' => 'T&Cs',
+                'required' => false])
+            ->add('headerDisplayBusinessContacts', CheckboxType::class, [
+                'label' => 'Business Contacts',
+                'required' => false])
+            ->add('headerDisplayWeather', CheckboxType::class, [
+                'label' => 'Weather',
                 'required' => false])
             ->add('footerDisplayContactDetails', CheckboxType::class, [
                 'label' => 'Contact Details',

@@ -4,6 +4,7 @@
 
 {% block body %}
     <h1 style="color: red">Referrals</h1>
+    <a class="btn btn-outline-danger btn-sm" href="{{ path('referrals_delete_all') }}">Delete All</a>
 
     <table class="table">
         <thead>
@@ -55,7 +56,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[1, 'desc']],
+                "order": [[1, 'desc'], [2, 'desc'], [0, 'desc']],
                 "paging": true,
                 "searching": true,
                 "bInfo": true

@@ -7,6 +7,7 @@ use App\Form\ReferralsType;
 use App\Repository\BusinessContactsRepository;
 use App\Repository\BusinessTypesRepository;
 use App\Repository\ReferralsRepository;
+use App\Repository\WeatherRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,7 +71,7 @@ class ReferralsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="referrals_show", methods={"GET"})
+     * @Route("/show/{id}", name="referrals_show", methods={"GET"})
      */
     public function show(Referrals $referral): Response
     {
@@ -80,7 +81,7 @@ class ReferralsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="referrals_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="referrals_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Referrals $referral, ReferralsRepository $referralsRepository): Response
     {
@@ -100,7 +101,7 @@ class ReferralsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="referrals_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="referrals_delete", methods={"POST"})
      */
     public function delete(Request $request, Referrals $referral, ReferralsRepository $referralsRepository): Response
     {
@@ -110,4 +111,21 @@ class ReferralsController extends AbstractController
 
         return $this->redirectToRoute('referrals_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    /**
+     * @Route("/referrals/delete_all", name="referrals_delete_all")
+     */
+    public function deleteAllReferrals(ReferralsRepository $referralsRepository,EntityManagerInterface $entityManager): Response
+    {
+        $referrals = $referralsRepository->findAll();
+        foreach ($referrals as $referral) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($referral);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('referrals_index');
+    }
+
+
+
 }

@@ -1,37 +1,53 @@
+<style>
+    .ck-content{
+        height: 500px;
+    }
+</style>
 {{ form_start(form) }}
 <div class="row">
     <div class="col-2">
-        {{ form_row(form.businessOrPerson) }}
-        {{ form_row(form.company) }}
-
-        {{ form_row(form.firstName) }}
-        {{ form_row(form.lastName) }}
-
-        {{ form_row(form.email) }}
-        {{ form_row(form.mobile) }}
-        {{ form_row(form.landline) }}
-        {{ form_row(form.website) }}
-    </div>
-
-    <div class="col-2">
-        <div class="status-container">
-        {{ form_row(form.status) }}
-        {{ form_row(form.publicPrivate) }}
-        </div>
         {% if is_granted('ROLE_STAFF') %}
             <a target="_blank" href="{{ path('business_types_index') }}"><i class="fa fa-chart-line"></i></a>
             <a target="_blank" href="{{ path('business_types_new') }}">+</a>
         {% endif %}
         {{ form_row(form.businessType) }}
+        {{ form_row(form.businessOrPerson) }}
+        {{ form_row(form.company) }}
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.lastName) }}
+        {% if business_contact.photo is not empty %}
+            <br>
+            <b>{{ business_contact.photo }}</b>
+            <a class="btn btn-sm btn-danger"
+               href="{{ path('business_contact_delete_photo_file', {'id': business_contact.id }) }} ">Delete
+                photo</a>
+        {% endif %}
+        {{ form_row(form.photo) }}
     </div>
-
+    <div class="col-2">
+        {{ form_row(form.email) }}
+        {{ form_row(form.mobile) }}
+        {{ form_row(form.landline) }}
+        {{ form_row(form.website) }}
+    </div>
+    <div class="col-2">
+        <div class="status-container">
+            {{ form_row(form.status) }}
+            {{ form_row(form.publicPrivate) }}
+            {{ form_row(form.files) }}
+        </div>
+    </div>
     <div class="col-2">
         {{ form_row(form.addressStreet) }}
         {{ form_row(form.addressCity) }}
+        {{ form_row(form.addressCounty) }}
         {{ form_row(form.addressPostCode) }}
         {{ form_row(form.addressCountry) }}
-        {{ form_row(form.gpsLocation) }}
-
+        {{ form_row(form.locationLongitude) }}
+        {{ form_row(form.locationLatitude) }}
+    </div>
+    <div class="col-4">
+        {{ form_row(form.notes) }}
     </div>
 </div>
 

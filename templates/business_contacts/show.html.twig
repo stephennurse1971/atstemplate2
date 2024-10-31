@@ -3,15 +3,21 @@
 {% block title %}Business Contact{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Business Contacts</h1>
+    <h2 style="color: red">{{ business_contact.businessType.businessType }}: {{ business_contact.company }}</h2>
 
     <table class="table">
         <tbody>
 
         <tr>
+            <th>Company</th>
+            <td>{{ business_contact.company }}</td>
+        </tr>
+
+        <tr>
             <th> Name</th>
             <td>{{ business_contact.firstName }} {{ business_contact.LastName }}</td>
         </tr>
+
         <tr>
             <th>Email</th>
             <td>
@@ -25,6 +31,7 @@
                 {% endif %}
             </td>
         </tr>
+
         <tr>
             <th>Website</th>
             <td>
@@ -53,6 +60,7 @@
                 {% endif %}
             </td>
         </tr>
+
         <tr>
             <th>Landline</th>
             <td>
@@ -66,10 +74,7 @@
                 {% endif %}
             </td>
         </tr>
-        <tr>
-            <th>Company</th>
-            <td>{{ business_contact.company }}</td>
-        </tr>
+
         <tr>
             <th>Address</th>
             <td>
@@ -80,10 +85,11 @@
                 {% endif %}
             </td>
         </tr>
+
         <tr>
-            <th>GPS</th>
+            <th>Map</th>
             <td>
-                {% if business_contact.gpsLocation is empty %}
+                {% if business_contact.locationLongitude is empty %}
                     {% if is_granted('ROLE_STAFF') %}
                         <button class="btn btn-primary btn-sm"
                                 onclick="getLocation('{{ business_contact.id }}')">
@@ -104,9 +110,16 @@
         </tr>
 
         <tr>
-            <th>Business</th>
-            <td>{{ business_contact.businessType.businessType }}</td>
+            <th>
+                Add contact <br>to Outlook
+            </th>
+            <td>
+                <a href="{{ path('create_vcard', {id: business_contact.id} ) }}" class="action"
+                   data-id="{{ business_contact.id }}"
+                   data-action="VCF"> <i style="color: blue" class="fas fa-address-card mr-0"></i></a>
+            </td>
         </tr>
+
         </tbody>
     </table>
 

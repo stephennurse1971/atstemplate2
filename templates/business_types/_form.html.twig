@@ -5,9 +5,12 @@
 </style>
 {{ form_start(form) }}
 <div class="row">
-    <div class="col-3">
+    <div class="col-2">
+        {{ form_row(form.ranking) }}
         {{ form_row(form.businessType) }}
-        {{ form_row(form.businessCategory) }}
+        {{ form_row(form.mapIcon) }}
+        {{ form_row(form.mapIconColour) }}
+        {{ form_row(form.mapDisplay) }}
     </div>
 </div>
 

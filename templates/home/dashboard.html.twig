@@ -21,12 +21,12 @@
         </div>
         <div class="col-2">
             <div class="border py-4">
-                <h2 style="color: red">Website CMS</h2>
+                <h2 style="color: red">CMS</h2>
                 <ul>
-                    <a target="_blank" href="{{ path('cms_copy_index') }}">Main Page Copy</a>
+                    <a target="_blank" href="{{ path('cms_copy_index') }}">Main-Page Copy</a>
                 </ul>
                 <ul>
-                    <a target="_blank" href="{{ path('sub_page_index') }}">Sub Pages</a>
+                    <a target="_blank" href="{{ path('sub_page_index') }}">Sub-Page Copy</a>
                 </ul>
                 <ul>
                     <a target="_blank" href="{{ path('cms_photo_index') }}">Photos</a>
@@ -39,14 +39,14 @@
             <div class="border py-4">
                 <h2 style="color: red">E-mails</h2>
                 <ul>
-                    <a target="_blank" href="{{ path('website_contacts_index') }}">In-Bound Requests/contacts</a>
+                    <a target="_blank" href="{{ path('website_contacts_index') }}">In-Bound Requests</a>
                 </ul>
                 <hr>
                 <ul>
-                    <a target="_blank" href="{{ path('emails_import_index') }}">Emails Received: Pending</a>
+                    <a target="_blank" href="{{ path('emails_import_index') }}">Emails: Pending</a>
                 </ul>
                 <ul>
-                    <a target="_blank" href="{{ path('emails_import_index') }}">Emails Received: Processed</a>
+                    <a target="_blank" href="{{ path('emails_import_index') }}">Emails: Processed</a>
                 </ul>
                 <ul>
                     <a target="_blank" href="">Emails Sent</a>
@@ -60,7 +60,7 @@
                     <a target="_blank" href="{{ path('user_index') }}">Users</a>
                 </ul>
                 <ul>
-                    <a href="{{ path('log_index') }}">User log</a>
+                    <a href="{{ path('log_index') }}">User Log</a>
                 </ul>
             </div>
         </div>
@@ -94,10 +94,17 @@
                 <h2 style="color: red">Helpful Links </h2>
                 <ul><a target="_blank" href="{{ path('business_contacts_index') }}">Helpful Contacts</a></ul>
                 <ul><a target="_blank" href="{{ path('business_types_index') }}">Business Categories</a></ul>
-                <ul><a target="_blank" href="{{ path('referrals_index') }}">Referrals log</a></ul>
+                <ul><a target="_blank" href="{{ path('referrals_index') }}">Referrals Log</a></ul>
             </div>
         </div>
-
+        <div class="col-2">
+            <div class="border py-4">
+                <h2 style="color: red">Competitors</h2>
+                <ul><a target="_blank" href="{{ path('facebook_groups_index') }}">Facebook Pages</a></ul>
+                <ul><a target="_blank" href="{{ path('competitors_index') }}">Competitors</a></ul>
+                <ul><a target="_blank" href="{{ path('competitor_service_index') }}">Competitor Services</a></ul>
+            </div>
+        </div>
     </div>
 
 {% endblock %}

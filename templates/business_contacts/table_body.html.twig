@@ -1,0 +1,137 @@
+<tr>
+    <td>
+        {% if business_contact.photo is not null %}
+            {% set photo = asset('administration/attachments/Business_contacts/Photos/')~business_contact.photo %}
+            <a class="btn btn-outline-danger btn-sm" target="_blank"
+               href="">
+                <img title="{{ business_contact.photo }}" height="50" width="50"
+                     src="{{ photo }}" class="rounded-circle"></a>
+            {{ business_contact.photo }}
+        {% endif %}
+    </td>
+    {% if is_granted('ROLE_ADMIN') %}
+        <td style="width: 10px; text-align: center">
+            {% if business_contact.status == "Approved" %}
+                <i title="{{ business_contact.status }}" style="color: green"
+                   class="fa fa-check"></i>
+            {% elseif business_contact.status == "Pending" %}
+                <i title="{{ business_contact.status }}" style="color: grey"
+                   class="fa fa-question-circle"></i>
+            {% elseif business_contact.status == "Not Approved" %}
+                <i title="{{ business_contact.status }}" style="color: red"
+                   class="fa fa-remove"></i>
+            {% endif %}
+        </td>
+        <td>
+            {% if business_contact.businessOrPerson == "Business" %}
+                <i title="Business" class="fa fa-building"></i>
+            {% endif %}
+            {% if business_contact.businessOrPerson == "Person" %}
+                <i title="Individual" class="fa fa-user"></i>
+            {% endif %}
+            {#                                {{ business_contact.businessOrPerson }} #}
+        </td>
+    {% endif %}
+
+    <td>
+        {{ business_contact.company }}
+    </td>
+    <td>{{ business_contact.firstName }} {{ business_contact.LastName }}</td>
+
+    <td class="desktop" style="text-align: center">
+        {% if business_contact.website is not empty %}
+            <a data-title="{{ business_contact.website }}" target="_blank"
+               title="{{ business_contact.website }}"
+               href="{{ business_contact.website }}" class="action"
+               data-id="{{ business_contact.id }}" data-action="Website">
+                <i class="fas fa-link"> </i></a>
+        {% endif %}
+    </td>
+    <td class="desktop" style="text-align: center">
+        {% if business_contact.email is not empty %}
+            <a title="{{ business_contact.email }}"
+               href="mailto:{{ business_contact.email }}"
+               class="action" data-id="{{ business_contact.id }}"
+               data-action="Email"><i
+                        class="fas fa-envelope"> </i>
+            </a>
+        {% endif %}
+    </td>
+    <td class="desktop" style="text-align: center">
+        {% if business_contact.mobile is not empty %}
+            <a title="{{ business_contact.mobile }}" target="_blank"
+               href="https://wa.me/{{ business_contact.mobile|replace({' ': ''}) }}"
+               class="action"
+               data-id="{{ business_contact.id }}"
+               data-action="WhatsApp">
+                <i class="fab fa-whatsapp" style="color:green; text-align: center"></i></a>
+        {% endif %}
+    </td>
+    <td class="desktop" style="text-align: center">
+        {% if business_contact.landline is not empty %}
+            <a title="{{ business_contact.landline }}"
+               href="tel:{{ business_contact.landline|replace({' ': ''}) }}" class="action"
+               data-id="{{ business_contact.id }}"
+               data-action="Phone">
+                <i class="fa fa-phone" style="color:green; text-align: center"></i></a>
+        {% endif %}
+    </td>
+    <td class="desktop">
+        {% if business_contact.addressStreet is not empty %}
+            {% if is_granted('ROLE') %}
+            {% else %}
+                {% if business_contact.locationLongitude is not empty %}
+                    <a target="_blank"
+                       href="{{ path('show_location_google_maps',{id: business_contact.id}) }}"
+                       class="action" data-id="{{ business_contact.id }}"
+                       data-action="Map">
+                        <i class='fas fa-map-marker-alt text-danger'></i></a>
+                {% endif %}
+            {% endif %}
+            {{ business_contact.addressStreet }},
+            {{ business_contact.addressCity }},
+            {{ business_contact.addressPostCode }}
+        {% endif %}
+    </td>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <td class="desktop" style="text-align: center">
+            {% if business_contact.locationLongitude is empty %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <button class="btn btn-primary btn-sm"
+                            onclick="getLocation('{{ business_contact.id }}')">
+                        <i class="fa fa-arrow-down"></i>
+                    </button>
+                {% else %}
+                    -
+                {% endif %}
+            {% else %}
+                <a target="_blank"
+                   href="{{ path('show_location_google_maps',{id: business_contact.id}) }}"
+                   class="action" data-id="{{ business_contact.id }}"
+                   data-action="Map">
+                    <i class='fas fa-map-marker-alt text-danger'></i></a>
+            {% endif %}
+        </td>
+    {% endif %}
+
+    <td style="text-align: center">
+        <div class="mobile">
+            <a class="btn btn-success btn-sm"
+               href="{{ path('business_contacts_show',{id: business_contact.id}) }}">Show</a>
+        </div>
+        <div class="desktop" style="text-align: center">
+            <a href="{{ path('create_vcard', {id: business_contact.id} ) }}" class="action"
+               data-id="{{ business_contact.id }}"
+               data-action="VCF"> <i style="color: blue"
+                                     class="fas fa-address-card mr-0"></i></a>
+        </div>
+    </td>
+    <td class="desktop">
+        {% if business_contact.files is not empty %}
+            <i title="{{ business_contact.files }}" class="fa fa-paperclip"></i>
+        {% endif %}
+    </td>
+
+    {% include 'business_contacts/parts/access_count_body.html.twig' %}
+</tr>

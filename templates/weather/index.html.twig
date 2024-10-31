@@ -1,15 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Weather index{% endblock %}
+{% block title %}
+    Weather
+    {% if CompanyDetails is not null %}
+    :{{ CompanyDetails.getCompanyDetails.weatherLocation }}
+    {% endif %}
+{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Weather index</h1>
+    <h1 style="color: red">Weather:
+        {% if CompanyDetails is not null %}
+            :{{ CompanyDetails.getCompanyDetails.weatherLocation }}
+        {% endif %}
+    </h1>
     <b>Location: </b> {{ CompanyDetails.getCompanyDetails.weatherLocation }}
-    <a href="{{ path('company_details_map_gps') }}"><i style="color: red" class="fa fa-map-marker"></i></a>
-    {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('company_details_edit',{id:'1'}) }}"><i style="color: red" class="fa fa-pen"></i></a>
-    {% endif %}
-</a><br>
+    <a href="{{ path('office_address') }}"><i style="color: red" class="fa fa-map-marker"></i></a>
+    <br>
     <a class="btn btn-outline-primary btn-sm" href="{{ path('fetch_weather_data') }}">Get Latest Update</a>
     <a class="btn btn-outline-primary btn-sm" href="{{ path('fetch_weather_data_hourly') }}">Get Hourly Update</a>
     <a target="_blank" class="btn btn-outline-secondary btn-sm"

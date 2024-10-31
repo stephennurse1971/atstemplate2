@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Review:
+    {{ facebookGroupName }}
+{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Facebook Group Review:
+        {{ facebookGroupName }}
+    </h1>
+
+    {{ include('facebook_groups_reviews/_form.html.twig') }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('facebook_groups_reviews_index') }}">Return to list</a>
+{% endblock %}
+
+
+
+{# {% block additionaljs %} #}
+{#    <script> #}
+{#        $('table').removeClass('table-responsive'); #}
+{#        {% if 'ROLE_CLIENT' in app.user.roles %} #}
+{#        $('#passports_passportHolder').attr('disabled', 'disabled'); #}
+{#        $('#passports_reviewed').attr('disabled', 'disabled'); #}
+{#        $('#passports_reviewedBy').attr('disabled', 'disabled'); #}
+{#        $('#passports_reviewedDate').attr('disabled', 'disabled'); #}
+{#        $('#passports_comments').attr('disabled', 'disabled'); #}
+{#        $('.standard-error-list').css('display', 'none'); #}
+{#        {% endif %} #}
+{#    </script> #}
+{# {% endblock %} #}

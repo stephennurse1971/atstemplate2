@@ -153,15 +153,14 @@ class CompanyDetailsController extends AbstractController
         return $this->redirectToRoute('company_details_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    /**
-     * @Route("/map_gps", name="company_details_map_gps", methods={"POST"})
-     */
 
-    public function officeAddressGPS(CompanyDetailsRepository $companyDetailsRepository): Response
+    /**
+     * @Route("/office_address", name="office_address", methods={"GET"})
+     */
+    public function officeAddress(CompanyDetailsRepository $companyDetailsRepository): Response
     {
         return $this->render('home/officeAddress.html.twig');
     }
-
 
     /**
      * @Route("/delete_favicon/{live_or_dev}/{id}", name="company_details_delete_favicon", methods={"POST", "GET"})
