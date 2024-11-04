@@ -14,12 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/company_details")
- * @Security("is_granted('ROLE_ADMIN')")
  */
 class CompanyDetailsController extends AbstractController
 {
     /**
      * @Route("/index", name="company_details_index", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function index(CompanyDetailsRepository $companyDetailsRepository): Response
     {
@@ -30,6 +30,7 @@ class CompanyDetailsController extends AbstractController
 
     /**
      * @Route("/new", name="company_details_new", methods={"GET", "POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function new(Request $request, CompanyDetailsRepository $companyDetailsRepository): Response
     {
@@ -82,6 +83,7 @@ class CompanyDetailsController extends AbstractController
 
     /**
      * @Route("/show/{id}", name="company_details_show", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function show(CompanyDetails $companyDetails): Response
     {
@@ -92,6 +94,7 @@ class CompanyDetailsController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="company_details_edit", methods={"GET", "POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function edit(Request $request, CompanyDetails $companyDetails, CompanyDetailsRepository $companyDetailsRepository): Response
     {
@@ -143,6 +146,7 @@ class CompanyDetailsController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="company_details_delete", methods={"POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function delete(Request $request, CompanyDetails $companyDetails, CompanyDetailsRepository $companyDetailsRepository): Response
     {
@@ -164,6 +168,7 @@ class CompanyDetailsController extends AbstractController
 
     /**
      * @Route("/delete_favicon/{live_or_dev}/{id}", name="company_details_delete_favicon", methods={"POST", "GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function deleteLiveFavicon(Request $request, int $id, string $live_or_dev, CompanyDetails $companyDetails, EntityManagerInterface $entityManager)
     {
@@ -191,6 +196,7 @@ class CompanyDetailsController extends AbstractController
 
     /**
      * @Route("/delete_qr_code/{id}", name="company_details_delete_qr_code", methods={"POST", "GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function deleteQRCodeLiveFavicon(Request $request, int $id, CompanyDetails $companyDetails, EntityManagerInterface $entityManager)
     {
@@ -208,6 +214,7 @@ class CompanyDetailsController extends AbstractController
 
     /**
      * @Route("/export/live/database", name="export_live_database", methods={"POST", "GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function exportDatabase(Request $request, EntityManagerInterface $entityManager, \App\Services\CompanyDetails $companyDetails)
     {

@@ -3,14 +3,12 @@
 {% block title %}
     Weather
     {% if CompanyDetails is not null %}
-    :{{ CompanyDetails.getCompanyDetails.weatherLocation }}
+    : {{ CompanyDetails.getCompanyDetails.weatherLocation }}
     {% endif %}
 {% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Weather:
-        {% if CompanyDetails is not null %}
-            :{{ CompanyDetails.getCompanyDetails.weatherLocation }}
+    <h1 style="color: red">Weather{% if CompanyDetails is not null %}: {{ CompanyDetails.getCompanyDetails.weatherLocation }}
         {% endif %}
     </h1>
     <b>Location: </b> {{ CompanyDetails.getCompanyDetails.weatherLocation }}

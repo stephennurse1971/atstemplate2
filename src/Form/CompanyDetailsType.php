@@ -65,8 +65,8 @@ class CompanyDetailsType extends AbstractType
                 'required' => false,
                 'choices' => [
                     'SST' => 'SST',
-                    'HST' => 'GMT',
-                    'AKST' => 'GMT',
+                    'HST' => 'HST',
+                    'AKST' => 'AKST',
                     'PST' => 'PST',
                     'MST' => 'MST',
                     'CST' => 'CST',

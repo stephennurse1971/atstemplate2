@@ -78,25 +78,21 @@
     </script>
 {% endblock datatable %}
 {% block additionaljs %}
+
     <script>
         var businessContactId = '';
-
         function getLocation(id) {
             businessContactId = id;
-
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showLocation);
             } else {
                 $('#location').html('Geolocation is not supported by this browser.');
             }
         }
-
         function showLocation(position) {
-
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;
             var pin = latitude + "," + longitude;
-
             $.ajax({
                 type: 'POST',
                 url: 'update/location',
@@ -107,6 +103,7 @@
             });
         }
     </script>
+
     <script>
         $('.action').click(function (e) {
             e.preventDefault();

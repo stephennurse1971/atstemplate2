@@ -44,4 +44,30 @@
                 console.error(error);
             });
     </script>
+
+    <script>
+        var businessContactId = '';
+        function getLocation(id) {
+            businessContactId = id;
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showLocation);
+            } else {
+                $('#location').html('Geolocation is not supported by this browser.');
+            }
+        }
+        function showLocation(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            var pin = latitude + "," + longitude;
+            $.ajax({
+                type: 'POST',
+                url: 'update/location',
+                data: 'latitude=' + latitude + '&longitude=' + longitude + '&id=' + businessContactId,
+                success: function (msg) {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+
 {% endblock %}

@@ -47,7 +47,7 @@ class   HomeController extends AbstractController
             'ranking' => '1',
         ]);
 
-        if($cms_copy_ranking1) {
+        if ($cms_copy_ranking1) {
             if ($security->getUser()) {
                 if (in_array('ROLE_ADMIN', $security->getUser()->getRoles())) {
                     $pageCountAdmin = $cms_copy_ranking1->getPageCountAdmin();
@@ -92,7 +92,7 @@ class   HomeController extends AbstractController
         } else {
             $user = new User();
             $user->setFirstName('Stephen')
-                ->setLastName('NurseHMX')
+                ->setLastName('Nurse')
                 ->setEmailVerified(1)
                 ->setEmail('nurse_stephen@hotmail.com')
                 ->setRoles(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'])
@@ -260,6 +260,19 @@ class   HomeController extends AbstractController
             ->addNote(strip_tags($notes_all));
         $vcard->download();
         return new Response(null);
+    }
+
+    /**
+     * @Route("/company_qr_code", name="company_qr_code")
+     *
+     */
+    public function companyQrCode(CompanyDetailsRepository $companyDetailsRepository)
+    {
+        $company_details = $companyDetailsRepository->find('1');
+        $qr_code = $company_details->getCompanyQrCode();
+        return $this->render('home/company_qr_code.html.twig', [
+            'qr_code' => $qr_code,
+        ]);
     }
 
 

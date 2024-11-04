@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ CompanyDetails.companyDetails.companyName }} {% endblock %}
+
+{% block body %}
+    <div class="row">
+
+        {% set image = asset('administration/attachments/Favicons/')~qr_code %}
+
+        <div class="col-lg-3 col-md-4 m-4 p-4">
+            <div class="justify-content-center d-flex">
+                <div class="homepage-gallery-image-container">
+                    {% if qr_code is not null %}
+                        <a title="{{ CompanyDetails.companyDetails.companyName }}" target="_blank" href="{{ path('create_vcard_company') }}">
+                            <img class="homepage-image" src="{{ image }}">
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock body %}

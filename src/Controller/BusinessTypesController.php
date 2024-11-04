@@ -111,7 +111,7 @@ class BusinessTypesController extends AbstractController
             $entityManager->remove($business_contact);
             $entityManager->flush();
         }
-        return $this->redirectToRoute('business_contacts_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('business_types_index', [], Response::HTTP_SEE_OTHER);
     }
 
     /**
@@ -219,7 +219,7 @@ class BusinessTypesController extends AbstractController
                 $newFilename = $safeFilename . '.' . 'csv';
                 try {
                     $importFile->move(
-                        $this->getParameter('business_contacts_import_directory'),
+                        $this->getParameter('business_types_import_directory'),
                         $newFilename
                     );
                 } catch (FileException $e) {

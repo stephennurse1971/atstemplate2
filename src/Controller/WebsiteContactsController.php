@@ -5,8 +5,9 @@ namespace App\Controller;
 use App\Entity\WebsiteContacts;
 use App\Form\WebsiteContactsType;
 use App\Repository\ProductRepository;
-use App\Repository\ProjectSpecific\UserRepository;
+use App\Repository\UserRepository;
 use App\Repository\WebsiteContactsRepository;
+use App\Services\CheckIfUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +22,7 @@ class WebsiteContactsController extends AbstractController
     /**
      * @Route("/index", name="website_contacts_index", methods={"GET"})
      */
-    public function index(WebsiteContactsRepository $websiteContactsRepository, UserRepository $userRepository): Response
+    public function index(WebsiteContactsRepository $websiteContactsRepository, UserRepository $userRepository, CheckIfUser $checkIfUser): Response
     {
         return $this->render('website_contacts/index.html.twig', [
             'website_contacts' => $websiteContactsRepository->findAll(),
@@ -90,28 +91,28 @@ class WebsiteContactsController extends AbstractController
     }
 
     /**
-     * @Route("/setToJunk/{id}", name="website_contacts_set_to_junk", methods={"GET", "POST"})
+     * @Route("/update_status/{new_status}/{id}", name="website_contacts_update_status", methods={"GET", "POST"})
      */
-    public function setToJunk(Request $request, WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository, EntityManagerInterface $manager): Response
+    public function setToJunk(Request $request, string $new_status,  WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository, EntityManagerInterface $manager): Response
     {
-        $websiteContact->setStatus('Junk');
-        $manager->flush($websiteContact);
         $referer = $request->headers->get('Referer');
+        if($new_status = "Junk"){
+            $websiteContact->setStatus('Junk');
+            $manager->flush($websiteContact);
+        }
+        if($new_status = "Pending"){
+            $websiteContact->setStatus('Pending');
+            $manager->flush($websiteContact);
+        }
+        if($new_status = "Pending"){
+            $websiteContact->setStatus('Pending');
+            $manager->flush($websiteContact);
+        }
         return $this->redirect($referer);
 
     }
 
-    /**
-     * @Route("/revertToPending/{id}", name="website_contacts_revert_to_pending", methods={"GET", "POST"})
-     */
-    public function revertToPending(Request $request, WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository, EntityManagerInterface $manager): Response
-    {
-        $websiteContact->setStatus('Pending');
-        $manager->flush($websiteContact);
-        $referer = $request->headers->get('Referer');
-        return $this->redirect($referer);
 
-    }
 
     /**
      * @Route("/delete/{id}", name="website_contacts_delete", methods={"POST"})

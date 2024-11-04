@@ -206,8 +206,7 @@
                                         {% if CompanyDetails.companyDetails.companyAddressStreet is not null %}
                                             <a class="dropdown-item" target="_blank"
                                                title="{{ CompanyDetails.companyDetails.companyAddressStreet }} "
-                                               href="{{ path('office_address') }}"> <i style="color: royalblue"
-                                                                                       class="fa fa-car"></i> {{ CompanyDetails.companyDetails.companyAddressStreet }}
+                                               href="{{ path('office_address') }}"> <i style="color: royalblue" class="fa fa-car"></i> {{ CompanyDetails.companyDetails.companyAddressStreet }}
                                             </a>
                                         {% endif %}
                                     {% endif %}
@@ -220,9 +219,26 @@
                         {% endif %}
                     {% endif %}
 
+
+
+                    <!-- Nav Item #7 - QR code -->
+                    {% if CompanyDetails.getCompanyDetails is not null %}
+                        {% if CompanyDetails.companyDetails.headerDisplayContactDetails ==1 %}
+
+                            <li class="nav-item">
+                                <a class="nav-link" target="_blank" href="{{ path('company_qr_code') }}"><i
+                                            class="fa fa-qrcode"></i></a>
+                            </li>
+
+                        {% endif %}
+                    {% endif %}
+
+
+
+
                     {% include 'template_parts_project_specific/header_project_specific2.html.twig' %}
 
-                    <!-- Nav Item #7 - Login -->
+                    <!-- Nav Item #8 - Login -->
                     {% if CompanyDetails.getCompanyDetails is not null and CompanyDetails.companyDetails.headerDisplayLogin ==1 %}
                         {% if app.user %}
                             <li class="nav-item dropdown">

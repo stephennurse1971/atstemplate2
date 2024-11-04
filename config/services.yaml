@@ -8,6 +8,7 @@ parameters:
   business_contacts_import_directory: '%kernel.project_dir%/public/administration/import_export/business_contacts/'
   business_contacts_photos_directory: '%kernel.project_dir%/public/administration/attachments/Business_Contacts/Photos'
   business_contacts_files_directory: '%kernel.project_dir%/public/administration/attachments/Business_Contacts/Files'
+  business_types_import_directory: '%kernel.project_dir%/public/administration/import_export/business_types/'
   competitors_import_directory: '%kernel.project_dir%/public/administration/import_export/competitors/'
   favicon_directory: '%kernel.project_dir%/public/administration/attachments/Favicons/'
   icon_directory: '%kernel.project_dir%/public/administration/attachments/LanguageIcons/'

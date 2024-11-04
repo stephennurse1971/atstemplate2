@@ -9,6 +9,7 @@
         <thead>
         <tr>
             <th>Status</th>
+            <th>#</th>
             <th>Date</th>
             <th>Time</th>
             <th>First Name</th>
@@ -27,6 +28,10 @@
             <tr>
                 <td>
                     {{ website_contact.status }}
+                </td>
+                <td>
+                ###
+{#                    {{ CheckIfUser.checkIfUser(website_contact) }}#}
                 </td>
                 <td data-sort="{{ website_contact.dateTime|date('Y-m-d H:i') }}">{{ website_contact.dateTime ? website_contact.dateTime|date('d-M-y') : '' }}</td>
                 <td>{{ website_contact.dateTime ? website_contact.dateTime|date('H:i') : '' }}</td>
@@ -67,14 +72,15 @@
                 <td>
                     {% if website_contact.status == 'Pending' %}
                         <a class="btn btn-outline-danger btn-sm"
-                           href="{{ path('website_contacts_set_to_junk', {'id': website_contact.id}) }}">Spam</a>
+                           href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'Junk'}) }}">Spam</a>
+                        <a class="btn btn-outline-success btn-sm"
+                           href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'New User'}) }}">Convert to User</a>
                     {% endif %}
                     {% if website_contact.status == 'Junk' %}
                         <a class="btn btn-outline-primary btn-sm"
-                           href="{{ path('website_contacts_revert_to_pending', {'id': website_contact.id}) }}">Revert to
+                           href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'Pending'}) }}">Revert to
                             Pending</a>
                     {% endif %}
-
                 </td>
 
                 <td>
@@ -84,8 +90,8 @@
                             <i class="fa fa-trash"></i>
                         </button>
                     </form>
-
                 </td>
+
             </tr>
         {% endfor %}
         </tbody>

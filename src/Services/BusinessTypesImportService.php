@@ -3,7 +3,6 @@
 
 namespace App\Services;
 
-use App\Entity\BusinessContacts;
 use App\Entity\BusinessTypes;
 use App\Repository\BusinessContactsRepository;
 use App\Repository\BusinessTypesRepository;
@@ -19,8 +18,7 @@ class BusinessTypesImportService
         $mapIcon = '';
         $mapIconColour = '';
         $mapDisplay = '';
-
-        $filepath = $this->container->getParameter('business_contacts_import_directory');
+        $filepath = $this->container->getParameter('business_types_import_directory');
         $fullpath = $filepath . $fileName;
         $alldataFromCsv = [];
         $row = 0;
@@ -44,11 +42,10 @@ class BusinessTypesImportService
             $mapIcon = trim($oneLineFromCsv[2]);
             $mapIconColour = trim($oneLineFromCsv[3]);
             $mapDisplay = trim($oneLineFromCsv[4]);
-
             if (!$businessType) {
                 $businessType = new BusinessTypes();
                 $businessType->setRanking($ranking)
-                    ->setBusinessType($businessType)
+                    ->setBusinessType('test')
                     ->setMapIcon($mapIcon)
                     ->setMapIconColour($mapIconColour)
                     ->setMapDisplay($mapDisplay);
