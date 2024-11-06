@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Repository\UserRepository;
 use App\Repository\WebsiteContactsRepository;
 
-class CheckIfUser
+class CheckIfUserService
 {
     public function checkIfUser($websiteContact)
     {

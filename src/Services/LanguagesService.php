@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Repository\LanguagesRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class Languages
+class LanguagesService
 {
     public function getLanguages()
     {

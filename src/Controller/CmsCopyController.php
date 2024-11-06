@@ -62,7 +62,7 @@ class CmsCopyController extends AbstractController
                     die('Import failed');
                 }
             }
-            if($cmsCopy->getCategory()=="Product"){
+            if($cmsCopy->getCategory()=="ProductService"){
                 $cmsCopy->setStaticPageName(null);
             }
             if($cmsCopy->getCategory()=="Static"){
@@ -115,7 +115,7 @@ class CmsCopyController extends AbstractController
                     die('Import failed');
                 }
             }
-            if($cmsCopy->getCategory()=="Product"){
+            if($cmsCopy->getCategory()=="ProductService"){
                 $cmsCopy->setStaticPageName(null);
             }
             if($cmsCopy->getCategory()=="Static"){

@@ -2,14 +2,15 @@ twig:
   default_path: '%kernel.project_dir%/templates'
   form_themes: [ 'bootstrap_4_layout.html.twig' ]
   globals:
-    CheckIfUser: '@App\Services\CheckIfUser'
-    CompanyDetails: '@App\Services\CompanyDetails'
-    CountBusinessContacts: '@App\Services\CountBusinessContacts'
-    CountBusinessContactReferrals: '@App\Services\CountBusinessContactReferrals'
-    CountPendingWebsiteInquiries: '@App\Services\CountPendingWebsiteInquiries'
-    Languages: '@App\Services\Languages'
-    Product: '@App\Services\Product'
-    TranslationsImport: '@App\Services\TranslationsImportService'
+    CheckIfUserService: '@App\Services\CheckIfUserService'
+    CompanyDetailsService: '@App\Services\CompanyDetailsService'
+    CountBusinessContactsService: '@App\Services\CountBusinessContactsService'
+    CountBusinessContactReferralsService: '@App\Services\CountBusinessContactReferralsService'
+    CountPendingWebsiteInquiriesService: '@App\Services\CountPendingWebsiteInquiriesService'
+    ImportUserService: '@App\Services\ImportUserService'
+    LanguagesService: '@App\Services\LanguagesService'
+    ProductService: '@App\Services\ProductService'
+    TranslationsImportService: '@App\Services\TranslationsImportService'
     WeatherService: '@App\Services\WeatherService'
 
 when@test:

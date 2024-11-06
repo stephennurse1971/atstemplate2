@@ -83,7 +83,7 @@
 		};
 
 		/**
-		 * Languages
+		 * LanguagesService
 		 */
 		$.fn[pluginName].languages = {};
 

@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Repository\ProductRepository;
 
-class Product
+class ProductService
 {
     public function getProductAll()
     {

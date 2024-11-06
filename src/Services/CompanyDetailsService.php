@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Repository\CompanyDetailsRepository;
 
-class CompanyDetails
+class CompanyDetailsService
 {
     public function getCompanyDetails()
     {

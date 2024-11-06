@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {% if cms_copy.category == "Product" %}
+    {% if cms_copy.category == "ProductService" %}
         CMS: {{ cms_copy.product.product }}
     {% endif %}
     {% if cms_copy.category == "Static" %}
@@ -11,10 +11,10 @@
 
 {% block body %}
     <h1 style="color: red">Edit:
-        {% if (cms_copy.category != "Product" and cms_copy.category != "Static") %}
+        {% if (cms_copy.category != "ProductService" and cms_copy.category != "Static") %}
             Null
         {% else %}
-            {% if cms_copy.category == "Product" %}
+            {% if cms_copy.category == "ProductService" %}
                 {{ cms_copy.product.product }}
             {% endif %}
             {% if cms_copy.category == "Static" %}

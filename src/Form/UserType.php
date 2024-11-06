@@ -29,6 +29,7 @@ class UserType extends AbstractType
             ])
             ->add('firstName')
             ->add('lastName')
+            ->add('mobile')
             ->add('roles', ChoiceType::class, [
                     'mapped' => true,
                     'multiple' => true,

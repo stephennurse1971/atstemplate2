@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Repository\BusinessContactsRepository;
 use App\Repository\BusinessTypesRepository;
 
-class CountBusinessContacts
+class CountBusinessContactsService
 {
     public function countBusinessCounts($business_type)
     {

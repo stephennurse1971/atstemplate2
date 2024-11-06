@@ -7,7 +7,7 @@ use App\Form\WebsiteContactsType;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use App\Repository\WebsiteContactsRepository;
-use App\Services\CheckIfUser;
+use App\Services\CheckIfUserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ class WebsiteContactsController extends AbstractController
     /**
      * @Route("/index", name="website_contacts_index", methods={"GET"})
      */
-    public function index(WebsiteContactsRepository $websiteContactsRepository, UserRepository $userRepository, CheckIfUser $checkIfUser): Response
+    public function index(WebsiteContactsRepository $websiteContactsRepository, UserRepository $userRepository, CheckIfUserService $checkIfUser): Response
     {
         return $this->render('website_contacts/index.html.twig', [
             'website_contacts' => $websiteContactsRepository->findAll(),

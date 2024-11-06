@@ -15,6 +15,7 @@ parameters:
   instructions_directory: '%kernel.project_dir%/public/administration/attachments/Instructions/'
   translations_directory: '%kernel.project_dir%/public/administration/attachments/Translations/'
   user_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Users/'
+  user_import_directory: '%kernel.project_dir%/public/administration/import_export/users/'
   website_photos_directory: '%kernel.project_dir%/public/administration/attachments/WebsitePhotos/'
   website_attachments_directory: '%kernel.project_dir%/public/administration/attachments/WebsiteAttachments/'
   public: '%kernel.project_dir%/public/'

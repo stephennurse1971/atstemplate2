@@ -216,7 +216,7 @@ class CompanyDetailsController extends AbstractController
      * @Route("/export/live/database", name="export_live_database", methods={"POST", "GET"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function exportDatabase(Request $request, EntityManagerInterface $entityManager, \App\Services\CompanyDetails $companyDetails)
+    public function exportDatabase(Request $request, EntityManagerInterface $entityManager, \App\Services\CompanyDetailsService $companyDetails)
     {
         $filename = $companyDetails->getCompanyDetails()->getSqlDatabase().'.sql';
         $sqlDatabase = $companyDetails->getCompanyDetails()->getSqlDatabase();

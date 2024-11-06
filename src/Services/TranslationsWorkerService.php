@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Repository\TranslationRepository;
 
-class TranslationsWorker
+class TranslationsWorkerService
 {
     public function getTranslations($text)
     {
@@ -23,7 +23,7 @@ class TranslationsWorker
         return $text;
     }
 
-    public function __construct(TranslationRepository $translationRepository, Languages $languages)
+    public function __construct(TranslationRepository $translationRepository, LanguagesService $languages)
     {
         $this->translationRepository = $translationRepository;
         $this->languages = $languages;

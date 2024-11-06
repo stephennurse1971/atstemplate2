@@ -21,7 +21,7 @@ class CmsPhotoType extends AbstractType
                 'required' => true,
                 'choices' => [
                     'Static' => 'Static',
-                    'Product' => 'Product',
+                    'ProductService' => 'ProductService',
                 ]
             ])
             ->add('staticPageName')

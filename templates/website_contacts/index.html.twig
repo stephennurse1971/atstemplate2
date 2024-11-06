@@ -31,7 +31,7 @@
                 </td>
                 <td>
                 ###
-{#                    {{ CheckIfUser.checkIfUser(website_contact) }}#}
+{#                    {{ CheckIfUserService.checkIfUser(website_contact) }}#}
                 </td>
                 <td data-sort="{{ website_contact.dateTime|date('Y-m-d H:i') }}">{{ website_contact.dateTime ? website_contact.dateTime|date('d-M-y') : '' }}</td>
                 <td>{{ website_contact.dateTime ? website_contact.dateTime|date('H:i') : '' }}</td>

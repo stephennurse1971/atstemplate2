@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\HealthRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
+use App\Services\UserIsHouseGuest;
+use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -91,17 +94,16 @@ class UserController extends AbstractController
     public function edit(Request $request, string $fullName, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher, \Symfony\Component\Security\Core\Security $security): Response
     {
         $user_name = explode(' ', $fullName);
-        if(count($user_name)<3){
+        if (count($user_name) < 3) {
             $first_name = $user_name[0];
             $last_name = $user_name[1];
-        }
-        else{
+        } else {
             $first_name = $user_name[0];
-            $last_name = $user_name[1]." ".$user_name[2];
+            $last_name = $user_name[1] . " " . $user_name[2];
         }
         $user = $userRepository->findOneBy([
             'firstName' => $first_name,
-            'lastName'=>$last_name]);
+            'lastName' => $last_name]);
 
         $form = $this->createForm(UserType::class, $user, ['user' => $user]);
         $form->handleRequest($request);
@@ -142,5 +144,68 @@ class UserController extends AbstractController
         return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    /**
+     * @Route("/delete_all_non_admin", name="user_delete_all_non_admin")
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function deleteAllNonAdminUsers(UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    {
+        $users = $userRepository->findAll();
+        foreach ($users as $user) {
+            if (!in_array('ROLE_ADMIN', $user->getRoles())) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($user);
+                $entityManager->flush();
+            }
+        }
 
+        return $this->redirectToRoute('user_index');
+    }
+
+    /**
+     * @Route ("/export", name="user_export" )
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public
+    function exportUsers(UserRepository $userRepository)
+    {
+        $data = [];
+        $user_list = $userRepository->findAll();
+        $fileName = 'all_users_export.csv';
+        $exported_date = new \DateTime('now');
+        $exported_date = $exported_date->format('d-M-Y h:m');
+        $count = 0;
+
+        foreach ($user_list as $user) {
+            $data[] = [
+                $user->getFirstName(),
+                $user->getLastName(),
+                $user->getEmail(),
+            ];
+        }
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Users');
+        $sheet->getCell('A1')->setValue('First Name');
+        $sheet->getCell('B1')->setValue('Last Name');
+        $sheet->getCell('C1')->setValue('Email');
+
+        $sheet->fromArray($data, null, 'A2', true);
+        $total_rows = $sheet->getHighestRow();
+        for ($i = 2; $i <= $total_rows; $i++) {
+            $cell = "L" . $i;
+            $sheet->getCell($cell)->getHyperlink()->setUrl("https://google.com");
+        }
+        $writer = new Csv($spreadsheet);
+
+
+        $response = new StreamedResponse(function () use ($writer) {
+            $writer->save('php://output');
+        });
+
+        $response->headers->set('Content-Type', 'application/vnd.ms-excel');
+        $response->headers->set('Content-Disposition', sprintf('attachment;filename="%s"', $fileName));
+        $response->headers->set('Cache-Control', 'max-age=0');
+        return $response;
+    }
 }

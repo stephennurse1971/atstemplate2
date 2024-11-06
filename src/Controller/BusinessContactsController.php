@@ -8,8 +8,8 @@ use App\Form\ImportType;
 use App\Repository\BusinessContactsRepository;
 use App\Repository\BusinessTypesRepository;
 use App\Services\BusinessContactsImportService;
-use App\Services\CompanyDetails;
-use App\Services\CountBusinessContacts;
+use App\Services\CompanyDetailsService;
+use App\Services\CountBusinessContactsService;
 use Doctrine\ORM\EntityManagerInterface;
 use JeroenDesloovere\VCard\VCard;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -30,7 +30,7 @@ class BusinessContactsController extends AbstractController
     /**
      * @Route("/index", name="business_contacts_index", methods={"GET"})
      */
-    public function index(BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, CountBusinessContacts $countBusinessContacts): Response
+    public function index(BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, CountBusinessContactsService $countBusinessContacts): Response
     {
         $business_contacts = $businessContactsRepository->findBy([
             'status' => 'Approved'
@@ -55,7 +55,7 @@ class BusinessContactsController extends AbstractController
     /**
      * @Route("/new", name="business_contacts_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, BusinessContactsRepository $businessContactsRepository, CompanyDetails $companyDetails, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, BusinessContactsRepository $businessContactsRepository, CompanyDetailsService $companyDetails, EntityManagerInterface $entityManager): Response
     {
         $default_country = $companyDetails->getCompanyDetails()->getCompanyAddressCountry();
         $businessContact = new BusinessContacts();

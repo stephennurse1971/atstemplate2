@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Repository\WebsiteContactsRepository;
 
-class CountPendingWebsiteInquiries
+class CountPendingWebsiteInquiriesService
 {
     public function countContacts()
     {

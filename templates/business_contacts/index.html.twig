@@ -7,12 +7,12 @@
     {% include 'business_contacts/parts/import_and_export.html.twig' %}
 
     {% for business_type in business_types %}
-{#        {% if {{ CountBusinessContacts.countBusinessCounts(business_type) }} >0 %}#}
+{#        {% if {{ CountBusinessContactsService.countBusinessCounts(business_type) }} >0 %}#}
 {#            INSERT THIS AROUND CODE BELOW#}
 {#        {% endif %}#}
         <h2 style="color: red">{{ business_type }}
            <br> ..GET COUNT SERVICE WORKING
-{#            ({{ CountBusinessContacts.countBusinessCounts(business_type) }})#}
+{#            ({{ CountBusinessContactsService.countBusinessCounts(business_type) }})#}
         </h2><br>
         <table class="table table-responsive-sm">
             <thead>

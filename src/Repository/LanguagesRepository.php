@@ -40,7 +40,7 @@ class LanguagesRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Languages[] Returns an array of Languages objects
+     * @return Languages[] Returns an array of LanguagesService objects
      */
     public function getLanguagesByRankingOrder(): array
     {
@@ -52,7 +52,7 @@ class LanguagesRepository extends ServiceEntityRepository
         ;
     }
 
-//    public function findOneBySomeField($value): ?Languages
+//    public function findOneBySomeField($value): ?LanguagesService
 //    {
 //        return $this->createQueryBuilder('l')
 //            ->andWhere('l.exampleField = :val')

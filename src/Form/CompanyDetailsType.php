@@ -4,8 +4,8 @@ namespace App\Form;
 
 use App\Entity\CompanyDetails;
 use App\Repository\TranslationRepository;
-use App\Services\Languages;
-use App\Services\TranslationsWorker;
+use App\Services\LanguagesService;
+use App\Services\TranslationsWorkerService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -177,7 +177,7 @@ class CompanyDetailsType extends AbstractType
             'data_class' => CompanyDetails::class,
         ]);
     }
-    public function __construct(TranslationsWorker $translationsWorker)
+    public function __construct(TranslationsWorkerService $translationsWorker)
     {
       $this->translationsWorker = $translationsWorker;
     }

@@ -61,7 +61,7 @@ class CmsPhotoController extends AbstractController
                     die('Import failed');
                 }
             }
-            if ($cmsPhoto->getCategory() == "Product") {
+            if ($cmsPhoto->getCategory() == "ProductService") {
                 $cmsPhoto->setStaticPageName(null);
             }
             if ($cmsPhoto->getCategory() == "Static") {
@@ -120,7 +120,7 @@ class CmsPhotoController extends AbstractController
                     die('Import failed');
                 }
             }
-            if ($cmsPhoto->getCategory() == "Product") {
+            if ($cmsPhoto->getCategory() == "ProductService") {
                 $cmsPhoto->setStaticPageName(null);
             }
             if ($cmsPhoto->getCategory() == "Static") {

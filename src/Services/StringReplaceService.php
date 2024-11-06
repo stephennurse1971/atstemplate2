@@ -7,7 +7,7 @@ use App\Entity\Transaction;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use function App\Services\str_contains;
 
-class StringReplace
+class StringReplaceService
 {
     public function replace(Transaction $transaction, EmailTemplates $emailTemplates)
     {
