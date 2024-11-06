@@ -7,13 +7,13 @@ use App\Repository\BusinessTypesRepository;
 
 class CountBusinessContactsService
 {
-    public function countBusinessCounts($business_type)
+    public function count($business_type)
     {
         $business_contacts = $this->businessContactsRepository->findBy(['business_type' => $business_type]);
         if ($business_contacts) {
             return count($business_contacts);
         } else {
-            return count($business_contacts);
+            return 0;
         }
     }
 

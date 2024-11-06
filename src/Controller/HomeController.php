@@ -61,16 +61,14 @@ class   HomeController extends AbstractController
 
         if ($homePagePhotosOnly == 1) {
             return $this->render('home/home.html.twig', [
-                'photos' => $cms_photo,
-                'include_contact' => 'Yes'
+                'photos' => $cms_photo
             ]);
         } else {
             return $this->render('home/products.html.twig', [
                 'product' => $product,
                 'cms_copy_array' => $cms_copy,
                 'cms_photo_array' => $cms_photo,
-                'sub_pages' => $sub_pages,
-                'include_contact' => 'Yes'
+                'sub_pages' => $sub_pages
             ]);
         }
     }
@@ -195,26 +193,7 @@ class   HomeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/view/file/{filetype}/{id}", name="attachments_viewfile", methods={"GET"})
-     */
-    public function investmentFileLaunch(int $id, string $filetype): Response
-    {
-        $fileName = '';
-        $filepath = '';
 
-        if ($fileName != '') {
-            $ext = pathinfo($fileName, PATHINFO_EXTENSION);
-            $filepath = explode("public", $filepath);
-            $filepath = $filepath[1];
-            return $this->render('home/file_view.html.twig', [
-                'ext' => $ext,
-                'tab_title' => $fileName,
-                'filepath' => $filepath,
-            ]);
-        }
-        return $this->render('error/file_not_found.html.twig');
-    }
 
 
     /**

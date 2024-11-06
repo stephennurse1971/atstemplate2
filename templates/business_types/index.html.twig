@@ -35,17 +35,19 @@
             <th></th>
             <th></th>
             <th>Type</th>
+            <th>Description</th>
             <th>Map Icon</th>
             <th>Colour</th>
             <th>Icon</th>
             <th>Map<br>Display #</th>
+            <th>#</th>
             <th>#</th>
         </tr>
         </thead>
         <tbody>
         {% for business_type in business_types %}
             <tr>
-                <td style="text-align: center">{{ business_type.ranking |number_format(2, '.', ',') }}</td>
+                <td style="text-align: center">{{ business_type.ranking |number_format(0, '.', ',') }}</td>
                 <td>
                     <a class="btn btn-outline-success btn-sm"
                        href="{{ path('business_type_change_ranking', {'id':business_type.id, 'change':'Up'}) }}">
@@ -62,19 +64,32 @@
                     {{ business_type.businessType }}
                 </td>
                 <td>
-                    {{ business_type.mapIcon }}
+                    {{ business_type.description }}
+                </td>
+                <td>
+                    {{ business_type.mapIcon }} / {{ business_type.mapIcon2 }}
                 </td>
                 <td>
                     {{ business_type.mapIconColour }}
                 </td>
                 <td style="text-align: center">
                     <i style="color: {{ business_type.mapIconColour }}" class="{{ business_type.mapIcon }}"></i>
+                    <i style="color: {{ business_type.mapIconColour }}" class="{{ business_type.mapIcon2 }}"></i>
                 </td>
                 <td style="text-align: center">
                     {{ business_type.mapDisplay }}
                 </td>
-                <td><a class="btn btn-outline-danger btn-sm"
-                       href="{{ path('business_types_edit', {'id': business_type.id}) }}">Edit</a></td>
+                <td>
+                    <a class="btn btn-outline-danger btn-sm"
+                       href="{{ path('business_types_edit', {'id': business_type.id}) }}">Edit</a>
+                </td>
+                <td>
+                    <form method="post" action="{{ path('business_types_delete', {'id': business_type.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ business_type.id) }}">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+
             </tr>
         {% endfor %}
         </tbody>

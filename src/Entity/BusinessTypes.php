@@ -42,6 +42,16 @@ class BusinessTypes
      */
     private $ranking;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mapIcon2;
+
 
 
 
@@ -106,6 +116,30 @@ class BusinessTypes
     public function setRanking(?float $ranking): self
     {
         $this->ranking = $ranking;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getMapIcon2(): ?string
+    {
+        return $this->mapIcon2;
+    }
+
+    public function setMapIcon2(?string $mapIcon2): self
+    {
+        $this->mapIcon2 = $mapIcon2;
 
         return $this;
     }

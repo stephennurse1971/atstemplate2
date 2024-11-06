@@ -7,12 +7,13 @@
     {% include 'business_contacts/parts/import_and_export.html.twig' %}
 
     {% for business_type in business_types %}
-{#        {% if {{ CountBusinessContactsService.countBusinessCounts(business_type) }} >0 %}#}
+{#        {% if {{ CountBusinessContactsService.count(business_type) }} >0 %}#}
 {#            INSERT THIS AROUND CODE BELOW#}
 {#        {% endif %}#}
-        <h2 style="color: red">{{ business_type }}
-           <br> ..GET COUNT SERVICE WORKING
-{#            ({{ CountBusinessContactsService.countBusinessCounts(business_type) }})#}
+        <h2 style="color: red">{{ business_type.businessType }}
+            <a href="{{ path('business_contacts_new', {business_type: business_type.businessType}) }}">+</a>
+           <br> FIX!!
+{#            ({{ CountBusinessContactsService.count(business_type) }})#}
         </h2><br>
         <table class="table table-responsive-sm">
             <thead>
@@ -41,7 +42,7 @@
             </thead>
             <tbody>
             {% for business_contact in business_contacts %}
-                {% if business_type == business_contact.businessType or 1==1 %}
+                {% if business_type == business_contact.businessType%}
                     {% include 'business_contacts/table_body.html.twig' %}
                 {% endif %}
             {% endfor %}

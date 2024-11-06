@@ -14,7 +14,9 @@ class BusinessTypesType extends AbstractType
         $builder
             ->add('ranking')
             ->add('businessType')
+            ->add('description')
             ->add('mapIcon')
+            ->add('mapIcon2')
             ->add('mapIconColour')
             ->add('mapDisplay')
         ;

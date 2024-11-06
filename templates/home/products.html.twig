@@ -4,7 +4,7 @@
     {% for cms_copy in cms_copy_array %}
         {% if cms_copy.ranking == 1 %}
             {% if cms_copy.tabTitle is defined %}
-                {{ attribute(cms_copy,'tabTitle'~Languages.getSelectedLanguageCode)|raw }}
+                {{ attribute(cms_copy,'tabTitle'~LanguagesService.getSelectedLanguageCode)|raw }}
             {% else %}
                 {% if CompanyDetails.getCompanyDetails is not null %}
                     {{ CompanyDetails.getCompanyDetails.companyName }}
@@ -38,7 +38,7 @@
                         {% for cms_copy in cms_copy_array|sort((a, b) => a.ranking <=> b.ranking) %}
                             <div class="row">
                                 <div class="col-12">
-                                    <p>{{ attribute(cms_copy,'contentText'~Languages.getSelectedLanguageCode)|raw }}</p>
+                                    <p>{{ attribute(cms_copy,'contentText'~LanguagesService.getSelectedLanguageCode)|raw }}</p>
                                     {% if cms_copy.attachment is not null %}
                                         <a title="{{ cms_copy.attachment }}" target="_blank"
                                            href="{{ path('cms_copy_show_attachment',{id : cms_copy.id }) }}">
@@ -75,11 +75,9 @@
             </div>
     </section>
 
-    {% if include_contact =="Yes" %}
-        {% if CompanyDetails.companyDetails is not null %}
-            {% if CompanyDetails.companyDetails.includeContactFormHomePage ==1 %}
-                {% include 'home/parts/contact_us.html.twig' %}
-            {% endif %}
+    {% if CompanyDetailsService.companyDetails is not null %}
+        {% if CompanyDetailsService.companyDetails.includeContactFormHomePage ==1 %}
+            {% include 'home/parts/contact_us.html.twig' %}
         {% endif %}
     {% endif %}
 {% endblock %}

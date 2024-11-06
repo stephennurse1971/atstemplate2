@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}{{ CompanyDetails.getCompanyDetails.companyName }}: Address {% endblock %}
+{% block title %}{{ CompanyDetailsService.getCompanyDetails.companyName }}: Address {% endblock %}
 {% block body %}
     <h3 style="color: red">Address</h3>
     <div class="row">
@@ -10,21 +10,21 @@
                     <i style="color: red" class="fa fa-pencil"></i>
                 </a>
             {% endif %}
-            {{ CompanyDetails.getCompanyDetails.companyAddressStreet|raw }},
-            {{ CompanyDetails.getCompanyDetails.companyAddressTown|raw }},
-            {{ CompanyDetails.getCompanyDetails.companyAddressCity|raw }}
-            {{ CompanyDetails.getCompanyDetails.companyAddressPostalCode|raw }}
+            {{ CompanyDetailsService.getCompanyDetails.companyAddressStreet|raw }},
+            {{ CompanyDetailsService.getCompanyDetails.companyAddressTown|raw }},
+            {{ CompanyDetailsService.getCompanyDetails.companyAddressCity|raw }}
+            {{ CompanyDetailsService.getCompanyDetails.companyAddressPostalCode|raw }}
             <br>
             <br>
             <br>
-            <iframe src="{{ CompanyDetails.getCompanyDetails.companyAddressMapLink }}"
+            <iframe src="{{ CompanyDetailsService.getCompanyDetails.companyAddressMapLink }}"
                     width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"></iframe>
             <br>
             <br>
             <br>
             <b>Getting here:</b> <br>
-            {{ CompanyDetails.getCompanyDetails.companyAddressInstructions |raw }}
+            {{ CompanyDetailsService.getCompanyDetails.companyAddressInstructions |raw }}
         </div>
     </div>
 {% endblock %}

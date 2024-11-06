@@ -5,13 +5,20 @@
 </style>
 {{ form_start(form) }}
 <div class="row">
-    <div class="col-2">
+
+    <div class="col-1">
         {{ form_row(form.ranking) }}
-        {{ form_row(form.businessType) }}
         {{ form_row(form.mapIcon) }}
+        {{ form_row(form.mapIcon2) }}
         {{ form_row(form.mapIconColour) }}
         {{ form_row(form.mapDisplay) }}
     </div>
+
+    <div class="col-5">
+        {{ form_row(form.businessType) }}
+        {{ form_row(form.description) }}
+    </div>
+
 </div>
 
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>

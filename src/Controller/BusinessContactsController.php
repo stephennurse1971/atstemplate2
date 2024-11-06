@@ -39,13 +39,7 @@ class BusinessContactsController extends AbstractController
         if ($this->isGranted('ROLE_ADMIN')) {
             $business_contacts = $businessContactsRepository->findAll();
         }
-        $business_types = [];
-
-        foreach ($businessTypesRepository->findAll() as $businessTypes) {
-            $business_types[] = $businessTypes->getBusinessType();
-        }
-        $business_types[] = null;
-        $business_types = array_unique($business_types);
+        $business_types = $businessTypesRepository->findAll();
         return $this->render('business_contacts/index.html.twig', [
             'business_contacts' => $business_contacts,
             'business_types' => $business_types
@@ -53,18 +47,47 @@ class BusinessContactsController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="business_contacts_new", methods={"GET", "POST"})
+     * @Route("/map/{subset}", name="business_contacts_map", methods={"GET"})
      */
-    public function new(Request $request, BusinessContactsRepository $businessContactsRepository, CompanyDetailsService $companyDetails, EntityManagerInterface $entityManager): Response
+    public function map(Request $request, string $subset, BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, CountBusinessContactsService $countBusinessContacts): Response
     {
+        if ($subset == 'All') {
+            $business_contacts = $businessContactsRepository->findBy([
+                'status' => 'Approved'
+            ]);
+        }
+
+        if ($subset != 'All') {
+            $business_type = $businessTypesRepository->findBy(['businessType' => $subset]);
+            $business_contacts = $businessContactsRepository->findBy([
+                'status' => 'Approved',
+                'business_type' => $business_type
+            ]);}
+
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $business_contacts = $businessContactsRepository->findAll();
+        }
+        $business_types = $businessTypesRepository->findAll();
+        return $this->render('business_contacts/map_of_business_contacts.html.twig', [
+            'business_contacts' => $business_contacts,
+            'business_types' => $business_types
+        ]);
+    }
+
+    /**
+     * @Route("/new/{business_type}", name="business_contacts_new", methods={"GET", "POST"})
+     */
+    public function new(Request $request, string $business_type, BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, CompanyDetailsService $companyDetails, EntityManagerInterface $entityManager): Response
+    {
+        $business_type = $businessTypesRepository->find($business_type);
         $default_country = $companyDetails->getCompanyDetails()->getCompanyAddressCountry();
         $businessContact = new BusinessContacts();
+        $businessContact->setBusinessType($business_type);
         $businessContact->setAddressCountry($default_country);
         $form = $this->createForm(BusinessContactsType::class, $businessContact);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $photo = $form['photo']->getData();
             if ($photo) {
                 $files_name = [];
@@ -273,16 +296,16 @@ class BusinessContactsController extends AbstractController
         $sheet->getCell('E1')->setValue('First Name');
 
         $sheet->getCell('F1')->setValue('Last Name');
-        $sheet->getCell('G1')->setValue('Website');
-        $sheet->getCell('H1')->setValue('Email');
-        $sheet->getCell('I1')->setValue('Landline');
-        $sheet->getCell('J1')->setValue('Mobile1');
+        $sheet->getCell('G1')->setValue('Web Page');
+        $sheet->getCell('H1')->setValue('E-mail');
+        $sheet->getCell('I1')->setValue('Business Phone');
+        $sheet->getCell('J1')->setValue('Mobile Phone');
 
-        $sheet->getCell('K1')->setValue('Address Street');
-        $sheet->getCell('L1')->setValue('Address City');
-        $sheet->getCell('M1')->setValue('Address County');
-        $sheet->getCell('N1')->setValue('Address Post Code');
-        $sheet->getCell('O1')->setValue('Address Country');
+        $sheet->getCell('K1')->setValue('Business Street');
+        $sheet->getCell('L1')->setValue('Business City');
+        $sheet->getCell('M1')->setValue('Business County');
+        $sheet->getCell('N1')->setValue('Business Postal Code');
+        $sheet->getCell('O1')->setValue('Business Country/Region');
 
         $sheet->getCell('P1')->setValue('Location Longitude');
         $sheet->getCell('Q1')->setValue('Location Latitude');
@@ -350,12 +373,16 @@ class BusinessContactsController extends AbstractController
         $business_type = $business_contact->getBusinessType()->getBusinessType();
         $firstName = $business_contact->getFirstName();
         $lastName = $business_contact->getLastName();
+        $mobile = $business_contact->getMobile();
+        $landline = $business_contact->getLandline();
         $company = $business_contact->getCompany();
         $website = $business_contact->getWebsite();
         $addressStreet = $business_contact->getAddressStreet();
         $addressCity = $business_contact->getAddressCity();
         $addressPostCode = $business_contact->getAddressPostcode();
         $addressCountry = $business_contact->getAddressCountry();
+        $longitude = $business_contact->getLocationLongitude();
+        $latitude = $business_contact->getLocationLatitude();
         $notes = $business_contact->getNotes();
 
         if ($businessOrPerson = "Business") {
@@ -372,8 +399,8 @@ class BusinessContactsController extends AbstractController
 
         $vcard->addName($lastNameCard, $firstNameCard);
         $vcard->addEmail($business_contact->getEmail())
-            ->addPhoneNumber($business_contact->getLandline(), 'work')
-            ->addPhoneNumber($business_contact->getMobile(), 'mobile')
+            ->addPhoneNumber($landline, 'work')
+            ->addPhoneNumber($mobile, 'mobile')
             ->addCompany($companyCard)
             ->addURL($website)
             ->addNote($notes)
@@ -430,7 +457,7 @@ class BusinessContactsController extends AbstractController
      * @Route("/importContacts", name="importContacts")
      */
     public
-    function userImportContacts(Request $request, SluggerInterface $slugger, BusinessContactsImportService $touristAttractionImportOutlookService): Response
+    function userImportContacts(Request $request, SluggerInterface $slugger, BusinessContactsImportService $businessContactsImportService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);
@@ -442,19 +469,19 @@ class BusinessContactsController extends AbstractController
                 $newFilename = $safeFilename . '.' . 'csv';
                 try {
                     $importFile->move(
-                        $this->getParameter('user_attachments_directory'),
+                        $this->getParameter('business_contacts_import_directory'),
                         $newFilename
                     );
                 } catch (FileException $e) {
                     die('Import failed');
                 }
-                $touristAttractionImportOutlookService->importTouristAttraction($newFilename);
-                return $this->redirectToRoute('tourist_attraction_index');
+                $businessContactsImportService->importBusinessContacts($newFilename);
+                return $this->redirectToRoute('business_contacts_index');
             }
         }
         return $this->render('admin/import/index.html.twig', [
             'form' => $form->createView(),
-            'heading' => 'Cyprus Tourist Attractions'
+            'heading' => 'Business Contacts Import 2',
         ]);
     }
 

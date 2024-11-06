@@ -71,26 +71,19 @@ class BusinessContactsImportService
             $locationLatitude = (float)trim($oneLineFromCsv[16]);
             $publicPrivate = trim($oneLineFromCsv[17]);
             $notes = trim($oneLineFromCsv[18]);
-            if (count($oneLineFromCsv) >= 31) {
-                $landline = trim($oneLineFromCsv[9]);
-                $landline = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $landline);
-                if ($landline != '') {
-                    $landline = "+" . $landline;
-                }
-                $mobile = trim($oneLineFromCsv[10]);
-                $mobile = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $mobile);
-                if ($mobile != '') {
-                    $mobile = "+" . $mobile;
-                }
+
+            $landline = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $landline);
+            if ($landline != '') {
+                $landline = "+" . $landline;
             }
-            if (count($oneLineFromCsv) >= 91) {
-                $website = trim(strtolower($oneLineFromCsv[91]));
+            $mobile = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $mobile);
+            if ($mobile != '') {
+                $mobile = "+" . $mobile;
             }
-            if (count($oneLineFromCsv) < 91) {
-                $website = '';
-            }
+
+
             $businessContact = $this->businessContactsRepository->findOneBy([
-                'firstName' => $firstName,
+                'firstName' => $firstName . "3",
                 'lastName' => $lastName,
                 'company' => $company,
             ]);

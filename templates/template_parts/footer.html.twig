@@ -11,9 +11,9 @@
                         <!-- Grid column -->
                         <div style="text-align: left" class=" col-md-12 col-lg-4  mx-auto mt-3  ">
                             <h6 class="text-uppercase mb-4 font-weight-bold">
-                                {% if CompanyDetails.getCompanyDetails is not null %}
+                                {% if CompanyDetailsService.getCompanyDetails is not null %}
                                     <a style="color: white" href="{{ path('app_home') }}">
-                                        {{ CompanyDetails.getCompanyDetails.companyName }}
+                                        {{ CompanyDetailsService.getCompanyDetails.companyName }}
                                     </a>
                                 {% endif %}
                             </h6>
@@ -23,18 +23,18 @@
                         <hr class="w-100 clearfix d-md-none"/>
 
                         <!-- Grid column -->
-                        {% if CompanyDetails.companyDetails is not null %}
+                        {% if CompanyDetailsService.companyDetails is not null %}
                             <div style="text-align: left" class=" col-md-12 col-lg-4 mx-auto  mt-3 ">
-                                {% if CompanyDetails.companyDetails.footerDisplayProducts ==1 %}
+                                {% if CompanyDetailsService.companyDetails.footerDisplayProducts ==1 %}
                                     <h6 class="text-uppercase mb-4 font-weight-bold">
-                                        {% if CompanyDetails.companyDetails is not null and CompanyDetails.companyDetails.titleProducts is not null %}
-                                            {{ CompanyDetails.companyDetails.titleProducts }}
+                                        {% if CompanyDetailsService.companyDetails is not null and CompanyDetailsService.companyDetails.titleProducts is not null %}
+                                            {{ CompanyDetailsService.companyDetails.titleProducts }}
                                         {% else %}
                                             Products
                                         {% endif %}
                                     </h6>
                                     <div class="row">
-                                        {% set products = Product.getProductFooter %}
+                                        {% set products = ProductService.getProductFooter %}
                                         {% for i in 1..2 %}
                                             {% if i == 1 %}
                                                 <div class="col-md-4">
@@ -78,7 +78,7 @@
                             <!-- Grid column -->
 
                             <div class="col-md-6 mt-3 col-lg-2 mx-auto">
-                                {% if CompanyDetails.companyDetails.footerDisplayContactDetails ==1 %}
+                                {% if CompanyDetailsService.companyDetails.footerDisplayContactDetails ==1 %}
                                     <h6 class="text-uppercase mb-4 font-weight-bold">Contact
                                         <a class="btn btn-outline-info btn-sm"
                                            href="{{ path('create_vcard_company') }}">
@@ -86,41 +86,41 @@
                                         </a>
                                     </h6>
                                     <p>
-                                        {% if CompanyDetails.getCompanyDetails is not null %}
-                                            {% if CompanyDetails.companyDetails.footerDisplayAddress ==1 %}
+                                        {% if CompanyDetailsService.getCompanyDetails is not null %}
+                                            {% if CompanyDetailsService.companyDetails.footerDisplayAddress ==1 %}
                                                 <a target="_blank" href="{{ path('office_address') }}">
                                                     <i style="color: red" class="fa fa-map-marker mr-3"></i></a>
-                                                {{ CompanyDetails.getCompanyDetails.companyAddressStreet }},
-                                                {{ CompanyDetails.getCompanyDetails.companyAddressTown }},
-                                                {{ CompanyDetails.getCompanyDetails.companyAddressCity }}
-                                                {{ CompanyDetails.getCompanyDetails.companyAddressPostalCode }}
+                                                {{ CompanyDetailsService.getCompanyDetails.companyAddressStreet }},
+                                                {{ CompanyDetailsService.getCompanyDetails.companyAddressTown }},
+                                                {{ CompanyDetailsService.getCompanyDetails.companyAddressCity }}
+                                                {{ CompanyDetailsService.getCompanyDetails.companyAddressPostalCode }}
                                             {% endif %}
                                         {% endif %}
                                     </p>
                                     <p>
                                     <p>
-                                        {% if CompanyDetails.getCompanyDetails.companyEmail is not null %}
-                                            <a href="mailto:{{ CompanyDetails.getCompanyDetails.companyEmail }}">
+                                        {% if CompanyDetailsService.getCompanyDetails.companyEmail is not null %}
+                                            <a href="mailto:{{ CompanyDetailsService.getCompanyDetails.companyEmail }}">
                                                 <i class="fas fa-envelope mr-3"> </i></a>
-                                            {{ CompanyDetails.getCompanyDetails.companyEmail }}
+                                            {{ CompanyDetailsService.getCompanyDetails.companyEmail }}
                                         {% endif %}
                                     </p>
 
-                                    {% if CompanyDetails.companyDetails.footerDisplayTelNumbers ==1 %}
+                                    {% if CompanyDetailsService.companyDetails.footerDisplayTelNumbers ==1 %}
                                         <p>
-                                            {% if CompanyDetails.getCompanyDetails.companyTel is not null %}
-                                                <a href="tel:{{ CompanyDetails.getCompanyDetails.companyTel|replace({' ': ''}) }}"><i
+                                            {% if CompanyDetailsService.getCompanyDetails.companyTel is not null %}
+                                                <a href="tel:{{ CompanyDetailsService.getCompanyDetails.companyTel|replace({' ': ''}) }}"><i
                                                             class="fas fa-phone mr-3"></i></a>
-                                                {{ CompanyDetails.getCompanyDetails.companyTel }}
+                                                {{ CompanyDetailsService.getCompanyDetails.companyTel }}
                                             {% endif %}
                                         </p>
                                         <p>
-                                            {% if CompanyDetails.getCompanyDetails.companyMobile is not null %}
+                                            {% if CompanyDetailsService.getCompanyDetails.companyMobile is not null %}
                                                 <a target="_blank"
-                                                   href="https://wa.me/{{ CompanyDetails.getCompanyDetails.companyMobile|replace({' ': ''}) }}">
+                                                   href="https://wa.me/{{ CompanyDetailsService.getCompanyDetails.companyMobile|replace({' ': ''}) }}">
                                                     <i class="fab fa-whatsapp mr-3"
                                                        style="color:green; text-align: center"></i></a>
-                                                {{ CompanyDetails.getCompanyDetails.companyMobile }}
+                                                {{ CompanyDetailsService.getCompanyDetails.companyMobile }}
                                             {% endif %}
                                         </p>
                                     {% endif %}
@@ -132,54 +132,54 @@
                             <!-- Grid column -->
 
                             <div style="text-align: left" class="col-md-6 mt-3 col-lg-2 mx-auto">
-                                {% if CompanyDetails.companyDetails.footerDisplaySocialMedia ==1 %}
+                                {% if CompanyDetailsService.companyDetails.footerDisplaySocialMedia ==1 %}
                                     <h6 class="text-uppercase mb-4 font-weight-bold">
                                         Follow us
                                     </h6>
 
                                     <!-- Facebook -->
-                                    {% if  CompanyDetails.getCompanyDetails.facebook is not null %}
+                                    {% if  CompanyDetailsService.getCompanyDetails.facebook is not null %}
                                         <a target="_blank"
                                            class="btn btn-primary btn-floating m-1 footer-social-icon-fb"
                                            data-hover-rule="color" data-hover-color="#dd3333"
                                            style="color : #1877F2; font-size: 16px; padding:6px;background-color: #3b5998"
-                                           href="https://www.facebook.com/{{ CompanyDetails.getCompanyDetails.facebook }}"
+                                           href="https://www.facebook.com/{{ CompanyDetailsService.getCompanyDetails.facebook }}"
                                            role="button">
                                             <i class="fab fa-facebook-f text-light"></i>
                                         </a>
                                     {% endif %}
 
                                     <!-- Linkedin -->
-                                    {% if  CompanyDetails.getCompanyDetails.linkedIn is not null %}
+                                    {% if  CompanyDetailsService.getCompanyDetails.linkedIn is not null %}
                                         <a target="_blank"
                                            class="btn btn-primary btn-floating m-1 footer-social-icon-ln"
                                            data-hover-rule="color" data-hover-color="#dd3333"
                                            style="color : #1da1f2; font-size: 16px; padding:6px; background-color: #0082ca"
-                                           href="https://www.linkedin.com/in/{{ CompanyDetails.getCompanyDetails.linkedIn }}"
+                                           href="https://www.linkedin.com/in/{{ CompanyDetailsService.getCompanyDetails.linkedIn }}"
                                            role="button">
                                             <i class="fab fa-linkedin-in text-light"></i>
                                         </a>
                                     {% endif %}
 
                                     <!-- Instagram -->
-                                    {% if  CompanyDetails.getCompanyDetails.instagram is not null %}
+                                    {% if  CompanyDetailsService.getCompanyDetails.instagram is not null %}
                                         <a target="_blank"
                                            class="btn btn-primary btn-floating m-1 footer-social-icon-in"
                                            data-hover-rule="color" data-hover-color="red"
                                            style="color : #1da1f2; font-size: 16px; padding:6px; background-color: #ac2bac"
-                                           href="https://www.instagram.com/{{ CompanyDetails.getCompanyDetails.instagram }}"
+                                           href="https://www.instagram.com/{{ CompanyDetailsService.getCompanyDetails.instagram }}"
                                            role="button">
                                             <i class="fab fa-instagram text-light"></i>
                                         </a>
                                     {% endif %}
 
                                     <!-- Twitter -->
-                                    {% if  CompanyDetails.getCompanyDetails.twitter is not null %}
+                                    {% if  CompanyDetailsService.getCompanyDetails.twitter is not null %}
                                         <a target="_blank"
                                            class="btn btn-primary btn-floating m-1 footer-social-icon-tw"
                                            data-hover-rule="color" data-hover-color="#dd3333"
                                            style="color : #1da1f2; font-size: 16px; padding:6px;background-color: #55acee"
-                                           href="https://x.com/{{ CompanyDetails.getCompanyDetails.twitter }}"
+                                           href="https://x.com/{{ CompanyDetailsService.getCompanyDetails.twitter }}"
                                            role="button">
                                             <i class="fab fa-twitter text-light"></i>
                                         </a>

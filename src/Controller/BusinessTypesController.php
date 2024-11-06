@@ -140,27 +140,27 @@ class BusinessTypesController extends AbstractController
     {
         $referer = $request->headers->get('Referer');
         $business_types = $businessTypesRepository->findAll();
+        $rankingContainer = [];
         foreach ($business_types as $business_type) {
-            $rankingContainer = [];
-            foreach ($business_type as $item) {
-                $rankingContainer[] = ['id' => $item->getId(), 'ranking' => $item->getRanking()];
-            }
+            $rankingContainer[] = ['id' => $business_type->getId(), 'ranking' => $business_type->getRanking()];
             array_multisort(array_column($rankingContainer, 'ranking'), SORT_ASC, $rankingContainer);
             $minRank = 1;
             foreach ($rankingContainer as $sortedItem) {
-                $record = $businessTypesRepository->find($sortedItem['id']);
-                $record->setRanking($minRank);
+                $sortedItem = $businessTypesRepository->find($sortedItem['id']);
+                $sortedItem->setRanking($minRank);
                 $manager->flush();
                 $minRank = $minRank + 1;
             }
         }
+
         return $this->redirect($referer);
     }
 
     /**
      * @Route ("/export/business_types", name="business_types_export" )
      */
-    public function businessTypes(BusinessTypesRepository $businessTypesRepository)
+    public
+    function businessTypesExport(BusinessTypesRepository $businessTypesRepository)
     {
         $data = [];
         $exported_date = new \DateTime('now');
@@ -174,6 +174,7 @@ class BusinessTypesController extends AbstractController
             $data[] = [
                 $business_type->getRanking(),
                 $business_type->getBusinessType(),
+                $business_type->getDescription(),
                 $business_type->getMapIcon(),
                 $business_type->getMapIconColour(),
                 $business_type->getMapDisplay(),
@@ -184,9 +185,10 @@ class BusinessTypesController extends AbstractController
         $sheet->setTitle('Business Types');
         $sheet->getCell('A1')->setValue('Ranking');
         $sheet->getCell('B1')->setValue('Business Type');
-        $sheet->getCell('C1')->setValue('Map Icon');
-        $sheet->getCell('D1')->setValue('Map Icon Colour');
-        $sheet->getCell('E1')->setValue('Map Display');
+        $sheet->getCell('C1')->setValue('Description');
+        $sheet->getCell('D1')->setValue('Map Icon');
+        $sheet->getCell('E1')->setValue('Map Icon Colour');
+        $sheet->getCell('F1')->setValue('Map Display');
 
         $sheet->fromArray($data, null, 'A2', true);
         $total_rows = $sheet->getHighestRow();
@@ -207,7 +209,8 @@ class BusinessTypesController extends AbstractController
     /**
      * @Route ("/import/business_types", name="business_types_import" )
      */
-    public function businessTypesImport(Request $request, SluggerInterface $slugger, BusinessTypesRepository $businessTypesRepository, BusinessTypesImportService $businessTypesImportService): Response
+    public
+    function businessTypesImport(Request $request, SluggerInterface $slugger, BusinessTypesRepository $businessTypesRepository, BusinessTypesImportService $businessTypesImportService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);

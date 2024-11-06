@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+{% block title %}Business Contacts Map {% endblock %}
+{% block body %}
+    <h3 style="color: red">Business Contacts</h3>
+    {% for business_type in business_types %}
+        <a class="btn btn-outline-primary btn-sm" href="{{ path('business_contacts_map', {subset:business_type.businessType}) }}">
+            {{ business_type.businessType }}
+            <i style="color: {{ business_type.mapIconColour }}" class="{{ business_type.mapIcon }}"></i>
+        </a>
+    {% endfor %}
+    <br>
+    {% for business_contact in business_contacts %}
+        <li>
+            {{ business_contact.company }} ({{ business_contact.businessType.businessType }})
+        </li>
+    {% endfor %}
+    <div class="row">
+        <div class="col-12">
+
+
+            <br>
+            <iframe src="{{ CompanyDetailsService.getCompanyDetails.companyAddressMapLink }}"
+                    width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <br>
+            <br>
+            <br>
+
+        </div>
+    </div>
+{% endblock %}

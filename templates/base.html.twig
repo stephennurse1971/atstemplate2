@@ -9,13 +9,13 @@
     <meta name="author" content="ATS Template 2">
 
 
-    {% if CompanyDetails.companyDetails is not null %}
+    {% if CompanyDetailsService.companyDetails is not null %}
         {% if app.environment=='dev' %}
             <link rel="icon"
-                  href="{{ asset('administration/attachments/Favicons/'~CompanyDetails.getCompanyDetails.faviconDev) }}">
+                  href="{{ asset('administration/attachments/Favicons/'~CompanyDetailsService.getCompanyDetails.faviconDev) }}">
         {% else %}
             <link rel="icon"
-                  href="{{ asset('administration/attachments/Favicons/'~CompanyDetails.getCompanyDetails.faviconLive) }}">
+                  href="{{ asset('administration/attachments/Favicons/'~CompanyDetailsService.getCompanyDetails.faviconLive) }}">
         {% endif %}
     {% endif %}
     <title>{% block title %}ATS Template 2{% endblock %}</title>

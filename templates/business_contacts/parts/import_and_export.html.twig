@@ -1,11 +1,11 @@
 <div class="row">
     <div class="col-1">
-        <a class="btn btn-outline-primary btn-sm" href="{{ path('app_home') }}">Map</a>
+        <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('business_contacts_map', {subset:'All'}) }}">Map</a>
     </div>
 
     {% if is_granted('ROLE_ADMIN') %}
         <div class="col-1">
-            <a target="_blank" class="btn btn-success btn-sm" href="{{ path('business_contacts_new') }}">New</a>
+{#            <a target="_blank" class="btn btn-success btn-sm" href="{{ path('business_contacts_new', {type: 'Restaurant'}) }}">New</a>#}
         </div>
         <div class="col-4">
 

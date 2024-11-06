@@ -10,9 +10,9 @@
                     </a>
                 {% endif %}
                 <a class="navbar-brand" href="{{ path('app_home') }}">
-                    {% if CompanyDetails.getCompanyDetails is not null %}
+                    {% if CompanyDetailsService.getCompanyDetails is not null %}
                         <a style="color: black" href="{{ path('app_home') }}">
-                            {{ CompanyDetails.getCompanyDetails.companyName }}
+                            {{ CompanyDetailsService.getCompanyDetails.companyName }}
                         </a>
                     {% endif %}
                 </a>
@@ -40,13 +40,13 @@
                                         class="fa fa-chalkboard"></i></a>
                         </li>
 
-                        {% if CountPendingWebsiteInquiries.countContacts >0 %}
+                        {% if CountPendingWebsiteInquiriesService.countContacts >0 %}
                             <li class="nav-item active">
                                 <a style="color: red" class="nav-link" target="_blank"
                                    href="{{ path('website_contacts_index') }}">
                                     <i title="Website inquiries awaiting a response" style="color: purple"
                                        class="fa fa-user-secret"></i>
-                                    ({{ CountPendingWebsiteInquiries.countContacts }})
+                                    ({{ CountPendingWebsiteInquiriesService.countContacts }})
                                 </a>
                             </li>
                         {% endif %}
@@ -56,15 +56,15 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {% if CompanyDetails.companyDetails is not null %}
-                                {{ CompanyDetails.companyDetails.titleProducts }}
+                            {% if CompanyDetailsService.companyDetails is not null %}
+                                {{ CompanyDetailsService.companyDetails.titleProducts }}
                             {% else %}
                                 Products
                             {% endif %}
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            {% set products = Product.getProductMainAll %}
+                            {% set products = ProductService.getProductMainAll %}
                             {% for product in products %}
                                 {% if product.isActive==1 %}
                                     <a target="_blank" class="dropdown-item text-gray-600 ml-3"
@@ -84,20 +84,20 @@
 
 
                     <!-- Nav Item #4 - SubProducts -->
-                    {% if CompanyDetails.companyDetails is not null %}
-                        {% if CompanyDetails.companyDetails.headerDisplaySubProducts ==1 %}
+                    {% if CompanyDetailsService.companyDetails is not null %}
+                        {% if CompanyDetailsService.companyDetails.headerDisplaySubProducts ==1 %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {% if CompanyDetails.companyDetails is not null %}
-                                        {{ CompanyDetails.companyDetails.titleSubProducts }}
+                                    {% if CompanyDetailsService.companyDetails is not null %}
+                                        {{ CompanyDetailsService.companyDetails.titleSubProducts }}
                                     {% else %}
                                         Sub-Products
                                     {% endif %}
                                 </a>
                                 {% if app.user %}
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        {% set products = Product.getProductSubAll %}
+                                        {% set products = ProductService.getProductSubAll %}
                                         {% for product in products %}
                                             {% if product.isActive==1 %}
                                                 <a target="_blank" class="dropdown-item text-gray-600 ml-3"
@@ -130,21 +130,21 @@
                     {% endif %}
 
                     <!-- Nav Item #5 - Useful Contacts And Weather -->
-                    {% if CompanyDetails.companyDetails is not null %}
-                        {% if CompanyDetails.companyDetails.headerDisplayBusinessContacts ==1
-                            or CompanyDetails.companyDetails.headerDisplayWeather ==1 %}
+                    {% if CompanyDetailsService.companyDetails is not null %}
+                        {% if CompanyDetailsService.companyDetails.headerDisplayBusinessContacts ==1
+                            or CompanyDetailsService.companyDetails.headerDisplayWeather ==1 %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Useful links
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    {% if CompanyDetails.companyDetails.headerDisplayBusinessContacts ==1 %}
+                                    {% if CompanyDetailsService.companyDetails.headerDisplayBusinessContacts ==1 %}
                                         <a target="_blank" class="dropdown-item text-gray-600 ml-3"
                                            href="{{ path('business_contacts_index') }}">Useful contacts
                                         </a>
                                     {% endif %}
-                                    {% if  CompanyDetails.companyDetails.headerDisplayWeather ==1 %}
+                                    {% if  CompanyDetailsService.companyDetails.headerDisplayWeather ==1 %}
                                     <a target="_blank" class="dropdown-item text-gray-600 ml-3"
                                        href="{{ path('weather_index') }}">Weather
                                     </a>
@@ -160,8 +160,8 @@
                     {% include 'template_parts_project_specific/header_project_specific1.html.twig' %}
 
                     <!-- Nav Item #6 - Contact -->
-                    {% if CompanyDetails.getCompanyDetails is not null %}
-                        {% if CompanyDetails.companyDetails.headerDisplayContactDetails ==1 %}
+                    {% if CompanyDetailsService.getCompanyDetails is not null %}
+                        {% if CompanyDetailsService.companyDetails.headerDisplayContactDetails ==1 %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -169,44 +169,44 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                                    {% if CompanyDetails.companyDetails.companyEmail is not null %}
-                                        <a title={{ CompanyDetails.companyDetails.companyEmail }} class="dropdown-item"
-                                           href="mailto:{{ CompanyDetails.companyDetails.companyEmail }}">
-                                            <span style="color: blue;">@</span> {{ CompanyDetails.companyDetails.companyEmail }}
+                                    {% if CompanyDetailsService.companyDetails.companyEmail is not null %}
+                                        <a title={{ CompanyDetailsService.companyDetails.companyEmail }} class="dropdown-item"
+                                           href="mailto:{{ CompanyDetailsService.companyDetails.companyEmail }}">
+                                            <span style="color: blue;">@</span> {{ CompanyDetailsService.companyDetails.companyEmail }}
                                         </a>
                                     {% endif %}
 
-                                    {% if CompanyDetails.companyDetails.companyTel is not null %}
-                                        <a class="dropdown-item" title="{{ CompanyDetails.companyDetails.companyTel }}"
-                                           href="https://wa.me/{{ CompanyDetails.companyDetails.companyTel | replace({' ': ''}) }}">
+                                    {% if CompanyDetailsService.companyDetails.companyTel is not null %}
+                                        <a class="dropdown-item" title="{{ CompanyDetailsService.companyDetails.companyTel }}"
+                                           href="https://wa.me/{{ CompanyDetailsService.companyDetails.companyTel | replace({' ': ''}) }}">
                                             <i style="color: #0f6848"
-                                               class="fa fa-phone"></i> {{ CompanyDetails.companyDetails.companyTel }}
+                                               class="fa fa-phone"></i> {{ CompanyDetailsService.companyDetails.companyTel }}
                                         </a>
                                     {% endif %}
 
-                                    {% if CompanyDetails.companyDetails.companyMobile is not null %}
+                                    {% if CompanyDetailsService.companyDetails.companyMobile is not null %}
                                         <a class="dropdown-item"
-                                           title="{{ CompanyDetails.companyDetails.companyMobile }}"
-                                           href="https://wa.me/{{ CompanyDetails.companyDetails.companyMobile | replace({' ': ''}) }}">
+                                           title="{{ CompanyDetailsService.companyDetails.companyMobile }}"
+                                           href="https://wa.me/{{ CompanyDetailsService.companyDetails.companyMobile | replace({' ': ''}) }}">
                                             <i style="color: #0f6848"
-                                               class="fab fa-whatsapp"></i> {{ CompanyDetails.companyDetails.companyMobile }}
+                                               class="fab fa-whatsapp"></i> {{ CompanyDetailsService.companyDetails.companyMobile }}
                                         </a>
                                     {% endif %}
 
-                                    {% if CompanyDetails.companyDetails.companySkype is not null %}
+                                    {% if CompanyDetailsService.companyDetails.companySkype is not null %}
                                         <a class="dropdown-item"
-                                           title="{{ CompanyDetails.companyDetails.companySkype }}"
-                                           href="skype:{{ CompanyDetails.companyDetails.companySkype }}?call">
+                                           title="{{ CompanyDetailsService.companyDetails.companySkype }}"
+                                           href="skype:{{ CompanyDetailsService.companyDetails.companySkype }}?call">
                                             <i style="color: royalblue"
-                                               class="fab fa-skype"></i> {{ CompanyDetails.companyDetails.companySkype }}
+                                               class="fab fa-skype"></i> {{ CompanyDetailsService.companyDetails.companySkype }}
                                         </a>
                                     {% endif %}
 
                                     {% if app.user %}
-                                        {% if CompanyDetails.companyDetails.companyAddressStreet is not null %}
+                                        {% if CompanyDetailsService.companyDetails.companyAddressStreet is not null %}
                                             <a class="dropdown-item" target="_blank"
-                                               title="{{ CompanyDetails.companyDetails.companyAddressStreet }} "
-                                               href="{{ path('office_address') }}"> <i style="color: royalblue" class="fa fa-car"></i> {{ CompanyDetails.companyDetails.companyAddressStreet }}
+                                               title="{{ CompanyDetailsService.companyDetails.companyAddressStreet }} "
+                                               href="{{ path('office_address') }}"> <i style="color: royalblue" class="fa fa-car"></i> {{ CompanyDetailsService.companyDetails.companyAddressStreet }}
                                             </a>
                                         {% endif %}
                                     {% endif %}
@@ -222,8 +222,8 @@
 
 
                     <!-- Nav Item #7 - QR code -->
-                    {% if CompanyDetails.getCompanyDetails is not null %}
-                        {% if CompanyDetails.companyDetails.headerDisplayContactDetails ==1 %}
+                    {% if CompanyDetailsService.getCompanyDetails is not null %}
+                        {% if CompanyDetailsService.companyDetails.headerDisplayContactDetails ==1 %}
 
                             <li class="nav-item">
                                 <a class="nav-link" target="_blank" href="{{ path('company_qr_code') }}"><i
@@ -239,7 +239,7 @@
                     {% include 'template_parts_project_specific/header_project_specific2.html.twig' %}
 
                     <!-- Nav Item #8 - Login -->
-                    {% if CompanyDetails.getCompanyDetails is not null and CompanyDetails.companyDetails.headerDisplayLogin ==1 %}
+                    {% if CompanyDetailsService.getCompanyDetails is not null and CompanyDetailsService.companyDetails.headerDisplayLogin ==1 %}
                         {% if app.user %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -270,18 +270,18 @@
                         {% endif %}
                     {% endif %}
 
-                    {% if CompanyDetails.getCompanyDetails is not null and
-                        CompanyDetails.companyDetails.multiLingual ==1 and
-                        Languages.getLanguages != null and Languages.LanguageSelected != null %}
+                    {% if CompanyDetailsService.getCompanyDetails is not null and
+                        CompanyDetailsService.companyDetails.multiLingual ==1 and
+                        LanguagesService.getLanguages != null and LanguagesService.LanguageSelected != null %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="{{ asset('administration/attachments/LanguageIcons/'~Languages.LanguageSelected.icon) }}"
+                                <img src="{{ asset('administration/attachments/LanguageIcons/'~LanguagesService.LanguageSelected.icon) }}"
                                      height="30" width=30">
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                {% for language in Languages.getLanguagesByRankingOrder %}
-                                    {% if language.language != Languages.LanguageSelected.language %}
+                                {% for language in LanguagesService.getLanguagesByRankingOrder %}
+                                    {% if language.language != LanguagesService.LanguageSelected.language %}
                                         <a class="dropdown-item"
                                            href="{{ path('select_default_language',{id:language.id}) }}">
                                             <img src="{{ asset('administration/attachments/LanguageIcons/'~language.icon) }}"

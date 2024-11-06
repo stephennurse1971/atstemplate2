@@ -15,6 +15,7 @@ class BusinessTypesImportService
     {
         $ranking = '';
         $businessType = '';
+        $businessDescription = '';
         $mapIcon = '';
         $mapIconColour = '';
         $mapDisplay = '';
@@ -38,14 +39,19 @@ class BusinessTypesImportService
         }
         foreach ($alldataFromCsv as $oneLineFromCsv) {
             $ranking = trim($oneLineFromCsv[0]);
-            $businessType = trim($oneLineFromCsv[1]);
-            $mapIcon = trim($oneLineFromCsv[2]);
-            $mapIconColour = trim($oneLineFromCsv[3]);
-            $mapDisplay = trim($oneLineFromCsv[4]);
-            if (!$businessType) {
+            $businessTypeName = trim($oneLineFromCsv[1]);
+            $businessDescription = trim($oneLineFromCsv[2]);
+            $mapIcon = trim($oneLineFromCsv[3]);
+            $mapIconColour = trim($oneLineFromCsv[4]);
+            $mapDisplay = trim($oneLineFromCsv[5]);
+
+            $previous_business_type = $this->businessTypeRepository->findOneBy(['businessType' => $businessTypeName]);
+
+            if (!$previous_business_type) {
                 $businessType = new BusinessTypes();
                 $businessType->setRanking($ranking)
-                    ->setBusinessType('test')
+                    ->setBusinessType($businessTypeName)
+                    ->setDescription($businessDescription)
                     ->setMapIcon($mapIcon)
                     ->setMapIconColour($mapIconColour)
                     ->setMapDisplay($mapDisplay);
