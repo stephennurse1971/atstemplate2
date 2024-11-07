@@ -51,18 +51,22 @@ class BusinessContactsController extends AbstractController
      */
     public function map(Request $request, string $subset, BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, CountBusinessContactsService $countBusinessContacts): Response
     {
-        if ($subset == 'All') {
-            $business_contacts = $businessContactsRepository->findBy([
-                'status' => 'Approved'
-            ]);
-        }
+        $business_contacts = $businessContactsRepository->findBy([
+            'status' => 'Approved'
+        ]);
 
-        if ($subset != 'All') {
-            $business_type = $businessTypesRepository->findBy(['businessType' => $subset]);
-            $business_contacts = $businessContactsRepository->findBy([
-                'status' => 'Approved',
-                'business_type' => $business_type
-            ]);}
+//        if ($subset == 'All') {
+//            $business_contacts = $businessContactsRepository->findBy([
+//                'status' => 'Approved'
+//            ]);
+//        }
+//
+//        if ($subset != 'All') {
+//            $business_type = $businessTypesRepository->findBy(['businessType' => $subset]);
+//            $business_contacts = $businessContactsRepository->findBy([
+//                'status' => 'Approved',
+//                'business_type' => $business_type
+//            ]);}
 
         if ($this->isGranted('ROLE_ADMIN')) {
             $business_contacts = $businessContactsRepository->findAll();
@@ -70,7 +74,8 @@ class BusinessContactsController extends AbstractController
         $business_types = $businessTypesRepository->findAll();
         return $this->render('business_contacts/map_of_business_contacts.html.twig', [
             'business_contacts' => $business_contacts,
-            'business_types' => $business_types
+            'business_types' => $business_types,
+            'subset' => $subset,
         ]);
     }
 

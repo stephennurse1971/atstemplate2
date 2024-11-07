@@ -17,6 +17,7 @@ class BusinessTypesImportService
         $businessType = '';
         $businessDescription = '';
         $mapIcon = '';
+        $mapIcon2 = '';
         $mapIconColour = '';
         $mapDisplay = '';
         $filepath = $this->container->getParameter('business_types_import_directory');
@@ -42,8 +43,9 @@ class BusinessTypesImportService
             $businessTypeName = trim($oneLineFromCsv[1]);
             $businessDescription = trim($oneLineFromCsv[2]);
             $mapIcon = trim($oneLineFromCsv[3]);
-            $mapIconColour = trim($oneLineFromCsv[4]);
-            $mapDisplay = trim($oneLineFromCsv[5]);
+            $mapIcon2 = trim($oneLineFromCsv[4]);
+            $mapIconColour = trim($oneLineFromCsv[5]);
+            $mapDisplay = trim($oneLineFromCsv[6]);
 
             $previous_business_type = $this->businessTypeRepository->findOneBy(['businessType' => $businessTypeName]);
 
@@ -53,6 +55,7 @@ class BusinessTypesImportService
                     ->setBusinessType($businessTypeName)
                     ->setDescription($businessDescription)
                     ->setMapIcon($mapIcon)
+                    ->setMapIcon2($mapIcon2)
                     ->setMapIconColour($mapIconColour)
                     ->setMapDisplay($mapDisplay);
                 $this->manager->persist($businessType);
