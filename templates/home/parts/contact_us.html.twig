@@ -59,7 +59,7 @@
                 </div>
                 <div class="user-box-radio">
                     <label class="pr-5" for="user-box-radio">Interested in:</label>
-                    {% set products = Product.getProductFooter %}
+                    {% set products = ProductService.getProductFooter %}
                     {% for product in products %}
                         <div>
                         <span style="white-space: nowrap">

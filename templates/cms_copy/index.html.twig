@@ -28,9 +28,8 @@
             <th style="width: 650px">Content</th>
             <th style="width: 20px">Hyperlink</th>
             <th style="width: 20px">File</th>
+            <th style="width: 120px"></th>
             <th style="width: 100px"></th>
-{#            <th style="width: 20px"></th>#}
-{#            <th style="width: 20px"></th>#}
             <th style="width: 20px">Count:<br>Users</th>
             <th style="width: 20px">Count:<br>Admin</th>
         </tr>
@@ -84,22 +83,19 @@
                            href="{{ path('cms_copy_delete_file', {'id': cms_copy.id}) }}">
                             Delete File
                         </a>
-
                     {% endif %}
                 </td>
                 <td>
-                    <a class="d-inline btn btn-outline-danger btn-sm" target="_blank"
+                    <a class="d-inline btn btn-outline-danger btn-sm mr-1" target="_blank"
                        href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
                         <i style="color: red" class="fa fa-pen"></i>
                     </a>
-{#                </td>#}
-
-{#                <td>#}
-{#                    <a class="d-inline btn btn-outline-danger btn-sm" target="_blank"#}
-{#                       href="{{ path('cms_copy_delete', {'id': cms_copy.id}) }}">#}
-{#                        <i style="color: red" class="fa fa-train"></i>#}
-{#                    </a>#}
-
+                    <a class="d-inline btn btn-outline-success btn-sm" target="_blank"
+                       href="{{ path('cms_copy_copy_and_edit', {'id': cms_copy.id}) }}">
+                        <i style="color: green" class="fa fa-copy"></i>
+                    </a>
+                </td>
+                <td>
                     <form class="d-inline" method="post"
                           action="{{ path('cms_copy_delete', {'id': cms_copy.id}) }}">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cms_copy.id) }}">
@@ -107,12 +103,7 @@
                             <i style="color: red" class="fa fa-trash"></i>
                         </button>
                     </form>
-{#                </td>#}
-{#                <td>#}
-                    <a class="d-inline btn btn-success btn-sm" target="_blank"
-                       href="{{ path('cms_copy_copy_and_edit', {'id': cms_copy.id}) }}">
-                        <i style="color: white" class="fa fa-copy"></i>
-                    </a>
+
                 </td>
                 <td style="text-align: center">
                     {{ cms_copy.pageCountUsers }}

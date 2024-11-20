@@ -284,10 +284,7 @@ class CompanyDetails
      */
     private $includeQRCodeHomePage;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $companyAddressMapLink;
+
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -303,6 +300,21 @@ class CompanyDetails
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $headerDisplayWeather;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $headerDisplayFacebookPages;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $headerDisplayCompetitors;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $companyAddressMapLink;
 
 
     public function getId(): ?int
@@ -341,7 +353,7 @@ class CompanyDetails
         return $this->companyTel;
     }
 
-    public function setCompanyTel(string $companyTel): self
+    public function setCompanyTel(?string $companyTel): self
     {
         $this->companyTel = $companyTel;
 
@@ -934,17 +946,6 @@ class CompanyDetails
         return $this;
     }
 
-    public function getCompanyAddressMapLink(): ?string
-    {
-        return $this->companyAddressMapLink;
-    }
-
-    public function setCompanyAddressMapLink(?string $companyAddressMapLink): self
-    {
-        $this->companyAddressMapLink = $companyAddressMapLink;
-
-        return $this;
-    }
 
     public function isHeaderDisplayContactDetails(): ?bool
     {
@@ -978,6 +979,42 @@ class CompanyDetails
     public function setHeaderDisplayWeather(?bool $headerDisplayWeather): self
     {
         $this->headerDisplayWeather = $headerDisplayWeather;
+
+        return $this;
+    }
+
+    public function isHeaderDisplayFacebookPages(): ?bool
+    {
+        return $this->headerDisplayFacebookPages;
+    }
+
+    public function setHeaderDisplayFacebookPages(?bool $headerDisplayFacebookPages): self
+    {
+        $this->headerDisplayFacebookPages = $headerDisplayFacebookPages;
+
+        return $this;
+    }
+
+    public function isHeaderDisplayCompetitors(): ?bool
+    {
+        return $this->headerDisplayCompetitors;
+    }
+
+    public function setHeaderDisplayCompetitors(?bool $headerDisplayCompetitors): self
+    {
+        $this->headerDisplayCompetitors = $headerDisplayCompetitors;
+
+        return $this;
+    }
+
+    public function getCompanyAddressMapLink(): ?string
+    {
+        return $this->companyAddressMapLink;
+    }
+
+    public function setCompanyAddressMapLink(?string $companyAddressMapLink): self
+    {
+        $this->companyAddressMapLink = $companyAddressMapLink;
 
         return $this;
     }

@@ -7,7 +7,6 @@ use App\Form\ReferralsType;
 use App\Repository\BusinessContactsRepository;
 use App\Repository\BusinessTypesRepository;
 use App\Repository\ReferralsRepository;
-use App\Repository\WeatherRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

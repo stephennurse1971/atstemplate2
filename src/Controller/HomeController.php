@@ -110,12 +110,13 @@ class   HomeController extends AbstractController
 
     /**
      * @Route("/dashboard", name="dashboard")
-     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function dashboard()
     {
         return $this->render('home/dashboard.html.twig', []);
     }
+
+
 
     /**
      * @Route("/advanced_dashboard", name="advanced_dashboard")

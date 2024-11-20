@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ CompanyDetails.companyDetails.companyName }} {% endblock %}
+{% block title %}{{ CompanyDetailsService.companyDetails.companyName }} {% endblock %}
 
 {% block body %}
     <div class="row">
@@ -11,7 +11,7 @@
             <div class="justify-content-center d-flex">
                 <div class="homepage-gallery-image-container">
                     {% if qr_code is not null %}
-                        <a title="{{ CompanyDetails.companyDetails.companyName }}" target="_blank" href="{{ path('create_vcard_company') }}">
+                        <a title="{{ CompanyDetailsService.companyDetails.companyName }}" target="_blank" href="{{ path('create_vcard_company') }}">
                             <img class="homepage-image" src="{{ image }}">
                         </a>
                     {% endif %}

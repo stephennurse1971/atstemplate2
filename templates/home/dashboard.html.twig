@@ -15,7 +15,7 @@
                     <a target="_blank" href="{{ path('company_details_index') }}">Company Details</a>
                 </ul>
                 <ul>
-                    <a target="_blank" href="{{ path('product_index') }}">Products/Interests</a>
+                    <a target="_blank" href="{{ path('product_index') }}">Products</a>
                 </ul>
             </div>
         </div>
@@ -34,25 +34,28 @@
             </div>
         </div>
 
-
-        <div class="col-2">
-            <div class="border py-4">
-                <h2 style="color: red">E-mails</h2>
-                <ul>
-                    <a target="_blank" href="{{ path('website_contacts_index') }}">In-Bound Requests</a>
-                </ul>
-                <hr>
-                <ul>
-                    <a target="_blank" href="{{ path('emails_import_index') }}">Emails: Pending</a>
-                </ul>
-                <ul>
-                    <a target="_blank" href="{{ path('emails_import_index') }}">Emails: Processed</a>
-                </ul>
-                <ul>
-                    <a target="_blank" href="">Emails Sent</a>
-                </ul>
-            </div>
-        </div>
+        {% if CompanyDetailsService.companyDetails is not null %}
+            {% if CompanyDetailsService.companyDetails.footerDisplayProducts ==1 %}
+                <div class="col-2">
+                    <div class="border py-4">
+                        <h2 style="color: red">E-mails</h2>
+                        <ul>
+                            <a target="_blank" href="{{ path('website_contacts_index') }}">In-Bound Requests</a>
+                        </ul>
+                        <hr>
+                        <ul>
+                            <a target="_blank" href="{{ path('emails_import_index') }}">Emails: Pending</a>
+                        </ul>
+                        <ul>
+                            <a target="_blank" href="{{ path('emails_import_index') }}">Emails: Processed</a>
+                        </ul>
+                        <ul>
+                            <a target="_blank" href="">Emails Sent</a>
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
         <div class="col-12 col-md-2">
             <div class="border py-4">
                 <h2 style="color: red">Users</h2>
@@ -64,47 +67,76 @@
                 </ul>
             </div>
         </div>
-        <div class="col-12 col-md-2">
-            <div class="border py-4">
-                <h2 style="color: red">Set-Up</h2>
-                <ul>
-                    <a target="_blank" href="{{ path('instructions_index') }}">Instructions</a>
-                </ul>
-                <ul>
-                    <a target="_blank" href="{{ path('languages_index') }}">Languages</a>
-                </ul>
-                <ul>
-                    <a target="_blank" href="{{ path('translation_index') }}">Translations</a>
-                </ul>
-                <ul>
-                    <a target="_blank" href="{{ path('weather_index') }}">Weather</a>
-                </ul>
-                {% if CompanyDetails.companyDetails is not null %}
-                    {% if app.request.getSchemeAndHttpHost() == CompanyDetails.companyDetails.companyWebsite %}
-                        <ul>
-                            <a class="btn btn-outline-success btn-sm" target="_blank"
-                               href="{{ path('export_live_database') }}">Export Live Data</a>
-                        </ul>
-                    {% endif %}
-                {% endif %}
-            </div>
-        </div>
-        <div class="col-2">
-            <div class="border py-4">
-                <h2 style="color: red">Helpful Links </h2>
-                <ul><a target="_blank" href="{{ path('business_contacts_index') }}">Helpful Contacts</a></ul>
-                <ul><a target="_blank" href="{{ path('business_types_index') }}">Business Categories</a></ul>
-                <ul><a target="_blank" href="{{ path('referrals_index') }}">Referrals Log</a></ul>
-            </div>
-        </div>
-        <div class="col-2">
-            <div class="border py-4">
-                <h2 style="color: red">Competitors</h2>
-                <ul><a target="_blank" href="{{ path('facebook_groups_index') }}">Facebook Pages</a></ul>
-                <ul><a target="_blank" href="{{ path('competitors_index') }}">Competitors</a></ul>
-                <ul><a target="_blank" href="{{ path('competitor_service_index') }}">Competitor Services</a></ul>
-            </div>
-        </div>
+
+        {% if CompanyDetailsService.companyDetails is not null %}
+            {% if CompanyDetailsService.companyDetails.headerDisplayInstructions ==1 or
+                CompanyDetailsService.companyDetails.multiLingual ==1 or
+                CompanyDetailsService.companyDetails.headerDisplayWeather or
+                app.request.getSchemeAndHttpHost() == CompanyDetailsService.companyDetails.companyWebsite %}
+
+                <div class="col-12 col-md-2">
+                    <div class="border py-4">
+                        <h2 style="color: red">Set-Up</h2>
+
+                        {% if CompanyDetailsService.companyDetails.headerDisplayInstructions ==1 %}
+                            <ul>
+                                <a target="_blank" href="{{ path('instructions_index') }}">Instructions</a>
+                            </ul>
+                        {% endif %}
+
+                        {% if CompanyDetailsService.companyDetails.multiLingual ==1 %}
+                            <ul>
+                                <a target="_blank" href="{{ path('languages_index') }}">Languages</a>
+                            </ul>
+                            <ul>
+                                <a target="_blank" href="{{ path('translation_index') }}">Translations</a>
+                            </ul>
+                        {% endif %}
+                        {% if CompanyDetailsService.companyDetails.headerDisplayWeather ==1 %}
+                            <ul>
+                                <a target="_blank" href="{{ path('weather_index') }}">Weather</a>
+                            </ul>
+                        {% endif %}
+
+                        {% if app.request.getSchemeAndHttpHost() == CompanyDetailsService.companyDetails.companyWebsite %}
+                            <ul>
+                                <a class="btn btn-outline-success btn-sm" target="_blank"
+                                   href="{{ path('export_live_database') }}">Export Live Data</a>
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+
+            {% if CompanyDetailsService.companyDetails.headerDisplayBusinessContacts ==1 %}
+                <div class="col-2">
+                    <div class="border py-4">
+                        <h2 style="color: red">Business Contacts</h2>
+                        <ul><a target="_blank" href="{{ path('business_contacts_index') }}">Helpful Contacts</a></ul>
+                        <ul><a target="_blank" href="{{ path('business_types_index') }}">Business Categories</a></ul>
+                        <ul><a target="_blank" href="{{ path('referrals_index') }}">Referrals Log</a></ul>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if CompanyDetailsService.companyDetails.headerDisplayFacebookPages ==1 or  CompanyDetailsService.companyDetails.headerDisplayCompetitors ==1 %}
+                <div class="col-2">
+                    <div class="border py-4">
+
+                        <h2 style="color: red">Competitors</h2>
+                        {% if CompanyDetailsService.companyDetails.headerDisplayFacebookPages ==1 %}
+                            <ul><a target="_blank" href="{{ path('facebook_groups_index') }}">Facebook Pages</a></ul>
+                        {% endif %}
+                        {% if CompanyDetailsService.companyDetails.headerDisplayCompetitors ==1 %}
+                            <ul><a target="_blank" href="{{ path('competitors_index') }}">Competitors</a></ul>
+                            <ul><a target="_blank" href="{{ path('competitor_service_index') }}">Competitor Services</a>
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
     </div>
 
 {% endblock %}
@@ -115,6 +147,7 @@
         <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
         <script src="{{ asset('admin/js/AGS.js') }}"></script>
     {% endblock javascripts %}
+
 
     {% block datatable %}
         <script>

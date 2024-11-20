@@ -1,14 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product Index{% endblock %}
+{% block title %}Products{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Product Index</h1>
+    <h1 style="color: red">Products</h1>
 
     <table class="table table-responsive">
         <thead>
         <tr>
             <th>Rank</th>
+            <th></th>
             <th>Product</th>
             <th>Main/<br>Sub</th>
             <th>Active</th>
@@ -20,31 +21,65 @@
         <tbody>
         {% for product in products %}
             <tr>
-                <td>{{ product.ranking }}</td>
+                <td style="text-align: center">{{ product.ranking *1 }}</td>
                 <td>
-                {% if product.product is null %}
-                    <i style="background-color: yellow; color: red" class="fa fa-warning"></i>
-                    {% else %}
-                    {{ product.product }}
-                        {% endif %}
+                    <a class="btn btn-outline-success btn-sm"
+                       href="{{ path('product_change_ranking', {'id':product.id, 'change':'Up'}) }}">
+                        <i style="color: green" class="fas fa-arrow-up"></i>
+                    </a>
+                    <a class="btn btn-outline-secondary btn-sm"
+                       href="{{ path('product_change_ranking', {'id':product.id, 'change':'Down'}) }}">
+                        <i style="color: red" class="fa fa-arrow-down"></i>
+                    </a>
                 </td>
-                <td>{{ product.category }}</td>
+                <td>
+                    {% if product.product is null %}
+                        <i style="background-color: yellow; color: red" class="fa fa-warning"></i>
+                    {% else %}
+                        {{ product.product }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if product.category =='Main' %}
+                    <a href="{{ path('product_change_status', {input: 'main_sub', status:'Sub', id:product.id}) }}">
+                        Main
+                    </a>
+                    {% elseif product.category =='Sub'   %}
+                        <a href="{{ path('product_change_status', {input: 'main_sub', status:'Main', id:product.id}) }}">
+                            {{ product.category }}
+                        </a>
+                    {% elseif product.category is null %}
+                        <a href="{{ path('product_change_status', {input: 'main_sub', status:'Main', id:product.id}) }}">
+                            TBD
+                        </a>
+                    {% endif %}
+
+                </td>
+
                 <td style="text-align: center">
                     {% if product.isActive =="Yes" %}
-                        <i style="color: green" class="fa fa-dot-circle"></i>
+                        <a href="{{ path('product_change_status', {input: 'isActive', status:'No', id:product.id}) }}">
+                            <i style="color: green" class="fa fa-check"></i>
+                        </a>
                     {% else %}
-                        <i style="color: red" class="fa fa-dot-circle"></i>
+                        <a href="{{ path('product_change_status', {input: 'isActive', status:'Yes',id:product.id}) }}">
+                            <i style="color: red" class="fa fa-remove"></i>
+                        </a>
                     {% endif %}
-                    {#                    {{ product.isActive ? 'Yes' : 'No' }} #}
                 </td>
+
                 <td style="text-align: center">
                     {% if product.includeInFooter =="Yes" %}
-                        <i style="color: green" class="fa fa-dot-circle"></i>
+                        <a href="{{ path('product_change_status', {input: 'includeInFooter', status:'No', id:product.id}) }}">
+                            <i style="color: green" class="fa fa-check"></i>
+                        </a>
                     {% else %}
-                        <i style="color: red" class="fa fa-dot-circle"></i>
+                        <a href="{{ path('product_change_status', {input: 'includeInFooter', status:'Yes',id:product.id}) }}">
+                            <i style="color: red" class="fa fa-remove"></i>
+                        </a>
                     {% endif %}
-{#                                        {{ product.includeInFooter ? 'Yes' : 'No' }} #}
                 </td>
+
                 <td>{{ product.comments }}</td>
                 <td>
                     <a class="btn btn-outline-danger btn-sm"
@@ -64,7 +99,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[2, 'asc'],[0, 'asc']],
+                "order": [[3, 'desc'], [0, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

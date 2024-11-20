@@ -115,7 +115,7 @@
                                     </div>
                                 {% else %}
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        {% set products = Product.getProductSubAll %}
+                                        {% set products = ProductService.getProductSubAll %}
                                         {% for product in products %}
                                             {% if product.isActive==1 %}
                                                 <a target="_blank" class="dropdown-item text-gray-600 ml-3"

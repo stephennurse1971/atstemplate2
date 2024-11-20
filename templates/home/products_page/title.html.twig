@@ -4,10 +4,10 @@
             <div class="col-9">
                 <h4>
                     {% if cms_copy.hyperlinks is empty %}
-                        {{ attribute(cms_copy,'contentTitle'~Languages.getSelectedLanguageCode)|raw }}
+                        {{ attribute(cms_copy,'contentTitle'~LanguagesService.getSelectedLanguageCode)|raw }}
                     {% else %}
                         <a target="_blank" href="{{ cms_copy.hyperlinks }}">
-                            {{ attribute(cms_copy,'contentTitle'~Languages.getSelectedLanguageCode)|raw }}
+                            {{ attribute(cms_copy,'contentTitle'~LanguagesService.getSelectedLanguageCode)|raw }}
                         </a>
                     {% endif %}
                 </h4>

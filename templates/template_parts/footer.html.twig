@@ -91,13 +91,12 @@
                                                 <a target="_blank" href="{{ path('office_address') }}">
                                                     <i style="color: red" class="fa fa-map-marker mr-3"></i></a>
                                                 {{ CompanyDetailsService.getCompanyDetails.companyAddressStreet }},
-                                                {{ CompanyDetailsService.getCompanyDetails.companyAddressTown }},
+                                                {{ CompanyDetailsService.getCompanyDetails.companyAddressTown }}
                                                 {{ CompanyDetailsService.getCompanyDetails.companyAddressCity }}
                                                 {{ CompanyDetailsService.getCompanyDetails.companyAddressPostalCode }}
                                             {% endif %}
                                         {% endif %}
                                     </p>
-                                    <p>
                                     <p>
                                         {% if CompanyDetailsService.getCompanyDetails.companyEmail is not null %}
                                             <a href="mailto:{{ CompanyDetailsService.getCompanyDetails.companyEmail }}">
@@ -109,8 +108,8 @@
                                     {% if CompanyDetailsService.companyDetails.footerDisplayTelNumbers ==1 %}
                                         <p>
                                             {% if CompanyDetailsService.getCompanyDetails.companyTel is not null %}
-                                                <a href="tel:{{ CompanyDetailsService.getCompanyDetails.companyTel|replace({' ': ''}) }}"><i
-                                                            class="fas fa-phone mr-3"></i></a>
+                                                <a href="tel:{{ CompanyDetailsService.getCompanyDetails.companyTel|replace({' ': ''}) }}">
+                                                    <i class="fas fa-phone mr-3"></i></a>
                                                 {{ CompanyDetailsService.getCompanyDetails.companyTel }}
                                             {% endif %}
                                         </p>
@@ -118,8 +117,7 @@
                                             {% if CompanyDetailsService.getCompanyDetails.companyMobile is not null %}
                                                 <a target="_blank"
                                                    href="https://wa.me/{{ CompanyDetailsService.getCompanyDetails.companyMobile|replace({' ': ''}) }}">
-                                                    <i class="fab fa-whatsapp mr-3"
-                                                       style="color:green; text-align: center"></i></a>
+                                                    <i class="fab fa-whatsapp mr-3" style="color:green; text-align: center"></i></a>
                                                 {{ CompanyDetailsService.getCompanyDetails.companyMobile }}
                                             {% endif %}
                                         </p>
@@ -127,9 +125,6 @@
                                 {% endif %}
                             </div>
 
-                            <!-- Grid column -->
-
-                            <!-- Grid column -->
 
                             <div style="text-align: left" class="col-md-6 mt-3 col-lg-2 mx-auto">
                                 {% if CompanyDetailsService.companyDetails.footerDisplaySocialMedia ==1 %}

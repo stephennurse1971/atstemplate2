@@ -40,6 +40,7 @@ class BusinessContactsController extends AbstractController
             $business_contacts = $businessContactsRepository->findAll();
         }
         $business_types = $businessTypesRepository->findAll();
+
         return $this->render('business_contacts/index.html.twig', [
             'business_contacts' => $business_contacts,
             'business_types' => $business_types
@@ -51,22 +52,22 @@ class BusinessContactsController extends AbstractController
      */
     public function map(Request $request, string $subset, BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, CountBusinessContactsService $countBusinessContacts): Response
     {
-        $business_contacts = $businessContactsRepository->findBy([
-            'status' => 'Approved'
-        ]);
+//        $business_contacts = $businessContactsRepository->findBy([
+//            'status' => 'Approved'
+//        ]);
 
-//        if ($subset == 'All') {
-//            $business_contacts = $businessContactsRepository->findBy([
-//                'status' => 'Approved'
-//            ]);
-//        }
-//
-//        if ($subset != 'All') {
-//            $business_type = $businessTypesRepository->findBy(['businessType' => $subset]);
-//            $business_contacts = $businessContactsRepository->findBy([
-//                'status' => 'Approved',
-//                'business_type' => $business_type
-//            ]);}
+        if ($subset == 'All') {
+            $business_contacts = $businessContactsRepository->findBy([
+                'status' => 'Approved'
+            ]);
+        }
+
+        if ($subset != 'All') {
+            $business_type = $businessTypesRepository->findBy(['businessType' => $subset]);
+            $business_contacts = $businessContactsRepository->findBy([
+                'status' => 'Approved',
+                'business_type' => $business_type
+            ]);}
 
         if ($this->isGranted('ROLE_ADMIN')) {
             $business_contacts = $businessContactsRepository->findAll();

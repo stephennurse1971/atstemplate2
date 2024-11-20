@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Controller\FileException;
 use App\Entity\CmsPhoto;
 use App\Form\CmsPhotoType;
 use App\Repository\CmsPhotoRepository;

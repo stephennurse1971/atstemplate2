@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Controller\FileException;
 use App\Entity\CmsCopy;
 use App\Form\CmsCopyType;
 use App\Repository\CmsCopyRepository;

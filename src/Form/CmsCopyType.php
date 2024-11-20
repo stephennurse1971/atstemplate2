@@ -22,7 +22,7 @@ class CmsCopyType extends AbstractType
                 'required'=>true,
                 'choices'=>[
                     'Static'=>'Static',
-                    'ProductService'=>'ProductService',
+                    'Product or Service'=>'Product or Service',
                 ]
             ])
             ->add('staticPageName')

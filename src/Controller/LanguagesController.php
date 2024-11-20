@@ -2,18 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\CmsPhoto;
 use App\Entity\Languages;
-use App\Entity\ToDoListItems;
 use App\Form\LanguagesType;
-use App\Repository\CmsPhotoRepository;
 use App\Repository\LanguagesRepository;
-use App\Repository\ToDoListItemsRepository;
-use App\Repository\ToDoListRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
