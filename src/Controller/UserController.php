@@ -42,6 +42,23 @@ class UserController extends AbstractController
 
 
     /**
+     * @Route("/staff", name="user_staff", methods={"GET"})
+     * @Security("is_granted('ROLE_STAFF')")
+     */
+    public function indexStaff(UserRepository $userRepository, ProductRepository $servicesOfferedRepository): Response
+    {
+        $now = new \DateTime('now');
+        $users = $userRepository->findAll();
+
+        return $this->render('user/index_staff.html.twig', [
+            'users' => $users,
+            'services' => $servicesOfferedRepository->findAll(),
+            'now' => $now
+        ]);
+    }
+
+
+    /**
      * @Route("/new", name="user_new", methods={"GET", "POST"})
      */
     public function new(Request $request, UserRepository $userRepository, \Symfony\Component\Security\Core\Security $security, UserPasswordHasherInterface $userPasswordHasher): Response

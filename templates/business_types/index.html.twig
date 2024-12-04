@@ -5,28 +5,11 @@
 {% block body %}
 
     <h1 style="color: red">Business Categories</h1>
-NEED TO SORT THEM BY THE RANKING
-    <div class="row">
-        {% if is_granted('ROLE_ADMIN') %}
-            <div class="col-1">
-                <a target="_blank" class="btn btn-success btn-sm" href="{{ path('business_types_new') }}">New</a>
-            </div>
-            <div class="col-4">
-                <a class="btn btn-outline-primary btn-sm" href="{{ path('business_types_import') }}">Import</a>
-                <a class="btn btn-outline-primary btn-sm" href="{{ path('business_types_export') }}">Export</a>
-                <a href="{{ asset('administration/import_export/business_types/template/business-types-import-template.csv') }}">(Template)</a>
-            </div>
 
-            <div class="col-3">
-                <a class="btn btn-outline-primary btn-sm" href="{{ path('update_business_type_ranking') }}">Re-number</a>
-                <a class="btn btn-outline-primary btn-sm" href="{{ path('business_contacts_index') }}">Business
-                    Contacts</a>
-            </div>
-            <div class="col-2">
-                <a class="btn btn-outline-danger btn-sm" href="{{ path('business_types_delete_all') }}">Delete All</a>
-            </div>
-        {% endif %}
-    </div>
+    {% include 'business_types/parts/import_and_export.html.twig' %}
+
+    NEED TO SORT THEM BY THE RANKING
+
 
     <table class="table table-responsive">
         <thead>
@@ -84,12 +67,12 @@ NEED TO SORT THEM BY THE RANKING
                        href="{{ path('business_types_edit', {'id': business_type.id}) }}">Edit</a>
                 </td>
                 <td>
-                    <form method="post" action="{{ path('business_types_delete', {'id': business_type.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                    <form method="post" action="{{ path('business_types_delete', {'id': business_type.id}) }}"
+                          onsubmit="return confirm('Are you sure you want to delete this item?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ business_type.id) }}">
                         <button class="btn btn-danger btn-sm">Delete</button>
                     </form>
                 </td>
-
             </tr>
         {% endfor %}
         </tbody>

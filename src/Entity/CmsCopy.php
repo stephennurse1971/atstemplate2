@@ -17,8 +17,6 @@ class CmsCopy
      */
     private $id;
 
-
-
     /**
      * @ORM\Column(type="text", nullable=true)
      */
@@ -105,6 +103,12 @@ class CmsCopy
      * @ORM\Column(type="integer", nullable=true)
      */
     private $pageCountAdmin;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=CmsCopyPageFormats::class)
+     */
+    private $pageLayout;
+
 
 
 
@@ -319,6 +323,19 @@ class CmsCopy
 
         return $this;
     }
+
+    public function getPageLayout(): ?cmsCopyPageFormats
+    {
+        return $this->pageLayout;
+    }
+
+    public function setPageLayout(?cmsCopyPageFormats $pageLayout): self
+    {
+        $this->pageLayout = $pageLayout;
+
+        return $this;
+    }
+
 
 
 }

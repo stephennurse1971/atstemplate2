@@ -15,6 +15,7 @@
         {{ form_row(form.category) }}
         <div class="static-container">
             {{ form_row(form.staticPageName) }}
+
         </div>
         <div class="product-container">
             {{ form_row(form.product) }}
@@ -54,8 +55,36 @@
             {{ form_row(form.pageCountAdmin) }}
         </div>
     </div>
-
 </div>
+
+<hr>
+
+<div class="row">
+
+    <div class="col-md-3">
+        <h2>Page Layout</h2>
+        {{ form_row(form.pageLayout) }}
+    </div>
+    <div class="col-md-3">
+        <br><br><br>
+        {% if cms_copy.pageLayout is not null %}
+            <b>Description:</b> {{ cms_copy.pageLayout.description }} <br>
+            <b>Uses:</b> {{ cms_copy.pageLayout.uses }}
+        {% endif %}
+    </div>
+    <div class="col-md-3">
+        <br><br><br>
+        {% if cms_copy.pageLayout is not null %}
+            <b>Pros:</b> {{ cms_copy.pageLayout.pros }} <br>
+            <b>Cons:</b> {{ cms_copy.pageLayout.cons }}
+        {% endif %}
+    </div>
+</div>
+
+
+
+
+
 <hr>
 <h2>Tab Title</h2>
 <div class="row">

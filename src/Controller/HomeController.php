@@ -28,6 +28,7 @@ class   HomeController extends AbstractController
         $homePagePhotosOnly = 0;
         if ($companyDetails) {
             $homePagePhotosOnly = $companyDetails->isHomePagePhotosOnly();
+            $qrcode = $companyDetails->isIncludeQRCodeHomePage();
         }
 
         $cms_copy = [];
@@ -38,6 +39,7 @@ class   HomeController extends AbstractController
             'staticPageName' => 'Home'
         ]);
 
+
         $cms_photo = $cmsPhotoRepository->findBy([
             'staticPageName' => 'Home'
         ]);
@@ -46,6 +48,7 @@ class   HomeController extends AbstractController
             'staticPageName' => 'Home',
             'ranking' => '1',
         ]);
+        $page_layout=$cms_copy_ranking1->getPageLayout();
 
         if ($cms_copy_ranking1) {
             if ($security->getUser()) {
@@ -68,7 +71,10 @@ class   HomeController extends AbstractController
                 'product' => $product,
                 'cms_copy_array' => $cms_copy,
                 'cms_photo_array' => $cms_photo,
-                'sub_pages' => $sub_pages
+                'sub_pages' => $sub_pages,
+                'include_contact' => 'Yes',
+                'include_QR_code' => $qrcode,
+                'format'=>$page_layout
             ]);
         }
     }
@@ -115,7 +121,6 @@ class   HomeController extends AbstractController
     {
         return $this->render('home/dashboard.html.twig', []);
     }
-
 
 
     /**
@@ -190,11 +195,10 @@ class   HomeController extends AbstractController
             'cms_copy_array' => $cms_copy,
             'cms_photo_array' => $cms_photo,
             'sub_pages' => $sub_pages,
-            'include_contact' => 'No'
+            'include_contact' => 'No',
+            'include_QR_code' => 'No'
         ]);
     }
-
-
 
 
     /**
@@ -254,6 +258,4 @@ class   HomeController extends AbstractController
             'qr_code' => $qr_code,
         ]);
     }
-
-
 }

@@ -36,17 +36,73 @@
                     <div class="col-12 p-4">
                         {% endif %}
                         {% for cms_copy in cms_copy_array|sort((a, b) => a.ranking <=> b.ranking) %}
-                            <div class="row">
-                                <div class="col-12">
-                                    <p>{{ attribute(cms_copy,'contentText'~LanguagesService.getSelectedLanguageCode)|raw }}</p>
-                                    {% if cms_copy.attachment is not null %}
-                                        <a title="{{ cms_copy.attachment }}" target="_blank"
-                                           href="{{ path('cms_copy_show_attachment',{id : cms_copy.id }) }}">
-                                            <i class="fa fa-paperclip"></i>
-                                        </a>
+
+                            {% if cms_copy.pageLayout is not null %}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                <span style="color: red"><b>{{ cms_copy.getPageLayout.name }}</b></span>
                                     {% endif %}
-                                </div>
-                            </div>
+
+                                {% if cms_copy.getPageLayout.name  == "Accordion" %}
+                                    {% include 'home/products_page/formats/accordion.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Card Layout" %}
+                                    {% include 'home/products_page/formats/card_layout.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Carousel/Slider" %}
+                                    {% include 'home/products_page/formats/carousel_slider.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Fullscreen Sections" %}
+                                    {% include 'home/products_page/formats/fullscreen_sections.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Grid Layout" %}
+                                    {% include 'home/products_page/formats/grid_layout.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Hero Banner" %}
+                                    {% include 'home/products_page/formats/hero_banner.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "List/Stacked Content" %}
+                                    {% include 'home/products_page/formats/list_stacked_content.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Masonry Layout" %}
+                                    {% include 'home/products_page/formats/masonry_layout.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Parallax Scrolling" %}
+                                    {% include 'home/products_page/formats/parallax_scrolling.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Sidebar Layout" %}
+                                    {% include 'home/products_page/formats/sidebar_layout.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Single Page Scroll" %}
+                                    {% include 'home/products_page/formats/single_page_scroll.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Split Screen" %}
+                                    {% include 'home/products_page/formats/split_screen.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Sticky Header/Footer" %}
+                                    {% include 'home/products_page/formats/sticky_header_footer.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Tabbed Interface" %}
+                                    {% include 'home/products_page/formats/tabbed_interface.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Timeline Layout" %}
+                                    {% include 'home/products_page/formats/timeline_layout.html.twig' %}
+                                {% endif %}
+                            {% endif %}
+
                         {% endfor %}
                     </div>
                     <div class="col-md-6">
@@ -74,10 +130,29 @@
                 </div>
             </div>
     </section>
-
     {% if CompanyDetailsService.companyDetails is not null %}
-        {% if CompanyDetailsService.companyDetails.includeContactFormHomePage ==1 %}
+        {% if CompanyDetailsService.companyDetails.includeContactFormHomePage ==1 and
+            include_contact == "Yes" %}
             {% include 'home/parts/contact_us.html.twig' %}
         {% endif %}
+
+        {% set qr_code =  CompanyDetailsService.companyDetails.companyQrCode %}
+        {% if include_QR_code == "Yes" and qr_code is not null %}
+
+            {% set image = asset('administration/attachments/Favicons/')~qr_code %}
+            <div class="row">
+                <div class="col-lg-3 col-md-4 m-4 p-4">
+                    <div class="justify-content-center d-flex">
+                        <div class="homepage-gallery-image-container">
+                            <a title="{{ CompanyDetailsService.companyDetails.companyName }}" target="_blank"
+                               href="{{ path('create_vcard_company') }}">
+                                <img class="homepage-image" src="{{ image }}">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     {% endif %}
+
 {% endblock %}

@@ -316,6 +316,16 @@ class CompanyDetails
      */
     private $companyAddressMapLink;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $facebookReviewsHistoryShowMonths;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $titleUsefulLinks;
+
 
     public function getId(): ?int
     {
@@ -1015,6 +1025,30 @@ class CompanyDetails
     public function setCompanyAddressMapLink(?string $companyAddressMapLink): self
     {
         $this->companyAddressMapLink = $companyAddressMapLink;
+
+        return $this;
+    }
+
+    public function getFacebookReviewsHistoryShowMonths(): ?int
+    {
+        return $this->facebookReviewsHistoryShowMonths;
+    }
+
+    public function setFacebookReviewsHistoryShowMonths(?int $facebookReviewsHistoryShowMonths): self
+    {
+        $this->facebookReviewsHistoryShowMonths = $facebookReviewsHistoryShowMonths;
+
+        return $this;
+    }
+
+    public function getTitleUsefulLinks(): ?string
+    {
+        return $this->titleUsefulLinks;
+    }
+
+    public function setTitleUsefulLinks(?string $titleUsefulLinks): self
+    {
+        $this->titleUsefulLinks = $titleUsefulLinks;
 
         return $this;
     }

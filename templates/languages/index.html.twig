@@ -4,7 +4,16 @@
 
 {% block body %}
     <h1 style="color: red">Languages</h1>
-    <a class="btn btn-success btn-sm" href="{{ path('update_ranking') }}">Re-number</a>
+
+    <div class="row">
+        <div class="col-2">
+            <a class="btn btn-success btn-sm" href="{{ path('languages_new') }}">New</a>
+        </div>
+        <div class="col-2">
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('update_ranking') }}">Re-number</a>
+        </div>
+    </div>
+
     <table class="table table-responsive">
         <thead>
         <tr>
@@ -24,7 +33,6 @@
         {% for language in languages %}
             <tr>
                 <td>{{ language.ranking }}</td>
-
                 <td>
                     <a class="btn btn-outline-success btn-sm"
                        href="{{ path('language_change_ranking', {'id':language.id, 'change':'Up'}) }}">
@@ -37,8 +45,6 @@
                         <i style="color: red" class="fa fa-arrow-down"></i>
                     </a>
                 </td>
-
-
                 <td data-sort="{{ language.isActive }}" style="text-align: center">
                     {% if language.isActive ==1 %}
                         <a href="{{ path('language_change_active_or_inactive', {id:language.id}) }}">
@@ -81,7 +87,7 @@
         </tbody>
     </table>
 
-    <a class="btn btn-success btn-sm" href="{{ path('languages_new') }}">New</a>
+
 {% endblock %}
 
 

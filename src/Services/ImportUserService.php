@@ -41,7 +41,7 @@ class ImportUserService
             $firstName = trim($oneLineFromCsv[0]);
             $lastName = trim($oneLineFromCsv[1]);
             $email = trim(strtolower($oneLineFromCsv[2]));
-            $mobile = trim(strtolower($oneLineFromCsv[3]));
+//            $mobile = trim(strtolower($oneLineFromCsv[3]));
 
             if (!$email) {
                 $email = $firstName . $lastName . "NoEmail@no_email.com";
@@ -56,7 +56,7 @@ class ImportUserService
                 $new_user->setEmail($email)
                     ->setFirstName($firstName)
                     ->setLastName($lastName)
-                    ->setMobile($mobile)
+//                    ->setMobile($mobile)
                     ->setRoles(['ROLE_USER'])
                     ->setPassword('password')
                     ->setEmailVerified(true);

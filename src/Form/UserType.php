@@ -38,6 +38,7 @@ class UserType extends AbstractType
                     'choices' => [
                         'Super_Admin' => 'ROLE_SUPER_ADMIN',
                         'Admin' => 'ROLE_ADMIN',
+                        'Staff' => 'ROLE_STAFF',
                         'Partner' => 'ROLE_PARTNER',
                         'User' => 'ROLE_USER'
                     ]]

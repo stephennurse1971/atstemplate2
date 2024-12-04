@@ -134,6 +134,7 @@ class CompanyDetailsType extends AbstractType
             ->add('headerDisplayFacebookPages', CheckboxType::class, [
                 'label' => 'Facebook Pages',
                 'required' => false])
+            ->add('facebookReviewsHistoryShowMonths')
             ->add('headerDisplayCompetitors', CheckboxType::class, [
                 'label' => 'Competitors',
                 'required' => false])
@@ -173,6 +174,7 @@ class CompanyDetailsType extends AbstractType
                 'required' => false])
             ->add('titleProducts')
             ->add('titleSubProducts')
+            ->add('titleUsefulLinks')
             ->add('enableUserRegistration')
             ->add('registrationEmail')
         ;

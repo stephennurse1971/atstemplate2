@@ -48,7 +48,6 @@ class BusinessTypesImportService
             $mapDisplay = trim($oneLineFromCsv[6]);
 
             $previous_business_type = $this->businessTypeRepository->findOneBy(['businessType' => $businessTypeName]);
-
             if (!$previous_business_type) {
                 $businessType = new BusinessTypes();
                 $businessType->setRanking($ranking)

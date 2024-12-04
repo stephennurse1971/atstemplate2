@@ -4,32 +4,56 @@
 
 {% block body %}
     <h1 style="color: red;">Facebook Groups Reviews</h1>
+    {% include 'facebook_groups_reviews/parts/import_and_export.html.twig' %}
 
     <table class="table">
         <thead>
         <tr>
             <th>Date</th>
+            <th>Facebook Group</th>
             <th>Reviewer</th>
             <th>Comment</th>
-            <th>actions</th>
+            <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
         {% for facebook_groups_review in facebook_groups_reviews %}
             <tr>
                 <td data-sort="{{ facebook_groups_review.date|date('Y-m-d H:i') }}">{{ facebook_groups_review.date ? facebook_groups_review.date|date('d-M-Y') : '' }}</td>
-                <td>{{ facebook_groups_review.reviewer.fullName }}</td>
+                <td>
+                    {% if facebook_groups_review.facebookGroup is not null %}
+                        <a title="{{ facebook_groups_review.facebookGroup.link }}" target="_blank"
+                           href={{ facebook_groups_review.facebookGroup.link }}> <i
+                                    class="fa fa-link"></i> </a>
+                        {{ facebook_groups_review.facebookGroup.name }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if facebook_groups_review.reviewer is not null %}
+                        {{ facebook_groups_review.reviewer.fullName }}
+                    {% endif %}
+                </td>
                 <td>{{ facebook_groups_review.comment }}</td>
                 <td>
-                    <a class="btn btn-outline-primary btn-sm"
+                    <a class="btn btn-outline-danger btn-sm"
                        href="{{ path('facebook_groups_reviews_edit', {'id': facebook_groups_review.id}) }}">Edit</a>
+                </td>
+                <td>
+                    <form method="post"
+                          action="{{ path('facebook_groups_reviews_delete', {'id': facebook_groups_review.id}) }}"
+                          onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_token"
+                               value="{{ csrf_token('delete' ~ facebook_groups_review.id) }}">
+                        <button class="btn btn-outline-danger btn-sm">Delete</button>
+                    </form>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a class="btn btn-success btn-sm" href="{{ path('facebook_groups_reviews_new') }}">New</a>
+
 {% endblock %}
 
 

@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CMS Copy Page Layouts{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">CMS Copy Page Layouts</h1>
+    {% include 'cms_copy_page_formats/parts/import_and_export.html.twig' %}
+
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Pros</th>
+            <th>Cons</th>
+            <th>Code</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cms_copy_page_format in cms_copy_page_formats %}
+            <tr>
+                <td>{{ cms_copy_page_format.name }}</td>
+                <td>{{ cms_copy_page_format.description }}</td>
+                <td>{{ cms_copy_page_format.pros }}</td>
+                <td>{{ cms_copy_page_format.cons }}</td>
+                <td>{{ cms_copy_page_format.code }}</td>
+                <td>
+                    <a class="btn btn-outline-primary btn-sm"
+                       href="{{ path('cms_copy_page_formats_show', {'id': cms_copy_page_format.id}) }}">Show</a>
+                    <a class="btn btn-outline-danger btn-sm"
+                       href="{{ path('cms_copy_page_formats_edit', {'id': cms_copy_page_format.id}) }}">Edit</a>
+                </td>
+                <td>
+                    <form method="post"
+                          action="{{ path('cms_copy_page_formats_delete', {'id': cms_copy_page_format.id}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cms_copy_page_format.id) }}">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

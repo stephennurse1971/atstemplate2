@@ -115,7 +115,6 @@ class BusinessContactsImportService
                 $this->manager->flush();
             }
         }
-        $today = new \DateTime('now');
         $this->manager->flush();
         return null;
     }

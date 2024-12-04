@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\CmsCopy;
+use App\Entity\CmsCopyPageFormats;
 use App\Entity\Product;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -18,19 +19,25 @@ class CmsCopyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('category', ChoiceType::class,[
-                'required'=>true,
-                'choices'=>[
-                    'Static'=>'Static',
-                    'Product or Service'=>'Product or Service',
+            ->add('category', ChoiceType::class, [
+                'required' => true,
+                'choices' => [
+                    'Static' => 'Static',
+                    'Product or Service' => 'Product or Service',
                 ]
             ])
             ->add('staticPageName')
 
-            ->add('product', EntityType::class,[
-                'class'=> Product::class,
-                'required'=>false,
-                'choice_label'=>'product'
+            ->add('pageLayout', EntityType::class, [
+                'class' => CmsCopyPageFormats::class,
+                'required' => false,
+                'choice_label' => 'name'
+            ])
+
+            ->add('product', EntityType::class, [
+                'class' => Product::class,
+                'required' => false,
+                'choice_label' => 'product'
             ])
             ->add('tabTitle')
             ->add('tabTitleFR', TextType::class, [
@@ -39,8 +46,6 @@ class CmsCopyType extends AbstractType
             ->add('tabTitleDE', TextType::class, [
                 'required' => false,
                 'label' => 'Tab Title (German)'])
-
-
             ->add('contentTitle', TextType::class, [
                 'required' => false,
                 'label' => 'Content title (English)'
@@ -49,8 +54,6 @@ class CmsCopyType extends AbstractType
                 'required' => false,
                 'label' => 'Main Content (English)'
             ])
-
-
             ->add('contentTitleFR', TextType::class, [
                 'required' => false,
                 'label' => 'Content Title (French)'])
@@ -58,17 +61,13 @@ class CmsCopyType extends AbstractType
                 'required' => false,
                 'label' => 'Main Content (French)'
             ])
-
-
             ->add('contentTitleDE', TextType::class, [
                 'required' => false,
                 'label' => 'Content Title (German)'])
-
             ->add('contentTextDE', TextareaType::class, [
                 'required' => false,
                 'label' => 'Main Content (German)'
             ])
-
             ->add('hyperlinks')
             ->add('attachment', FileType::class, [
                 'label' => 'Attachment',
@@ -77,8 +76,7 @@ class CmsCopyType extends AbstractType
             ])
             ->add('ranking')
             ->add('pageCountUsers')
-            ->add('pageCountAdmin')
-        ;
+            ->add('pageCountAdmin');
     }
 
     public function configureOptions(OptionsResolver $resolver)

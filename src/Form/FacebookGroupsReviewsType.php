@@ -32,7 +32,7 @@ class FacebookGroupsReviewsType extends AbstractType
             ->add('reviewer', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'fullName',
-                'choices'=>$this->userRepository->findByRole('ROLE_STAFF'),
+                'choices'=>$this->userRepository->findByRole('ROLE_ADMIN'),
                 'required' => true,
                 'data' => $this->security->getUser(),
             ]);

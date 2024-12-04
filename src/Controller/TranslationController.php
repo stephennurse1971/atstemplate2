@@ -20,7 +20,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[Route('/translation')]
 class TranslationController extends AbstractController
 {
-    #[Route('/inde', name: 'translation_index', methods: ['GET'])]
+    #[Route('/index', name: 'translation_index', methods: ['GET'])]
     public function index(TranslationRepository $translationRepository): Response
     {
         return $this->render('translation/index.html.twig', [

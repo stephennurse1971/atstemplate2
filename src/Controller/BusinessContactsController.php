@@ -361,7 +361,7 @@ class BusinessContactsController extends AbstractController
                 return $this->redirectToRoute('business_contacts_index');
             }
         }
-        return $this->render('business_contacts/import.html.twig', [
+        return $this->render('home/import.html.twig', [
             'form' => $form->createView(),
             'heading' => 'Business Contacts Import',
         ]);

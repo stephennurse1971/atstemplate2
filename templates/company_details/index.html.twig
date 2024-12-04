@@ -35,6 +35,10 @@
             <tr>
                 <td>
                     {{ company_detail.companyName }}
+                    {% if company_detail.contactFirstName is not null or company_detail.contactLastName is not null %}
+                        <br>
+                        ({{ company_detail.contactFirstName }} {{ company_detail.contactLastName }})
+                    {% endif %}
                 </td>
                 <td>
                     <a target="_blank" href="{{ company_detail.companyWebsite }}">
@@ -59,21 +63,21 @@
 
                 <td style="text-align: left">
                     <a href="mailto:{{ company_detail.companyEmail }}">
-                        <i class="fas fa-envelope mr-1"> </i></a>
+                        <i class="fas fa-envelope mr-1"> </i></a><br>
                     {{ company_detail.companyEmail }}
                     <br>
                     {% if company_detail.companyEmailPassword is not null %}
-                        (Password: {{ company_detail.companyEmailPassword }})
+                        <br><b>Password:</b> {{ company_detail.companyEmailPassword }}
                     {% endif %}
                     <br>
                     {% if company_detail.companyEmailImportDirectory is not null %}
-                        (Import: {{ company_detail.companyEmailImportDirectory }} /{{ company_detail.companyEmailImportProcessedDirectory }})
+                        <br><b>Import:</b> {{ company_detail.companyEmailImportDirectory }} /{{ company_detail.companyEmailImportProcessedDirectory }}
                     {% endif %}
                 </td>
                 <td style="text-align: center">
                     <a title="{{ company_detail.companyTel }}"
                        href="https://wa.me/{{ company_detail.companyTel | replace({' ': ''}) }}">
-                        <i style="color: green" class="fab fa-whatsapp"></i>
+                        <i style="color: green" class="fa fa-phone"></i>
                     </a>
                 </td>
                 <td style="text-align: center">
@@ -84,13 +88,16 @@
                     </a>
                     {#                    {{ company_detail.companyMobile }} #}
                 </td>
-                <td style="text-align: center">
+                <td style="text-align: left ">
                     <a title="{{ company_detail.companySkype }}"
                        href="skype:{{ company_detail.companySkype }}?call">
                         <i style="color: royalblue"
                            class="fab fa-skype"></i>
                     </a>
-                    {#                    {{ company_detail.companySkype }} #}
+                    {% if company_detail.companySkype is not null %}
+                        <br><b>Name:</b> {{ company_detail.companySkype }}
+                    {% endif %}
+
                 </td>
                 <td>
                     <a target="_blank" href="{{ path('office_address') }}">
@@ -139,7 +146,7 @@
                 <td style="text-align: center">
                     {% if company_detail.companyQrCode is not empty %}
                         <a target="_blank" title="{{ company_detail.companyQrCode }}"
-                           href="{{ path('app_home') }}">
+                           href="{{ path('company_qr_code') }}">
                             <i class="fa fa-qrcode"></i>
                         </a>
                     {% endif %}

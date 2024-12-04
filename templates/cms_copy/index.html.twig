@@ -13,7 +13,7 @@
         </div>
         <div class="col-2">
             <a target="_blank" class="btn btn-danger btn-sm" href="{{ path('cms_copy_delete_all_files') }}">Delete All
-                FIles</a>
+                Files</a>
         </div>
     </div>
 
@@ -21,24 +21,30 @@
         <thead>
         <tr>
             <th style="width: 50px">Category</th>
-            <th style="width: 150px">Product or <br>Static Page Name</th>
+            <th style="width: 150px">Product/<br>Static Page Name</th>
             <th style="width: 20px">Order</th>
+            <th style="width: 80px">Layout</th>
             <th style="width: 50px">Tab title</th>
             <th style="width: 250px">Heading<br>(Content title)</th>
             <th style="width: 650px">Content</th>
             <th style="width: 20px">Hyperlink</th>
             <th style="width: 20px">File</th>
-            <th style="width: 120px"></th>
-            <th style="width: 100px"></th>
+            <th style="width: 60px"></th>
+            <th style="width: 20px"></th>
             <th style="width: 20px">Count:<br>Users</th>
             <th style="width: 20px">Count:<br>Admin</th>
         </tr>
         </thead>
         <tbody>
         {% for cms_copy in cms_copies %}
+            {% if cms_copy.product is not null %}
+                {% set order = cms_copy.product.ranking %}
+            {% else %}
+                {% set order = 99 %}
+            {% endif %}
             <tr>
-                <td>{{ cms_copy.category }}</td>
-                <td>
+                <td>{{ cms_copy.category|slice(0,1) }}</td>
+                <td data-sort="{{ order }}">
                     {% if cms_copy.product is not null %}
                         <a target="_blank"
                            href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
@@ -49,6 +55,17 @@
                     {% endif %}
                 </td>
                 <td style="text-align: center">{{ cms_copy.ranking }}</td>
+                <td style="text-align: right">
+                    {% if cms_copy.pageLayout is not null %}
+                        {{ cms_copy.pageLayout.name }}<br>
+                        <i style="color: blue" title="Description: {{ cms_copy.pageLayout.description }}"
+                           class="fa fa-file-alt"></i>
+                        <i style="color: grey" title="Uses: {{ cms_copy.pageLayout.uses }}" class="fa fa-cog"></i>
+                        <i style="color: green" title="Pros: {{ cms_copy.pageLayout.pros }}"
+                           class="fa fa-chart-line"></i>
+                        <i style="color: red" title="Cons: {{ cms_copy.pageLayout.cons }}" class="fa fa-chart-line"></i>
+                    {% endif %}
+                </td>
 
                 <td>
                     {{ cms_copy.tabTitle }}
@@ -69,8 +86,9 @@
                             {% set web = 'https://'~ cms_copy.hyperlinks %}
                         {% endif %}
                         <a target="_blank" title="{{ cms_copy.hyperlinks }}" href="{{ web }}">
-                            {{ web }}
+                            <i class="fa fa-link"></i>
                         </a>
+                        {{ web }}
                     {% endif %}
                 </td>
                 <td style="text-align: center">
@@ -103,7 +121,6 @@
                             <i style="color: red" class="fa fa-trash"></i>
                         </button>
                     </form>
-
                 </td>
                 <td style="text-align: center">
                     {{ cms_copy.pageCountUsers }}
@@ -123,7 +140,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc'], [1, 'asc'], [2, 'asc']],
+                "order": [[1, 'asc'], [2, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

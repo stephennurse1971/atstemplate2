@@ -227,7 +227,7 @@ class BusinessTypesController extends AbstractController
                 return $this->redirectToRoute('business_types_index');
             }
         }
-        return $this->render('business_contacts/import.html.twig', [
+        return $this->render('home/import.html.twig', [
             'form' => $form->createView(),
             'heading' => 'Business Types Import',
         ]);
