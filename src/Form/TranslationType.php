@@ -12,6 +12,7 @@ class TranslationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('entity')
             ->add('english')
             ->add('french')
             ->add('german')

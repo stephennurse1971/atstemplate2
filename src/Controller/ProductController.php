@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\BusinessTypes;
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Repository\CmsCopyRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -80,12 +80,34 @@ class ProductController extends AbstractController
     /**
      * @Route("/delete/{id}", name="product_delete", methods={"POST"})
      */
-    public function delete(Request $request, Product $product, ProductRepository $productRepository): Response
+    public function delete(Request $request, Product $product, ProductRepository $productRepository, CmsCopyRepository $cmsCopyRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
-            $productRepository->remove($product, true);
+        // Check for foreign key references in cms_copy table
+        $relatedRecords = $cmsCopyRepository->findBy(['product' => $product]);
+
+        if (count($relatedRecords) > 0) {
+            // Show error message if there are related records
+            $this->addFlash('error', 'Cannot delete this product because it is referenced by other records.');
+
+            // Redirect to product index page
+            return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        // Check CSRF token validity
+        if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
+            try {
+                // Attempt to remove the product
+                $productRepository->remove($product, true);
+
+                // Show success message if deletion is successful
+                $this->addFlash('success', 'Product deleted successfully.');
+            } catch (ForeignKeyConstraintViolationException $e) {
+                // Handle the foreign key violation exception
+                $this->addFlash('error', 'Unable to delete product due to foreign key constraints.');
+            }
+        }
+
+        // Redirect to the product index page
         return $this->redirectToRoute('product_index', [], Response::HTTP_SEE_OTHER);
     }
 

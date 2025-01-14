@@ -105,6 +105,7 @@ class TranslationController extends AbstractController
         $translations = $translationRepository->findAll();
         foreach ($translations as $translation) {
             $data[] = [
+                $translation->getEntity(),
                 $translation->getEnglish(),
                 $translation->getFrench(),
                 $translation->getGerman(),
@@ -115,11 +116,12 @@ class TranslationController extends AbstractController
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Translations');
-        $sheet->getCell('A1')->setValue('English');
-        $sheet->getCell('B1')->setValue('French');
-        $sheet->getCell('C1')->setValue('German');
-        $sheet->getCell('D1')->setValue('Spanish');
-        $sheet->getCell('E1')->setValue('Russian');
+        $sheet->getCell('A1')->setValue('Entity');
+        $sheet->getCell('B1')->setValue('English');
+        $sheet->getCell('C1')->setValue('French');
+        $sheet->getCell('D1')->setValue('German');
+        $sheet->getCell('E1')->setValue('Spanish');
+        $sheet->getCell('F1')->setValue('Russian');
 
         $sheet->fromArray($data, null, 'A2', true);
         $total_rows = $sheet->getHighestRow();
@@ -165,8 +167,9 @@ class TranslationController extends AbstractController
 
             }
         }
-        return $this->render('admin/import/index.html.twig', [
-            'form' => $form->createView()
+        return $this->render('home/import.html.twig', [
+            'form' => $form->createView(),
+            'heading'=>'Translations',
         ]);
 
 

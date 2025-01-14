@@ -29,11 +29,34 @@
         width: 100px;
         object-fit:cover;
     }
+
     .photosByLocationFull{
         height: 500px;
         width: 500px;
         object-fit:cover;
     }
+
+    .photosByLocationFullRotate-90{
+        height: 500px;
+        width: 500px;
+        transform: rotate(90deg);
+        object-fit:cover;
+    }
+
+    .photosByLocationFullRotate-180{
+          height: 500px;
+          width: 500px;
+          transform: rotate(180deg);
+          object-fit:cover;
+      }
+
+    .photosByLocationFullRotate-270{
+        height: 500px;
+        width: 500px;
+        transform: rotate(270deg);
+        object-fit:cover;
+    }
+
     .videoByLocationFull{
         width:500px;
         height:500px

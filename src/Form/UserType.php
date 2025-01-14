@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\CmsCopyPageFormats;
 use App\Entity\Countries;
+use App\Entity\Languages;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -25,11 +27,17 @@ class UserType extends AbstractType
             ->add('password', PasswordType::class, [
                 'label' => 'Password',
                 'required' => false,
+                'attr' =>['class' => 'password'],
                 'invalid_message' => 'You entered an invalid value',
             ])
             ->add('firstName')
             ->add('lastName')
             ->add('mobile')
+            ->add('defaultLanguage', EntityType::class, [
+                'class' => Languages::class,
+                'required' => false,
+                'choice_label' => 'language'
+            ])
             ->add('roles', ChoiceType::class, [
                     'mapped' => true,
                     'multiple' => true,

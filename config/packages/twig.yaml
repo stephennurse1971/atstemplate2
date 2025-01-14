@@ -4,6 +4,7 @@ twig:
   globals:
     CheckIfUserService: '@App\Services\CheckIfUserService'
     CompanyDetailsService: '@App\Services\CompanyDetailsService'
+    CountAllocatedWebsites: '@App\Services\CountAllocatedWebsites'
     CountBusinessContactsService: '@App\Services\CountBusinessContactsService'
     CountBusinessContactReferralsService: '@App\Services\CountBusinessContactReferralsService'
     CountPendingWebsiteInquiriesService: '@App\Services\CountPendingWebsiteInquiriesService'
@@ -11,7 +12,11 @@ twig:
     LanguagesService: '@App\Services\LanguagesService'
     ProductService: '@App\Services\ProductService'
     TranslationsImportService: '@App\Services\TranslationsImportService'
+    TranslationsWorkerService: '@App\Services\TranslationsWorkerService'
     WeatherService: '@App\Services\WeatherService'
+    CountPhotos: '@App\Services\CountPhotos'
+    PhotoAuthorsByLocation: '@App\Services\PhotoAuthorsByLocation'
+
 
 when@test:
   twig:

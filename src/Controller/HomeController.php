@@ -39,7 +39,6 @@ class   HomeController extends AbstractController
             'staticPageName' => 'Home'
         ]);
 
-
         $cms_photo = $cmsPhotoRepository->findBy([
             'staticPageName' => 'Home'
         ]);
@@ -48,8 +47,14 @@ class   HomeController extends AbstractController
             'staticPageName' => 'Home',
             'ranking' => '1',
         ]);
-        $page_layout=$cms_copy_ranking1->getPageLayout();
 
+        if ($cms_copy_ranking1) {
+            $page_layout = $cms_copy_ranking1->getPageLayout();
+        }
+        else{
+            $page_layout = 'default';
+        }
+        
         if ($cms_copy_ranking1) {
             if ($security->getUser()) {
                 if (in_array('ROLE_ADMIN', $security->getUser()->getRoles())) {
@@ -74,7 +79,7 @@ class   HomeController extends AbstractController
                 'sub_pages' => $sub_pages,
                 'include_contact' => 'Yes',
                 'include_QR_code' => $qrcode,
-                'format'=>$page_layout
+                'format' => $page_layout
             ]);
         }
     }

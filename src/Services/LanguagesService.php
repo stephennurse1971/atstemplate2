@@ -35,9 +35,7 @@ class LanguagesService
             else{
                 return null;
             }
-
         }
-
     }
 
     public function getSelectedLanguageCode()

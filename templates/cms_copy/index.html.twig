@@ -22,17 +22,18 @@
         <tr>
             <th style="width: 50px">Category</th>
             <th style="width: 150px">Product/<br>Static Page Name</th>
-            <th style="width: 20px">Order</th>
+            <th style="width: 10px">#</th>
             <th style="width: 80px">Layout</th>
             <th style="width: 50px">Tab title</th>
             <th style="width: 250px">Heading<br>(Content title)</th>
             <th style="width: 650px">Content</th>
-            <th style="width: 20px">Hyperlink</th>
-            <th style="width: 20px">File</th>
-            <th style="width: 60px"></th>
-            <th style="width: 20px"></th>
+            <th style="width: 120px">Hyperlink</th>
+            <th style="width: 60px; border-right: dotted 1px">File</th>
             <th style="width: 20px">Count:<br>Users</th>
-            <th style="width: 20px">Count:<br>Admin</th>
+            <th style="width: 20px; border-right: dotted 1px">Count:<br>Admin</th>
+            <th style="width: 20px"></th>
+            <th style="width: 20px"></th>
+            <th style="width: 20px"></th>
         </tr>
         </thead>
         <tbody>
@@ -59,11 +60,11 @@
                     {% if cms_copy.pageLayout is not null %}
                         {{ cms_copy.pageLayout.name }}<br>
                         <i style="color: blue" title="Description: {{ cms_copy.pageLayout.description }}"
-                           class="fa fa-file-alt"></i>
+                           class="fa fa-info-circle"></i>
                         <i style="color: grey" title="Uses: {{ cms_copy.pageLayout.uses }}" class="fa fa-cog"></i>
                         <i style="color: green" title="Pros: {{ cms_copy.pageLayout.pros }}"
-                           class="fa fa-chart-line"></i>
-                        <i style="color: red" title="Cons: {{ cms_copy.pageLayout.cons }}" class="fa fa-chart-line"></i>
+                           class="fa fa-check"></i>
+                        <i style="color: red" title="Cons: {{ cms_copy.pageLayout.cons }}" class="fa fa-remove"></i>
                     {% endif %}
                 </td>
 
@@ -79,7 +80,7 @@
                     {{ (cms_copy.contentText |slice (0, 250))|raw }}...
                 </td>
                 <td>
-                    {% if  cms_copy.hyperlinks is not empty %}
+                    {% if cms_copy.hyperlinks is not empty %}
                         {% if  cms_copy.hyperlinks starts with 'http' %}
                             {% set web =  cms_copy.hyperlinks %}
                         {% else %}
@@ -91,7 +92,7 @@
                         {{ web }}
                     {% endif %}
                 </td>
-                <td style="text-align: center">
+                <td style="text-align: center; border-right: dotted 1px">
                     {% if cms_copy.attachment is not null %}
                         <a title="{{ cms_copy.attachment }}" target="_blank"
                            href="{{ path('cms_copy_show_attachment',{id : cms_copy.id }) }}">
@@ -99,15 +100,23 @@
                         </a>
                         <a class="d-inline btn btn-outline-danger btn-sm" target="_blank"
                            href="{{ path('cms_copy_delete_file', {'id': cms_copy.id}) }}">
-                            Delete File
+                            <i class="fa fa-trash"></i>
                         </a>
                     {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {{ cms_copy.pageCountUsers }}
+                </td>
+                <td style="text-align: center; border-right: dotted 1px">
+                    {{ cms_copy.pageCountAdmin }}
                 </td>
                 <td>
                     <a class="d-inline btn btn-outline-danger btn-sm mr-1" target="_blank"
                        href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
                         <i style="color: red" class="fa fa-pen"></i>
                     </a>
+                </td>
+                <td>
                     <a class="d-inline btn btn-outline-success btn-sm" target="_blank"
                        href="{{ path('cms_copy_copy_and_edit', {'id': cms_copy.id}) }}">
                         <i style="color: green" class="fa fa-copy"></i>
@@ -122,12 +131,7 @@
                         </button>
                     </form>
                 </td>
-                <td style="text-align: center">
-                    {{ cms_copy.pageCountUsers }}
-                </td>
-                <td style="text-align: center">
-                    {{ cms_copy.pageCountAdmin }}
-                </td>
+
             </tr>
         {% endfor %}
         </tbody>

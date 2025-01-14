@@ -45,10 +45,13 @@
             });
     </script>
 
+
+
+
     <script>
-        var businessContactId = '';
+        var companyDetails = '';
         function getLocation(id) {
-            businessContactId = id;
+            companyDetails = id;
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showLocation);
             } else {
@@ -62,12 +65,20 @@
             $.ajax({
                 type: 'POST',
                 url: 'update/location',
-                data: 'latitude=' + latitude + '&longitude=' + longitude + '&id=' + businessContactId,
+                data: 'latitude=' + latitude + '&longitude=' + longitude + '&id=' + companyDetails,
                 success: function (msg) {
                     location.reload();
                 }
             });
         }
     </script>
+    <script>
+        $('#getLocationButton').on('click', function(event) {
+            event.preventDefault();  // Prevent default action (if any)
+            // Custom action here
+            console.log("Button clicked, no reload.");
+        });
+    </script>
+
 
 {% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New: Useful Links{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">New: Useful Links</h1>
+
+    {{ include('useful_links/_form.html.twig') }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('useful_links_index', {category:'All'}) }}">Return to list</a>
+{% endblock %}

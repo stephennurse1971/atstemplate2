@@ -10,20 +10,29 @@
 {% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit:
-        {% if (cms_copy.category != "ProductService" and cms_copy.category != "Static") %}
-            Null
-        {% else %}
-            {% if cms_copy.category == "ProductService" %}
-                {{ cms_copy.product.product }}
-            {% endif %}
-            {% if cms_copy.category == "Static" %}
-                {{ cms_copy.staticPageName }}
-            {% endif %}
-        {% endif %}
-    </h1>
+    <div class="row">
+        <div class="col-9">
+            <h1 style="color: red">Edit:
+                {% if (cms_copy.category != "Product or Service" and cms_copy.category != "Static") %}
+
+                {% else %}
+                    {% if cms_copy.category == "Product or Service" %}
+                        {{ cms_copy.product.product }}
+                    {% endif %}
+                    {% if cms_copy.category == "Static" %}
+                        {{ cms_copy.staticPageName }}
+                    {% endif %}
+                {% endif %}
+            </h1>
+        </div>
+
+        <div class="col-3">
+            <a class="btn btn-outline-info btn-sm" href="{{ path('cms_copy_index') }}">Return to list</a>
+            {{ include('cms_copy/_delete_form.html.twig') }}
+        </div>
+    </div>
+
     {{ include('cms_copy/_form.html.twig', {'button_label': 'Save'}) }}
-    {{ include('cms_copy/_delete_form.html.twig') }}
 {% endblock %}
 
 
@@ -41,16 +50,21 @@
             $(".product-container").hide();
         } else {
             $(".static-container").hide();
+            //  $(".product-container").empty();
             $(".product-container").show();
         }
+
         $("#cms_copy_category").change(function () {
             var category = $(this).val();
             if (category === 'Static') {
                 $(".static-container").show();
+                $("#cms_copy_product").val(null);
                 $(".product-container").hide();
-            } else {
-                $(".static-container").hide();
+            }
+            if (category === 'Product or Service') {
                 $(".product-container").show();
+                $(".static-container").hide();
+                $("#cms_copy_staticPageName").val('');
             }
         })
     </script>

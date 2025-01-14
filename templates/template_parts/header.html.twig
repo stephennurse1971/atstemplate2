@@ -4,10 +4,16 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-gray-100 fixed-top shadow">
         <div class="container-fluid">
             <div class="logo">
-                {% if CompanyDetailsService.getCompanyDetails is not null and is_granted('ROLE_ADMIN') %}
-                    <a target="_blank" href="{{ path('company_details_edit', {'id': '1'}) }}">
-                        <i style="color: red" class="fa fa-pen"></i>
-                    </a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    {% if CompanyDetailsService.getCompanyDetails is not null %}
+                        <a target="_blank" href="{{ path('company_details_edit', {'id': '1'}) }}">
+                            <i style="color: red" class="fa fa-pen"></i>
+                        </a>
+                    {% else %}
+                        <a target="_blank" href="{{ path('company_details_new') }}">
+                            <i style="color: blue" class="fa fa-pen"></i>
+                        </a>
+                    {% endif %}
                 {% endif %}
                 <a class="navbar-brand" href="{{ path('app_home') }}">
                     {% if CompanyDetailsService.getCompanyDetails is not null %}
@@ -65,13 +71,17 @@
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             {% set products = ProductService.getProductMainAll %}
+
                             {% for product in products %}
+
                                 {% if product.isActive==1 %}
-                                    <a class="dropdown-item" href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
+                                    <a class="dropdown-item"
+                                       href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
                                     </a>
                                 {% else %}
                                     {% if is_granted('ROLE_ADMIN') and product.isActive ==0 %}
-                                        <a class="dropdown-item" href="{{ path('product_display', { product: product.product}) }}">
+                                        <a class="dropdown-item"
+                                           href="{{ path('product_display', { product: product.product}) }}">
                                             <span style="color: red">{{ product.product }}*</span>
                                         </a>
                                     {% endif %}
@@ -98,11 +108,13 @@
                                         {% set products = ProductService.getProductSubAll %}
                                         {% for product in products %}
                                             {% if product.isActive==1 %}
-                                                <a class="dropdown-item" href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
+                                                <a class="dropdown-item"
+                                                   href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}
                                                 </a>
                                             {% else %}
                                                 {% if is_granted('ROLE_ADMIN') and product.isActive ==0 %}
-                                                    <a class="dropdown-item" href="{{ path('product_display', { product: product.product}) }}">
+                                                    <a class="dropdown-item"
+                                                       href="{{ path('product_display', { product: product.product}) }}">
                                                         <span style="color: red">{{ product.product }}*</span>
                                                     </a>
                                                 {% endif %}
@@ -125,11 +137,26 @@
                         {% endif %}
                     {% endif %}
 
+                    <!-- Nav Item #5 - Photos -->
+                    {% if CompanyDetailsService.companyDetails is not null %}
+                        {% if CompanyDetailsService.companyDetails.headerDisplayPhotos ==1 %}
+                            <li class="nav-item">
+                                {% if 1==1 %}
+                                    <a class="nav-link" href="{{ path('photos_index' ) }}">Photos</a>
+                                {% else %}
+                                    <a class="nav-link" href="{{ path('photos_index' ) }}">Photos</a>
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endif %}
 
-                    <!-- Nav Item #5 - Useful Contacts/ Weather -->
+                    {% include 'template_parts_project_specific/header_project_specific1.html.twig' %}
+
+                    <!-- Nav Item #6 - Useful Contacts/ Weather -->
                     {% if CompanyDetailsService.companyDetails is not null %}
                         {% if CompanyDetailsService.companyDetails.headerDisplayBusinessContacts ==1
-                            or CompanyDetailsService.companyDetails.headerDisplayWeather ==1 %}
+                            or CompanyDetailsService.companyDetails.headerDisplayWeather ==1
+                        %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -141,14 +168,20 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     {% if CompanyDetailsService.companyDetails.headerDisplayBusinessContacts ==1 %}
-                                        <a class="dropdown-item" href="{{ path('business_contacts_index') }}">Useful contacts
+                                        <a class="dropdown-item" href="{{ path('business_contacts_index') }}">Useful
+                                            contacts
                                         </a>
+                                    {% endif %}
+                                    {% if 1 ==1 %}
+                                        <a class="dropdown-item" href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful links</a>
+                                    {% endif %}
+                                    {% if 1 ==1 %}
+                                        <a class="dropdown-item" href="{{ path('file_attachments_index') }}">Useful files</a>
                                     {% endif %}
                                     {% if  CompanyDetailsService.companyDetails.headerDisplayWeather ==1 %}
                                         <a class="dropdown-item" href="{{ path('weather_index') }}">Weather
                                         </a>
                                     {% endif %}
-                                    {% include 'template_parts_project_specific/header_project_specific1b.html.twig' %}
                                 </div>
                             </li>
                         {% endif %}
@@ -165,10 +198,15 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
+                                    {% if CompanyDetailsService.companyDetails.companyQrCode is not null %}
+                                        <a class="dropdown-item" target="_blank" href="{{ path('company_qr_code') }}"><i
+                                                    class="fa fa-qrcode"></i> QR code</a>
+                                    {% endif %}
+
                                     {% if CompanyDetailsService.companyDetails.companyEmail is not null %}
                                         <a title={{ CompanyDetailsService.companyDetails.companyEmail }} class="dropdown-item"
                                            href="mailto:{{ CompanyDetailsService.companyDetails.companyEmail }}">
-                                            <span style="color: blue;">@</span> {{ CompanyDetailsService.companyDetails.companyEmail }}
+                                            <span style="color: blue">@</span> {{ CompanyDetailsService.companyDetails.companyEmail }}
                                         </a>
                                     {% endif %}
 
@@ -219,24 +257,20 @@
 
 
                     <!-- Nav Item #7 - QR code -->
-                    {% if CompanyDetailsService.getCompanyDetails is not null %}
-                        {% if CompanyDetailsService.companyDetails.includeQRCodeHomePage ==1 %}
-
-                            <li class="nav-item">
-                                <a class="nav-link" target="_blank" href="{{ path('company_qr_code') }}"><i
-                                            class="fa fa-qrcode"></i></a>
-                            </li>
-
-                        {% endif %}
-                    {% endif %}
-
-
+                    {#                    {% if CompanyDetailsService.getCompanyDetails is not null %} #}
+                    {#                        {% if CompanyDetailsService.companyDetails.includeQRCodeHomePage ==1 %} #}
+                    {#                            <li class="nav-item"> #}
+                    {#                                <a class="nav-link" target="_blank" href="{{ path('company_qr_code') }}"><i #}
+                    {#                                            class="fa fa-qrcode"></i></a> #}
+                    {#                            </li> #}
+                    {#                        {% endif %} #}
+                    {#                    {% endif %} #}
 
 
                     {% include 'template_parts_project_specific/header_project_specific2.html.twig' %}
 
                     <!-- Nav Item #8 - Login -->
-                    {% if CompanyDetailsService.getCompanyDetails is not null and (CompanyDetailsService.companyDetails.headerDisplayLogin ==1 or app.user is not null)%}
+                    {% if CompanyDetailsService.getCompanyDetails is not null and (CompanyDetailsService.companyDetails.headerDisplayLogin ==1 or app.user is not null) %}
                         {% if app.user %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"

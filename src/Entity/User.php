@@ -60,6 +60,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $mobile;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Languages::class)
+     */
+    private $defaultLanguage;
+
 
 
     public function getId(): ?int
@@ -199,6 +204,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setMobile(?string $mobile): self
     {
         $this->mobile = $mobile;
+
+        return $this;
+    }
+
+    public function getDefaultLanguage(): ?Languages
+    {
+        return $this->defaultLanguage;
+    }
+
+    public function setDefaultLanguage(?Languages $defaultLanguage): self
+    {
+        $this->defaultLanguage = $defaultLanguage;
 
         return $this;
     }

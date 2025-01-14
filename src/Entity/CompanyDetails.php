@@ -326,6 +326,11 @@ class CompanyDetails
      */
     private $titleUsefulLinks;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $headerDisplayPhotos;
+
 
     public function getId(): ?int
     {
@@ -1049,6 +1054,18 @@ class CompanyDetails
     public function setTitleUsefulLinks(?string $titleUsefulLinks): self
     {
         $this->titleUsefulLinks = $titleUsefulLinks;
+
+        return $this;
+    }
+
+    public function isHeaderDisplayPhotos(): ?bool
+    {
+        return $this->headerDisplayPhotos;
+    }
+
+    public function setHeaderDisplayPhotos(?bool $headerDisplayPhotos): self
+    {
+        $this->headerDisplayPhotos = $headerDisplayPhotos;
 
         return $this;
     }

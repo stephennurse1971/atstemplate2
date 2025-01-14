@@ -17,9 +17,11 @@
     <br>
     <a class="btn btn-outline-primary btn-sm" href="{{ path('fetch_weather_data') }}">Get Latest Update</a>
     <a class="btn btn-outline-primary btn-sm" href="{{ path('fetch_weather_data_hourly') }}">Get Hourly Update</a>
-   NEED TO FIX: <a target="_blank" class="btn btn-outline-secondary btn-sm"
-       href="https://www.google.com/search?client=firefox-b-d&q=google%20weather%20near%20"
-       .{{ CompanyDetailsService.getCompanyDetails.weatherLocation }}."&llpgabe=CgkvbS8wMnR5ZzA&ved=2ahUKEwj08P6F6e_9AhUQWcAKHZBzD1YQ5ZgEKAB6BAgGEAA">{{ CompanyDetailsService.getCompanyDetails.weatherLocation }} forecast</a>
+    {% set LocalWeatherPage = "https://www.google.com/search?client=firefox-b-d&q=google%20weather%20"~ CompanyDetailsService.getCompanyDetails.weatherLocation %};
+{#    {% set LocalWeatherPage = "https://www.google.com"  %};#}
+   <a target="_blank" class="btn btn-outline-secondary btn-sm" href="{{ LocalWeatherPage }}">{{ CompanyDetailsService.getCompanyDetails.weatherLocation }} forecast</a>
+
+
     {% if is_granted('ROLE_ADMIN') %}
         <a class="btn btn-outline-danger btn-sm" href="{{ path('weather_delete_all') }}">Delete All</a>
     {% endif %}

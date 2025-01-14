@@ -1,0 +1,23 @@
+<div class="row">
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="col-2">
+            <a class="btn btn-success btn-sm" href="{{ path('languages_new') }}">New</a>
+        </div>
+        <div class="col-2">
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('update_ranking') }}">Re-number</a>
+        </div>
+        <div class="col-4">
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('languages_import') }}">Import</a>
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('languages_export') }}">Export</a>
+            <a href="{{ asset('administration/import_export/languages/template/languages-template.csv') }}">(Template)</a>
+        </div>
+
+    {% endif %}
+
+    <div class="col-2">
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-outline-danger btn-sm" href="{{ path('languages_delete_all') }}">Delete All</a>
+        {% endif %}
+    </div>
+</div>
+<br>

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Photo: {{ photo.location.location }} {% endblock %}
+
+{% block body %}
+    <h1 style="color: red">
+        {{ photo.location.location }}
+    </h1>
+
+    {% set image = asset('administration/attachments/Photos/')~photo.photoFile %}
+
+    <div class="row ">
+        <div class="col-12 m-auto">
+            <div class="image-container">
+                {% if photo.rotate %}
+                    <img class="photosOnePage rotate-90" src="{{ image }}" >
+                {% else %}
+                    <img class="photosOnePage" src="{{ image }}">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\BusinessContactsRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use JeroenDesloovere\VCard\VCard;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -64,10 +66,8 @@ class UserController extends AbstractController
     public function new(Request $request, UserRepository $userRepository, \Symfony\Component\Security\Core\Security $security, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $user = new User();
-        $now = new \DateTime('now');
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form['roles']->getData()) {
                 $roles = $form['roles']->getData();
@@ -80,10 +80,8 @@ class UserController extends AbstractController
                 )
             );
             $userRepository->add($user, true);
-
             return $this->redirectToRoute('user_index', ['status' => 'All'], Response::HTTP_SEE_OTHER);
         }
-
         return $this->renderForm('user/new.html.twig', [
             'user' => $user,
             'form' => $form,
@@ -121,17 +119,23 @@ class UserController extends AbstractController
         $form = $this->createForm(UserType::class, $user, ['user' => $user]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
             $referer = $request->request->get('referer');
             if ($form->has('roles')) {
                 $roles = $form['roles']->getData();
                 $user->setRoles($roles);
             }
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $user->getPassword()
-                )
-            );
+            $old_password = $user->getPassword();
+            $new_Password = $form['password']->getData();
+//            $user->updatePassword($new_Password);
+//            if ($new_Password) {
+//                $user->setPassword(
+//                    $userPasswordHasher->hashPassword($user, $new_Password));
+//            } else {
+//                $user->setPassword(
+//                    $userPasswordHasher->hashPassword($user, $old_password));
+//            }
+
             $userRepository->add($user, true);
             return $this->redirect($referer);
         }
@@ -221,4 +225,38 @@ class UserController extends AbstractController
         $response->headers->set('Cache-Control', 'max-age=0');
         return $response;
     }
+
+
+    /**
+     * @Route("/create/Vcard/User/{id}", name="create_user_vcard")
+     */
+    public function createVcard(int $id, UserRepository $userRepository)
+    {
+        $user = $userRepository->find($id);
+        $vcard = new VCard();
+        $firstName = $user->getFirstName();
+        $lastName = $user->getLastName();
+        $mobile = $user->getMobile();
+        $landline = "12345";
+        $company = "";
+        $website = "";
+        $addressStreet = "";
+        $addressCity = "";
+        $addressPostCode = "";
+        $addressCountry = "";
+        $notes = "";
+
+        $vcard->addName($lastName, $firstName);
+        $vcard->addEmail($user->getEmail())
+            ->addPhoneNumber($landline, 'Business phone')
+            ->addPhoneNumber($mobile, 'Mobile phone')
+            ->addCompany($company)
+            ->addURL($website)
+            ->addNote($notes)
+            ->addAddress($name = '', $extended = '', $street = $addressStreet, $city = $addressCity, $region = '', $zip = $addressPostCode, $country = $addressCountry, $type = 'WORK;POSTAL');
+        $vcard->download();
+        return new Response(null);
+    }
+
+
 }

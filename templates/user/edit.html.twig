@@ -23,12 +23,11 @@
         $('.password').toggle();
         $('#user_password').val('');
     });
-    let roles = [];
 
+    let roles = [];
     {% for role in user.roles %}
     roles.push("{{ role }}");
     {% endfor %}
     $("#user_roles").val(roles);
 </script>
-
 {% endblock %}

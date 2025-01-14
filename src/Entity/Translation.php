@@ -42,6 +42,11 @@ class Translation
      */
     private $russian;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $entity;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +108,18 @@ class Translation
     public function setRussian(?string $russian): self
     {
         $this->russian = $russian;
+
+        return $this;
+    }
+
+    public function getEntity(): ?string
+    {
+        return $this->entity;
+    }
+
+    public function setEntity(?string $entity): self
+    {
+        $this->entity = $entity;
 
         return $this;
     }

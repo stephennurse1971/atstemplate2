@@ -1,0 +1,61 @@
+<style>
+    .ck-content{
+        height: 500px;
+    }
+</style>
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-3">
+        {% if 'ROLE_ADMIN' in app.user.roles %}
+            {{ form_row(form.category) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.date) }}
+            {% if file_attachment.attachments is defined and file_attachment.attachments is empty %}
+                {{ form_row(form.attachments) }}
+            {% endif %}
+            {% if file_attachment.attachments is not defined %}
+                {{ form_row(form.attachments) }}
+            {% endif %}
+        {% else %}
+            {{ form_row(form.category,{'attr':{'readonly':'true'}}) }}
+            {{ form_row(form.description,{'attr':{'readonly':'true'}}) }}
+            {{ form_row(form.date,{'attr':{'readonly':'true'}}) }}
+            {% if file_attachment.attachments is defined and file_attachment.attachments is empty %}
+                {{ form_row(form.attachments,{'attr':{'readonly':'true'}}) }}
+            {% endif %}
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        {% if 'ROLE_ADMIN' in app.user.roles %}
+            {{ form_row(form.notes) }}
+        {% else %}
+            {{ form_row(form.notes,{'attr':{'readonly':'true'}}) }}
+        {% endif %}
+    </div>
+</div>
+
+
+<div class="col-md-3" style="padding-left: 0px">
+    <strong style="color: blue">
+        {% if file_attachment.attachments is defined and file_attachment.attachments is not empty %}
+            {% for attachment in file_attachment.attachments %}
+                <ul><a title="{{ attachment|raw }}" target="_blank"
+                       href="{{ path('show_attachment_file_upload_directory',{id : file_attachment.id,'filename':attachment}) }}">
+                        <b> {{ attachment }}</b> </a>
+                </ul>
+            {% endfor %}
+            <br>
+            {{ form_row(form.additional) }}
+        {% endif %}
+        <br>
+        {% if file_attachment.attachments is defined and file_attachment.attachments is not empty %}
+            <a class="btn btn-danger btn-sm"
+               href="{{ path('file_attachments_delete_attachment', {'id': file_attachment.id }) }} ">Delete
+                attachments</a>
+        {% endif %}
+    </strong>
+</div>
+
+
+<button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

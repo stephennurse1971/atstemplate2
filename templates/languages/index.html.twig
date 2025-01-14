@@ -5,14 +5,7 @@
 {% block body %}
     <h1 style="color: red">Languages</h1>
 
-    <div class="row">
-        <div class="col-2">
-            <a class="btn btn-success btn-sm" href="{{ path('languages_new') }}">New</a>
-        </div>
-        <div class="col-2">
-            <a class="btn btn-outline-primary btn-sm" href="{{ path('update_ranking') }}">Re-number</a>
-        </div>
-    </div>
+    {% include 'languages/parts/import_and_export.html.twig' %}
 
     <table class="table table-responsive">
         <thead>

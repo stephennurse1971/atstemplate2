@@ -1,0 +1,32 @@
+{% if app.user %}
+    {% if app.user in photo.favourites %}
+        <a title="Mark as a favourite"
+           href="{{ path('photo_edit_favourite_status', {photo: photo.id, user:app.user.id, favoured: 'unfavourite'}) }}"><i
+                    style="color: red" class="fa fa-solid fa-heart"></i></a>
+    {% else %}
+        <a title="Mark as not favourite"
+           href="{{ path('photo_edit_favourite_status', {photo: photo.id, user:app.user.id, favoured: 'favourite'}) }}"><i
+                    style="color: red" class="fa fa-regular fa-heart-o"></i></a>
+    {% endif %}
+    {% if app.user== photo.uploadedBy %}
+        <i style="color: green" title="{{ photo.uploadedBy.firstName }} {{ photo.uploadedBy.lastName }}"
+           class="fas fa-user"></i>
+    {% else %}
+        <i style="color: grey" title="{{ photo.uploadedBy.firstName }} {{ photo.uploadedBy.lastName }}"
+           class="fas fa-user"></i>
+    {% endif %}
+    {% if app.user %}
+        <a title="Email to {{ app.user.email }}" href="{{ path('email_photo', {'photoId': photo.id}) }}">
+            <i style="color: blue" class="fa fa-envelope"></i></a>
+        <a title="Download photo" href="{{ path('download_photo', {'photoId': photo.id}) }}">
+            <i style="color: red" class="fa fa-download"></i></a>
+    {% endif %}
+
+    {% if is_granted('ROLE_ADMIN') or app.user.id==photo.uploadedBy.id %}
+        <form class="d-inline" method="post"
+              action="{{ path('photos_delete', {'id': photo.id}) }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ photo.id) }}">
+            <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i></button>
+        </form>
+    {% endif %}
+{% endif %}

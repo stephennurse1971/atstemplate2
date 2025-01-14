@@ -5,6 +5,8 @@ namespace App\Form;
 use App\Entity\CmsCopy;
 use App\Entity\CmsCopyPageFormats;
 use App\Entity\Product;
+use App\Repository\ProductRepository;
+use App\Services\TranslationsWorkerService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -37,7 +39,11 @@ class CmsCopyType extends AbstractType
             ->add('product', EntityType::class, [
                 'class' => Product::class,
                 'required' => false,
-                'choice_label' => 'product'
+                'choice_label' => 'product',
+                'query_builder' => function (ProductRepository $er) {
+                    return $er->createQueryBuilder('p')
+                        ->orderBy('p.ranking', 'ASC');
+                },
             ])
             ->add('tabTitle')
             ->add('tabTitleFR', TextType::class, [
@@ -84,5 +90,9 @@ class CmsCopyType extends AbstractType
         $resolver->setDefaults([
             'data_class' => CmsCopy::class,
         ]);
+    }
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
     }
 }

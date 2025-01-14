@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Photos: Locations{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Photos: Locations & Viewers</h1>
+
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th style="text-align: left">Date</th>
+            <th style="text-align: left">Location</th>
+            <th style="text-align: left">Public/<br>Private</th>
+            <th style="text-align: left">Users<a target="_blank" href="{{ path('user_index') }}">+</a>
+            </th>
+            <th>Photos</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for photo_location in photo_locations %}
+            <tr>
+                <td data-sort="{{ photo_location.date|date('Y-m-d') }}" style="text-align: left">
+                    {{ photo_location.date |date('M-Y') }}
+                </td>
+                <td>
+                    <a href="{{ path('photo_locations_edit', {'id': photo_location.id}) }}">{{ photo_location.location }}</a>
+                </td>
+                <td data-sort="{{ photo_location.publicPrivate }}" style="text-align: center">
+                    {% if photo_location.publicPrivate ==  "Public" %}
+                        <i title="Public" style="color: green" class="fa fa-circle"></i>
+                    {% endif %}
+                    {% if photo_location.publicPrivate ==  "Private" %}
+                        <i title="Private" style="color: red" class="fa fa-circle"></i>
+                    {% endif %}
+                </td>
+                <td style="text-align: left">
+                    {% for user_id in photo_location.enabledUsers %}
+                        {% set user = FindUser.getUser(user_id) %}
+                        {% if user is not null %}
+                            {{ user.fullName }},
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td style="text-align: center">
+                    <a target="_blank" class="btn btn-outline-primary btn-sm"
+                       href="{{ path('show_photos_by_location', {location: photo_location.location, author: 'All', format:'Full'}) }}">
+                        <i class="fa fa-photo"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm mt-2" href="{{ path('photo_locations_new') }}">New</a>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 50,
+                "order": [[0, 'desc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

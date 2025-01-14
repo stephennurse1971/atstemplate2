@@ -13,11 +13,11 @@ class LanguagesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('ranking')
             ->add('isActive')
             ->add('language')
             ->add('abbreviation')
             ->add('linkedInOther')
-            ->add('ranking')
             ->add('icon', FileType::class, [
                 'label' => 'Icon',
                 'mapped' => false,

@@ -12,20 +12,21 @@
         {{ form_row(form.lastName) }}
         {{ form_row(form.email) }}
         {{ form_row(form.mobile) }}
+        {{ form_row(form.emailVerified) }}
+        {{ form_row(form.defaultLanguage) }}
+        <input type="hidden" id="hidden_password" name="user[password]" value="{{ user.password }}">
     </div>
-
     <div class="col-12 col-lg-2">
         <div class="password">
             <h2 style="color: red">Password</h2>
             {{ form_row(form.password) }}
+
         </div>
         {% if form.roles is defined %}
             <h2 style="color: red">Roles</h2>
             {{ form_row(form.roles) }}
         {% endif %}
     </div>
-
-
 </div>
 
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>

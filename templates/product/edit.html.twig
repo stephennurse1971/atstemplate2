@@ -1,8 +1,18 @@
+{# templates/product/edit.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Edit: {{ product.product }}{% endblock %}
 
 {% block body %}
+    {# Display Flash messages #}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
     <h1 style="color: red">Edit: {{ product.product }}</h1>
 
     {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}

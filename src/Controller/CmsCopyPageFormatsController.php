@@ -5,9 +5,7 @@ namespace App\Controller;
 use App\Entity\CmsCopyPageFormats;
 use App\Form\CmsCopyPageFormatsType;
 use App\Form\ImportType;
-use App\Repository\BusinessTypesRepository;
 use App\Repository\CmsCopyPageFormatsRepository;
-use App\Services\BusinessTypesImportService;
 use App\Services\CmsPageCopyPageFormatImportService;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -156,7 +154,7 @@ class CmsCopyPageFormatsController extends AbstractController
      * @Route ("/import/cms_copy_page_formats", name="cms_copy_page_formats_import" )
      */
     public
-    function businessTypesImport(Request $request, SluggerInterface $slugger, CmsCopyPageFormatsRepository $cmsCopyPageFormatsRepository, CmsPageCopyPageFormatImportService $cmsPageCopyPageFormatImportService): Response
+    function cmsFormatsImport(Request $request, SluggerInterface $slugger, CmsCopyPageFormatsRepository $cmsCopyPageFormatsRepository, CmsPageCopyPageFormatImportService $cmsPageCopyPageFormatImportService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);
