@@ -267,7 +267,7 @@ class CompanyDetailsType extends AbstractType
             ])
             ->add('enableUserRegistration', CheckboxType::class, [
                 'label' => $this->translationsWorker->getTranslations('Enable Registration'),
-            ])
+                'required' => false])
             ->add('registrationEmail', TextType::class, [
                 'label' => $this->translationsWorker->getTranslations('Registration Email'),
             ]);
