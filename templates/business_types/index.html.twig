@@ -20,9 +20,8 @@
             <th>Type</th>
             <th>Description</th>
             <th>Map Icon</th>
-            <th>Colour</th>
             <th>Icon</th>
-            <th>Map<br>Display #</th>
+            <th>#</th>
             <th>#</th>
             <th>#</th>
         </tr>
@@ -50,17 +49,18 @@
                     {{ business_type.description }}
                 </td>
                 <td>
-                    {{ business_type.mapIcon }} / {{ business_type.mapIcon2 }}
+                    {% if business_type.mapIcon is not null %}
+                        {{ business_type.mapIcon.name }}
+                    {% endif %}
                 </td>
                 <td>
                     {{ business_type.mapIconColour }}
                 </td>
                 <td style="text-align: center">
-                    <i style="color: {{ business_type.mapIconColour }}" class="{{ business_type.mapIcon }}"></i>
-                    <i style="color: {{ business_type.mapIconColour }}" class="{{ business_type.mapIcon2 }}"></i>
-                </td>
-                <td style="text-align: center">
-                    {{ business_type.mapDisplay }}
+                    {% if business_type.mapIcon is not empty %}
+                        {% set icon = asset('administration/attachments/Business_contacts/Icons/')~business_type.mapIcon.iconFile %}
+                        <img style="color: {{ business_type.mapIconColour }}" height="50" width="50" src="{{ icon }}" class="rounded-circle">
+                    {% endif %}
                 </td>
                 <td>
                     <a class="btn btn-outline-danger btn-sm"

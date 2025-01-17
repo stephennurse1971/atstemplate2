@@ -16,18 +16,8 @@ class CountBusinessContactsService
         $this->businessTypesRepository = $businessTypesRepository;
     }
 
-    public function count($business_type)
+    public function count($businessType)
     {
-        // Ensure you are passing the correct field to findBy
-        if ($business_type instanceof BusinessTypes) {
-            $business_type = $business_type->getId(); // Get the ID if it's an entity
-        }
-
-        // Now, find BusinessContacts by the business_type ID
-        $business_contacts = $this->businessContactsRepository->findBy([
-            'business_type' => $business_type // Pass the ID or the correct object
-        ]);
-
-        return count($business_contacts);
+        return $this->businessContactsRepository->countByBusinessType($businessType); // Corrected the property name
     }
 }

@@ -39,6 +39,16 @@ class BusinessContactsRepository extends ServiceEntityRepository
         }
     }
 
+    public function countByBusinessType($businessType)
+    {
+        return $this->createQueryBuilder('b')
+            ->select('COUNT(b.id)')
+            ->where('b.businessType = :businessType')
+            ->setParameter('businessType', $businessType)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
 //    /**
 //     * @return BusinessContacts[] Returns an array of BusinessContacts objects
 //     */

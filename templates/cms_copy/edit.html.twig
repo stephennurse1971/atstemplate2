@@ -25,11 +25,6 @@
                 {% endif %}
             </h1>
         </div>
-
-        <div class="col-3">
-            <a class="btn btn-outline-info btn-sm" href="{{ path('cms_copy_index') }}">Return to list</a>
-            {{ include('cms_copy/_delete_form.html.twig') }}
-        </div>
     </div>
 
     {{ include('cms_copy/_form.html.twig', {'button_label': 'Save'}) }}

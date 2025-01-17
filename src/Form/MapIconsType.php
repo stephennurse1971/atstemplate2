@@ -2,36 +2,31 @@
 
 namespace App\Form;
 
-use App\Entity\BusinessTypes;
-use App\Entity\CmsCopyPageFormats;
 use App\Entity\MapIcons;
 use App\Services\TranslationsWorkerService;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BusinessTypesType extends AbstractType
+class MapIconsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('ranking')
-            ->add('businessType')
-            ->add('description')
-            ->add('mapIcon', EntityType::class, [
-                'label' => $this->translationsWorker->getTranslations('Map Icon'),
-                'class' => MapIcons::class,
-                'required' => true,
-                'choice_label' => 'name'
+            ->add('name')
+            ->add('iconFile', FileType::class, [
+                'label' => $this->translationsWorker->getTranslations('File'),
+                'mapped' => false,
+                'required' => false
             ])
-            ->add('mapIconColour');
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => BusinessTypes::class,
+            'data_class' => MapIcons::class,
         ]);
     }
 
@@ -40,3 +35,4 @@ class BusinessTypesType extends AbstractType
         $this->translationsWorker = $translationsWorker;
     }
 }
+

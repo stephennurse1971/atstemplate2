@@ -34,7 +34,7 @@ class CmsCopyType extends AbstractType
             ->add('pageLayout', EntityType::class, [
                 'label' => $this->translationsWorker->getTranslations('Page Layout'),
                 'class' => CmsCopyPageFormats::class,
-                'required' => false,
+                'required' => true,
                 'choice_label' => 'name'
             ])
 

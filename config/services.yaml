@@ -16,6 +16,7 @@ parameters:
   facebook_groups_reviews_import_directory: '%kernel.project_dir%/public/administration/import_export/facebook_groups_reviews/'
   file_attachments_directory: '%kernel.project_dir%/public/administration/attachments/FileAttachments'
   languages_import_directory: '%kernel.project_dir%/public/administration/import_export/languages/'
+  map_icon_directory: '%kernel.project_dir%/public/administration/attachments/Business_Contacts/Icons/'
   icon_directory: '%kernel.project_dir%/public/administration/attachments/LanguageIcons/'
   instructions_directory: '%kernel.project_dir%/public/administration/attachments/Instructions/'
   photos_directory: '%kernel.project_dir%/public/administration/attachments/Photos/'

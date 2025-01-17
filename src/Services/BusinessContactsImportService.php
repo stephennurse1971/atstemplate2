@@ -81,9 +81,8 @@ class BusinessContactsImportService
                 $mobile = "+" . $mobile;
             }
 
-
             $businessContact = $this->businessContactsRepository->findOneBy([
-                'firstName' => $firstName . "3",
+                'firstName' => $firstName,
                 'lastName' => $lastName,
                 'company' => $company,
             ]);

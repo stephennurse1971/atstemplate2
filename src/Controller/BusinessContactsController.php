@@ -40,15 +40,17 @@ class BusinessContactsController extends AbstractController
             'status' => 'Approved'
         ]);
 
-//        if ($this->isGranted('ROLE_ADMIN')) {
-//            $business_contacts = $businessContactsRepository->findAll();
-//        }
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $business_contacts = $businessContactsRepository->findAll();
+        }
+
         $business_types = $businessTypesRepository->findBy([], ['ranking' => 'ASC']);
 
         return $this->render('business_contacts/index.html.twig', [
             'business_contacts' => $business_contacts,
             'business_types' => $business_types,
             'countBusinessContactsService' => $countBusinessContactsService,
+            'list_or_map'=>'list'
         ]);
     }
 
@@ -71,14 +73,48 @@ class BusinessContactsController extends AbstractController
             ]);
         }
 
-//        if ($this->isGranted('ROLE_ADMIN')) {
-//            $business_contacts = $businessContactsRepository->findAll();
-//        }
+        $latitude_total = 0;
+        $longitude_total = 0;
+        $count = 0;
+        $latitude_max = -100;
+        $latitude_min = +100;
+        $longitude_max = -100;
+        $longitude_min = +100;
+
+        foreach ($business_contacts as $business_contact) {
+            $latitude_total = $latitude_total + $business_contact->getLocationLatitude();
+            $longitude_total = $longitude_total + $business_contact->getLocationLongitude();
+            $count = $count + 1;
+
+            if ($business_contact->getLocationLatitude() > $latitude_max) {
+                $latitude_max = $business_contact->getLocationLatitude();
+            }
+            if ($business_contact->getLocationLatitude() < $latitude_min) {
+                $latitude_min = $business_contact->getLocationLatitude();
+            }
+            if ($business_contact->getLocationLongitude() > $longitude_max) {
+                $longitude_max = $business_contact->getLocationLongitude();
+            }
+            if ($business_contact->getLocationLongitude() < $longitude_min) {
+                $longitude_min = $business_contact->getLocationLongitude();
+            }
+        }
+
+        $latitude_average = $latitude_total / $count;
+        $longitude_average = $longitude_total / $count;
+
         $business_types = $businessTypesRepository->findAll();
         return $this->render('business_contacts/map_of_business_contacts.html.twig', [
             'business_contacts' => $business_contacts,
             'business_types' => $business_types,
             'subset' => $subset,
+            'latitude_average' => $latitude_average,
+            'longitude_average' => $longitude_average,
+            'latitude_max' => $latitude_max,
+            'latitude_min' => $latitude_min,
+            'longitude_max' => $longitude_max,
+            'longitude_min' => $longitude_min,
+            'list_or_map'=>'map'
         ]);
     }
 

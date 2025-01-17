@@ -25,20 +25,13 @@ class BusinessTypes
      */
     private $businessType;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $mapIcon;
+
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $mapIconColour;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $mapDisplay;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -50,15 +43,16 @@ class BusinessTypes
      */
     private $description;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $mapIcon2;
 
     /**
      * @ORM\OneToMany(targetEntity=BusinessContacts::class, mappedBy="businessType")
      */
     private $businessContacts;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=MapIcons::class)
+     */
+    private $mapIcon;
 
 
 
@@ -80,17 +74,6 @@ class BusinessTypes
         return $this;
     }
 
-    public function getMapIcon(): ?string
-    {
-        return $this->mapIcon;
-    }
-
-    public function setMapIcon(?string $mapIcon): self
-    {
-        $this->mapIcon = $mapIcon;
-
-        return $this;
-    }
 
     public function getMapIconColour(): ?string
     {
@@ -104,17 +87,7 @@ class BusinessTypes
         return $this;
     }
 
-    public function getMapDisplay(): ?int
-    {
-        return $this->mapDisplay;
-    }
 
-    public function setMapDisplay(?int $mapDisplay): self
-    {
-        $this->mapDisplay = $mapDisplay;
-
-        return $this;
-    }
 
     public function getRanking(): ?float
     {
@@ -140,17 +113,6 @@ class BusinessTypes
         return $this;
     }
 
-    public function getMapIcon2(): ?string
-    {
-        return $this->mapIcon2;
-    }
-
-    public function setMapIcon2(?string $mapIcon2): self
-    {
-        $this->mapIcon2 = $mapIcon2;
-
-        return $this;
-    }
     public function __construct()
     {
         $this->businessContacts = new ArrayCollection();
@@ -162,6 +124,18 @@ class BusinessTypes
     public function getBusinessContacts(): Collection
     {
         return $this->businessContacts;
+    }
+
+    public function getMapIcon(): ?MapIcons
+    {
+        return $this->mapIcon;
+    }
+
+    public function setMapIcon(?MapIcons $mapIcon): self
+    {
+        $this->mapIcon = $mapIcon;
+
+        return $this;
     }
 
 }

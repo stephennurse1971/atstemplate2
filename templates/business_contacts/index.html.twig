@@ -6,55 +6,82 @@
     {% include 'business_contacts/parts/import_and_export.html.twig' %}
 
     {% for business_type in business_types %}
-{#        {% if CountBusinessContactsService.count(business_type) >0 %}#}
-            <h2 style="color: red">{{ business_type.businessType }}
-                <a href="{{ path('business_contacts_new', {business_type: business_type.id}) }}">+</a>
-                <br>
-{#                ({{ business_contacts_count[business_type.id] }})#}
-            </h2>
-{#        {% endif %}#}
+        {% set business_contacts_count = CountBusinessContactsService.count(business_type) %}
 
-        <br>
-        <table class="table table-responsive-sm">
-            <thead>
-            <tr>
-                <th>Photo</th>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <th style="width: 10px; text-align: left; color: red">Status</th>
-                    <th style="width: 10px; text-align: left; color: red"></th>
-                {% endif %}
-                <th style="width: 150px; text-align: left">Company</th>
-                <th style="width: 150px; text-align: left">Name</th>
-                <th class="desktop" style="width: 10px; text-align: center">Website</th>
-                <th class="desktop" style="width: 10px; text-align: center">Email</th>
-                <th class="desktop" style="width: 10px; text-align: center">Mobile</th>
-                <th class="desktop" style="width: 10px; text-align: center">Landline</th>
-                <th class="desktop" style="width: 400px; text-align: left">Address</th>
-                <th class="desktop" style="width: 180px; text-align: left">Notes</th>
-                <th style="width: 10px; text-align: center">
-                    VCF
-                </th>
-                <th class="desktop" style="width: 10px; text-align: center">Files</th>
-                {% include 'business_contacts/parts/access_count_headers.html.twig' %}
-            </tr>
-            </thead>
-            <tbody>
-            {% for business_contact in business_contacts %}
-                {% if business_type == business_contact.businessType %}
-                    <tr>
-                        {% include 'business_contacts/table_body1.html.twig' %}
-                        {% include 'business_contacts/table_body2.html.twig' %}
-                        {% include 'business_contacts/table_body3.html.twig' %}
-                        {% include 'business_contacts/table_body4.html.twig' %}
-                        {% include 'business_contacts/table_body5.html.twig' %}
-                        {% include 'business_contacts/parts/access_count_body.html.twig' %}
-                    </tr>
-                {% endif %}
-            {% endfor %}
-            </tbody>
-        </table>
-        <br><br>
+        {% set file = asset('administration/attachments/Business_contacts/Icons/')~business_type.mapIcon.iconFile %}
+
+        {% if business_contacts_count >0 %}
+            <div class="row">
+                <div class="col-6">
+                    <h2 style="color: red">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a target="_blank" href="{{ path('business_types_edit',{id:business_type.id}) }}">
+                            {{ business_type.businessType }}
+                            </a>
+                        {% else %}
+                            {{ business_type.businessType }}
+                        {% endif %}
+                        {% if business_contacts_count %}
+                            ({{ business_contacts_count }})
+                        {% endif %}
+                        {% if app.user %}
+                            <a href="{{ path('business_contacts_new', {business_type: business_type.id}) }}">+</a>
+                        {% endif %}
+                    </h2>
+                </div>
+                <div class="col-1">
+                    <a class="btn btn-outline-primary btn-sm"
+                       href="{{ path('business_contacts_map', {subset: business_type.businessType}) }}">
+                        Map
+                        {% if business_type.mapIcon is not empty %}
+                            :: <img height="15" width="15" src="{{ file }}" class="rounded-circle">
+                        {% endif %}
+                    </a>
+                </div>
+
+            </div>
+
+
+            <table class="table table-responsive-sm">
+                <thead>
+                <tr>
+                    <th>Photo</th>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <th style="width: 10px; text-align: left; color: red">Status</th>
+                        <th style="width: 10px; text-align: left; color: red"></th>
+                    {% endif %}
+                    <th style="width: 150px; text-align: left">Company</th>
+                    <th style="width: 150px; text-align: left">Name</th>
+                    <th class="desktop" style="width: 10px; text-align: center">Website</th>
+                    <th class="desktop" style="width: 10px; text-align: center">Email</th>
+                    <th class="desktop" style="width: 10px; text-align: center">Mobile</th>
+                    <th class="desktop" style="width: 10px; text-align: center">Landline</th>
+                    <th class="desktop" style="width: 400px; text-align: left">Address</th>
+                    <th class="desktop" style="width: 180px; text-align: left">Notes</th>
+                    <th style="width: 10px; text-align: center">VCF</th>
+                    <th class="desktop" style="width: 10px; text-align: center">Files</th>
+                    {% include 'business_contacts/parts/access_count_headers.html.twig' %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for business_contact in business_contacts %}
+                    {% if business_type == business_contact.businessType %}
+                        <tr>
+                            {% include 'business_contacts/parts/table_body1.html.twig' %}
+                            {% include 'business_contacts/parts/table_body2.html.twig' %}
+                            {% include 'business_contacts/parts/table_body3.html.twig' %}
+                            {% include 'business_contacts/parts/table_body4.html.twig' %}
+                            {% include 'business_contacts/parts/table_body5.html.twig' %}
+                            {% include 'business_contacts/parts/access_count_body.html.twig' %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            <br><br>
+        {% endif %}
     {% endfor %}
+
 
 {% endblock %}
 

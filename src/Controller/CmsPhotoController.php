@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\CmsPhoto;
 use App\Form\CmsPhotoType;
 use App\Repository\CmsPhotoRepository;
-use App\Repository\PhotosRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

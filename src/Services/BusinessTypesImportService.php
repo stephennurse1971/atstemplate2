@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Entity\BusinessTypes;
 use App\Repository\BusinessContactsRepository;
 use App\Repository\BusinessTypesRepository;
+use App\Repository\MapIconsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -17,9 +18,7 @@ class BusinessTypesImportService
         $businessType = '';
         $businessDescription = '';
         $mapIcon = '';
-        $mapIcon2 = '';
         $mapIconColour = '';
-        $mapDisplay = '';
         $filepath = $this->container->getParameter('business_types_import_directory');
         $fullpath = $filepath . $fileName;
         $alldataFromCsv = [];
@@ -42,21 +41,18 @@ class BusinessTypesImportService
             $ranking = trim($oneLineFromCsv[0]);
             $businessTypeName = trim($oneLineFromCsv[1]);
             $businessDescription = trim($oneLineFromCsv[2]);
-            $mapIcon = trim($oneLineFromCsv[3]);
-            $mapIcon2 = trim($oneLineFromCsv[4]);
-            $mapIconColour = trim($oneLineFromCsv[5]);
-            $mapDisplay = trim($oneLineFromCsv[6]);
+            $mapIconFile = trim($oneLineFromCsv[3]);
+            $mapIconColour = trim($oneLineFromCsv[4]);
 
             $previous_business_type = $this->businessTypeRepository->findOneBy(['businessType' => $businessTypeName]);
+            $map_icon_id=$this->mapIconsRepository->findOneBy(['name' => $mapIconFile]);
             if (!$previous_business_type) {
                 $businessType = new BusinessTypes();
                 $businessType->setRanking($ranking)
                     ->setBusinessType($businessTypeName)
                     ->setDescription($businessDescription)
-                    ->setMapIcon($mapIcon)
-                    ->setMapIcon2($mapIcon2)
-                    ->setMapIconColour($mapIconColour)
-                    ->setMapDisplay($mapDisplay);
+                    ->setMapIcon($map_icon_id)
+                    ->setMapIconColour($mapIconColour);
                 $this->manager->persist($businessType);
                 $this->manager->flush();
             }
@@ -65,11 +61,12 @@ class BusinessTypesImportService
         return null;
     }
 
-    public function __construct(BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, ContainerInterface $container, EntityManagerInterface $manager)
+    public function __construct(BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, MapIconsRepository $mapIconsRepository, ContainerInterface $container, EntityManagerInterface $manager)
     {
         $this->container = $container;
         $this->manager = $manager;
         $this->businessContactsRepository = $businessContactsRepository;
         $this->businessTypeRepository = $businessTypesRepository;
+        $this->mapIconsRepository = $mapIconsRepository;
     }
 }

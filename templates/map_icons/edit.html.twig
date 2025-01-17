@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit: Map Icon:  {{ map_icon.name }}{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Edit: Map Icons : {{ map_icon.name }}</h1>
+
+    {{ include('map_icons/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('map_icons_index') }}">Return to list</a>
+
+    {{ include('map_icons/_delete_form.html.twig') }}
+{% endblock %}
