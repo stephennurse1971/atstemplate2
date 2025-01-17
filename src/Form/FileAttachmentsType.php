@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\FileAttachments;
+use App\Services\TranslationsWorkerService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -48,4 +49,10 @@ class FileAttachmentsType extends AbstractType
 
         ]);
     }
+
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
+    }
+
 }

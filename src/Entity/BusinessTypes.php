@@ -4,6 +4,9 @@ namespace App\Entity;
 
 use App\Repository\BusinessTypesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use App\Entity\BusinessContacts;
 
 /**
  * @ORM\Entity(repositoryClass=BusinessTypesRepository::class)
@@ -51,6 +54,11 @@ class BusinessTypes
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $mapIcon2;
+
+    /**
+     * @ORM\OneToMany(targetEntity=BusinessContacts::class, mappedBy="businessType")
+     */
+    private $businessContacts;
 
 
 
@@ -142,6 +150,18 @@ class BusinessTypes
         $this->mapIcon2 = $mapIcon2;
 
         return $this;
+    }
+    public function __construct()
+    {
+        $this->businessContacts = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection<int, BusinessContacts>
+     */
+    public function getBusinessContacts(): Collection
+    {
+        return $this->businessContacts;
     }
 
 }

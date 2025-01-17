@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\BusinessTypes;
+use App\Services\TranslationsWorkerService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,5 +28,9 @@ class BusinessTypesType extends AbstractType
         $resolver->setDefaults([
             'data_class' => BusinessTypes::class,
         ]);
+    }
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
     }
 }

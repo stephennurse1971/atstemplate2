@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\PhotoLocations;
 use App\Entity\Photos;
 use App\Entity\User;
+use App\Services\TranslationsWorkerService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -64,4 +65,10 @@ class PhotosType extends AbstractType
     public function __construct(Security $security){
         $this->security = $security;
     }
+
+//    public function __construct(TranslationsWorkerService $translationsWorker)
+//    {
+//        $this->translationsWorker = $translationsWorker;
+//    }
+
 }

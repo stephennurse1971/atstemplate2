@@ -73,7 +73,7 @@
 
     <a class="btn btn-outline-primary btn-sm" href="{{ path('user_index', {status : 'All'}) }}">Return to list</a>
 
-    <a class="btn btn-outline-danger btn-sm" href="{{ path('user_edit', {'fullName': user.fullName}) }}">Edit</a>
+    <a class="btn btn-outline-danger btn-sm" href="{{ path('user_edit', {'id': user.id}) }}">Edit</a>
 
     {{ include('user/_delete_form.html.twig') }}
 {% endblock %}

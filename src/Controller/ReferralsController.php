@@ -59,6 +59,7 @@ class ReferralsController extends AbstractController
         $now = new \DateTime('now');
         $referral = new Referrals();
         $referral->setBusinessSite($businessContactsRepository->find($business_referred))
+            ->setBusinessContact($businessContactsRepository->find($business_referred))
             ->setAction($action)
             ->setDateTime($now);
         if($user){

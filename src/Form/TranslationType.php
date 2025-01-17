@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Translation;
+use App\Services\TranslationsWorkerService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,4 +28,10 @@ class TranslationType extends AbstractType
             'data_class' => Translation::class,
         ]);
     }
+
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
+    }
+
 }

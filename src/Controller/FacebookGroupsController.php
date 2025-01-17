@@ -31,12 +31,19 @@ class FacebookGroupsController extends AbstractController
     /**
      * @Route("/index", name="facebook_groups_index", methods={"GET"})
      */
-    public function index(FacebookGroupsRepository $facebookGroupsRepository, FacebookGroupsReviewsRepository $facebookGroupsReviewsRepository): Response
+    public function index(FacebookGroupsRepository $facebookGroupsRepository, FacebookGroupsReviewsRepository $facebookGroupsReviewsRepository, CompanyDetailsRepository $companyDetailsRepository): Response
     {
+        $company_details = $companyDetailsRepository->find('1');
+        $today = new \DateTime('now');
+        $history_months = $company_details->getFacebookReviewsHistoryShowMonths();
+        $cut_off_date = (clone $today)->modify("-{$history_months} months");
+
         return $this->render('facebook_groups/index.html.twig', [
             'facebook_groups' => $facebookGroupsRepository->findAll(),
             'facebook_group_reviews' => $facebookGroupsReviewsRepository->findByDateLatest(),
+            'cut_off_date' => $cut_off_date,
         ]);
+
     }
 
     /**

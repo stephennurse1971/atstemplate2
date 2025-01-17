@@ -1,5 +1,5 @@
 <style>
-    .ck-content{
+    .ck-content {
         height: 500px;
     }
 </style>
@@ -11,30 +11,73 @@
             <a target="_blank" href="{{ path('business_types_new') }}">+</a>
         {% endif %}
         {{ form_row(form.businessType) }}
-        {{ form_row(form.businessOrPerson) }}
+        <div class="business_or_person">
+            {{ form_row(form.businessOrPerson) }}
+        </div>
+
         {{ form_row(form.company) }}
-        {{ form_row(form.firstName) }}
-        {{ form_row(form.lastName) }}
+
+        <div class="person_names">
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.lastName) }}
+        </div>
+
         {% if business_contact.photo is not empty %}
+            {% set photo = asset('administration/attachments/Business_contacts/Photos/')~business_contact.photo %}
+            <a class="btn btn-outline-danger btn-sm" target="_blank"
+               href="{{ path('view_business_contact_photo', {id:business_contact.id}) }}">
+                <img title="{{ business_contact.photo }}" height="50" width="50"
+                     src="{{ photo }}" class="rounded-circle"></a>
             <br>
             <b>{{ business_contact.photo }}</b>
             <a class="btn btn-sm btn-danger"
                href="{{ path('business_contact_delete_photo_file', {'id': business_contact.id }) }} ">Delete
                 photo</a>
+        {% else %}
+            {{ form_row(form.photo) }}
         {% endif %}
-        {{ form_row(form.photo) }}
     </div>
     <div class="col-2">
         {{ form_row(form.email) }}
         {{ form_row(form.mobile) }}
         {{ form_row(form.landline) }}
+
+        {% if form.website is not empty %}
+            {% if form.website starts with 'http' %}
+                {% set web = form.website %}
+            {% else %}
+                {% set web = 'https://'~ form.website %}
+            {% endif %}
+        {% endif %}
+
+
+        {% if business_contact.website is not empty %}
+            <i class="fas fa-link"> </i>
+            {#            <a data-title="{{ web }}" target="_blank" #}
+            {#               title="{{ web }}" #}
+            {#               href="{{ web }}" class="action" #}
+            {#               data-id="{{ business_contact.id }}" data-action="Website"> #}
+            {#                <i class="fas fa-link"> </i></a> #}
+        {% endif %}
+
         {{ form_row(form.website) }}
     </div>
     <div class="col-2">
         <div class="status-container">
             {{ form_row(form.status) }}
             {{ form_row(form.publicPrivate) }}
-            {{ form_row(form.files) }}
+            {% if business_contact.files is not empty %}
+                <a title="{{ business_contact.files }}" target="_blank"
+                   href="{{ path('business_contact_show_attachment',{id : business_contact.id}) }}">
+                    <i class="fa fa-paperclip"></i></a>
+                <br>
+                <b>{{ business_contact.files }}</b><br>
+                <a class="btn btn-sm btn-danger"
+                   href="{{ path('business_contact_delete_attachment_file', {'id': business_contact.id }) }} ">Delete
+                    file</a>
+            {% else %}
+                {{ form_row(form.files) }}
+            {% endif %}
         </div>
     </div>
     <div class="col-2">

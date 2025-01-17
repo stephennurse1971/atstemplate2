@@ -3,18 +3,18 @@
 {% block title %}Business Contacts{% endblock %}
 
 {% block body %}
-    NEED TO SORT THEM BY THE RANKING
     {% include 'business_contacts/parts/import_and_export.html.twig' %}
 
     {% for business_type in business_types %}
-{#        {% if {{ CountBusinessContactsService.count(business_type) }} >0 %}#}
-{#            INSERT THIS AROUND CODE BELOW#}
+{#        {% if CountBusinessContactsService.count(business_type) >0 %}#}
+            <h2 style="color: red">{{ business_type.businessType }}
+                <a href="{{ path('business_contacts_new', {business_type: business_type.id}) }}">+</a>
+                <br>
+{#                ({{ business_contacts_count[business_type.id] }})#}
+            </h2>
 {#        {% endif %}#}
-        <h2 style="color: red">{{ business_type.businessType }}
-            <a href="{{ path('business_contacts_new', {business_type: business_type.businessType}) }}">+</a>
-           <br> FIX!!
-{#            ({{ CountBusinessContactsService.count(business_type) }})#}
-        </h2><br>
+
+        <br>
         <table class="table table-responsive-sm">
             <thead>
             <tr>
@@ -29,10 +29,8 @@
                 <th class="desktop" style="width: 10px; text-align: center">Email</th>
                 <th class="desktop" style="width: 10px; text-align: center">Mobile</th>
                 <th class="desktop" style="width: 10px; text-align: center">Landline</th>
-                <th class="desktop" style="width: 10px; text-align: center">Address</th>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <th class="desktop" style="width: 10px; text-align: center">Location</th>
-                {% endif %}
+                <th class="desktop" style="width: 400px; text-align: left">Address</th>
+                <th class="desktop" style="width: 180px; text-align: left">Notes</th>
                 <th style="width: 10px; text-align: center">
                     VCF
                 </th>
@@ -42,8 +40,15 @@
             </thead>
             <tbody>
             {% for business_contact in business_contacts %}
-                {% if business_type == business_contact.businessType%}
-                    {% include 'business_contacts/table_body.html.twig' %}
+                {% if business_type == business_contact.businessType %}
+                    <tr>
+                        {% include 'business_contacts/table_body1.html.twig' %}
+                        {% include 'business_contacts/table_body2.html.twig' %}
+                        {% include 'business_contacts/table_body3.html.twig' %}
+                        {% include 'business_contacts/table_body4.html.twig' %}
+                        {% include 'business_contacts/table_body5.html.twig' %}
+                        {% include 'business_contacts/parts/access_count_body.html.twig' %}
+                    </tr>
                 {% endif %}
             {% endfor %}
             </tbody>
@@ -82,6 +87,7 @@
 
     <script>
         var businessContactId = '';
+
         function getLocation(id) {
             businessContactId = id;
             if (navigator.geolocation) {
@@ -90,6 +96,7 @@
                 $('#location').html('Geolocation is not supported by this browser.');
             }
         }
+
         function showLocation(position) {
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;

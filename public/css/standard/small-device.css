@@ -1,41 +1,69 @@
 @media only screen and (max-width: 600px) {
-    .article-image{
+    .article-image {
         height: 100px;
         width: 100px;
     }
-    .display-2{
-        font-size: 2rem!important;
+
+    .display-2 {
+        font-size: 2rem !important;
     }
-    table{
+
+    table {
         font-size: 12px;
     }
-    .dataTables_wrapper{
-        margin-top: 0px!important;
-        margin-bottom: 0px!important;
+
+    .dataTables_wrapper {
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
     }
-    .desktop{
-       display: none;
+
+    .desktop {
+        display: none;
     }
-    .mobile{
+
+    .mobile {
         display: block;
     }
-    .zabuto-calendar tbody td{
-        padding:0px!important;
+
+    .zabuto-calendar tbody td {
+        padding: 0px !important;
     }
-    .product-image-container{
-        width: 300px;
-        height: 300px;
+
+    .product-image-container {
+        width: 225px;
+        height: auto;
         object-fit: cover;
     }
-    .product-image-container img {
-       max-width: 100%;
-       max-height: 100%;
-        width: auto;
-        height: auto;
+    .product-image-container a:first-of-type img {
+        margin-bottom: 45px; /* Margin for the first image */
     }
-    .other-page-image{
-        max-height:300px;
-       max-width: 300px;
+    .product-image-container a img {
+        max-width: 100%;
+        margin-bottom: 0;
+        /*max-height: 100%;*/
+        /* width: auto;*/
+        /* height: auto;*/
+    }
+    /*.product-image-container img:nth-of-type(1) {*/
+    /*    margin-bottom: 45px;*/
+    /*}*/
+
+    /*.product-image-container img:nth-of-type(n+2) {*/
+    /*    margin-bottom: 0 !important;*/
+    /*}*/
+    .other-page-image {
+        max-height: 300px;
+        max-width: 300px;
+    }
+
+    .homepage-gallery-image-container {
+        max-width: 100%;
+        margin-bottom: 0;
+    }
+
+    .homepage-image {
+        max-width: 100%;
+        margin-bottom: 0;
     }
 
 }

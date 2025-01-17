@@ -20,8 +20,8 @@
         <div class="password">
             <h2 style="color: red">Password</h2>
             {{ form_row(form.password) }}
-
         </div>
+
         {% if form.roles is defined %}
             <h2 style="color: red">Roles</h2>
             {{ form_row(form.roles) }}
@@ -31,4 +31,16 @@
 
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+
+{% block additionaljs %}
+    <script>
+
+        // Get the value from the hidden field
+        var savedPassword = $("#hidden_password").val();
+
+        // Set the password field value to the hidden field value
+        $("#user_password").val(savedPassword);
+
+    </script>
+{% endblock %}
 

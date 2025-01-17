@@ -7,19 +7,27 @@ use App\Repository\BusinessTypesRepository;
 
 class CountBusinessContactsService
 {
-    public function count($business_type)
+    private $businessContactsRepository;
+    private $businessTypesRepository;
+
+    public function __construct(BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository)
     {
-        $business_contacts = $this->businessContactsRepository->findBy(['business_type' => $business_type]);
-        if ($business_contacts) {
-            return count($business_contacts);
-        } else {
-            return 0;
-        }
+        $this->businessContactsRepository = $businessContactsRepository;
+        $this->businessTypesRepository = $businessTypesRepository;
     }
 
-    public function __construct(BusinessTypesRepository $businessTypesRepository, BusinessContactsRepository $businessContactsRepository)
+    public function count($business_type)
     {
-        $this->businessTypesRepository = $businessTypesRepository;
-        $this->businessContactsRepository = $businessContactsRepository;
+        // Ensure you are passing the correct field to findBy
+        if ($business_type instanceof BusinessTypes) {
+            $business_type = $business_type->getId(); // Get the ID if it's an entity
+        }
+
+        // Now, find BusinessContacts by the business_type ID
+        $business_contacts = $this->businessContactsRepository->findBy([
+            'business_type' => $business_type // Pass the ID or the correct object
+        ]);
+
+        return count($business_contacts);
     }
 }

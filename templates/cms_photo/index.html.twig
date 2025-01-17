@@ -23,6 +23,8 @@
             <th>Category</th>
             <th style="width: 150px">Product or <br>Static Page Name</th>
             <th>Photo</th>
+            <th>Rotate</th>
+            <th></th>
             <th>Order</th>
             <th>Photo/<br>Video</th>
             <th>Title</th>
@@ -50,13 +52,50 @@
                         </a>
                     {% endif %}
                 </td>
+
                 <td>
                     {% if cms_photo.photo is not empty %}
                         {% set photo = asset('administration/attachments/WebsitePhotos/')~cms_photo.photo %}
-                        <a class="btn btn-outline-danger btn-sm" target="_blank"
-                           href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
-                            <img height="50" width="50" src="{{ photo }}" class="rounded-circle test">
-                        </a>
+
+                        {% if cms_photo.rotate ==0 %}
+                            <a class="btn btn-outline-danger btn-sm" target="_blank"
+                               href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
+                                <img height="50" width="50" src="{{ photo }}" class="rounded-circle test">
+                            </a>
+                        {% endif %}
+
+                        {% if cms_photo.rotate ==90 %}
+                            <a class="btn btn-outline-danger btn-sm" target="_blank"
+                               href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
+                                <img height="50" width="50" src="{{ photo }}" class="rounded-circle test rotate-90">
+                            </a>
+                        {% endif %}
+
+                        {% if cms_photo.rotate ==180 %}
+                            <a class="btn btn-outline-danger btn-sm" target="_blank"
+                               href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
+                                <img height="50" width="50" src="{{ photo }}" class="rounded-circle test rotate-180">
+                            </a>
+                        {% endif %}
+                        {% if cms_photo.rotate ==270 %}
+                            <a class="btn btn-outline-danger btn-sm" target="_blank"
+                               href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
+                                <img height="50" width="50" src="{{ photo }}" class="rounded-circle test rotate-270">
+                            </a>
+                        {% endif %}
+
+                    {% endif %}
+                </td>
+
+                <td style="text-align: center">
+                    {% if cms_photo.rotate is not null or cms_photo.rotate is not empty or cms_photo.rotate !=0 %}
+                        {{ cms_photo.rotate }} <span style="font-size: small">o</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if is_granted ('ROLE_ADMIN') %}
+                        <a href="{{ path('rotate_cms_photo',{id:cms_photo.id}) }}">
+                            <i style="color: green" class="fa fa-rotate-right"></i></a>
                     {% endif %}
                 </td>
                 <td style="text-align: center">
@@ -65,9 +104,9 @@
                 <td>
                     <span title="{{ cms_photo.photoOrVideo }}">{{ cms_photo.photoOrVideo|slice(0,1) }}</span>
                 </td>
-
-
-                <td>{{ cms_photo.title }}</td>
+                <td>
+                    {{ cms_photo.title }}
+                </td>
                 <td>
                     {% if  cms_photo.link is not empty %}
                         {% if  cms_photo.link starts with 'http' %}
@@ -113,7 +152,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[1, 'asc'], [3, 'asc']],
+                "order": [[0, 'asc'], [1, 'asc'], [5, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

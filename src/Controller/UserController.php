@@ -7,6 +7,7 @@ use App\Form\UserType;
 use App\Repository\BusinessContactsRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
+use App\Services\CountUserLogsService;
 use Doctrine\ORM\EntityManagerInterface;
 use JeroenDesloovere\VCard\VCard;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -30,7 +31,7 @@ class UserController extends AbstractController
      * @Route("/index", name="user_index", methods={"GET"})
      * @Security("is_granted('ROLE_STAFF')")
      */
-    public function index(UserRepository $userRepository, ProductRepository $servicesOfferedRepository): Response
+    public function index(UserRepository $userRepository, ProductRepository $servicesOfferedRepository, CountUserLogsService $countUserLogsService): Response
     {
         $now = new \DateTime('now');
         $users = $userRepository->findAll();
@@ -38,7 +39,8 @@ class UserController extends AbstractController
         return $this->render('user/index_template.html.twig', [
             'users' => $users,
             'services' => $servicesOfferedRepository->findAll(),
-            'now' => $now
+            'now' => $now,
+            'CountUserLogsService' => $countUserLogsService
         ]);
     }
 
@@ -100,41 +102,30 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{fullName}", name="user_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="user_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, string $fullName, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher, \Symfony\Component\Security\Core\Security $security): Response
+    public function edit(Request $request, int $id, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher, \Symfony\Component\Security\Core\Security $security): Response
     {
-        $user_name = explode(' ', $fullName);
-        if (count($user_name) < 3) {
-            $first_name = $user_name[0];
-            $last_name = $user_name[1];
-        } else {
-            $first_name = $user_name[0];
-            $last_name = $user_name[1] . " " . $user_name[2];
-        }
-        $user = $userRepository->findOneBy([
-            'firstName' => $first_name,
-            'lastName' => $last_name]);
-
+        $referer = $request->request->get('referer');
+        $user = $userRepository->find($id);
+        $old_password = $user->getPassword();
         $form = $this->createForm(UserType::class, $user, ['user' => $user]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $referer = $request->request->get('referer');
             if ($form->has('roles')) {
                 $roles = $form['roles']->getData();
                 $user->setRoles($roles);
             }
-            $old_password = $user->getPassword();
+
             $new_Password = $form['password']->getData();
 //            $user->updatePassword($new_Password);
-//            if ($new_Password) {
-//                $user->setPassword(
-//                    $userPasswordHasher->hashPassword($user, $new_Password));
-//            } else {
-//                $user->setPassword(
-//                    $userPasswordHasher->hashPassword($user, $old_password));
-//            }
+            if ($new_Password) {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword($user, $new_Password));
+            } else {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword($user, $old_password));
+            }
 
             $userRepository->add($user, true);
             return $this->redirect($referer);

@@ -18,8 +18,6 @@ class CompanyDetailsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
-
         $builder
             ->add('companyName', TextType::class, [
                 'label' => $this->translationsWorker->getTranslations('Company Name'),

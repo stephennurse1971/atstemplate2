@@ -7,7 +7,7 @@ use App\Form\PhotosType;
 use App\Repository\PhotoLocationsRepository;
 use App\Repository\PhotosRepository;
 use App\Repository\UserRepository;
-use App\Services\CountPhotos;
+use App\Services\CountPhotosService;
 use App\Services\PhotoAuthorsByLocation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,7 +31,7 @@ class PhotosController extends AbstractController
      * @Route("/index", name="photos_index", methods={"GET"})
      *
      */
-    public function index(PhotosRepository $photosRepository, PhotoLocationsRepository $photoLocationsRepository, CountPhotos $countPhotos): Response
+    public function index(PhotosRepository $photosRepository, PhotoLocationsRepository $photoLocationsRepository, CountPhotosService $countPhotos): Response
     {
         $photos = $photosRepository->findAll();
         $photolocations_public = $photoLocationsRepository->findBy([
@@ -107,12 +107,12 @@ class PhotosController extends AbstractController
         $photo = $photosRepository->find($photoID);
 
         if ($photo->getRotate() == null || $photo->getRotate() == 0) {
-            $photo->setRotate(1);
-        } elseif ($photo->getRotate() == 1) {
-            $photo->setRotate(2);
-        } elseif ($photo->getRotate() == 2) {
-            $photo->setRotate(3);
-        } elseif ($photo->getRotate() == 3) {
+            $photo->setRotate(90);
+        } elseif ($photo->getRotate() == 90) {
+            $photo->setRotate(180);
+        } elseif ($photo->getRotate() == 180) {
+            $photo->setRotate(270);
+        } elseif ($photo->getRotate() == 270) {
             $photo->setRotate(0);
         }
         $entityManager->persist($photo);

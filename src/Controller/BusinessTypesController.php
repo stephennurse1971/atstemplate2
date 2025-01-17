@@ -171,6 +171,7 @@ class BusinessTypesController extends AbstractController
                 $business_type->getBusinessType(),
                 $business_type->getDescription(),
                 $business_type->getMapIcon(),
+                $business_type->getMapIcon2(),
                 $business_type->getMapIconColour(),
                 $business_type->getMapDisplay(),
             ];
@@ -182,8 +183,9 @@ class BusinessTypesController extends AbstractController
         $sheet->getCell('B1')->setValue('Business Type');
         $sheet->getCell('C1')->setValue('Description');
         $sheet->getCell('D1')->setValue('Map Icon');
-        $sheet->getCell('E1')->setValue('Map Icon Colour');
-        $sheet->getCell('F1')->setValue('Map Display');
+        $sheet->getCell('E1')->setValue('Map Icon 2');
+        $sheet->getCell('F1')->setValue('Map Icon Colour');
+        $sheet->getCell('G1')->setValue('Map Display');
 
         $sheet->fromArray($data, null, 'A2', true);
         $total_rows = $sheet->getHighestRow();

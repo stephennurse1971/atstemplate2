@@ -1,6 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Business Contact{% endblock %}
+{% block title %}
+    {% if business_contact.firstName is not empty %}
+        {{ business_contact.firstName }} {{ business_contact.lastName }} (
+    {% endif %}
+    {% if business_contact.company is not empty %}
+        {{ business_contact.company }}
+    {% endif %}
+    {% if business_contact.firstName is not empty %}){% endif %}
+{% endblock %}
 
 {% block body %}
     <h2 style="color: red">{{ business_contact.businessType.businessType }}: {{ business_contact.company }}</h2>
@@ -35,13 +43,20 @@
         <tr>
             <th>Website</th>
             <td>
-                {% if business_contact.website  is not null %}
-                    <a data-title="{{ business_contact.website }}" target="_blank"
-                       title="{{ business_contact.website }}"
-                       href="{{ business_contact.website }}" class="action"
+                {% if business_contact.website is not empty %}
+                    {% if business_contact.website starts with 'http' %}
+                        {% set web = business_contact.website %}
+                    {% else %}
+                        {% set web = 'https://'~ business_contact.website %}
+                    {% endif %}
+                {% endif %}
+                {% if business_contact.website is not null %}
+                    <a data-title="{{ web }}" target="_blank"
+                       title="{{ web }}"
+                       href="{{ web }}" class="action"
                        data-id="{{ business_contact.id }}" data-action="Website">
                         <i class="fas fa-link"> </i></a>
-                    {{ business_contact.website }}
+                    {{ web }}
                 {% endif %}
             </td>
         </tr>
@@ -111,7 +126,7 @@
 
         <tr>
             <th>
-                Add contact <br>to Outlook
+                VCF
             </th>
             <td>
                 <a href="{{ path('create_vcard', {id: business_contact.id} ) }}" class="action"
@@ -127,7 +142,7 @@
 
     {#    <a class="btn btn-outline-danger btn-sm" href="{{ path('business_contacts_edit', {'id': business_contact.id}) }}">Edit</a> #}
 
-{#    {{ include('business_contacts/_delete_form.html.twig') }}#}
+    {#    {{ include('business_contacts/_delete_form.html.twig') }} #}
 {% endblock %}
 
 

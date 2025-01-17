@@ -25,4 +25,23 @@
                 console.error(error);
             });
     </script>
+
+    <script>
+        var business_or_person = $("#business_contacts_businessOrPerson").val();
+        if (business_or_person === 'Business') {
+            $(".person_names").hide();
+        }
+
+        $("#business_contacts_businessOrPerson").change(function () {
+            var business_or_person = $(this).val();
+            if (business_or_person === 'Business') {
+                $(".person_names").hide();
+                $("#business_contacts_firstName").val(null);
+                $("#business_contacts_lastName").val(null);
+            }
+            if (business_or_person === 'Person') {
+                $(".person_names").show();
+            }
+        })
+    </script>
 {% endblock %}

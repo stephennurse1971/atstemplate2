@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\PhotoLocations;
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Services\TranslationsWorkerService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -66,4 +67,10 @@ class PhotoLocationsType extends AbstractType
         $this->userRepository = $userRepository;
 
     }
+
+//    public function __construct(TranslationsWorkerService $translationsWorker)
+//    {
+//        $this->translationsWorker = $translationsWorker;
+//    }
+
 }

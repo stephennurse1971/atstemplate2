@@ -16,13 +16,9 @@
                                     <source src="{{ image }}" type="video/mp4"/>
                                 </video>
                             {% else %}
-                                {% if photo.link is not null %}
-                                    <a title="{{ photo.title }}" target="_blank" href="{{ photo.link }}">
-                                        <img class="homepage-image" src="{{ image }}">
-                                    </a>
-                                {% else %}
-                                    <img title="{{ photo.title }}" class="homepage-image" src="{{ image }}">
-                                {% endif %}
+                                <a title="{{ photo.title }}" target="_blank" href="{{ photo.link }}">
+                                    <img class="homepage-image rotate-{{ photo.rotate }}" src="{{ image }}">
+                                </a>
                             {% endif %}
                         {% endif %}
                     </div>

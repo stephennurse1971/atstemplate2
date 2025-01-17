@@ -5,7 +5,7 @@ namespace App\Services;
 
 use App\Repository\PhotosRepository;
 
-class CountPhotos
+class CountPhotosService
 {
     public function calculateTotalPhotos($location)
     {

@@ -17,17 +17,21 @@
 {% endblock %}
 
 {% block additionaljs %}
-<script>
-    $('.password').hide();
-    $('.password-reset').click(function () {
-        $('.password').toggle();
-        $('#user_password').val('');
-    });
+    <script>
+        var savedPassword = $("#hidden_password").val();
 
-    let roles = [];
-    {% for role in user.roles %}
-    roles.push("{{ role }}");
-    {% endfor %}
-    $("#user_roles").val(roles);
-</script>
+        // Set the password field value to the hidden field value
+        $("#user_password").val(savedPassword);
+         $('.password').hide();
+        $('.password-reset').click(function () {
+            $('.password').toggle();
+            $('#user_password').val('');
+        });
+
+        let roles = [];
+        {% for role in user.roles %}
+        roles.push("{{ role }}");
+        {% endfor %}
+        $("#user_roles").val(roles);
+    </script>
 {% endblock %}

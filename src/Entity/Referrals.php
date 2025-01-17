@@ -38,6 +38,13 @@ class Referrals
     private $dateTime;
 
 
+    /**
+     * @ORM\ManyToOne(targetEntity=BusinessContacts::class, inversedBy="referrals")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     */
+    private $businessContact;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -93,5 +100,17 @@ class Referrals
         return $this;
     }
 
+
+
+    public function getBusinessContact(): ?BusinessContacts
+    {
+        return $this->businessContact;
+    }
+
+    public function setBusinessContact(?BusinessContacts $businessContact): self
+    {
+        $this->businessContact = $businessContact;
+        return $this;
+    }
 
 }

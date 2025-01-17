@@ -20,6 +20,7 @@
             <th>Roles</th>
             <th>Checked</th>
             <th>Default<br>Language</th>
+            <th>Log</th>
             <th>#</th>
             <th>#</th>
             <th>VCF</th>
@@ -45,7 +46,6 @@
                     {% else %}
                         <i style="color: red" class="fa fa-remove"></i>
                     {% endif %}
-                    {#                    {{ user.emailVerified }} #}
                 </td>
                 <td>
                     {% if user.defaultLanguage is not null %}
@@ -53,8 +53,11 @@
                     {% endif %}
                 </td>
                 <td>
+                    {{ CountUserLogsService.count(user.id) }}
+                </td>
+                <td>
                     <a class="btn btn-outline-danger btn-sm" target="_blank"
-                       href="{{ path('user_edit', {'fullName': user.fullName}) }}">Edit</a>
+                       href="{{ path('user_edit', {'id': user.id}) }}">Edit</a>
                 </td>
                 <td>
                     <form method="post" action="{{ path('user_delete', {'id': user.id}) }}">

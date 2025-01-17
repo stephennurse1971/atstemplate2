@@ -1,0 +1,31 @@
+<td>
+    {% if business_contact.photo is not empty %}
+        {% set photo = asset('administration/attachments/Business_contacts/Photos/')~business_contact.photo %}
+        <a class="btn btn-outline-danger btn-sm" target="_blank"
+           href="{{ path('view_business_contact_photo', {id:business_contact.id}) }}">
+            <img title="{{ business_contact.photo }}" height="50" width="50"
+                 src="{{ photo }}" class="rounded-circle"></a>
+    {% endif %}
+</td>
+{% if is_granted('ROLE_ADMIN') %}
+    <td style="width: 10px; text-align: center">
+        {% if business_contact.status == "Approved" %}
+            <i title="{{ business_contact.status }}" style="color: green"
+               class="fa fa-check"></i>
+        {% elseif business_contact.status == "Pending" %}
+            <i title="{{ business_contact.status }}" style="color: grey"
+               class="fa fa-question-circle"></i>
+        {% elseif business_contact.status == "Not approved" %}
+            <i title="{{ business_contact.status }}" style="color: red"
+               class="fa fa-remove"></i>
+        {% endif %}
+    </td>
+    <td>
+        {% if business_contact.businessOrPerson == "Business" %}
+            <i title="Business" class="fa fa-building"></i>
+        {% endif %}
+        {% if business_contact.businessOrPerson == "Person" %}
+            <i title="Individual" class="fa fa-user"></i>
+        {% endif %}
+    </td>
+{% endif %}

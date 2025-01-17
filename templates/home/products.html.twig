@@ -31,16 +31,17 @@
 
             <div class="row">
                 {% if cms_photo_array is not empty %}
-                <div class="col-md-6">
+                <div class="col-md-6 mb-4 mb-xl-0">
                     {% else %}
+
                     <div class="col-12 p-4">
                         {% endif %}
                         {% for cms_copy in cms_copy_array|sort((a, b) => a.ranking <=> b.ranking) %}
 
                             {% if cms_copy.pageLayout is not null %}
                                 {% if is_granted('ROLE_ADMIN') %}
-                                <span style="color: red"><b>{{ cms_copy.getPageLayout.name }}</b></span>
-                                    {% endif %}
+                                    <span style="color: red"><b>{{ cms_copy.getPageLayout.name }}</b></span>
+                                {% endif %}
 
                                 {% if cms_copy.getPageLayout.name  == "Accordion" %}
                                     {% include 'home/products_page/formats/accordion.html.twig' %}
@@ -106,16 +107,21 @@
                         {% endfor %}
                     </div>
                     <div class="col-md-6">
-                        {% for cms_photo in cms_photo_array|sort((a, b) => a.ranking <=> b.ranking) %}
+                        {% for cms_photo in cms_photo_array %}
                             <div class="row">
-                                <div class="col-12 mb-5">
-                                    <div class="justify-content-center d-flex py-1 p-sm-2 product-image-container m-auto">
-                                        {% include 'home/products_page/photo_or_video.html.twig' %}
+                                 <!-- Adjust the margin for spacing -->
+                                    <div class="homepage-gallery-image-container">
+                                            <div class="d-inline-block justify-content-center py-1 p-sm-2 product-image-container">
+                                                {% include 'home/products_page/photo_or_video.html.twig' %}
+                                            </div>
+
+
                                     </div>
-                                </div>
+
                             </div>
                         {% endfor %}
                     </div>
+
                     <!------------------ END FIRST GROUP OF PHOTOS --------------->
                     <div class="row">
                         <div class="col-12">
@@ -130,6 +136,9 @@
                 </div>
             </div>
     </section>
+
+
+
     {% if CompanyDetailsService.companyDetails is not null %}
         {% if CompanyDetailsService.companyDetails.includeContactFormHomePage ==1 and
             include_contact == "Yes" %}
@@ -154,5 +163,6 @@
             </div>
         {% endif %}
     {% endif %}
+
 
 {% endblock %}

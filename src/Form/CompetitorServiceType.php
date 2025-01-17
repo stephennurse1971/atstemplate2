@@ -6,6 +6,7 @@ use App\Entity\Competitors;
 use App\Entity\CompetitorService;
 use App\Entity\ServicesOffered;
 use App\Entity\User;
+use App\Services\TranslationsWorkerService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,4 +34,10 @@ class CompetitorServiceType extends AbstractType
             'data_class' => CompetitorService::class,
         ]);
     }
+
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
+    }
+
 }

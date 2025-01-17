@@ -1,0 +1,30 @@
+
+<td class="desktop">
+    {% if business_contact.notes is not empty %}
+        {% if business_contact.notes|length >10 %}
+            <i style="color: grey" class="fa fa-info-circle" title="{{ business_contact.notes }}"></i>
+            {{ business_contact.notes|slice(0,10) }}...
+        {% else %}
+            {{ business_contact.notes }}
+        {% endif %}
+    {% endif %}
+</td>
+<td style="text-align: center">
+    <div class="mobile">
+        <a class="btn btn-success btn-sm"
+           href="{{ path('business_contacts_show',{id: business_contact.id}) }}">Show</a>
+    </div>
+    <div class="desktop" style="text-align: center">
+        <a href="{{ path('create_vcard', {id: business_contact.id} ) }}" class="action"
+           data-id="{{ business_contact.id }}"
+           data-action="VCF"> <i style="color: blue" class="fas fa-address-card mr-0"></i></a>
+    </div>
+</td>
+<td class="desktop">
+    {% if business_contact.files is not empty %}
+        <a title="{{ business_contact.files }}" target="_blank"
+           href="{{ path('business_contact_show_attachment',{id : business_contact.id}) }}">
+            <i class="fa fa-paperclip"></i></a>
+    {% endif %}
+</td>
+

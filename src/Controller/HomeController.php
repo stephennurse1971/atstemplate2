@@ -39,9 +39,11 @@ class   HomeController extends AbstractController
             'staticPageName' => 'Home'
         ]);
 
-        $cms_photo = $cmsPhotoRepository->findBy([
-            'staticPageName' => 'Home'
-        ]);
+        $cms_photo = $cmsPhotoRepository->findBy(
+            ['staticPageName' => 'Home'],
+            ['ranking' => 'ASC']
+        );
+
 
         $cms_copy_ranking1 = $cmsCopyRepository->findOneBy([
             'staticPageName' => 'Home',
@@ -50,11 +52,10 @@ class   HomeController extends AbstractController
 
         if ($cms_copy_ranking1) {
             $page_layout = $cms_copy_ranking1->getPageLayout();
-        }
-        else{
+        } else {
             $page_layout = 'default';
         }
-        
+
         if ($cms_copy_ranking1) {
             if ($security->getUser()) {
                 if (in_array('ROLE_ADMIN', $security->getUser()->getRoles())) {
@@ -181,12 +182,15 @@ class   HomeController extends AbstractController
         if ($productEntity) {
             $cms_photo = $cmsPhotoRepository->findBy([
                 'product' => $productEntity
-            ]);
+            ],
+                ['ranking' => 'ASC']);
         } else {
             $cms_photo = $cmsPhotoRepository->findBy([
                 'staticPageName' => $product
-            ]);
+            ],
+                ['ranking' => 'ASC']);
         }
+
 
         $sub_pages = [];
         if ($cms_copy) {

@@ -22,6 +22,7 @@ class CmsCopyType extends AbstractType
     {
         $builder
             ->add('category', ChoiceType::class, [
+                'label' => $this->translationsWorker->getTranslations('Category'),
                 'required' => true,
                 'choices' => [
                     'Static' => 'Static',
@@ -31,12 +32,14 @@ class CmsCopyType extends AbstractType
             ->add('staticPageName')
 
             ->add('pageLayout', EntityType::class, [
+                'label' => $this->translationsWorker->getTranslations('Page Layout'),
                 'class' => CmsCopyPageFormats::class,
                 'required' => false,
                 'choice_label' => 'name'
             ])
 
             ->add('product', EntityType::class, [
+                'label' => $this->translationsWorker->getTranslations('Product'),
                 'class' => Product::class,
                 'required' => false,
                 'choice_label' => 'product',
@@ -47,36 +50,36 @@ class CmsCopyType extends AbstractType
             ])
             ->add('tabTitle')
             ->add('tabTitleFR', TextType::class, [
-                'required' => false,
-                'label' => 'Tab Title (French)'])
+                'label' => $this->translationsWorker->getTranslations('Title FR'),
+                'required' => false, ])
             ->add('tabTitleDE', TextType::class, [
-                'required' => false,
-                'label' => 'Tab Title (German)'])
+                'label' => $this->translationsWorker->getTranslations('Title DE'),
+                'required' => false, ])
             ->add('contentTitle', TextType::class, [
+                'label' => $this->translationsWorker->getTranslations('Content Title'),
                 'required' => false,
-                'label' => 'Content title (English)'
             ])
             ->add('contentText', TextareaType::class, [
+                'label' => $this->translationsWorker->getTranslations('Content'),
                 'required' => false,
-                'label' => 'Main Content (English)'
             ])
             ->add('contentTitleFR', TextType::class, [
-                'required' => false,
-                'label' => 'Content Title (French)'])
+                'label' => $this->translationsWorker->getTranslations('Content Title FR'),
+                'required' => false, ])
             ->add('contentTextFR', TextareaType::class, [
+                'label' => $this->translationsWorker->getTranslations('Content FR'),
                 'required' => false,
-                'label' => 'Main Content (French)'
             ])
             ->add('contentTitleDE', TextType::class, [
-                'required' => false,
-                'label' => 'Content Title (German)'])
+                'label' => $this->translationsWorker->getTranslations('Content Title DE'),
+                'required' => false, ])
             ->add('contentTextDE', TextareaType::class, [
+                'label' => $this->translationsWorker->getTranslations('Content DE'),
                 'required' => false,
-                'label' => 'Main Content (German)'
             ])
             ->add('hyperlinks')
             ->add('attachment', FileType::class, [
-                'label' => 'Attachment',
+                'label' => $this->translationsWorker->getTranslations('Attachment'),
                 'mapped' => false,
                 'required' => false
             ])

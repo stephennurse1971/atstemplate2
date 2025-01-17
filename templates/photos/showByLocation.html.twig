@@ -15,7 +15,6 @@
                     </video>
                 {% elseif fileType == "jpg" %}
                     <div class="p-1 mb-1">
-
                         {% if photo.rotate == 0 %}
                             <div class="image-containerThumbnail">
                                 <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}">
@@ -24,7 +23,7 @@
                             </div>
                         {% endif %}
 
-                        {% if photo.rotate == 1 %}
+                        {% if photo.rotate == 90 %}
                             <div class="image-containerThumbnail">
                                 <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}">
                                     <img src="{{ image }}" class="photosByLocationThumbnail rotate-90">
@@ -32,7 +31,7 @@
                             </div>
                         {% endif %}
 
-                        {% if photo.rotate == 2 %}
+                        {% if photo.rotate == 180 %}
                             <div class="image-containerThumbnail">
                                 <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}">
                                     <img src="{{ image }}" class="photosByLocationThumbnail rotate-180">
@@ -40,7 +39,7 @@
                             </div>
                         {% endif %}
 
-                        {% if photo.rotate==3 %}
+                        {% if photo.rotate==270 %}
                             <div class="image-containerThumbnail">
                                 <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}">
                                     <img src="{{ image }}" class="photosByLocationThumbnail rotate-270">
@@ -50,11 +49,10 @@
 
                         <div class="text-center py-2">
                             {% if is_granted ('ROLE_ADMIN') or app.user == photo.uploadedBy %}
-                                <a href="{{ path('rotate_photo',{photoID:photo.id}) }}"><i
-                                            class="fa fa-rotate-right"></i></a>
+                                <a href="{{ path('rotate_photo',{photoID:photo.id}) }}">
+                                    <i style="color: green" class="fa fa-rotate-right"></i></a>
                             {% endif %}
                         </div>
-
                     </div>
                 {% endif %}
             {% endfor %}
@@ -81,7 +79,7 @@
                             </div>
                         {% endif %}
 
-                        {% if photo.rotate==1 %}
+                        {% if photo.rotate==90 %}
                             <div class="image-containerFull">
                                 <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}">
                                     <img src="{{ image }}" class="photosByLocationFullRotate-90">
@@ -89,7 +87,7 @@
                             </div>
                         {% endif %}
 
-                        {% if photo.rotate==2 %}
+                        {% if photo.rotate==180 %}
                             <div class="image-containerFull">
                                 <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}">
                                     <img src="{{ image }}" class="photosByLocationFullRotate-180">
@@ -97,7 +95,7 @@
                             </div>
                         {% endif %}
 
-                        {% if photo.rotate==3 %}
+                        {% if photo.rotate==270 %}
                             <div class="image-containerFull">
                                 <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}">
                                     <img src="{{ image }}" class="photosByLocationFullRotate-270">
@@ -112,14 +110,9 @@
                             {% endif %}
                             {% include 'photos/parts/like_and_email_buttons.html.twig' %}
                         </div>
-
                     </div>
                 {% endif %}
             {% endfor %}
         </div>
-
-
     {% endif %}
-
-
 {% endblock %}

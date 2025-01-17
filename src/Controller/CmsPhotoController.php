@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CmsPhoto;
 use App\Form\CmsPhotoType;
 use App\Repository\CmsPhotoRepository;
+use App\Repository\PhotosRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -134,6 +135,30 @@ class CmsPhotoController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/rotate_cms_photo/{id}", name="rotate_cms_photo")
+     */
+    public function rotatePhoto(Request $request, int $id, CmsPhotoRepository $cmsPhotoRepository, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->server->get('HTTP_REFERER');
+        $cms_photo = $cmsPhotoRepository->find($id);
+
+        if ($cms_photo->getRotate() == null || $cms_photo->getRotate() == 0) {
+            $cms_photo->setRotate(90);
+        } elseif ($cms_photo->getRotate() == 90) {
+            $cms_photo->setRotate(180);
+        } elseif ($cms_photo->getRotate() == 180) {
+            $cms_photo->setRotate(270);
+        } elseif ($cms_photo->getRotate() == 270) {
+            $cms_photo->setRotate(0);
+        }
+        $entityManager->persist($cms_photo);
+        $entityManager->flush();
+        return $this->redirect($referer);
+    }
+
+
 
     /**
      * @Route("/delete/{id}", name="cms_photo_delete", methods={"POST"})

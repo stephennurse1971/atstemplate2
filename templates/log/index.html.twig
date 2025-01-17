@@ -20,7 +20,7 @@
                 <td data-sort="{{ log.createdAt|date('Y-m-d H:i') }}">{{ log.createdAt ? log.createdAt|date('d-M-Y') : '' }}</td>
                 <td data-sort="{{ log.createdAt|date('Y-m-d H:i') }}">{{ log.createdAt ? log.createdAt|date('H:i') : '' }}</td>
                 <td>
-                    <a target="_blank" class="dropdown-item" href="{{ path('user_edit', {'fullName': log.user.fullName}) }}">
+                    <a target="_blank" class="dropdown-item" href="{{ path('user_edit', {'id': log.user.id}) }}">
                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                         {{ log.user.fullName }}
                     </a>
@@ -46,9 +46,9 @@
             $('.table').DataTable({
                 'pageLength': 100,
                 "order": [[0, 'desc']],
-                "paging": false,
+                "paging": true,
                 "searching": false,
-                "bInfo": false
+                "bInfo": true
             });
         });
     </script>

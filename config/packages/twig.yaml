@@ -8,14 +8,15 @@ twig:
     CountBusinessContactsService: '@App\Services\CountBusinessContactsService'
     CountBusinessContactReferralsService: '@App\Services\CountBusinessContactReferralsService'
     CountPendingWebsiteInquiriesService: '@App\Services\CountPendingWebsiteInquiriesService'
+    CountPhotosService: '@App\Services\CountPhotosService'
+    CountUserLogsService: '@App\Services\CountUserLogsService'
     ImportUserService: '@App\Services\ImportUserService'
     LanguagesService: '@App\Services\LanguagesService'
+    PhotoAuthorsByLocation: '@App\Services\PhotoAuthorsByLocation'
     ProductService: '@App\Services\ProductService'
     TranslationsImportService: '@App\Services\TranslationsImportService'
     TranslationsWorkerService: '@App\Services\TranslationsWorkerService'
     WeatherService: '@App\Services\WeatherService'
-    CountPhotos: '@App\Services\CountPhotos'
-    PhotoAuthorsByLocation: '@App\Services\PhotoAuthorsByLocation'
 
 
 when@test:

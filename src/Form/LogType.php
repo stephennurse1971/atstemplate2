@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Log;
 use App\Entity\ProjectSpecific\User;
+use App\Services\TranslationsWorkerService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,5 +30,10 @@ class LogType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Log::class,
         ]);
+    }
+
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
     }
 }

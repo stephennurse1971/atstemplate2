@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\CmsPhoto;
 use App\Entity\Product;
+use App\Services\TranslationsWorkerService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -26,6 +27,16 @@ class CmsPhotoType extends AbstractType
                 ]
             ])
             ->add('staticPageName')
+            ->add('rotate', ChoiceType::class, [
+                'label' => $this->translationsWorker->getTranslations('Rotate'),
+                'multiple' => false,
+                'expanded' => true,
+                'choices' => [
+                    '0' => '0',
+                    '90' => '90',
+                    '180' => '180',
+                    '270' => '270',
+                ],])
             ->add('product', EntityType::class, [
                 'label' => $this->translationsWorker->getTranslations('Product'),
                 'class' => Product::class,
@@ -48,7 +59,6 @@ class CmsPhotoType extends AbstractType
             ->add('title', TextType::class, [
                 'label' => $this->translationsWorker->getTranslations('Title'),
                 'required' => false,
-                'label' => 'Title (English)'
             ])
             ->add('link')
             ->add('ranking');
@@ -60,5 +70,9 @@ class CmsPhotoType extends AbstractType
             'data_class' => CmsPhoto::class,
             'allow_extra_fields' => true,
         ]);
+    }
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
     }
 }

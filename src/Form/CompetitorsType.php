@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Competitors;
+use App\Services\TranslationsWorkerService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,5 +36,9 @@ class CompetitorsType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Competitors::class,
         ]);
+    }
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
     }
 }

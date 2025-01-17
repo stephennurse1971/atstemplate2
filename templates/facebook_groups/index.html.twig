@@ -8,6 +8,7 @@
             border: none
         }
     </style>
+
     <h1 style="color: red">Facebook Groups</h1>
 
     {% include 'facebook_groups/parts/import_and_export.html.twig' %}
@@ -41,7 +42,7 @@
                     <table class="sub-table">
                         <tbody>
                         {% for facebook_group_review in facebook_group_reviews %}
-                            {% if facebook_group_review.facebookGroup == facebook_group %}
+                            {% if facebook_group_review.facebookGroup == facebook_group and facebook_group_review.date > cut_off_date %}
                                 <tr>
                                     <td data-sort="{{ facebook_group_review.date|date('y-m-d') }}">
                                         {{ facebook_group_review.date|date('d-M-Y') }}

@@ -41,7 +41,7 @@ class LanguagesImportService
         foreach ($alldataFromCsv as $oneLineFromCsv) {
             $ranking = trim($oneLineFromCsv[0]);
             $isActive = trim($oneLineFromCsv[1]);
-            $language = trim($oneLineFromCsv[2]);
+            $languageName = trim($oneLineFromCsv[2]);
             $abbreviation = trim($oneLineFromCsv[3]);
             $linkedInOther = trim($oneLineFromCsv[4]);
             $icon = trim($oneLineFromCsv[5]);
@@ -51,7 +51,7 @@ class LanguagesImportService
                 $language = new Languages();
                 $language->setRanking($ranking)
                     ->setIsActive($isActive)
-                    ->setLanguage('xxxx')
+                    ->setLanguage($languageName)
                     ->setAbbreviation($abbreviation)
                     ->setLinkedInOther($linkedInOther)
                     ->setIcon($icon);

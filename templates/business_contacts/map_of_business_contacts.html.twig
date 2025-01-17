@@ -2,46 +2,112 @@
 {% block title %}Business Contacts Map {% endblock %}
 {% block body %}
     <h3 style="color: red">Business Contacts
-    {% if subset !='All' %}
-    : {{ subset}}
-    {% endif %}
-    </h3>
-    <a class="btn btn-outline-info btn-sm" href="{{ path('business_contacts_map', {subset:'All'}) }}">
-        All
-    </a>
-    {% for business_type in business_types %}
-
-        {% if subset == business_type.businessType %}
-        <a class="btn btn-outline-success btn-sm" href="{{ path('business_contacts_map', {subset:business_type.businessType}) }}">
-            {{ business_type.businessType }}
-            <i style="color: {{ business_type.mapIconColour }}" class="{{ business_type.mapIcon }}"></i>
-        </a>
-        {% else %}
-            <a class="btn btn-outline-primary btn-sm" href="{{ path('business_contacts_map', {subset:business_type.businessType}) }}">
-                {{ business_type.businessType }}
-                <i style="color: {{ business_type.mapIconColour }}" class="{{ business_type.mapIcon }}"></i>
-            </a>
+        {% if subset !='All' %}
+            : {{ subset }}
         {% endif %}
-
-    {% endfor %}
-    <br>
-    {% for business_contact in business_contacts %}
-        <li>
-            {{ business_contact.company }} ({{ business_contact.businessType.businessType }})
-        </li>
-    {% endfor %}
+    </h3>
     <div class="row">
-        <div class="col-12">
+        <div class="col-8">
+            <a class="btn btn-outline-info btn-sm" href="{{ path('business_contacts_map', {subset:'All'}) }}">
+                All
+            </a>
+            {% for business_type in business_types %}
+                {% if subset == business_type.businessType %}
+                    <a class="btn btn-outline-success btn-sm"
+                       href="{{ path('business_contacts_map', {subset:business_type.businessType}) }}">
+                        {{ business_type.businessType }}
+                        <i style="color: {{ business_type.mapIconColour }}" class="{{ business_type.mapIcon }}"></i>
+                    </a>
+                {% else %}
+                    <a class="btn btn-outline-primary btn-sm"
+                       href="{{ path('business_contacts_map', {subset:business_type.businessType}) }}">
+                        {{ business_type.businessType }}
+                        <i style="color: {{ business_type.mapIconColour }}" class="{{ business_type.mapIcon }}"></i>
+                    </a>
+                {% endif %}
 
-
-            <br>
-            <iframe src="{{ CompanyDetailsService.getCompanyDetails.companyAddressMapLink }}"
-                    width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
-            <br>
-            <br>
-            <br>
-
+            {% endfor %}
+        </div>
+        <div class="col-1">
+            <a class="btn btn-outline-info btn-sm" href="{{ path('business_contacts_index' ) }}">Return to List</a>
         </div>
     </div>
+
+
+    <br>
+    <br>
+    <table>
+        {% if subset !='All' %}
+            {% for business_contact in business_contacts %}
+                <tr>
+                    {% include 'business_contacts/table_body2.html.twig' %}
+                    {% include 'business_contacts/table_body4.html.twig' %}
+                    {% include 'business_contacts/table_body3.html.twig' %}
+                    <td>
+                        {{ business_contact.locationLatitude }},{{ business_contact.locationLongitude }}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </table>
+    <hr>
+    <div class="row">
+        <div class="col-12">
+            <br>
+            {#                <iframe #}
+            {#                        {% for business_contact in business_contacts %} #}
+            {#                        src="https://www.google.com/maps?q={{ business_contact.locationLatitude }},{{ business_contact.locationLongitude }}&z=15&output=embed" #}
+            {#                        width="100%" #}
+            {#                        height="450" #}
+            {#                        style="border:0;" #}
+            {#                        allowfullscreen="" #}
+            {#                        loading="lazy" #}
+            {#                        referrerpolicy="no-referrer-when-downgrade"> #}
+            {#                    {% endfor %} #}
+            {#                </iframe> #}
+            <div id="map" style="width: 100%; height: 450px;"
+                 data-locations='[
+                      {% for business_contact in business_contacts %}
+                            {"lat": {{ business_contact.locationLatitude }}, "lng": {{ business_contact.locationLongitude }}, "name": "{{ business_contact.company | e('js') }},
+                            "icon":"{{ business_contact.businessType.mapIcon }}" , "icon_colour":"{{ business_contact.businessType.mapIconColour }}"}
+                      {% if not loop.last %}, {% endif %}
+                      {% endfor %} ]'>
+            </div>
+            <br><br><br>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get locations data from the map container
+            const mapElement = document.getElementById('map');
+            const locations = JSON.parse(mapElement.getAttribute('data-locations'));
+
+            // Initialize the map
+            const map = new google.maps.Map(mapElement, {
+                center: locations[0], // Center the map on the first location
+                zoom: 10,            // Adjust zoom level
+            });
+
+            // Add markers to the map
+            locations.forEach(location => {
+                const marker = new google.maps.Marker({
+                    position: {lat: location.lat, lng: location.lng},
+                    map: map,
+                    title: location.name,
+                    // marker: location.icon,
+                });
+
+                // Optional: Add an info window
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `<h3>${location.name}</h3>`,
+                });
+
+                marker.addListener('click', () => {
+                    infoWindow.open(map, marker);
+                });
+            });
+        });
+    </script>
 {% endblock %}
+
+

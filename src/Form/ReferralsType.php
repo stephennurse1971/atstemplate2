@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\BusinessContacts;
 use App\Entity\Referrals;
 use App\Entity\User;
+use App\Services\TranslationsWorkerService;
 use Doctrine\DBAL\Types\DateTimeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -56,4 +57,10 @@ class ReferralsType extends AbstractType
             'data_class' => Referrals::class,
         ]);
     }
+
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
+    }
+
 }

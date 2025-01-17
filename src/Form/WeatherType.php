@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Weather;
+use App\Services\TranslationsWorkerService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,4 +30,10 @@ class WeatherType extends AbstractType
             'data_class' => Weather::class,
         ]);
     }
+
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
+    }
+
 }

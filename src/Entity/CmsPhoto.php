@@ -62,6 +62,11 @@ class CmsPhoto
      */
     private $ranking;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $rotate;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -163,6 +168,18 @@ class CmsPhoto
     public function setRanking(?int $ranking): self
     {
         $this->ranking = $ranking;
+
+        return $this;
+    }
+
+    public function getRotate(): ?int
+    {
+        return $this->rotate;
+    }
+
+    public function setRotate(?int $rotate): self
+    {
+        $this->rotate = $rotate;
 
         return $this;
     }

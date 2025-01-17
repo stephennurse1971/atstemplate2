@@ -1,18 +1,14 @@
-
 {% set loc = asset('administration/attachments/WebsitePhotos/')~cms_photo.photo %}
-
-{% if cms_photo.photoOrVideo == "Video" %}
-    <video class="other-page-image" controls>
-        <source src="{{ loc }}" type="video/mp4">
-    </video>
-{% else %}
-    {% if cms_photo.link is not null %}
-        <a target="_blank" href="{{ cms_photo.link }}">
-            <img title="{{ cms_photo.title }}" class="other-page-image"
-                 src="{{ loc }}"></a>
+    {% if cms_photo.photoOrVideo == "Video" %}
+        <video class="other-page-image" controls>
+            <source src="{{ loc }}" type="video/mp4">
+        </video>
     {% else %}
-        <img title="{{ cms_photo.title }}" class="other-page-image"
-             src="{{ loc }}">
+
+        <a target="_blank" href="{{ cms_photo.link }}">
+            <img title="{{ cms_photo.title }}" class="homepage-image rotate-{{ cms_photo.rotate }}"
+                 src="{{ loc }}"></a>
+
     {% endif %}
-{% endif %}
+
 

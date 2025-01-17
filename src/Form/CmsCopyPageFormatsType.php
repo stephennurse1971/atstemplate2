@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\CmsCopyPageFormats;
+use App\Services\TranslationsWorkerService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,5 +27,10 @@ class CmsCopyPageFormatsType extends AbstractType
         $resolver->setDefaults([
             'data_class' => CmsCopyPageFormats::class,
         ]);
+    }
+
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
     }
 }

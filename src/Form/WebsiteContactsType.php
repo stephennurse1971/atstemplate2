@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\WebsiteContacts;
+use App\Services\TranslationsWorkerService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -44,4 +45,10 @@ class WebsiteContactsType extends AbstractType
             'data_class' => WebsiteContacts::class,
         ]);
     }
+
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
+    }
+
 }

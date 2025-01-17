@@ -1,0 +1,20 @@
+
+<td class="desktop">
+    {% if business_contact.locationLongitude is not empty %}
+        <a target="_blank"
+           href="{{ path('show_location_google_maps',{id: business_contact.id}) }}"
+           class="action" data-id="{{ business_contact.id }}"
+           data-action="Map">
+            <i class='fas fa-map-marker-alt text-danger'></i></a>
+    {% else %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <button class="btn btn-primary btn-sm"
+                    onclick="getLocation('{{ business_contact.id }}')">
+                <i class="fa fa-arrow-down"></i>
+            </button>
+        {% endif %}
+    {% endif %}
+    {{ business_contact.addressStreet }},
+    {{ business_contact.addressCity }},
+    {{ business_contact.addressPostCode }}
+</td>

@@ -5,7 +5,7 @@
 
     {% if is_granted('ROLE_ADMIN') %}
         <div class="col-1">
-{#            <a target="_blank" class="btn btn-success btn-sm" href="{{ path('business_contacts_new', {type: 'Restaurant'}) }}">New</a>#}
+            <a target="_blank" class="btn btn-success btn-sm" href="{{ path('business_contacts_new', {business_type:'Restaurant'}) }}">New</a>
         </div>
         <div class="col-4">
 

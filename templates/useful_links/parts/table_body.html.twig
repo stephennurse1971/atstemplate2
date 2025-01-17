@@ -12,11 +12,21 @@
         {% endif %}
         <td>{{ useful_link.name }}</td>
 
+
+        {% if  useful_link.link is not empty %}
+            {% if   useful_link.link starts with 'http' %}
+                {% set web =   useful_link.link %}
+            {% else %}
+                {% set web = 'https://'~  useful_link.link %}
+            {% endif %}
+        {% endif %}
+
+
         <td class="desktop">
-            <a target="_blank" href="{{ useful_link.link }}">{{ useful_link.link }}</a>
+            <a target="_blank" href="{{ web }}">{{ web }}</a>
         </td>
         <td class="mobile" style="width: 10px">
-            <a target="_blank" href="{{ useful_link.link }}"><i class="fa fa-link"></i></a>
+            <a target="_blank" href="{{ web }}"><i class="fa fa-link"></i></a>
         </td>
 
         <td class="desktop">

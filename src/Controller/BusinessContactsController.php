@@ -7,6 +7,8 @@ use App\Form\BusinessContactsType;
 use App\Form\ImportType;
 use App\Repository\BusinessContactsRepository;
 use App\Repository\BusinessTypesRepository;
+use App\Repository\FileAttachmentsRepository;
+use App\Repository\PhotosRepository;
 use App\Services\BusinessContactsImportService;
 use App\Services\CompanyDetailsService;
 use App\Services\CountBusinessContactsService;
@@ -15,9 +17,11 @@ use JeroenDesloovere\VCard\VCard;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -30,20 +34,21 @@ class BusinessContactsController extends AbstractController
     /**
      * @Route("/index", name="business_contacts_index", methods={"GET"})
      */
-    public function index(BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, CountBusinessContactsService $countBusinessContacts): Response
+    public function index(BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, CountBusinessContactsService $countBusinessContactsService): Response
     {
         $business_contacts = $businessContactsRepository->findBy([
             'status' => 'Approved'
         ]);
 
-        if ($this->isGranted('ROLE_ADMIN')) {
-            $business_contacts = $businessContactsRepository->findAll();
-        }
-        $business_types = $businessTypesRepository->findAll();
+//        if ($this->isGranted('ROLE_ADMIN')) {
+//            $business_contacts = $businessContactsRepository->findAll();
+//        }
+        $business_types = $businessTypesRepository->findBy([], ['ranking' => 'ASC']);
 
         return $this->render('business_contacts/index.html.twig', [
             'business_contacts' => $business_contacts,
-            'business_types' => $business_types
+            'business_types' => $business_types,
+            'countBusinessContactsService' => $countBusinessContactsService,
         ]);
     }
 
@@ -52,10 +57,6 @@ class BusinessContactsController extends AbstractController
      */
     public function map(Request $request, string $subset, BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, CountBusinessContactsService $countBusinessContacts): Response
     {
-//        $business_contacts = $businessContactsRepository->findBy([
-//            'status' => 'Approved'
-//        ]);
-
         if ($subset == 'All') {
             $business_contacts = $businessContactsRepository->findBy([
                 'status' => 'Approved'
@@ -63,15 +64,16 @@ class BusinessContactsController extends AbstractController
         }
 
         if ($subset != 'All') {
-            $business_type = $businessTypesRepository->findBy(['businessType' => $subset]);
+            $business_type = $businessTypesRepository->findOneBy(['businessType' => $subset]);
             $business_contacts = $businessContactsRepository->findBy([
                 'status' => 'Approved',
-                'business_type' => $business_type
-            ]);}
-
-        if ($this->isGranted('ROLE_ADMIN')) {
-            $business_contacts = $businessContactsRepository->findAll();
+                'businessType' => $business_type
+            ]);
         }
+
+//        if ($this->isGranted('ROLE_ADMIN')) {
+//            $business_contacts = $businessContactsRepository->findAll();
+//        }
         $business_types = $businessTypesRepository->findAll();
         return $this->render('business_contacts/map_of_business_contacts.html.twig', [
             'business_contacts' => $business_contacts,
@@ -111,7 +113,7 @@ class BusinessContactsController extends AbstractController
                 $file_directory = $this->getParameter('business_contacts_files_directory');
                 $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $file->guessExtension();
-                $newFileName = $fileName . $file_extension;
+                $newFileName = $fileName . "." . $file_extension;
                 $file->move($file_directory, $newFileName);
                 $businessContact->setFiles($newFileName);
             }
@@ -189,7 +191,7 @@ class BusinessContactsController extends AbstractController
                 $file_directory = $this->getParameter('business_contacts_files_directory');
                 $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $file->guessExtension();
-                $newFileName = $fileName . $file_extension;
+                $newFileName = $fileName . "." . $file_extension;
                 $file->move($file_directory, $newFileName);
                 $businessContact->setFiles($newFileName);
             }
@@ -210,6 +212,7 @@ class BusinessContactsController extends AbstractController
      */
     public function delete(Request $request, BusinessContacts $businessContact, BusinessContactsRepository $businessContactsRepository): Response
     {
+
         if ($this->isCsrfTokenValid('delete' . $businessContact->getId(), $request->request->get('_token'))) {
             $businessContactsRepository->remove($businessContact, true);
         }
@@ -248,6 +251,33 @@ class BusinessContactsController extends AbstractController
             $entityManager->flush();
         }
         return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/delete_attachment_file/{id}", name="business_contact_delete_attachment_file", methods={"POST", "GET"})
+     */
+    public function deleteBusinessContactAttachmentFile(int $id, Request $request, BusinessContacts $businessContacts, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $file_name = $businessContacts->getFiles();
+        if ($file_name) {
+            $file = $this->getParameter('business_contacts_files_directory') . "/" . $file_name;
+            if (file_exists($file)) {
+                unlink($file);
+            }
+            $businessContacts->setFiles('');
+            $entityManager->flush();
+        }
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route ("/view/photo/{id}", name="view_business_contact_photo")
+     */
+    public function viewBusinessContactPhoto(Request $request, $id, BusinessContactsRepository $businessContactsRepository)
+    {
+        $business_contact = $businessContactsRepository->find($id);
+        return $this->render('business_contacts/view_photo.html.twig', ['business_contact' => $business_contact]);
     }
 
 
@@ -491,4 +521,24 @@ class BusinessContactsController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/show_attachment/{id}", name="business_contact_show_attachment")
+     */
+    public function showAttachmentBusinessContact(int $id, BusinessContactsRepository $businessContactsRepository)
+    {
+        $business_contact = $businessContactsRepository->find($id);
+        $filename = $business_contact->getFiles();
+        $filepath = $this->getParameter('business_contacts_files_directory') . "/" . $filename;
+        if (file_exists($filepath)) {
+            $response = new BinaryFileResponse($filepath);
+            $response->setContentDisposition(
+                ResponseHeaderBag::DISPOSITION_INLINE, //use ResponseHeaderBag::DISPOSITION_ATTACHMENT to save as an attachment
+                $filename
+            );
+            return $response;
+        } else {
+            return new Response("file does not exist");
+        }
+    }
 }
