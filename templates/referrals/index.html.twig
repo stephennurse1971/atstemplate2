@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Referrals index{% endblock %}
+{% block title %}Referrals{% endblock %}
 
 {% block body %}
     <h1 style="color: red">Referrals</h1>
@@ -13,9 +13,10 @@
             <th>Date</th>
             <th>Time</th>
             <th>User</th>
-            <th>Business<br>Type</th>
+            <th>Business Type</th>
             <th>Business</th>
-            <th>Web/<br>VCF/<br>Phone</th>
+            <th>Person</th>
+            <th>Web/VCF/Phone</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
@@ -23,11 +24,12 @@
         <tbody>
         {% for referral in referrals %}
             <tr>
-
-                <td data-sort="{{ referral.dateTime|date('Y-m-d') }}">{{ referral.dateTime ? referral.dateTime|date('d-M-y') : '' }}</td>
-
-                <td>{{ referral.dateTime ? referral.dateTime|date('H:i') : '' }}</td>
-
+                <td data-sort="{{ referral.dateTime|date('Y-m-d') }}">
+                    {{ referral.dateTime ? referral.dateTime|date('d-M-y') : '' }}
+                </td>
+                <td>
+                    {{ referral.dateTime ? referral.dateTime|date('H:i') : '' }}
+                </td>
                 <td>
                     {% if referral.user is null %}
                         Not logged in
@@ -35,12 +37,17 @@
                         {{ referral.user.fullName }}
                     {% endif %}
                 </td>
-                <td>{{ referral.businessSite.businessType.businessType }}</td>
-                <td>{{ referral.businessSite.company }}</td>
+                <td>
+                    {{ referral.businessSite.businessType.businessType }}
+                </td>
+                <td>
+                    {{ referral.businessSite.company }}
+                </td>
+                <td>
+                    {{ referral.businessSite.firstName }}
+                    {{ referral.businessSite.lastName }}
+                </td>
                 <td style="text-align: center">
-                    {{ referral.action }}
-
-
                     {% if referral.action == "Website" %}
                         <i title="Launched website" style="color: blue" class="fa fa-globe"></i>
                     {% endif %}
@@ -79,14 +86,10 @@
                     </form>
                 </td>
             </tr>
-
         {% endfor %}
         </tbody>
     </table>
 
-    <hr>
-
-    <a class="btn btn-success btn-sm" href="{{ path('referrals_new') }}">New</a>
 {% endblock %}
 
 {% block datatable %}
@@ -95,9 +98,9 @@
             $('.table').DataTable({
                 'pageLength': 100,
                 "order": [[0, 'desc'], [1, 'desc']],
-                "paging": true,
-                "searching": true,
-                "bInfo": true
+                "paging": false,
+                "searching": false,
+                "bInfo": false
             });
         });
     </script>

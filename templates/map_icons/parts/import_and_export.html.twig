@@ -1,0 +1,26 @@
+{% if is_granted('ROLE_ADMIN') %}
+    <div class="row">
+        <div class="col-1">
+            <a class="btn btn-success btn-sm" href="{{ path('map_icons_new') }}">New</a>
+        </div>
+
+        <div class="col-4">
+            <a class="btn btn-outline-info btn-sm" href="{{ path('business_types_index') }}">Return to Business
+                Types</a>
+            <a class="btn btn-outline-info btn-sm" href="{{ path('business_contacts_index') }}">Return to Business
+                Contacts</a>
+        </div>
+
+        <div class="col-4">
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('map_icons_export') }}">Export</a>
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('map_icons_import') }}">Import</a>
+            {#        <a href="{{ asset('administration/ATSSharedFiles/_ImportTemplates/'.'MapIcons_ImportTemplate.csv') }}">(Template)</a> #}
+        </div>
+        <div class="col-2">
+            <a class="btn btn-outline-danger btn-sm" href="{{ path('map_icons_delete_all') }}">Delete All</a>
+        </div>
+    </div>
+    <br>
+{% endif %}
+
+

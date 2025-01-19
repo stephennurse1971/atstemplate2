@@ -24,8 +24,7 @@ class BusinessTypesType extends AbstractType
                 'class' => MapIcons::class,
                 'required' => true,
                 'choice_label' => 'name'
-            ])
-            ->add('mapIconColour');
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

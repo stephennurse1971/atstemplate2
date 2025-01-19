@@ -26,6 +26,7 @@ class   HomeController extends AbstractController
     {
         $companyDetails = $companyDetailsRepository->find('1');
         $homePagePhotosOnly = 0;
+        $qrcode=false;
         if ($companyDetails) {
             $homePagePhotosOnly = $companyDetails->isHomePagePhotosOnly();
             $qrcode = $companyDetails->isIncludeQRCodeHomePage();

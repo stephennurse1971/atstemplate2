@@ -3,13 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\MapIcons;
+use App\Form\ImportType;
 use App\Form\MapIconsType;
 use App\Repository\MapIconsRepository;
+use App\Services\MapIconsImportService;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/map/icons')]
 class MapIconsController extends AbstractController
@@ -105,6 +112,19 @@ class MapIconsController extends AbstractController
 
 
     /**
+     * @Route("/delete_all", name="map_icons_delete_all")
+     */
+    public function deleteMapIconsAll(MapIconsRepository $mapIconsRepository, EntityManagerInterface $entityManager): Response
+    {
+        $map_icons = $mapIconsRepository->findAll();
+        foreach ($map_icons as $map_icon) {
+            $entityManager->remove($map_icon);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('map_icons_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
      * @Route("/delete_map_icon_file/{id}", name="map_icon_delete_file", methods={"POST", "GET"})
      */
     public function deleteMapIconFile(Request $request, int $id, MapIcons $mapIcons, EntityManagerInterface $entityManager)
@@ -122,5 +142,77 @@ class MapIconsController extends AbstractController
         return $this->redirect($referer);
     }
 
+    /**
+     * @Route ("/export", name="map_icons_export" )
+     */
+    public function mapIconsExport(MapIconsRepository $mapIconsRepository)
+    {
+        $data = [];
+        $exported_date = new \DateTime('now');
+        $exported_date_formatted = $exported_date->format('d-M-Y');
+        $fileName = 'map_icons_export_' . $exported_date_formatted . '.csv';
+
+        $count = 0;
+        $map_icons_list = $mapIconsRepository->findAll();
+        $concatenatedNotes = "Exported on: " . $exported_date_formatted;
+        foreach ($map_icons_list as $map_icon) {
+            $data[] = [
+                $map_icon->getName(),
+                $map_icon->getIconFile(),
+            ];
+        }
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Map Icons');
+        $sheet->getCell('A1')->setValue('Name');
+        $sheet->getCell('B1')->setValue('FileName');
+
+        $sheet->fromArray($data, null, 'A2', true);
+        $total_rows = $sheet->getHighestRow();
+        for ($i = 2; $i <= $total_rows; $i++) {
+            $cell = "L" . $i;
+            $sheet->getCell($cell)->getHyperlink()->setUrl("https://google.com");
+        }
+        $writer = new Csv($spreadsheet);
+        $response = new StreamedResponse(function () use ($writer) {
+            $writer->save('php://output');
+        });
+        $response->headers->set('Content-Type', 'application/vnd.ms-excel');
+        $response->headers->set('Content-Disposition', sprintf('attachment;filename="%s"', $fileName));
+        $response->headers->set('Cache-Control', 'max-age=0');
+        return $response;
+    }
+
+
+    /**
+     * @Route ("/import", name="map_icons_import" )
+     */
+    public function mapIconsImport(Request $request, SluggerInterface $slugger, MapIconsRepository $mapIconsRepository, MapIconsImportService $mapIconsImportService): Response
+    {
+        $form = $this->createForm(ImportType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $importFile = $form->get('File')->getData();
+            if ($importFile) {
+                $originalFilename = pathinfo($importFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '.' . 'csv';
+                try {
+                    $importFile->move(
+                        $this->getParameter('map_icons_import_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+                $mapIconsImportService->importMapIcons($newFilename);
+                return $this->redirectToRoute('map_icons_index');
+            }
+        }
+        return $this->render('home/import.html.twig', [
+            'form' => $form->createView(),
+            'heading' => 'Map Icons',
+        ]);
+    }
 
 }

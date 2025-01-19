@@ -24,6 +24,7 @@ parameters:
   cms_copy_import_directory:                       '%kernel.project_dir%/public/administration/Import/CmsCopy/'
   competitors_import_directory:                    '%kernel.project_dir%/public/administration/Import/Competitors/'
   facebook_groups_import_directory:                '%kernel.project_dir%/public/administration/Import/FacebookGroups/'
+  map_icons_import_directory:                      '%kernel.project_dir%/public/administration/Import/MapIcons/'
   facebook_groups_reviews_import_directory:        '%kernel.project_dir%/public/administration/Import/FacebookGroupsReviews/'
   translations_import_directory:                   '%kernel.project_dir%/public/administration/Import/Translations/'
   users_import_directory:                          '%kernel.project_dir%/public/administration/Import/Users/'

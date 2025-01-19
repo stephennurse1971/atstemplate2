@@ -4,15 +4,8 @@
 
 {% block body %}
     <h1 style="color: red">Map Icons</h1>
-    <div class="row">
-        <div class="col-3">
-            <a class="btn btn-success btn-sm" href="{{ path('map_icons_new') }}">New</a>
-        </div>
-        <div class="col-6">
-            <a class="btn btn-outline-info btn-sm" href="{{ path('business_types_index') }}">Return to Business Types</a>
-            <a class="btn btn-outline-info btn-sm" href="{{ path('business_contacts_index') }}">Return to Business Contacts</a>
-        </div>
-    </div>
+
+    {% include 'map_icons/parts/import_and_export.html.twig' %}
 
     <hr>
 
@@ -22,6 +15,7 @@
             <th>Name</th>
             <th>FileName</th>
             <th>Icon</th>
+            <th></th>
             <th></th>
         </tr>
         </thead>
@@ -33,13 +27,20 @@
                 <td style="text-align: center">
                     {% if map_icon.iconFile is not empty %}
                         {% set file = asset('administration/ATSSharedFiles/BusinessContactsMapIcons/')~map_icon.iconFile %}
-{#                        {% set file = asset(business_contacts_map_icon_directory ~ map_icon.iconFile) %}#}
+                        {#                        {% set file = asset(business_contacts_map_icon_directory ~ map_icon.iconFile) %} #}
                         <img title="{{ map_icon.iconFile }}" height="20" width="20" src="{{ file }}"
                              class="rounded-circle">
                     {% endif %}
                 </td>
                 <td>
                     <a class="btn btn-outline-danger btn-sm" href="{{ path('map_icons_edit', {'id': map_icon.id}) }}">Edit</a>
+                </td>
+                <td>
+                    <form method="post" action="{{ path('map_icons_delete', {'id': map_icon.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ map_icon.id) }}">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+
                 </td>
             </tr>
         {% endfor %}

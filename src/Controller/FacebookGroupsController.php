@@ -151,8 +151,7 @@ class FacebookGroupsController extends AbstractController
         $data = [];
         $exported_date = new \DateTime('now');
         $exported_date_formatted = $exported_date->format('d-M-Y');
-        $exported_date_formatted_for_file = $exported_date->format('d-m-Y');
-        $fileName = 'facebook_groups_export_' . $exported_date_formatted_for_file . '.csv';
+        $fileName = 'facebook_groups_export_' . $exported_date_formatted . '.csv';
 
         $count = 0;
         $facebook_groups_list = $facebookGroupsRepository->findAll();

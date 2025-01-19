@@ -5,11 +5,11 @@
 {% block body %}
     <h1 style="color: red">Business Type: {{ business_type.businessType }}</h1>
 
-    {{ include('BusinessTypes/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('business_types/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a class="btn btn-outline-primary btn-sm" href="{{ path('business_types_index') }}">Return to list</a>
 
-    {{ include('BusinessTypes/_delete_form.html.twig') }}
+    {{ include('business_types/_delete_form.html.twig') }}
 
     <hr>
 
@@ -29,7 +29,7 @@
                 <td>{{ map_icon.name }}</td>
                 <td style="text-align: center">
                     {% if map_icon.iconFile is not empty %}
-                        {% set file = asset('administration/Attachments/Business_contacts/Icons/')~map_icon.iconFile %}
+                        {% set file = asset('administration/ATSSharedFiles/BusinessContactsMapIcons/')~map_icon.iconFile %}
                         <img height="20" width="20" src="{{ file }}" class="rounded-circle">
                     {% endif %}
                 </td>

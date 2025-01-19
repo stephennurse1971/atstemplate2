@@ -2,7 +2,10 @@
     {% if subset != 'All' %}
         {% for business_contact in business_contacts %}
             <tr>
-                <td><i class="fa fa-circle"></i></td>
+                <td>
+                    o
+{#                    <i class="fa fa-building"></i>#}
+                </td>
                 {% include 'business_contacts/parts/table_body2.html.twig' %}
                 <td style="width: 50px"></td>
                 {% include 'business_contacts/parts/table_body4.html.twig' %}
