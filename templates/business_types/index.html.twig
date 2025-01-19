@@ -8,9 +8,6 @@
 
     {% include 'business_types/parts/import_and_export.html.twig' %}
 
-    NEED TO SORT THEM BY THE RANKING
-
-
     <table class="table table-responsive">
         <thead>
         <tr>
@@ -19,9 +16,8 @@
             <th></th>
             <th>Type</th>
             <th>Description</th>
-            <th>Map Icon</th>
+            <th>Name</th>
             <th>Icon</th>
-            <th>#</th>
             <th>#</th>
             <th>#</th>
         </tr>
@@ -53,13 +49,11 @@
                         {{ business_type.mapIcon.name }}
                     {% endif %}
                 </td>
-                <td>
-                    {{ business_type.mapIconColour }}
-                </td>
                 <td style="text-align: center">
                     {% if business_type.mapIcon is not empty %}
-                        {% set icon = asset('administration/attachments/Business_contacts/Icons/')~business_type.mapIcon.iconFile %}
-                        <img style="color: {{ business_type.mapIconColour }}" height="50" width="50" src="{{ icon }}" class="rounded-circle">
+                        {% set icon = asset('administration/ATSSharedFiles/BusinessContactsMapIcons/')~business_type.mapIcon.iconFile %}
+                        <img style="height: 20px; width: 20px" src="{{ icon }}"
+                             class="rounded-circle">
                     {% endif %}
                 </td>
                 <td>

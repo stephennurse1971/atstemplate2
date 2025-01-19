@@ -156,7 +156,7 @@ class TranslationController extends AbstractController
                 $newFilename = $safeFilename . '.' . 'csv';
                 try {
                     $importFile->move(
-                        $this->getParameter('translations_directory'),
+                        $this->getParameter('translations_import_directory'),
                         $newFilename
                     );
                 } catch (FileException $e) {

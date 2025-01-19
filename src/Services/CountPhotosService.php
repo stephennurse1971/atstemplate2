@@ -16,7 +16,6 @@ class CountPhotosService
             return count($photos);
         }
         return 0;
-
     }
 
 

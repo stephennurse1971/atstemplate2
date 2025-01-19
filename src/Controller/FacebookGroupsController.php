@@ -2,15 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\BusinessTypes;
 use App\Entity\FacebookGroups;
 use App\Form\FacebookGroupsType;
 use App\Form\ImportType;
-use App\Repository\BusinessContactsRepository;
 use App\Repository\CompanyDetailsRepository;
 use App\Repository\FacebookGroupsRepository;
 use App\Repository\FacebookGroupsReviewsRepository;
-use App\Services\BusinessContactsImportService;
 use App\Services\FacebookGroupsImportService;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -24,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
- * @Route("/facebook/groups")
+ * @Route("/facebook_groups")
  */
 class FacebookGroupsController extends AbstractController
 {
@@ -147,7 +144,7 @@ class FacebookGroupsController extends AbstractController
     }
 
     /**
-     * @Route ("/export/facebook_groups", name="facebook_groups_export" )
+     * @Route ("/export", name="facebook_groups_export" )
      */
     public function facebookGroupsExport(FacebookGroupsRepository $facebookGroupsRepository)
     {
@@ -192,10 +189,8 @@ class FacebookGroupsController extends AbstractController
     }
 
 
-
-
     /**
-     * @Route ("/import/facebook_groups", name="facebook_groups_import" )
+     * @Route ("/import", name="facebook_groups_import" )
      */
     public function facebookGroupsImport(Request $request, SluggerInterface $slugger, FacebookGroupsRepository $facebookGroupsRepository, FacebookGroupsImportService $facebookGroupsImportService): Response
     {
@@ -224,8 +219,4 @@ class FacebookGroupsController extends AbstractController
             'heading' => 'Facebook Groups Import',
         ]);
     }
-
-
-
-
 }

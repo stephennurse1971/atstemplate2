@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
- * @Route("/competitors")
+ * @Route("/Competitors")
  */
 class CompetitorsController extends AbstractController
 {
@@ -99,7 +99,7 @@ class CompetitorsController extends AbstractController
 
 
     /**
-     * @Route ("/export/competitors", name="competitors_export" )
+     * @Route ("/export/Competitors", name="competitors_export" )
      */
     public function exportCompetitors(CompetitorsRepository $competitorsRepository)
     {
@@ -164,7 +164,7 @@ class CompetitorsController extends AbstractController
     }
 
     /**
-     * @Route ("/import/competitors", name="competitors_import" )
+     * @Route ("/import/Competitors", name="competitors_import" )
      */
     public function businessTypesImport(Request $request, SluggerInterface $slugger, CompetitorsRepository $competitorsRepository, CompetitorsImportService $competitorsImportService): Response
     {
@@ -188,7 +188,7 @@ class CompetitorsController extends AbstractController
                 return $this->redirectToRoute('competitors_index');
             }
         }
-        return $this->render('business_contacts/import.html.twig', [
+        return $this->render('BusinessContacts/import.html.twig', [
             'form' => $form->createView(),
             'heading' => 'Competitors Import',
         ]);

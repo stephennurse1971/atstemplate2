@@ -114,10 +114,7 @@
                                             <div class="d-inline-block justify-content-center py-1 p-sm-2 product-image-container">
                                                 {% include 'home/products_page/photo_or_video.html.twig' %}
                                             </div>
-
-
                                     </div>
-
                             </div>
                         {% endfor %}
                     </div>
@@ -148,7 +145,7 @@
         {% set qr_code =  CompanyDetailsService.companyDetails.companyQrCode %}
         {% if include_QR_code == "Yes" and qr_code is not null %}
 
-            {% set image = asset('administration/attachments/Favicons/')~qr_code %}
+            {% set image = asset('administration/Attachments/FaviconsAndQR/')~qr_code %}
             <div class="row">
                 <div class="col-lg-3 col-md-4 m-4 p-4">
                     <div class="justify-content-center d-flex">

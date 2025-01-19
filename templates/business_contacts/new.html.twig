@@ -5,7 +5,7 @@
 {% block body %}
     <h1 style="color: red">New Business Contacts</h1>
     <button class="btn btn-primary " onclick="getLocation()">Get Coordinates</button>
-    {{ include('business_contacts/_form.html.twig') }}
+    {{ include('BusinessContacts/_form.html.twig') }}
 
     <a class="btn btn-outline-primary btn-sm mt-1" href="{{ path('business_contacts_index') }}">Return to list</a>
 {% endblock %}

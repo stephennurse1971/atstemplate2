@@ -5,7 +5,7 @@
 {% block body %}
     <div class="row">
         {% for photo in photos %}
-            {% set image = asset('administration/attachments/WebsitePhotos')~"/"~photo.photo %}
+            {% set image = asset('administration/Attachments/CMSPhotos')~"/"~photo.photo %}
             {% set fileType =  photo.photo|split('.')|last %}
             <div class="col-lg-3 col-md-4 m-4 p-4">
                 <div class="justify-content-center d-flex">

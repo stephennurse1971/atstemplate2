@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Entity\Languages;
-use App\Form\LanguagesType;
 use App\Repository\LanguagesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -46,7 +45,7 @@ class LanguagesImportService
             $linkedInOther = trim($oneLineFromCsv[4]);
             $icon = trim($oneLineFromCsv[5]);
 
-            $previous_language = $this->languagesRepository->findOneBy(['language' => $language]);
+            $previous_language = $this->languagesRepository->findOneBy(['language' => $languageName]);
             if (!$previous_language) {
                 $language = new Languages();
                 $language->setRanking($ranking)

@@ -6,10 +6,10 @@ use App\Entity\BusinessContacts;
 use App\Entity\Referrals;
 use App\Entity\User;
 use App\Services\TranslationsWorkerService;
-use Doctrine\DBAL\Types\DateTimeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -32,10 +32,9 @@ class ReferralsType extends AbstractType
                 'required' => true,
                 'empty_data' => null,
             ])
-            ->add('dateTime', DateTimeType::class, [
+            ->add('dateTime',DateTimeType::class, [
                 'widget' => 'single_text',
-                'required' => false,
-            ])
+                'label' => 'Date and Time'])
             ->add('action', ChoiceType::class, [
                 'multiple' => false,
                 'placeholder' => false,

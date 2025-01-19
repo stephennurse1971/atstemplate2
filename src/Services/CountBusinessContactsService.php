@@ -18,6 +18,6 @@ class CountBusinessContactsService
 
     public function count($businessType)
     {
-        return $this->businessContactsRepository->countByBusinessType($businessType); // Corrected the property name
+        return $this->businessContactsRepository->countByBusinessTypeAndStatus($businessType);
     }
 }

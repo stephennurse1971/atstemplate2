@@ -4,19 +4,9 @@
 
 {% block body %}
     <h1 style="color: red">Translations</h1>
-    <div class="row">
-        <div class="col-1">
-            <a class="btn btn-success btn-sm" href="{{ path('translation_new') }}">New</a>
-        </div>
-        <div class="col-4">
-            <a class="btn btn-outline-danger btn-sm" href="{{ path('translation_delete_all') }}">Delete All</a>
-        </div>
-        <div class="col-4">
-            <a class="btn btn-outline-primary btn-sm" href="{{ path('translation_export') }}">Export</a>
-            <a class="btn btn-outline-primary btn-sm" href="{{ path('translation_import') }}">Import</a>
-        </div>
-    </div>
-    <br>
+
+    {% include 'translation/parts/import_and_export.html.twig' %}
+
     <table class="table table-responsive">
         <thead>
         <tr>

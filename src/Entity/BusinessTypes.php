@@ -27,10 +27,6 @@ class BusinessTypes
 
 
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $mapIconColour;
 
 
     /**
@@ -75,17 +71,6 @@ class BusinessTypes
     }
 
 
-    public function getMapIconColour(): ?string
-    {
-        return $this->mapIconColour;
-    }
-
-    public function setMapIconColour(?string $mapIconColour): self
-    {
-        $this->mapIconColour = $mapIconColour;
-
-        return $this;
-    }
 
 
 

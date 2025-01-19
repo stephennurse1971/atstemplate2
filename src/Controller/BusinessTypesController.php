@@ -155,7 +155,7 @@ class BusinessTypesController extends AbstractController
     }
 
     /**
-     * @Route ("/export/business_types", name="business_types_export" )
+     * @Route ("/export/BusinessTypes", name="business_types_export" )
      */
     public
     function businessTypesExport(BusinessTypesRepository $businessTypesRepository)
@@ -203,7 +203,7 @@ class BusinessTypesController extends AbstractController
     }
 
     /**
-     * @Route ("/import/business_types", name="business_types_import" )
+     * @Route ("/import/BusinessTypes", name="business_types_import" )
      */
     public
     function businessTypesImport(Request $request, SluggerInterface $slugger, BusinessTypesRepository $businessTypesRepository, BusinessTypesImportService $businessTypesImportService): Response

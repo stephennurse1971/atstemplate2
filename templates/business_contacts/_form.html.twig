@@ -23,7 +23,7 @@
         </div>
 
         {% if business_contact.photo is not empty %}
-            {% set photo = asset('administration/attachments/Business_contacts/Photos/')~business_contact.photo %}
+            {% set photo = asset('administration/Attachments/Business_contacts/Photos/')~business_contact.photo %}
             <a class="btn btn-outline-danger btn-sm" target="_blank"
                href="{{ path('view_business_contact_photo', {id:business_contact.id}) }}">
                 <img title="{{ business_contact.photo }}" height="50" width="50"

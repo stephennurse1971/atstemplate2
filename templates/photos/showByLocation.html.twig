@@ -6,7 +6,7 @@
     {% if format == "Thumbnail" %}
         <div class="row my-2  p-2 bg-white">
             {% for photo in photos %}
-                {% set image = asset('administration/attachments/Photos/')~photo.photoFile %}
+                {% set image = asset('administration/Attachments/Photos/')~photo.photoFile %}
                 {% set fileType =  photo.photoFile|split('.')|last %}
 
                 {% if fileType == 'mp4' or fileType == 'mov' %}
@@ -62,7 +62,7 @@
 
         <div class="row my-2 p-2 bg-white">
             {% for photo in photos %}
-                {% set image = asset('administration/attachments/Photos/')~photo.photoFile %}
+                {% set image = asset('administration/Attachments/Photos/')~photo.photoFile %}
                 {% set fileType =  photo.photoFile|split('.')|last %}
 
                 {% if fileType == 'mp4' or fileType == 'mov' %}

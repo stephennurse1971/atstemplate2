@@ -8,7 +8,7 @@
     {% for business_type in business_types %}
         {% set business_contacts_count = CountBusinessContactsService.count(business_type) %}
 
-        {% set file = asset('administration/attachments/Business_contacts/Icons/')~business_type.mapIcon.iconFile %}
+        {% set file = asset('administration/ATSSharedFiles/BusinessContactsMapIcons/')~business_type.mapIcon.iconFile %}
 
         {% if business_contacts_count >0 %}
             <div class="row">
@@ -91,7 +91,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[1, 'asc'], [2, 'asc']],
+                "order": [[1, 'asc'], [3, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

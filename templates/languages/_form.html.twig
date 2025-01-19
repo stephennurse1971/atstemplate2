@@ -19,7 +19,7 @@
     <div class="col-md-2">
         {% if language.icon is not empty %}
             {{ language.icon }}<br>
-            {% set img = asset('administration/attachments/LanguageIcons/'~language.icon) %}
+            {% set img = asset('administration/ATSSharedFiles/LanguageIcons/'~language.icon) %}
             <img height="50" width="50" src="{{ img }}" class="rounded-circle">
             <a class="btn btn-sm btn-danger" href="{{ path('language_icon_delete', {'id': language.id}) }}">Delete
                 icon</a>

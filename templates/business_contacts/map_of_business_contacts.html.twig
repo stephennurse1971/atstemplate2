@@ -5,85 +5,17 @@
 {% block body %}
     <div class="row">
         <div class="col-10">
-            <h3 style="color: red">Business Contacts
-                {% if subset != 'All' %}
-                    : {{ subset }}
-                {% endif %}
+            <h3 style="color: red">Business Contacts: {{ subset }}
             </h3>
         </div>
         <div class="col-2">
             <a class="btn btn-outline-info btn-sm" href="{{ path('business_contacts_index') }}">Return to List</a>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-12">
-            <a class="btn btn-outline-info btn-sm" href="{{ path('business_contacts_map', {subset:'All'}) }}">
-                All
-            </a>
-            {% for business_type in business_types %}
-                {% if business_type.mapIcon is not empty %}
-                    {% set file = asset('administration/attachments/Business_contacts/Icons/')~business_type.mapIcon.iconFile %}
-                {% endif %}
-
-                {% if subset == business_type.businessType %}
-                    <a class="btn btn-outline-success btn-sm"
-                       href="{{ path('business_contacts_map', {subset:business_type.businessType}) }}">
-                        {{ business_type.businessType }}
-                        {% if business_type.mapIcon is not empty %}
-                            <img height="15" width="15" src="{{ file }}" class="rounded-circle">
-                        {% endif %}
-                    </a>
-                {% else %}
-                    <a class="btn btn-outline-primary btn-sm"
-                       href="{{ path('business_contacts_map', {subset:business_type.businessType}) }}">
-                        {{ business_type.businessType }}
-                        {% if business_type.mapIcon is not empty %}
-                            <img height="15" width="15" src="{{ file }}" class="rounded-circle">
-                        {% endif %}
-                    </a>
-                {% endif %}
-            {% endfor %}
-        </div>
-    </div>
+    {% include 'business_contacts/parts/map/subset_buttons.html.twig' %}
     <br>
-
-    <table>
-        {% if subset != 'All' %}
-            {% for business_contact in business_contacts %}
-                <tr>
-                    <td><i class="fa fa-circle"></i></td>
-                    {% include 'business_contacts/parts/table_body2.html.twig' %}
-                    <td style="width: 50px"></td>
-                    {% include 'business_contacts/parts/table_body4.html.twig' %}
-                    <td style="width: 50px"></td>
-                    {% include 'business_contacts/parts/table_body3.html.twig' %}
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <td style="width: 50px"></td>
-                        <td style="color: red">{{ business_contact.locationLatitude }},</td>
-                        <td style="width: 10px"></td>
-                        <td style="color: red">{{ business_contact.locationLongitude }}</td>
-                        <td style="width: 10px"></td>
-                        <td style="width: 10px">
-                            <a target="_blank" href="{{ path('business_contacts_edit', {id: business_contact.id}) }}">
-                                <i style="color: black" class="fa fa-pen"></i>
-                            </a>
-                        </td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
-        {% endif %}
-    </table>
-
-    {% if is_granted('ROLE_ADMIN') %}
-        <hr>
-        <span style="color: red"><b>Maximum:</b></span> Latitude= {{ latitude_max }}; Longitude: {{ longitude_max }}<br>
-        <span style="color: red"><b>Minimum:</b></span> Latitude= {{ latitude_min }}; Longitude: {{ longitude_min }}<br>
-        <span style="color: red"><b>Average:</b></span> Latitude= {{ latitude_average|number_format(6) }}; Longitude: {{ longitude_average|number_format(6) }}
-        <br>
-        <span style="color: red"><b>Range:</b></span> Latitude= {{ (latitude_max - latitude_min)|number_format(5) }}; Longitude: {{ (longitude_max - longitude_min)|number_format(5) }}
-        <br>
-    {% endif %}
+    {% include 'business_contacts/parts/map/List_of_business_contacts.html.twig' %}
+    {% include 'business_contacts/parts/map/Max_Min_Average_Latitude_and_Longitude.html.twig' %}
 
     <hr>
     <div class="row">
@@ -91,15 +23,16 @@
             <div id="map" style="width: 100%; height: 850px;"
                  data-locations='[
                     {% for business_contact in business_contacts %}
+                    {% if subset =='All' %}
                     {% set iconFileName = business_contact.businessType.mapIcon.iconFile %}
+                    {% else %}
+                    {% set iconFileName = 'map-marker.webp' %}
+                    {% endif %}
           {
             "lat": {{ business_contact.locationLatitude }},
             "lng": {{ business_contact.locationLongitude }},
             "name": "{{ business_contact.company | e('js') }}",
-{#            "icon": "{{ business_contact.businessType.mapIcon | e('js') }}", #}
-{#            "icon": "{{ asset('administration/attachments/Business_Contacts/Icons/'.icon) | e('js') }}",#}
-            "icon": "{{ asset('administration/attachments/Business_Contacts/Icons/'~iconFileName) | e('js') }}",
-            "icon_colour": "{{ business_contact.businessType.mapIconColour | e('js') }}"
+            "icon": "{{ asset('administration/ATSSharedFiles/BusinessContactsMapIcons/'~iconFileName) | e('js') }}"
           }
           {% if not loop.last %}, {% endif %}
         {% endfor %}
@@ -118,7 +51,7 @@
             // Initialize the map with average lat and long
             const map = new google.maps.Map(mapElement, {
                 center: {lat: {{ latitude_average }}, lng: {{ longitude_average }} }, // Center the map on average lat/lng
-                zoom: 14,  // Adjust zoom level (range 10-14)
+                zoom: 15,  // Adjust zoom level (range 10-14)
             });
 
             // Add markers to the map

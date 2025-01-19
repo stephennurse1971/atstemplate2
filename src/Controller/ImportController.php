@@ -14,7 +14,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 /**
- * @Route("/admin")
+ * @Route("/import")
  */
 class ImportController extends AbstractController
 {
@@ -33,7 +33,7 @@ class ImportController extends AbstractController
                 $newFilename = $safeFilename . '.' . 'csv';
                 try {
                     $importFile->move(
-                        $this->getParameter('user_import_directory'),
+                        $this->getParameter('users_import_directory'),
                         $newFilename
                     );
                 } catch (FileException $e) {
@@ -44,7 +44,7 @@ class ImportController extends AbstractController
                 return $this->redirectToRoute('user_index');
             }
         }
-        return $this->render('admin/import/index.html.twig', [
+        return $this->render('home/import.html.twig', [
             'form' => $form->createView(),
             'heading' => 'All'
         ]);

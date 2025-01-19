@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
-use App\Repository\BusinessContactsRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use App\Services\CountUserLogsService;
@@ -36,7 +35,7 @@ class UserController extends AbstractController
         $now = new \DateTime('now');
         $users = $userRepository->findAll();
 
-        return $this->render('user/index_template.html.twig', [
+        return $this->render('user/index.html.twig', [
             'users' => $users,
             'services' => $servicesOfferedRepository->findAll(),
             'now' => $now,
@@ -55,7 +54,7 @@ class UserController extends AbstractController
         $users = $userRepository->findAll();
 
         return $this->render('user/index_staff.html.twig', [
-            'users' => $users,
+            'Users' => $users,
             'services' => $servicesOfferedRepository->findAll(),
             'now' => $now
         ]);
@@ -118,7 +117,6 @@ class UserController extends AbstractController
             }
 
             $new_Password = $form['password']->getData();
-//            $user->updatePassword($new_Password);
             if ($new_Password) {
                 $user->setPassword(
                     $userPasswordHasher->hashPassword($user, $new_Password));
@@ -177,11 +175,12 @@ class UserController extends AbstractController
     public
     function exportUsers(UserRepository $userRepository)
     {
+        $exported_date = new \DateTime('now');
+        $exported_date_formatted = $exported_date->format('d-M-Y');
+        $fileName = 'all_users_export_'.$exported_date_formatted.'csv';
         $data = [];
         $user_list = $userRepository->findAll();
-        $fileName = 'all_users_export.csv';
-        $exported_date = new \DateTime('now');
-        $exported_date = $exported_date->format('d-M-Y h:m');
+
         $count = 0;
 
         foreach ($user_list as $user) {
@@ -204,9 +203,8 @@ class UserController extends AbstractController
             $cell = "L" . $i;
             $sheet->getCell($cell)->getHyperlink()->setUrl("https://google.com");
         }
+
         $writer = new Csv($spreadsheet);
-
-
         $response = new StreamedResponse(function () use ($writer) {
             $writer->save('php://output');
         });

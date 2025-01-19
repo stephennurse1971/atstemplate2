@@ -10,14 +10,16 @@
             <b>Icon:</b><br>
             {{ map_icon.iconFile }}
             <a class="btn btn-outline-danger btn-sm"
-               href="{{ path('map_icon_delete_file', {id: map_icon.id}) }}"> <i style="color: red" class="fa fa-trash"></i></a>
+               href="{{ path('map_icon_delete_file', {id: map_icon.id}) }}">
+                <i style="color: red" class="fa fa-trash"></i></a>
             <br>
             <img height="50" width="50"
-                 src="{{ asset('administration/attachments/Business_Contacts/Icons/'~ map_icon.iconFile) }}"
+{#                 src="{{ asset(business_contacts_map_icon_directory ~ map_icon.iconFile) }}"#}
+                 src="{{ asset('administration/ATSSharedFiles/BusinessContactsMapIcons/' ~ map_icon.iconFile) }}"
                  class="rounded-circle test">
             <br>
         {% endif %}
     </div>
 </div>
-    <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

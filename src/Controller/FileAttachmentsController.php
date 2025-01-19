@@ -74,7 +74,7 @@ class FileAttachmentsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $attachments = $form['attachments']->getData();
+            $attachments = $form['Attachments']->getData();
             if ($attachments) {
                 $files_name = [];
                 $attachment_directory = $this->getParameter('file_attachments_directory');
@@ -119,7 +119,7 @@ class FileAttachmentsController extends AbstractController
         if (empty($fileAttachments->getAttachments())) {
             $form->remove('additional');
         } else {
-            $form->remove('attachments');
+            $form->remove('Attachments');
         }
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -145,7 +145,7 @@ class FileAttachmentsController extends AbstractController
                 }
             }
             if (empty($fileAttachments->getAttachments())) {
-                $attachments = $form['attachments']->getData();
+                $attachments = $form['Attachments']->getData();
                 if ($attachments) {
                     $files_name = [];
                     $attachment_directory = $this->getParameter('file_attachments_directory');

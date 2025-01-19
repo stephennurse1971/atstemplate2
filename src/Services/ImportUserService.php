@@ -17,7 +17,7 @@ class ImportUserService
         $email = '';
         $mobile = '';
 
-        $filepath = $this->container->getParameter('user_import_directory');
+        $filepath = $this->container->getParameter('users_import_directory');
         $fullpath = $filepath . $fileName;
         $all_data_from_csv = [];
         $row = 0;

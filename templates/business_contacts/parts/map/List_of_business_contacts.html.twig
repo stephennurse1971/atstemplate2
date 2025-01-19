@@ -1,0 +1,26 @@
+<table>
+    {% if subset != 'All' %}
+        {% for business_contact in business_contacts %}
+            <tr>
+                <td><i class="fa fa-circle"></i></td>
+                {% include 'business_contacts/parts/table_body2.html.twig' %}
+                <td style="width: 50px"></td>
+                {% include 'business_contacts/parts/table_body4.html.twig' %}
+                <td style="width: 50px"></td>
+                {% include 'business_contacts/parts/table_body3.html.twig' %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <td style="width: 50px"></td>
+                    <td style="color: red">{{ business_contact.locationLatitude }},</td>
+                    <td style="width: 10px"></td>
+                    <td style="color: red">{{ business_contact.locationLongitude }}</td>
+                    <td style="width: 10px"></td>
+                    <td style="width: 10px">
+                        <a target="_blank" href="{{ path('business_contacts_edit', {id: business_contact.id}) }}">
+                            <i style="color: black" class="fa fa-pen"></i>
+                        </a>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    {% endif %}
+</table>

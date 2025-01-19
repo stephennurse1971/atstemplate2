@@ -1,0 +1,15 @@
+{% if is_granted('ROLE_ADMIN') %}
+    <div class="row">
+        <div class="col-1">
+            <a class="btn btn-success btn-sm" href="{{ path('translation_new') }}">New</a>
+        </div>
+        <div class="col-4">
+            <a class="btn btn-outline-danger btn-sm" href="{{ path('translation_delete_all') }}">Delete All</a>
+        </div>
+        <div class="col-4">
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('translation_export') }}">Export</a>
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('translation_import') }}">Import</a>
+        </div>
+    </div>
+    <br>
+{% endif %}

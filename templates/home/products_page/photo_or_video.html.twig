@@ -1,4 +1,4 @@
-{% set loc = asset('administration/attachments/WebsitePhotos/')~cms_photo.photo %}
+{% set loc = asset('administration/Attachments/CMSPhotos/')~cms_photo.photo %}
     {% if cms_photo.photoOrVideo == "Video" %}
         <video class="other-page-image" controls>
             <source src="{{ loc }}" type="video/mp4">

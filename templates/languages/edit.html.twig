@@ -5,9 +5,9 @@
 {% block body %}
     <h1 style="color: red">Edit: {{ language.language }}</h1>
 
-    {{ include('languages/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('Languages/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a class="btn btn-outline-primary btn-sm" href="{{ path('languages_index') }}">Return to list</a>
 
-    {{ include('languages/_delete_form.html.twig') }}
+    {{ include('Languages/_delete_form.html.twig') }}
 {% endblock %}

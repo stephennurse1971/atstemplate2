@@ -42,7 +42,6 @@ class BusinessTypesImportService
             $businessTypeName = trim($oneLineFromCsv[1]);
             $businessDescription = trim($oneLineFromCsv[2]);
             $mapIconFile = trim($oneLineFromCsv[3]);
-            $mapIconColour = trim($oneLineFromCsv[4]);
 
             $previous_business_type = $this->businessTypeRepository->findOneBy(['businessType' => $businessTypeName]);
             $map_icon_id=$this->mapIconsRepository->findOneBy(['name' => $mapIconFile]);
@@ -51,8 +50,7 @@ class BusinessTypesImportService
                 $businessType->setRanking($ranking)
                     ->setBusinessType($businessTypeName)
                     ->setDescription($businessDescription)
-                    ->setMapIcon($map_icon_id)
-                    ->setMapIconColour($mapIconColour);
+                    ->setMapIcon($map_icon_id);
                 $this->manager->persist($businessType);
                 $this->manager->flush();
             }

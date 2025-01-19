@@ -25,7 +25,7 @@ class CmsCopyPageFormatsController extends AbstractController
     public function index(CmsCopyPageFormatsRepository $cmsCopyPageFormatsRepository): Response
     {
         return $this->render('cms_copy_page_formats/index.html.twig', [
-            'cms_copy_page_formats' => $cmsCopyPageFormatsRepository->findAll(),
+            'CmsCopyPageFormats' => $cmsCopyPageFormatsRepository->findAll(),
         ]);
     }
 
@@ -101,7 +101,7 @@ class CmsCopyPageFormatsController extends AbstractController
 
 
     /**
-     * @Route ("/export/cms_copy_page_formats", name="cms_copy_page_formats_export" )
+     * @Route ("/export/CmsCopyPageFormats", name="cms_copy_page_formats_export" )
      */
     public
     function cmsCopypageFormatsExport(CmsCopyPageFormatsRepository $cmsCopyPageFormatsRepository)
@@ -151,7 +151,7 @@ class CmsCopyPageFormatsController extends AbstractController
     }
 
     /**
-     * @Route ("/import/cms_copy_page_formats", name="cms_copy_page_formats_import" )
+     * @Route ("/import/CmsCopyPageFormats", name="cms_copy_page_formats_import" )
      */
     public
     function cmsFormatsImport(Request $request, SluggerInterface $slugger, CmsCopyPageFormatsRepository $cmsCopyPageFormatsRepository, CmsPageCopyPageFormatImportService $cmsPageCopyPageFormatImportService): Response

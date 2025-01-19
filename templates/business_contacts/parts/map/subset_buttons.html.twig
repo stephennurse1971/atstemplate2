@@ -1,0 +1,78 @@
+<div class="desktop">
+    <div class="row">
+        <div class="col-12">
+            {% if subset != 'All' %}
+                <a class="btn btn-outline-info btn-sm" href="{{ path('business_contacts_map', {subset:'All'}) }}">
+                    All
+                </a>
+            {% endif %}
+            {% for business_type in business_types %}
+                {% if subset =='All' %}
+                    {% if business_type.mapIcon is not empty %}
+                        {% set file = asset('administration/ATSSharedFiles/BusinessContactsMapIcons/')~business_type.mapIcon.iconFile %}
+                    {% endif %}
+                {% else %}
+                    {% set file = asset('administration/ATSSharedFiles/BusinessContactsMapIcons/map-marker.webp') %}
+                {% endif %}
+
+                {% if subset == business_type.businessType %}
+                    <a class="btn btn-outline-success btn-sm"
+                       href="{{ path('business_contacts_map', {subset:business_type.businessType}) }}">
+                        {{ business_type.businessType }}
+                        {% if business_type.mapIcon is not empty and subset =='All'%}
+                            <img height="15" width="15" src="{{ file }}" class="rounded-circle">
+                        {% endif %}
+                    </a>
+                {% else %}
+                    <a class="btn btn-outline-primary btn-sm"
+                       href="{{ path('business_contacts_map', {subset:business_type.businessType}) }}">
+                        {{ business_type.businessType }}
+                        {% if business_type.mapIcon is not empty and subset =='All' %}
+                            <img height="15" width="15" src="{{ file }}" class="rounded-circle">
+                        {% endif %}
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<div class="mobile">
+    <div class="row">
+        <div class="col-12">
+            {% if subset != 'All' %}
+                <a class="btn btn-outline-info btn-sm" href="{{ path('business_contacts_map', {subset:'All'}) }}">
+                    All
+                </a>
+            {% endif %}
+            {% if subset =='All' %}
+                {% for business_type in business_types %}
+                    {% if business_type.mapIcon is not empty %}
+                        {% set file = asset('administration/Attachments/Business_contacts/Icons/')~business_type.mapIcon.iconFile %}
+                    {% endif %}
+
+                    {% if subset == business_type.businessType %}
+                        <a class="btn btn-outline-success btn-sm"
+                           href="{{ path('business_contacts_map', {subset:business_type.businessType}) }}">
+                            {{ business_type.businessType }}
+                            {% if business_type.mapIcon is not empty and subset =='All' %}
+                                <img height="15" width="15" src="{{ file }}" class="rounded-circle">
+                            {% endif %}
+                        </a>
+                    {% else %}
+                        <a class="btn btn-outline-primary btn-sm"
+                           href="{{ path('business_contacts_map', {subset:business_type.businessType}) }}">
+                            {{ business_type.businessType }}
+                            {% if business_type.mapIcon is not empty and subset =='All' %}
+                                <img height="15" width="15" src="{{ file }}" class="rounded-circle">
+                            {% endif %}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+

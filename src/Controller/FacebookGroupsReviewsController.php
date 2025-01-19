@@ -138,7 +138,7 @@ class FacebookGroupsReviewsController extends AbstractController
     }
 
     /**
-     * @Route ("/export/facebook_groups_reviews", name="facebook_groups_reviews_export" )
+     * @Route ("/export", name="facebook_groups_reviews_export" )
      */
     public function facebookGroupsReviewsExport(FacebookGroupsReviewsRepository $facebookGroupsReviewsRepository)
     {
@@ -187,7 +187,7 @@ class FacebookGroupsReviewsController extends AbstractController
 
 
     /**
-     * @Route ("/import/facebook_groups_reviews", name="facebook_groups_import" )
+     * @Route ("/import", name="facebook_groups_reviews_import" )
      */
     public function facebookGroupsReviewsImport(Request $request, SluggerInterface $slugger,  FacebookGroupsReviewsRepository $facebookGroupsReviewsRepository, FacebookGroupsReviewsImportService $facebookGroupsReviewsImportService): Response
     {

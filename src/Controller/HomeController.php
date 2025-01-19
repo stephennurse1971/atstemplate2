@@ -135,7 +135,7 @@ class   HomeController extends AbstractController
      */
     public function advancedDashboard()
     {
-        return $this->render('template_parts_project_specific/advanced_dashboard_specific.html.twig', []);
+        return $this->render('template_parts_project_specific/dashboard_project_specific.html.twig', []);
     }
 
 
@@ -181,9 +181,10 @@ class   HomeController extends AbstractController
 
         if ($productEntity) {
             $cms_photo = $cmsPhotoRepository->findBy([
-                'product' => $productEntity
+                'product' => $productEntity,
             ],
-                ['ranking' => 'ASC']);
+                ['ranking' => 'ASC'])
+            ;
         } else {
             $cms_photo = $cmsPhotoRepository->findBy([
                 'staticPageName' => $product

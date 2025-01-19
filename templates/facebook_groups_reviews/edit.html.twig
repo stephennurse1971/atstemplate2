@@ -5,9 +5,9 @@
 {% block body %}
     <h1 style="color: red">Edit Facebook Groups Reviews</h1>
 
-    {{ include('facebook_groups_reviews/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('FacebookGroupsReviews/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a class="btn btn-outline-primary btn-sm" href="{{ path('facebook_groups_reviews_index') }}">Return to list</a>
 
-    {{ include('facebook_groups_reviews/_delete_form.html.twig') }}
+    {{ include('FacebookGroupsReviews/_delete_form.html.twig') }}
 {% endblock %}

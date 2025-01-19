@@ -77,7 +77,7 @@ class PhotoLocationsController extends AbstractController
         foreach($photoLocation->getEnabledUsers() as $userId){
             $users[]=$userRepository->find($userId);
         }
-        $form = $this->createForm(PhotoLocationsType::class, $photoLocation,['users'=>$users]);
+        $form = $this->createForm(PhotoLocationsType::class, $photoLocation,['Users'=>$users]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $usersID_container = [];

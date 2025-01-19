@@ -50,7 +50,7 @@ class PhotoLocationsType extends AbstractType
                 'required' => false,
                 'multiple' => true,
                 'mapped' => false,
-                'data'=>$options['users']
+                'data'=>$options['Users']
             ]);
     }
 
@@ -58,7 +58,7 @@ class PhotoLocationsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => PhotoLocations::class,
-            'users'=>null
+            'Users'=>null
         ]);
     }
 

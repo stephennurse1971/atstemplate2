@@ -52,7 +52,7 @@ class CmsPhotoController extends AbstractController
                 $newFilename = $safeFilename . '.' . $photo->guessExtension();
                 try {
                     $photo->move(
-                        $this->getParameter('website_photos_directory'),
+                        $this->getParameter('cms_photos_directory'),
                         $newFilename
                     );
                     $cmsPhoto->setPhoto($newFilename);
@@ -111,7 +111,7 @@ class CmsPhotoController extends AbstractController
                 $newFilename = $safeFilename . '.' . $photo->guessExtension();
                 try {
                     $photo->move(
-                        $this->getParameter('website_photos_directory'),
+                        $this->getParameter('cms_photos_directory'),
                         $newFilename
                     );
                     $cmsPhoto->setPhoto($newFilename);
@@ -180,7 +180,7 @@ class CmsPhotoController extends AbstractController
         $referer = $request->headers->get('referer');
         $file_name = $cmsPhoto->getPhoto();
         if ($file_name) {
-            $file = $this->getParameter('website_photos_directory') . $file_name;
+            $file = $this->getParameter('cms_photos_directory') . $file_name;
             if (file_exists($file)) {
                 unlink($file);
             }
@@ -210,7 +210,7 @@ class CmsPhotoController extends AbstractController
         $referer = $request->server->get('HTTP_REFERER');
         $cms_photos = $cmsPhotoRepository->findAll();
 
-        $files = glob($this->getParameter('website_photos_directory') . "/*");
+        $files = glob($this->getParameter('cms_photos_directory') . "/*");
         foreach ($files as $file) {
             unlink($file);
         }

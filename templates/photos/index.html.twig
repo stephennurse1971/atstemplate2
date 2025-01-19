@@ -120,9 +120,11 @@
                         </td>
                         <td style="text-align: right" title="{{ location.date|date('d-M-Y') }}"
                             data-sort="{{ location.date|date('Y-m-d') }}">{{ location.date|date('M-Y') }}</td>
+
                         <td style="text-align: right">
-                            {{ CountPhotos.calculateTotalPhotos(location) }}
+                            {{ CountPhotosService.calculateTotalPhotos(location) }}
                         </td>
+
                         {% if is_granted('ROLE_ADMIN') %}
                             <td style="text-align: center">
                                 <i title="Open To All" style="color: green" class="fa fa-user"></i>

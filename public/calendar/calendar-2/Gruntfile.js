@@ -17,7 +17,7 @@ module.exports = function (grunt) {
 		json: {
 			locale: {
 				options: {
-					namespace: "$.fn['<%= pkg.name %>'].languages",
+					namespace: "$.fn['<%= pkg.name %>'].Languages",
 					includePath: false,
 					processName: function (filename) {
 						return filename.toLowerCase();

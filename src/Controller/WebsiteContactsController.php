@@ -26,7 +26,7 @@ class WebsiteContactsController extends AbstractController
     {
         return $this->render('website_contacts/index.html.twig', [
             'website_contacts' => $websiteContactsRepository->findAll(),
-            'users' => $userRepository->findAll()
+            'Users' => $userRepository->findAll()
         ]);
     }
 

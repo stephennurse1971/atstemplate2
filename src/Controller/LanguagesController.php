@@ -5,9 +5,7 @@ namespace App\Controller;
 use App\Entity\Languages;
 use App\Form\ImportType;
 use App\Form\LanguagesType;
-use App\Repository\BusinessTypesRepository;
 use App\Repository\LanguagesRepository;
-use App\Services\BusinessTypesImportService;
 use App\Services\LanguagesImportService;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -47,7 +45,7 @@ class LanguagesController extends AbstractController
                     $newFilename = $safeFilename . '.' . $icon->guessExtension();
                     try {
                         $icon->move(
-                            $this->getParameter('icon_directory'),
+                            $this->getParameter('language_icon_directory'),
                             $newFilename
                         );
                         $language->setIcon($newFilename);
@@ -91,7 +89,7 @@ class LanguagesController extends AbstractController
                     $newFilename = $safeFilename . '.' . $icon->guessExtension();
                     try {
                         $icon->move(
-                            $this->getParameter('icon_directory'),
+                            $this->getParameter('language_icon_directory'),
                             $newFilename
                         );
                         $language->setIcon($newFilename);
@@ -116,7 +114,7 @@ class LanguagesController extends AbstractController
     {
         $file_name = $language->getIcon();
         if ($file_name) {
-            $file = $this->getParameter('icon_directory') . $file_name;
+            $file = $this->getParameter('language_icon_directory') . $file_name;
             if (file_exists($file)) {
                 unlink($file);
             }
@@ -153,7 +151,7 @@ class LanguagesController extends AbstractController
         $referer = $request->headers->get('referer');
         $file_name = $language->getIcon();
         if ($file_name) {
-            $file = $this->getParameter('icon_directory') . $file_name;
+            $file = $this->getParameter('language_icon_directory') . $file_name;
             if (file_exists($file)) {
                 unlink($file);
             }
@@ -301,7 +299,7 @@ class LanguagesController extends AbstractController
     /**
      * @Route ("/import/languages", name="languages_import" )
      */
-    public function languagesImport(Request $request, SluggerInterface $slugger, LanguagesRepository $languagesRepository, LanguagesImportService $languagesImportService): Response
+    public function languagesImport(Request $request, SluggerInterface $slugger, LanguagesImportService $languagesImportService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);

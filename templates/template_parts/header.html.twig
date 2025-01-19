@@ -256,17 +256,6 @@
                     {% endif %}
 
 
-                    <!-- Nav Item #7 - QR code -->
-                    {#                    {% if CompanyDetailsService.getCompanyDetails is not null %} #}
-                    {#                        {% if CompanyDetailsService.companyDetails.includeQRCodeHomePage ==1 %} #}
-                    {#                            <li class="nav-item"> #}
-                    {#                                <a class="nav-link" target="_blank" href="{{ path('company_qr_code') }}"><i #}
-                    {#                                            class="fa fa-qrcode"></i></a> #}
-                    {#                            </li> #}
-                    {#                        {% endif %} #}
-                    {#                    {% endif %} #}
-
-
                     {% include 'template_parts_project_specific/header_project_specific2.html.twig' %}
 
                     <!-- Nav Item #8 - Login -->
@@ -307,7 +296,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="{{ asset('administration/attachments/LanguageIcons/'~LanguagesService.LanguageSelected.icon) }}"
+                                <img src="{{ asset('administration/ATSSharedFiles/LanguageIcons/'~LanguagesService.LanguageSelected.icon) }}"
                                      height="30" width=30">
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -315,7 +304,7 @@
                                     {% if language.language != LanguagesService.LanguageSelected.language %}
                                         <a class="dropdown-item"
                                            href="{{ path('select_default_language',{id:language.id}) }}">
-                                            <img src="{{ asset('administration/attachments/LanguageIcons/'~language.icon) }}"
+                                            <img src="{{ asset('administration/ATSSharedFiles/LanguageIcons/'~language.icon) }}"
                                                  height="30" width=30">
                                         </a>
                                     {% endif %}

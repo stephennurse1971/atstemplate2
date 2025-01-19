@@ -36,7 +36,7 @@ class MapIconsController extends AbstractController
                 $newFilename = $originalFilename . '.' . $iconFile->guessExtension();
                 try {
                     $iconFile->move(
-                        $this->getParameter('map_icon_directory'), // Directory from your services.yaml
+                        $this->getParameter('business_contacts_map_icon_directory'), // Directory from your services.yaml
                         $newFilename // New unique filename
                     );
                     $mapIcon->setIconFile($newFilename);
@@ -76,7 +76,7 @@ class MapIconsController extends AbstractController
                 $newFilename = $originalFilename . '.' . $iconFile->guessExtension();
                 try {
                     $iconFile->move(
-                        $this->getParameter('map_icon_directory'), // Directory from your services.yaml
+                        $this->getParameter('business_contacts_map_icon_directory'), // Directory from your services.yaml
                         $newFilename // New unique filename
                     );
                     $mapIcon->setIconFile($newFilename);

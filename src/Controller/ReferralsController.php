@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\Security;
 class ReferralsController extends AbstractController
 {
     /**
-     * @Route("/", name="referrals_index", methods={"GET"})
+     * @Route("/index", name="referrals_index", methods={"GET"})
      */
     public function index(ReferralsRepository $referralsRepository): Response
     {

@@ -12,7 +12,8 @@
         {% if is_granted('ROLE_ADMIN') %}
             <a class="btn btn-outline-primary btn-sm" href="{{ path('facebook_groups_import') }}">Import</a>
             <a class="btn btn-outline-primary btn-sm" href="{{ path('facebook_groups_export') }}">Export</a>
-            <a href="{{ asset('administration/import_export/facebook_groups/template/facebook-groups-import-template.csv') }}">(Template)</a>
+{#            <a href="{{ asset(import_templates_directory~'FacebookGroups_ImportTemplate.csv') }}">(Template)</a>#}
+            <a href="{{ asset('administration/ATSSharedFiles/_ImportTemplates/'~'FacebookGroups_ImportTemplate.csv') }}">(Template)</a>
         {% endif %}
     </div>
     <div class="col-2">

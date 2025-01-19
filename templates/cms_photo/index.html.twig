@@ -55,7 +55,7 @@
 
                 <td>
                     {% if cms_photo.photo is not empty %}
-                        {% set photo = asset('administration/attachments/WebsitePhotos/')~cms_photo.photo %}
+                        {% set photo = asset('administration/Attachments/CMSPhotos/')~cms_photo.photo %}
 
                         {% if cms_photo.rotate ==0 %}
                             <a class="btn btn-outline-danger btn-sm" target="_blank"
@@ -125,7 +125,7 @@
                        href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">Edit</a>
                 </td>
                 <td>
-                    {% if cms_photo.photo is not null %}
+                    {% if cms_photo.photo|length>0 %}
                         <a class="btn btn-outline-danger btn-sm"
                            href="{{ path('cms_photo_file_delete', {'id': cms_photo.id}) }}">Delete Photo</a>
                     {% endif %}

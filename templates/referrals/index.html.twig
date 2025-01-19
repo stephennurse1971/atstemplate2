@@ -4,9 +4,8 @@
 
 {% block body %}
     <h1 style="color: red">Referrals</h1>
-    <a class="btn btn-outline-danger btn-sm" href="{{ path('referrals_delete_all') }}">Delete All</a>
-    <a class="btn btn-outline-primary btn-sm" target="_blank" href="{{ path('business_contacts_index') }}">Business
-        Contacts</a>
+
+    {% include 'referrals/parts/import_and_export.html.twig' %}
 
     <table class="table">
         <thead>
@@ -26,6 +25,7 @@
             <tr>
 
                 <td data-sort="{{ referral.dateTime|date('Y-m-d') }}">{{ referral.dateTime ? referral.dateTime|date('d-M-y') : '' }}</td>
+
                 <td>{{ referral.dateTime ? referral.dateTime|date('H:i') : '' }}</td>
 
                 <td>
@@ -38,14 +38,31 @@
                 <td>{{ referral.businessSite.businessType.businessType }}</td>
                 <td>{{ referral.businessSite.company }}</td>
                 <td style="text-align: center">
-                    {% if referral.action == "VCF" %}
-                        <i style="color: blue" class="fa fa-globe"></i>
+                    {{ referral.action }}
+
+
+                    {% if referral.action == "Website" %}
+                        <i title="Launched website" style="color: blue" class="fa fa-globe"></i>
                     {% endif %}
-                    {% if referral.action == "Map" %}
-                        <i style="color: red" class="fa fa-map-marker"></i>
+
+                    {% if referral.action == "Email" %}
+                        <i title="Emailed" style="color: blue" class="fa fa-envelope"></i>
                     {% endif %}
+
+                    {% if referral.action == "WhatsApp" %}
+                        <i title="WhatsApp'ed" style="color: green" class="fab fa-whatsapp"></i>
+                    {% endif %}
+
                     {% if referral.action == "Phone" %}
-                        <i style="color: green" class="fa fa-phone"></i>
+                        <i title="Called" style="color: green" class="fa fa-phone"></i>
+                    {% endif %}
+
+                    {% if referral.action == "Map" %}
+                        <i title="Launched Map" style="color: red" class="fa fa-map-marker"></i>
+                    {% endif %}
+
+                    {% if referral.action == "VCF" %}
+                        <i title="Downloaded VCF" style="color: blue" class="fas fa-address-card"></i>
                     {% endif %}
                 </td>
                 <td style="text-align: center">

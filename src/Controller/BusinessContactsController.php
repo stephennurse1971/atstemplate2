@@ -318,7 +318,7 @@ class BusinessContactsController extends AbstractController
 
 
     /**
-     * @Route ("/export/business_contacts", name="business_contacts_export" )
+     * @Route ("/export/BusinessContacts", name="business_contacts_export" )
      */
     public function businessContactsExport(BusinessContactsRepository $businessContactsRepository)
     {
@@ -403,7 +403,7 @@ class BusinessContactsController extends AbstractController
 
 
     /**
-     * @Route ("/import/business_contacts", name="business_contacts_import" )
+     * @Route ("/import/BusinessContacts", name="business_contacts_import" )
      */
     public function businessContactsImport(Request $request, SluggerInterface $slugger, BusinessContactsRepository $businessContactsRepository, BusinessContactsImportService $businessContactsImportService): Response
     {

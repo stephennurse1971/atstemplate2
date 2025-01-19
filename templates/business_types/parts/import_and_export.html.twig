@@ -9,13 +9,12 @@
                 Contacts</a>
             <a class="btn btn-outline-primary btn-sm" href="{{ path('business_types_import') }}">Import</a>
             <a class="btn btn-outline-primary btn-sm" href="{{ path('business_types_export') }}">Export</a>
-            <a href="{{ asset('administration/import_export/business_types/template/business-types-import-template.csv') }}">(Template)</a>
+            <a href="{{ asset('administration/ATSSharedFiles/_ImportTemplates/BusinessTypes_ImportTemplate.csv') }}">(Template)</a>
         </div>
         <div class="col-3">
             <a class="btn btn-outline-primary btn-sm"
                href="{{ path('update_business_type_ranking') }}">Re-number</a>
-            <a class="btn btn-outline-primary btn-sm" href="{{ path('business_contacts_index') }}">Business
-                Contacts</a>
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('map_icons_index') }}">Map Icons</a>
         </div>
     {% endif %}
 

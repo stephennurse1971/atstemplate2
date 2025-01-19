@@ -14,7 +14,7 @@ class TranslationsImportService
 {
     public function importTranslations(string $fileName)
     {
-        $filepath = $this->container->getParameter('translations_directory');
+        $filepath = $this->container->getParameter('translations_import_directory');
         $fullpath = $filepath . $fileName;
         $alldatatsFromCsv = [];
         $row = 0;

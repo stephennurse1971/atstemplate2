@@ -31,7 +31,7 @@ class PhotosController extends AbstractController
      * @Route("/index", name="photos_index", methods={"GET"})
      *
      */
-    public function index(PhotosRepository $photosRepository, PhotoLocationsRepository $photoLocationsRepository, CountPhotosService $countPhotos): Response
+    public function index(PhotosRepository $photosRepository, PhotoLocationsRepository $photoLocationsRepository, CountPhotosService $countPhotosService): Response
     {
         $photos = $photosRepository->findAll();
         $photolocations_public = $photoLocationsRepository->findBy([
@@ -41,7 +41,7 @@ class PhotosController extends AbstractController
             'publicPrivate' => 'Private'
         ]);
         return $this->render('photos/index.html.twig', [
-            'Photos' => $photos,
+            'photos' => $photos,
             'locations_public' => $photolocations_public,
             'locations_private' => $photolocations_private
         ]);
