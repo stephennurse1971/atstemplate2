@@ -49,7 +49,6 @@ class CmsCopyController extends AbstractController
                 if ($cmsCopy->getStaticPageName()) {
                     $safeFilename = $cmsCopy->getStaticPageName() . uniqid();
                 }
-
                 $newFilename = $safeFilename . '.' . $attachment->guessExtension();
                 try {
                     $attachment->move(
@@ -96,13 +95,10 @@ class CmsCopyController extends AbstractController
     {
         $form = $this->createForm(CmsCopyType::class, $cmsCopy);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
+        if ($form->isSubmitted() && $form->isValid() ) {
             $attachment = $form->get('attachment')->getData();
             if ($attachment) {
                 $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
-
-
                 $newFilename = $originalFilename . '.' . $attachment->guessExtension();
                 try {
                     $attachment->move(

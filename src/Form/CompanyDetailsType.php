@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -152,7 +153,7 @@ class CompanyDetailsType extends AbstractType
                 'label' => $this->translationsWorker->getTranslations('Weather Location'),
                 'required' => false,
             ])
-            ->add('companyAddressMapLink', TextType::class, [
+            ->add('companyAddressMapLink', TextareaType::class, [
                 'label' => $this->translationsWorker->getTranslations('Company Address Map Link'),
                 'required' => false,
             ])
@@ -164,7 +165,7 @@ class CompanyDetailsType extends AbstractType
                 'label' => $this->translationsWorker->getTranslations('Company Address Latitude'),
                 'required' => false,
             ])
-            ->add('companyAddressInstructions', TextType::class, [
+            ->add('companyAddressInstructions', TextareaType::class, [
                 'label' => $this->translationsWorker->getTranslations('Company Address Instructions'),
                 'required' => false,
             ])
@@ -256,19 +257,20 @@ class CompanyDetailsType extends AbstractType
                 'required' => false])
             ->add('titleProducts', TextType::class, [
                 'label' => $this->translationsWorker->getTranslations('Title Products'),
+                'required'=>false
             ])
             ->add('titleSubProducts', TextType::class, [
                 'label' => $this->translationsWorker->getTranslations('Title Sub-Products'),
+                'required'=>false
             ])
             ->add('titleUsefulLinks', TextType::class, [
                 'label' => $this->translationsWorker->getTranslations('Title Useful Links'),
+                'required'=>false
             ])
             ->add('enableUserRegistration', CheckboxType::class, [
                 'label' => $this->translationsWorker->getTranslations('Enable Registration'),
-                'required' => false])
-            ->add('registrationEmail', TextType::class, [
-                'label' => $this->translationsWorker->getTranslations('Registration Email'),
-            ]);
+                'required' => false]);
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

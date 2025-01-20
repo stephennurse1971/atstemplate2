@@ -12,6 +12,7 @@
             <th>Time</th>
             <th>User</th>
             <th>#</th>
+            <th>#</th>
         </tr>
         </thead>
         <tbody>
@@ -20,10 +21,11 @@
                 <td data-sort="{{ log.createdAt|date('Y-m-d H:i') }}">{{ log.createdAt ? log.createdAt|date('d-M-Y') : '' }}</td>
                 <td data-sort="{{ log.createdAt|date('Y-m-d H:i') }}">{{ log.createdAt ? log.createdAt|date('H:i') : '' }}</td>
                 <td>
-                    <a target="_blank" class="dropdown-item" href="{{ path('user_edit', {'id': log.user.id}) }}">
-                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                        {{ log.user.fullName }}
-                    </a>
+                    {{ log.user.fullName }}
+                </td>
+
+                <td>
+                    <a class="btn btn-outline-danger btn-sm" href="{{ path('log_edit', {'id': log.id}) }}">Edit</a>
                 </td>
                 <td>
                     <form method="post" action="{{ path('log_delete', {'id': log.id}) }}">

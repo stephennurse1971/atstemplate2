@@ -2,11 +2,14 @@
     .ck-content {
         height: 500px;
     }
-
+    #company_details_companyAddressInstructions {
+        height: 500px;
+    }
     #company_details_companyAddressMapLink {
         height: 300px;
     }
 </style>
+
 {{ form_start(form) }}
 <div class="row">
     <div class="col-2">
@@ -88,7 +91,8 @@
         {{ form_row(form.companyAddressLongitude) }}
         <a target="_blank" href="{{ path('office_address') }}">
             <i style="color: red" class="fa fa-map-marker mr-3"></i></a>
-
+        <i style="color: blue" title="Start with 'https://https://www.google.com/maps/' and end with '2s'"
+           class="fa fa-info-circle"></i>
         {{ form_row(form.companyAddressMapLink) }}
     </div>
 
@@ -106,7 +110,11 @@
         {{ form_row(form.twitter) }}
 
         {% if company_details.companyQrCode is not null %}
-            <b>QR Code:</b><br>
+            <b>QR Code:</b>
+            <br>
+            <a class="btn btn-warning btn-sm" title="QR Monkey" target="_blank" href="https://www.qrcode-monkey.com/">QR
+                Monkey</a>
+            <br>
             {{ company_details.companyQrCode }}
             <a class="btn btn-outline-danger btn-sm"
                href="{{ path('company_details_delete_qr_code', {'id': '1'}) }}"> <i
@@ -159,17 +167,13 @@
         {{ form_row(form.footerDisplayAddress) }}
         {{ form_row(form.footerDisplayTelNumbers) }}
     </div>
-
     <div class="col-3">
         <h4>Registration:</h4>
         {{ form_row(form.multiLingual) }}
         {{ form_row(form.enableUserRegistration) }}
-        {{ form_row(form.registrationEmail) }}
     </div>
 </div>
 <hr>
-
-
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
 

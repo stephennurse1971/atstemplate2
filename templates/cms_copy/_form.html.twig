@@ -5,11 +5,7 @@
     }
 </style>
 {{ form_start(form) }}
-<div class="col-md-3">
-    <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
-    <a class="btn btn-outline-info btn-sm" href="{{ path('cms_copy_index') }}">Return to list</a>
-    {{ include('cms_copy/_delete_form.html.twig') }}
-</div>
+
 <div class="row">
     <div class="col-md-1">
         <h2>Category</h2>
@@ -47,15 +43,13 @@
         </div>
     </div>
 
-    <div class="col-md-1">
+    <div class="col-md-2">
         <h2>User Count</h2>
         <div class="row">
             {{ form_row(form.pageCountUsers) }}
             {{ form_row(form.pageCountAdmin) }}
         </div>
     </div>
-
-    <div class="col-md-1"></div>
 
     <div class="col-md-1">
         <h2>Layout</h2>

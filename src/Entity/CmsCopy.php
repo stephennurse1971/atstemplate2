@@ -159,7 +159,7 @@ class CmsCopy
         return $this->contentTextFR;
     }
 
-    public function setContentTextFR(?string $contentTextFR): self
+    public function setContentTextFR(string $contentTextFR): self
     {
         $this->contentTextFR = $contentTextFR;
 
@@ -171,7 +171,7 @@ class CmsCopy
         return $this->contentTextDE;
     }
 
-    public function setContentTextDE(?string $contentTextDE): self
+    public function setContentTextDE(string $contentTextDE): self
     {
         $this->contentTextDE = $contentTextDE;
 

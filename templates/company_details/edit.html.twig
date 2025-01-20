@@ -38,15 +38,7 @@
             .catch(error => {
                 console.error(error);
             });
-        ClassicEditor
-            .create(document.querySelector('#company_details_registrationEmail'))
-            .catch(error => {
-                console.error(error);
-            });
     </script>
-
-
-
 
     <script>
         var companyDetails = '';
@@ -58,6 +50,7 @@
                 $('#location').html('Geolocation is not supported by this browser.');
             }
         }
+
         function showLocation(position) {
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;
@@ -73,12 +66,10 @@
         }
     </script>
     <script>
-        $('#getLocationButton').on('click', function(event) {
+        $('#getLocationButton').on('click', function (event) {
             event.preventDefault();  // Prevent default action (if any)
             // Custom action here
             console.log("Button clicked, no reload.");
         });
     </script>
-
-
 {% endblock %}

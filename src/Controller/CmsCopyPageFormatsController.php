@@ -25,7 +25,7 @@ class CmsCopyPageFormatsController extends AbstractController
     public function index(CmsCopyPageFormatsRepository $cmsCopyPageFormatsRepository): Response
     {
         return $this->render('cms_copy_page_formats/index.html.twig', [
-            'CmsCopyPageFormats' => $cmsCopyPageFormatsRepository->findAll(),
+            'cms_copy_page_formats' => $cmsCopyPageFormatsRepository->findAll(),
         ]);
     }
 

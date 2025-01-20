@@ -96,12 +96,10 @@ class CmsPhotoController extends AbstractController
     {
         $form = $this->createForm(CmsPhotoType::class, $cmsPhoto);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $photo = $form->get('photo')->getData();
             if ($photo) {
                 $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
-
                 if ($cmsPhoto->getProduct()) {
                     $safeFilename = $cmsPhoto->getProduct()->getProduct() . uniqid();
                 }

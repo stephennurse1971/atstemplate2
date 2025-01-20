@@ -70,10 +70,7 @@ class CompanyDetails
     private $companyAddressCountry;
 
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $companyAddressInstructions;
+
 
 
     /**
@@ -234,15 +231,6 @@ class CompanyDetails
      */
     private $headerDisplayInstructions;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $titleProducts;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $titleSubProducts;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -274,10 +262,7 @@ class CompanyDetails
      */
     private $enableUserRegistration;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $registrationEmail;
+
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -311,10 +296,7 @@ class CompanyDetails
      */
     private $headerDisplayCompetitors;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $companyAddressMapLink;
+
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -330,6 +312,26 @@ class CompanyDetails
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $headerDisplayPhotos;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $titleProducts;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $titleSubProducts;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $companyAddressMapLink;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $companyAddressInstructions;
 
 
     public function getId(): ?int
@@ -455,17 +457,6 @@ class CompanyDetails
 
 
 
-    public function getcompanyAddressInstructions(): ?string
-    {
-        return $this->companyAddressInstructions;
-    }
-
-    public function setCompanyAddressInstructions(?string $companyAddressInstructions): self
-    {
-        $this->companyAddressInstructions = $companyAddressInstructions;
-
-        return $this;
-    }
 
 
 
@@ -841,29 +832,7 @@ class CompanyDetails
         return $this;
     }
 
-    public function getTitleProducts(): ?string
-    {
-        return $this->titleProducts;
-    }
 
-    public function setTitleProducts(?string $titleProducts): self
-    {
-        $this->titleProducts = $titleProducts;
-
-        return $this;
-    }
-
-    public function getTitleSubProducts(): ?string
-    {
-        return $this->titleSubProducts;
-    }
-
-    public function setTitleSubProducts(?string $titleSubProducts): self
-    {
-        $this->titleSubProducts = $titleSubProducts;
-
-        return $this;
-    }
 
     public function isHeaderDisplayProducts(): ?bool
     {
@@ -937,17 +906,7 @@ class CompanyDetails
         return $this;
     }
 
-    public function getRegistrationEmail(): ?string
-    {
-        return $this->registrationEmail;
-    }
 
-    public function setRegistrationEmail(?string $registrationEmail): self
-    {
-        $this->registrationEmail = $registrationEmail;
-
-        return $this;
-    }
 
     public function isIncludeQRCodeHomePage(): ?bool
     {
@@ -1022,17 +981,6 @@ class CompanyDetails
         return $this;
     }
 
-    public function getCompanyAddressMapLink(): ?string
-    {
-        return $this->companyAddressMapLink;
-    }
-
-    public function setCompanyAddressMapLink(?string $companyAddressMapLink): self
-    {
-        $this->companyAddressMapLink = $companyAddressMapLink;
-
-        return $this;
-    }
 
     public function getFacebookReviewsHistoryShowMonths(): ?int
     {
@@ -1070,6 +1018,52 @@ class CompanyDetails
         return $this;
     }
 
+    public function getTitleProducts(): ?string
+    {
+        return $this->titleProducts;
+    }
 
+    public function setTitleProducts(?string $titleProducts): self
+    {
+        $this->titleProducts = $titleProducts;
+
+        return $this;
+    }
+
+    public function getTitleSubProducts(): ?string
+    {
+        return $this->titleSubProducts;
+    }
+
+    public function setTitleSubProducts(?string $titleSubProducts): self
+    {
+        $this->titleSubProducts = $titleSubProducts;
+
+        return $this;
+    }
+
+    public function getCompanyAddressMapLink(): ?string
+    {
+        return $this->companyAddressMapLink;
+    }
+
+    public function setCompanyAddressMapLink(?string $companyAddressMapLink): self
+    {
+        $this->companyAddressMapLink = $companyAddressMapLink;
+
+        return $this;
+    }
+
+    public function getCompanyAddressInstructions(): ?string
+    {
+        return $this->companyAddressInstructions;
+    }
+
+    public function setCompanyAddressInstructions(?string $companyAddressInstructions): self
+    {
+        $this->companyAddressInstructions = $companyAddressInstructions;
+
+        return $this;
+    }
 
 }

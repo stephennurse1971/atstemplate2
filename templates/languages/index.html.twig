@@ -18,6 +18,7 @@
             <th>Abbreviation</th>
             <th>LinkedIn Other</th>
             <th>Icon</th>
+            <th>Filename</th>
             <th>#</th>
             <th>#</th>
         </tr>
@@ -64,6 +65,9 @@
                         {% set icon = asset('administration/ATSSharedFiles/LanguageIcons/')~language.icon %}
                         <img height="50" width="50" src="{{ icon }}" class="rounded-circle test">
                     {% endif %}
+                </td>
+                <td>
+                    {{ language.icon }}
                 </td>
                 <td>
                     <a class="btn btn-outline-danger btn-sm" href="{{ path('languages_edit', {'id': language.id}) }}">Edit</a>
