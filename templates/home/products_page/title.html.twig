@@ -1,28 +1,22 @@
-{% for cms_copy in cms_copy_array %}
-    {% if cms_copy.ranking == 1 %}
-        <div class="row">
-            <div class="col-9">
-                <h4>
-                    {% if cms_copy.hyperlinks is empty %}
+{% for cms_copy in cms_copy_array|sort((a, b) => a.ranking <=> b.ranking) %}
+    <div class="row">
+        <div class="col-9">
+            {% if cms_copy.ranking == 1 %}
+            <h4>
+                {% if cms_copy.hyperlinks is empty %}
+                    {{ attribute(cms_copy,'contentTitle'~LanguagesService.getSelectedLanguageCode)|raw }}
+                {% else %}
+                    <a target="_blank" href="{{ cms_copy.hyperlinks }}">
                         {{ attribute(cms_copy,'contentTitle'~LanguagesService.getSelectedLanguageCode)|raw }}
-                    {% else %}
-                        <a target="_blank" href="{{ cms_copy.hyperlinks }}">
-                            {{ attribute(cms_copy,'contentTitle'~LanguagesService.getSelectedLanguageCode)|raw }}
-                        </a>
-                    {% endif %}
-                </h4>
-
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
-                        <i style="color: red" class="fa fa-pen"></i>
                     </a>
                 {% endif %}
-            </div>
-            <div class="col-3">
-                {% if is_granted('ROLE_ADMIN') %}
-                    User: {{ cms_copy.pageCountUsers }}; Admin: {{ cms_copy.pageCountAdmin }}
-                {% endif %}
-            </div>
+            </h4>
         </div>
-    {% endif %}
+        <div class="col-3">
+            {% if is_granted('ROLE_ADMIN') %}
+                User: {{ cms_copy.pageCountUsers }}; Admin: {{ cms_copy.pageCountAdmin }}
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
 {% endfor %}

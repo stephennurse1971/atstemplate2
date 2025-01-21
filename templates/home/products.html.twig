@@ -31,18 +31,21 @@
 
             <div class="row">
                 {% if cms_photo_array is not empty %}
-                <div class="col-md-6">
-                    {% else %}
+                         <div class="col-md-6">
+                {% else %}
+                        <div class="col-12">
+                {% endif %}
 
-                    <div class="col-12">
-                        {% endif %}
                         {% for cms_copy in cms_copy_array|sort((a, b) => a.ranking <=> b.ranking) %}
                             {% if cms_copy.pageLayout is not null %}
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    <span style="color: red"><b>{{ cms_copy.getPageLayout.name }}</b></span>
+{#                                    <span style="color: red"><b>{{ cms_copy.getPageLayout.name }}</b></span>#}
+                                    <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
+                                        <i title="{{ cms_copy.getPageLayout.name }}" style="color: red" class="fa fa-pen"></i>
+                                    </a>
                                 {% endif %}
 
-                                {% if cms_copy.getPageLayout.name  == "Accordion" %}
+                                {% if cms_copy.getPageLayout.name  == "Accordion" or cms_copy.pageLayout is null %}
                                     {% include 'home/products_page/formats/accordion.html.twig' %}
                                 {% endif %}
 
@@ -101,6 +104,14 @@
                                 {% if cms_copy.getPageLayout.name  == "Timeline Layout" %}
                                     {% include 'home/products_page/formats/timeline_layout.html.twig' %}
                                 {% endif %}
+                            {% else %}
+                                {% if is_granted('ROLE_ADMIN') %}
+{#                                    <span style="color: red"><b>TBC Format</b></span>#}
+                                    <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
+                                        <i title="Format TBC" style="color: red" class="fa fa-pen">!</i>
+                                    </a>
+                                {% endif %}
+                                {% include 'home/products_page/formats/accordion.html.twig' %}
                             {% endif %}
 
                         {% endfor %}
@@ -109,7 +120,7 @@
                         {% for cms_photo in cms_photo_array %}
                             <div class="d-inline-block justify-content-center py-1 p-sm-2 product-image-container">
                                 <div class="image-wrapper">
-                                {% include 'home/products_page/photo_or_video.html.twig' %}
+                                    {% include 'home/products_page/photo_or_video.html.twig' %}
                                 </div>
                             </div>
                         {% endfor %}

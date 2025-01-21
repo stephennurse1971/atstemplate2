@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route('/cms/copy/page/formats')]
+#[Route('/cms_copy_page_formats')]
 class CmsCopyPageFormatsController extends AbstractController
 {
     #[Route('/index', name: 'cms_copy_page_formats_index', methods: ['GET'])]
@@ -42,9 +42,9 @@ class CmsCopyPageFormatsController extends AbstractController
             return $this->redirectToRoute('cms_copy_page_formats_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('cms_copy_page_formats/new.html.twig', [
+        return $this->render('cms_copy_page_formats/new.html.twig', [
             'cms_copy_page_format' => $cmsCopyPageFormat,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -68,9 +68,9 @@ class CmsCopyPageFormatsController extends AbstractController
             return $this->redirectToRoute('cms_copy_page_formats_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('cms_copy_page_formats/edit.html.twig', [
+        return $this->render('cms_copy_page_formats/edit.html.twig', [
             'cms_copy_page_format' => $cmsCopyPageFormat,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -108,9 +108,8 @@ class CmsCopyPageFormatsController extends AbstractController
     {
         $data = [];
         $exported_date = new \DateTime('now');
-        $exported_date_formatted = $exported_date->format('d-M-Y');
-        $exported_date_formatted_for_file = $exported_date->format('d-m-Y');
-        $fileName = 'cms_copy_page_formats_export_' . $exported_date_formatted_for_file . '.csv';
+        $exported_date_formatted = $exported_date->format('d-m-Y');
+        $fileName = 'cms_copy_page_formats_export_' . $exported_date_formatted . '.csv';
 
         $count = 0;
         $cms_copy_page_formats_list = $cmsCopyPageFormatsRepository->findAll();

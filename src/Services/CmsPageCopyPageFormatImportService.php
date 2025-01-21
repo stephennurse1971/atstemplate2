@@ -4,9 +4,7 @@
 namespace App\Services;
 
 use App\Entity\CmsCopyPageFormats;
-use App\Entity\FacebookGroups;
 use App\Repository\CmsCopyPageFormatsRepository;
-use App\Repository\FacebookGroupsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
