@@ -38,7 +38,7 @@ class PhotoLocationsType extends AbstractType
                 'label' => 'Date'])
             ->add('publicPrivate', ChoiceType::class, [
                 'multiple' => false,
-                'required' => false,
+                'required' => true,
                 'choices' => [
                     'Public' => 'Public',
                     'Private' => 'Private'
