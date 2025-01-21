@@ -24,7 +24,7 @@ class PhotoLocationsController extends AbstractController
      */
     public function index(PhotoLocationsRepository $photoLocationsRepository): Response
     {
-        $photoLocationResult = $countPhotoLocationsService->photoLocation();
+//        $photoLocationResult = $countPhotoLocationsService->photoLocation();
 
 
         return $this->render('photo_locations/index.html.twig', [
