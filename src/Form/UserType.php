@@ -2,10 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\Countries;
 use App\Entity\Languages;
 use App\Entity\User;
-use App\Services\TranslationsWorkerService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

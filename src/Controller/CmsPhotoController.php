@@ -22,10 +22,8 @@ class CmsPhotoController extends AbstractController
      */
     public function index(CmsPhotoRepository $cmsPhotoRepository): Response
     {
-        $site_pages = ['HomePage', 'AboutSN', 'Cyprus', 'Flying', 'Tennis', 'WebDesign', 'PrivateEquity', 'Risk & Capital Consulting'];
         return $this->render('cms_photo/index.html.twig', [
-            'cms_photos' => $cmsPhotoRepository->findAll(),
-            'site_pages' => $site_pages
+            'cms_photos' => $cmsPhotoRepository->findAll()
         ]);
     }
 
@@ -154,7 +152,6 @@ class CmsPhotoController extends AbstractController
         $entityManager->flush();
         return $this->redirect($referer);
     }
-
 
 
     /**

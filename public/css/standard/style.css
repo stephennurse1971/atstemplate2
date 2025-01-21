@@ -61,7 +61,7 @@ hr {
     display: none;
 }
 .product-image-container{
-    height: 300px;
+    /*height: 300px;*/
     object-fit: cover;
 }
 .ck.ck-content ul,

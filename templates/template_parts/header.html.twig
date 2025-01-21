@@ -141,10 +141,12 @@
                     {% if CompanyDetailsService.companyDetails is not null %}
                         {% if CompanyDetailsService.companyDetails.headerDisplayPhotos ==1 %}
                             <li class="nav-item">
-                                {% if 1==1 %}
+                                {% if CountPhotoLocationsService.count() >1 %}
                                     <a class="nav-link" href="{{ path('photos_index' ) }}">Photos</a>
                                 {% else %}
-                                    <a class="nav-link" href="{{ path('photos_index' ) }}">Photos</a>
+{#                                    {{ CountPhotoLocationsService.photoLocation() }}#}
+{#                                    <a class="nav-link" href="{{ path('show_photos_by_location', { location: CountPhotoLocationService.photolocation, author: 'All', format: 'Full' }) }}">Gallery</a>#}
+                                    <a class="nav-link" href="{{ path('photos_index' ) }}">Gallery TBC</a>
                                 {% endif %}
                             </li>
                         {% endif %}
@@ -155,8 +157,7 @@
                     <!-- Nav Item #6 - Useful Contacts/ Weather -->
                     {% if CompanyDetailsService.companyDetails is not null %}
                         {% if CompanyDetailsService.companyDetails.headerDisplayBusinessContacts ==1
-                            or CompanyDetailsService.companyDetails.headerDisplayWeather ==1
-                        %}
+                            or CompanyDetailsService.companyDetails.headerDisplayWeather ==1 %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -180,8 +181,10 @@
 
                                     {% if is_granted('ROLE_ADMIN') %}
                                         <hr>
-                                        <a style="color: red" class="dropdown-item" href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful links</a>
-                                        <a style="color: red" class="dropdown-item" href="{{ path('file_attachments_index') }}">Useful files</a>
+                                        <a style="color: red" class="dropdown-item"
+                                           href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful links</a>
+                                        <a style="color: red" class="dropdown-item"
+                                           href="{{ path('file_attachments_index') }}">Useful files</a>
                                     {% endif %}
 
                                 </div>

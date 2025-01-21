@@ -6,6 +6,7 @@ use App\Entity\Languages;
 use App\Form\ImportType;
 use App\Form\LanguagesType;
 use App\Repository\LanguagesRepository;
+use App\Repository\UserRepository;
 use App\Services\LanguagesImportService;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -133,8 +134,12 @@ class LanguagesController extends AbstractController
     /**
      * @Route("/delete_all", name="languages_delete_all")
      */
-    public function deleteLanguages(LanguagesRepository $languagesRepository, EntityManagerInterface $entityManager): Response
+    public function deleteLanguages(UserRepository $userRepository, LanguagesRepository $languagesRepository, EntityManagerInterface $entityManager): Response
     {
+        $users = $userRepository->findAll();
+        foreach ($users as $user) {
+            $user->setDefaultLanguage(null);
+        }
         $languages = $languagesRepository->findAll();
         foreach ($languages as $language) {
             $entityManager->remove($language);

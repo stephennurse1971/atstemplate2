@@ -36,8 +36,8 @@ class PhotoLocationsRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?PhotoLocations
+
+    public function countPhotoLocations(): ?PhotoLocations
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.exampleField = :val')
@@ -46,7 +46,8 @@ class PhotoLocationsRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+
+
     public function getUniqueGroupId(){
         return $this->createQueryBuilder('p')
            ->select('p.groupId')

@@ -6,6 +6,7 @@ use App\Repository\CompanyDetailsRepository;
 
 class CompanyDetailsService
 {
+    private $photolocation;
     public function getCompanyDetails()
     {
         return $this->companyDetailsRepository->find(1);
@@ -15,4 +16,6 @@ class CompanyDetailsService
     {
         $this->companyDetailsRepository = $companyDetailsRepository;
     }
+
+
 }

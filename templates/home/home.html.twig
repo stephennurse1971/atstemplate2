@@ -7,7 +7,7 @@
         {% for photo in photos %}
             {% set image = asset('administration/Attachments/CMSPhotos')~"/"~photo.photo %}
             {% set fileType =  photo.photo|split('.')|last %}
-            <div class="col-lg-3 col-md-4 m-4 p-4">
+            <div class="col-lg-3 col-md-4 col-xl-4 p-4">
                 <div class="justify-content-center d-flex">
                     <div class="homepage-gallery-image-container">
                         {% if photo.photo is not null %}

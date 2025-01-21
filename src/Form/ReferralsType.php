@@ -41,10 +41,11 @@ class ReferralsType extends AbstractType
                 'expanded' => true,
                 'required' => false,
                 'choices' => [
-                    'WebSite' => 'Website',
-                    'VCF' => 'VCF',
-                    'Call' => 'Call',
-                    'Location'=>'Location'
+                    'Email' => 'Email',
+                    'Map'=>'Map',
+                    'Phone' => 'Phone',
+                    'Website' => 'Website',
+                    'VCF' => 'VCF'
                 ],
             ])
         ;

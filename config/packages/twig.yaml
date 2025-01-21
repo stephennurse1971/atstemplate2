@@ -8,6 +8,7 @@ twig:
     CountBusinessContactsService: '@App\Services\CountBusinessContactsService'
     CountBusinessContactReferralsService: '@App\Services\CountBusinessContactReferralsService'
     CountPendingWebsiteInquiriesService: '@App\Services\CountPendingWebsiteInquiriesService'
+    CountPhotoLocationsService: '@App\Services\CountPhotoLocationsService'
     CountPhotosService: '@App\Services\CountPhotosService'
     CountUserLogsService: '@App\Services\CountUserLogsService'
     ImportUserService: '@App\Services\ImportUserService'

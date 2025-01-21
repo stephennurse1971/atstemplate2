@@ -57,6 +57,7 @@
                     {% if cms_photo.photo is not empty %}
                         {% set photo = asset('administration/Attachments/CMSPhotos/')~cms_photo.photo %}
 
+
                         {% if cms_photo.rotate ==0 %}
                             <a class="btn btn-outline-danger btn-sm" target="_blank"
                                href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
