@@ -16,14 +16,18 @@ class CountPhotoLocationsService
         return $this->photoLocationsRepository->count([]);
     }
 
-    public function photoLocation(CountPhotoLocationsService $countPhotoLocationsService)
+    public function maxId(): int
     {
-        if ($countPhotoLocationsService->count() == 1) {
-            $result = $this->photoLocationsRepository->countPhotoLocations();
-            return $result;
-        }
+        $max_id = 0;
+        $all_locations = $this->photoLocationsRepository->findAll();
 
-        return null; // Return null or handle the case when count is not 1
+        foreach ($all_locations as $location) {
+            if ((int) $location->getId() > $max_id) {
+                $max_id = (int) $location->getId();
+            }
+        }
+        return $max_id;
+//        return $this->photoLocationsRepository->findOneBy(['id' => $max_id])->getLocation();
     }
 
 }

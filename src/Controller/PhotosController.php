@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Security;
 
 
 /**
- * @Route("/Photos")
+ * @Route("/photos")
  *
  */
 class PhotosController extends AbstractController
@@ -48,12 +48,12 @@ class PhotosController extends AbstractController
     }
 
     /**
-     * @Route("/location/{location}/{author}/{format}", name="show_photos_by_location")
+     * @Route("/location/{id}/{author}/{format}", name="show_photos_by_location")
      */
-    public function showPhotosByLocation(Security $security, Request $request, string $author, string $format, string $location, PhotosRepository $photosRepository, PhotoLocationsRepository $locationsRepository, UserRepository $userRepository, PhotoLocationsRepository $photoLocationsRepository, PhotoAuthorsByLocation $authorsByLocation)
+    public function showPhotosByLocation(Security $security, Request $request, string $author, string $format, int $id, PhotosRepository $photosRepository, PhotoLocationsRepository $locationsRepository, UserRepository $userRepository, PhotoLocationsRepository $photoLocationsRepository, PhotoAuthorsByLocation $authorsByLocation)
     {
         $locationID = $photoLocationsRepository->findOneBy([
-            'location' => $location
+            'id' => $id
         ]);
         $authors = $authorsByLocation->authorList($locationID);
 
@@ -61,7 +61,7 @@ class PhotosController extends AbstractController
             $all_or_by_author = "All";
             $photos = $photosRepository->findBy([
                 'location' => $locationsRepository->findOneBy([
-                    'location' => $location
+                    'id' => $id
                 ])
             ]);
         }
@@ -69,7 +69,7 @@ class PhotosController extends AbstractController
             $all_or_by_author = "By author";
             $photos = $photosRepository->findBy([
                 'location' => $locationsRepository->findOneBy([
-                    'location' => $location
+                    'id' => $id
                 ]),
                 'uploadedBy' => $userRepository->findOneBy([
                     'fullName' => $author
@@ -89,8 +89,8 @@ class PhotosController extends AbstractController
 
         return $this->render('photos/showByLocation.html.twig', [
             'photos' => $photos,
-            'location' => $locationsRepository->findOneBy(['location' => $location]),
-            'photo_date' => $locationsRepository->findOneBy(['location' => $location])->getDate(),
+            'location' => $locationsRepository->findOneBy(['id' => $id]),
+            'photo_date' => $locationsRepository->findOneBy(['id' => $id])->getDate(),
             'format' => $format,
             'authors' => $authors,
             'all_or_by_author' => $all_or_by_author,
@@ -154,6 +154,7 @@ class PhotosController extends AbstractController
 
         return $this->render('photos/new.html.twig', [
             'photo' => $photo,
+            'location' => $location,
             'form' => $form->createView(),
         ]);
     }
@@ -190,22 +191,6 @@ class PhotosController extends AbstractController
             'photo' => $photo,
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @Route("/switchPublicPrivate/{id}", name="photos_public_private", methods={"GET","POST"})
-     */
-    public function switchPublicPrivate(Request $request, Photos $photo, EntityManagerInterface $manager): Response
-    {
-        $publicPrivate = $request->query->get('action');
-        if ($publicPrivate == '1') {
-            $photo->setPublic('0');
-        } else {
-            $photo->setPublic('1');
-        }
-        $this->getDoctrine()->getManager()->flush();
-        $referer = $request->server->get('HTTP_REFERER');
-        return $this->redirect($referer);
     }
 
 
@@ -262,7 +247,6 @@ class PhotosController extends AbstractController
             ]
         ) as $photo) {
             $get_photo_file = $this->getParameter('photos_directory') . $photo->getPhotoFile();
-            // Check if the file exists before attempting to delete it
             if (file_exists($get_photo_file)) {
                 unlink($get_photo_file);
             }
@@ -313,7 +297,7 @@ class PhotosController extends AbstractController
         $recipient = $userRepository->findOneBy([
             'email' => $security->getUser()->getEmail()]);
         $subject = 'Photo: ' . $photo->getLocation()->getLocation();
-        $html = $this->renderView('emails/photo_email.html.twig', [
+        $html = $this->renderView('photos/email_photo.html.twig', [
             'description' => $photo->getLocation()->getLocation(),
         ]);
         $photo_file_name = $photo->getPhotoFile();

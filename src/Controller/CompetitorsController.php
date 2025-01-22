@@ -4,12 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Competitors;
 use App\Form\CompetitorsType;
-use App\Form\ImportType;
 use App\Repository\CompetitorServiceRepository;
 use App\Repository\CompetitorsRepository;
-use App\Services\CompetitorsImportService;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Csv;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,13 +15,18 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+use App\Form\ImportType;
+use App\Services\CompetitorsImportService;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Csv;
+
 /**
- * @Route("/Competitors")
+ * @Route("/competitors")
  */
 class CompetitorsController extends AbstractController
 {
     /**
-     * @Route("/", name="competitors_index", methods={"GET"})
+     * @Route("/index", name="competitors_index", methods={"GET"})
      */
     public function index(CompetitorsRepository $competitorsRepository, CompetitorServiceRepository $competitorServiceRepository): Response
     {
@@ -56,7 +58,7 @@ class CompetitorsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="competitors_show", methods={"GET"})
+     * @Route("/show/{id}", name="competitors_show", methods={"GET"})
      */
     public function show(Competitors $competitor): Response
     {
@@ -66,7 +68,7 @@ class CompetitorsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="competitors_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="competitors_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Competitors $competitor, CompetitorsRepository $competitorsRepository): Response
     {
@@ -86,7 +88,7 @@ class CompetitorsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="competitors_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="competitors_delete", methods={"POST"})
      */
     public function delete(Request $request, Competitors $competitor, CompetitorsRepository $competitorsRepository): Response
     {
@@ -99,7 +101,7 @@ class CompetitorsController extends AbstractController
 
 
     /**
-     * @Route ("/export/Competitors", name="competitors_export" )
+     * @Route ("/export", name="competitors_export" )
      */
     public function exportCompetitors(CompetitorsRepository $competitorsRepository)
     {
@@ -164,7 +166,7 @@ class CompetitorsController extends AbstractController
     }
 
     /**
-     * @Route ("/import/Competitors", name="competitors_import" )
+     * @Route ("/import", name="competitors_import" )
      */
     public function businessTypesImport(Request $request, SluggerInterface $slugger, CompetitorsRepository $competitorsRepository, CompetitorsImportService $competitorsImportService): Response
     {

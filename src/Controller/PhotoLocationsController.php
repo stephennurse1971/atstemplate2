@@ -129,5 +129,4 @@ class PhotoLocationsController extends AbstractController
         $referer = $request->server->get('HTTP_REFERER');
         return $this->redirect($referer);
     }
-
 }

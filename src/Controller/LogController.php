@@ -68,7 +68,6 @@ class LogController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('log_index');
         }
 
@@ -88,7 +87,6 @@ class LogController extends AbstractController
             $entityManager->remove($log);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('log_index');
     }
 }

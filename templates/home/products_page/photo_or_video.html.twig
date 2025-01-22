@@ -4,9 +4,15 @@
             <source src="{{ loc }}" type="video/mp4">
         </video>
     {% else %}
-        <a target="_blank" href="{{ cms_photo.link }}">
+        {% if cms_photo.link is not null %}
+            <a target="_blank" href="{{ cms_photo.link }}">
+                <img title="{{ cms_photo.title }}" class="productpage-image rotate-{{ cms_photo.rotate }}"
+                     src="{{ loc }}">
+            </a>
+        {% else %}
             <img title="{{ cms_photo.title }}" class="productpage-image rotate-{{ cms_photo.rotate }}"
-                 src="{{ loc }}"></a>
+                 src="{{ loc }}">
+        {% endif %}
     {% endif %}
 
 

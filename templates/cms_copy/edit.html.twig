@@ -33,6 +33,33 @@
 
 {% block additionaljs %}
     <script>
+
+
+        var ranking = $("#cms_copy_ranking").val();
+        if (ranking == 1){
+            $(".container_subject_to_ranking").show();
+        }
+        else{
+            $(".container_subject_to_ranking").hide();
+        }
+
+        $("#cms_copy_ranking").change(function () {
+            var new_ranking = $(this).val();
+            if (new_ranking === '1') {
+                $(".container_subject_to_ranking").show();
+            }
+            if (new_ranking !== '1') {
+                $(".container_subject_to_ranking").hide();
+                $("#cms_copy_tabTitle").val('');
+                $("#cms_copy_tabTitleFR").val('');
+                $("#cms_copy_tabTitleDE").val('');
+                $("#cms_copy_contentTitle").val('');
+                $("#cms_copy_contentTitleFR").val('');
+                $("#cms_copy_contentTitleDE").val('');
+            }
+        })
+
+
         {% if cms_copy.attachment %}
         $(".file-upload-container").hide();
         {% else %}
@@ -62,7 +89,10 @@
                 $("#cms_copy_staticPageName").val('');
             }
         })
+
+
     </script>
+
 
     <script>
         ClassicEditor

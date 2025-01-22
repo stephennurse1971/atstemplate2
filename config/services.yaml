@@ -12,9 +12,9 @@ parameters:
   business_contacts_photos_directory:              '%kernel.project_dir%/public/administration/Attachments/BusinessContacts/Photos/'
   cms_copy_attachments_directory:                  '%kernel.project_dir%/public/administration/Attachments/CMSCopyAttachments/'
   cms_photos_directory:                            '%kernel.project_dir%/public/administration/Attachments/CMSPhotos/'
-  favicon_and_QR_directory:                        '%kernel.project_dir%/public//administration/Attachments/FaviconsAndQR/'
-  file_attachments_directory:                      '%kernel.project_dir%/public/administration/Attachments/FileAttachments'
-  instructions_import_directory:                   '%kernel.project_dir%/public/administration/Attachments/Instructions/'
+  favicons_directory:                              '%kernel.project_dir%/public/administration/Attachments/Favicons/'
+  file_attachments_directory:                      '%kernel.project_dir%/public/administration/Attachments/FileAttachments/'
+  instructions_attachments_directory:              '%kernel.project_dir%/public/administration/Attachments/Instructions/'
   photos_directory:                                '%kernel.project_dir%/public/administration/Attachments/Photos/'
   user_attachments_directory:                      '%kernel.project_dir%/public/administration/Attachments/Users/'
 
@@ -29,16 +29,14 @@ parameters:
   facebook_groups_reviews_import_directory:        '%kernel.project_dir%/public/administration/Import/FacebookGroupsReviews/'
   translations_import_directory:                   '%kernel.project_dir%/public/administration/Import/Translations/'
   users_import_directory:                          '%kernel.project_dir%/public/administration/Import/Users/'
-
   public:                                          '%kernel.project_dir%/public/'
-
-
 
 services:
   # default configuration for services in *this* file
   _defaults:
     autowire: true      # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    public: false
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name

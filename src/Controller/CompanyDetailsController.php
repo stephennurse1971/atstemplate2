@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CompanyDetails;
 use App\Form\CompanyDetailsType;
 use App\Repository\CompanyDetailsRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,7 +48,7 @@ class CompanyDetailsController extends AbstractController
                 $originalFilename = pathinfo($faviconDev->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilename = $companyDetails->getCompanyName() . '_dev.' . $faviconDev->guessExtension();
                 $faviconDev->move(
-                    $this->getParameter('favicon_and_QR_directory'),
+                    $this->getParameter('favicons_directory'),
                     $newFilename
                 );
                 $companyDetails->setFaviconDev($newFilename);
@@ -56,7 +57,7 @@ class CompanyDetailsController extends AbstractController
                 $originalFilenameLive = pathinfo($faviconLive->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilenameLive = $companyDetails->getCompanyName() . '_live.' . $faviconLive->guessExtension();
                 $faviconLive->move(
-                    $this->getParameter('favicon_and_QR_directory'),
+                    $this->getParameter('favicons_directory'),
                     $newFilenameLive
                 );
                 $companyDetails->setFaviconLive($newFilenameLive);
@@ -65,7 +66,7 @@ class CompanyDetailsController extends AbstractController
                 $originalFilenameQR = pathinfo($qrCode->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilenameQR = $companyDetails->getCompanyName() . '_qr_code.' . $qrCode->guessExtension();
                 $qrCode->move(
-                    $this->getParameter('favicon_and_QR_directory'),
+                    $this->getParameter('favicons_directory'),
                     $newFilenameQR
                 );
                 $companyDetails->setCompanyQrCode($newFilenameQR);
@@ -110,7 +111,7 @@ class CompanyDetailsController extends AbstractController
                 $originalFilename = pathinfo($faviconDev->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilename = $companyDetails->getCompanyName() . '_dev.' . $faviconDev->guessExtension();
                 $faviconDev->move(
-                    $this->getParameter('favicon_and_QR_directory'),
+                    $this->getParameter('favicons_directory'),
                     $newFilename
                 );
                 $companyDetails->setFaviconDev($newFilename);
@@ -119,7 +120,7 @@ class CompanyDetailsController extends AbstractController
                 $originalFilenameLive = pathinfo($faviconLive->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilenameLive = $companyDetails->getCompanyName() . '_live.' . $faviconLive->guessExtension();
                 $faviconLive->move(
-                    $this->getParameter('favicon_and_QR_directory'),
+                    $this->getParameter('favicons_directory'),
                     $newFilenameLive
                 );
                 $companyDetails->setFaviconLive($newFilenameLive);
@@ -128,7 +129,7 @@ class CompanyDetailsController extends AbstractController
                 $originalFilenameQR = pathinfo($qrCode->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilenameQR = $companyDetails->getCompanyName() . '_qr_code.' . $qrCode->guessExtension();
                 $qrCode->move(
-                    $this->getParameter('favicon_and_QR_directory'),
+                    $this->getParameter('favicons_directory'),
                     $newFilenameQR
                 );
                 $companyDetails->setCompanyQrCode($newFilenameQR);
@@ -176,7 +177,7 @@ class CompanyDetailsController extends AbstractController
         if ($live_or_dev == 'live') {
             $companyDetails->setFaviconLive(null);
             $entityManager->flush();
-            $files = glob($this->getParameter('favicon_and_QR_directory') . "/*live*");
+            $files = glob($this->getParameter('favicons_directory') . "/*live*");
             foreach ($files as $file) {
                 unlink($file);
             }
@@ -184,7 +185,7 @@ class CompanyDetailsController extends AbstractController
         if ($live_or_dev == 'dev') {
             $companyDetails->setFaviconDev(null);
             $entityManager->flush();
-            $files = glob($this->getParameter('favicon_and_QR_directory') . "/*dev*");
+            $files = glob($this->getParameter('favicons_directory') . "/*dev*");
             foreach ($files as $file) {
                 unlink($file);
             }
@@ -203,11 +204,10 @@ class CompanyDetailsController extends AbstractController
         $referer = $request->headers->get('referer');
         $companyDetails->setCompanyQrCode(null);
         $entityManager->flush();
-        $files = glob($this->getParameter('favicon_and_QR_directory') . "/*qr*");
+        $files = glob($this->getParameter('favicons_directory') . "/*qr*");
         foreach ($files as $file) {
             unlink($file);
         }
-
         $entityManager->flush();
         return $this->redirect($referer);
     }
@@ -247,13 +247,10 @@ class CompanyDetailsController extends AbstractController
         $id = $_POST['id'];
         $latitude = $_POST['latitude'];
         $longitude = $_POST['longitude'];
-        $gps = $latitude . ',' . $longitude;
         $company_details = $companyDetailsRepository->find($id);
         $company_details->setCompanyAddressLongitude($longitude)
             ->setCompanyAddressLatitude($latitude);
         $manager->flush();
         return new Response(null);
     }
-
-
 }

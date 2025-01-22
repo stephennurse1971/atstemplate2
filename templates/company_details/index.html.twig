@@ -47,8 +47,8 @@
                     {{ company_detail.companyWebsite }}
                 </td>
 
-                {% set faviconLive = asset('administration/Attachments/FaviconsAndQR/'~CompanyDetailsService.getCompanyDetails.faviconLive) %}
-                {% set faviconDev = asset('administration/Attachments/FaviconsAndQR/'~CompanyDetailsService.getCompanyDetails.faviconDev) %}
+                {% set faviconLive = asset('administration/Attachments/Favicons/'~CompanyDetailsService.getCompanyDetails.faviconLive) %}
+                {% set faviconDev = asset('administration/Attachments/Favicons/'~CompanyDetailsService.getCompanyDetails.faviconDev) %}
 
                 <td style="text-align: center">
                     {% if company_detail.faviconLive is not null %}
@@ -113,10 +113,12 @@
                 </td>
 
                 <td style="text-align: center">
-                    {% if company_detail.multiLingual ==1 %}
-                        <i class="fa fa-check" style="color: green" class="fa fa-check"></i>
-                    {% else %}
-                        <i class="fa fa-check" style="color: red" class="fa fa-remove"></i>
+
+                    {% if company_detail.multiLingual == 1 %}
+                        <i class="fa fa-check" style="color: green"></i>
+                    {% endif %}
+                    {% if company_detail.multiLingual == 0 or company_detail.multiLingual is empty %}
+                        <i class="fa fa-remove" style="color: red"></i>
                     {% endif %}
                 </td>
 

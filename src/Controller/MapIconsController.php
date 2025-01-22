@@ -214,5 +214,4 @@ class MapIconsController extends AbstractController
             'heading' => 'Map Icons',
         ]);
     }
-
 }

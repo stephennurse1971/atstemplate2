@@ -163,8 +163,7 @@ class BusinessTypesController extends AbstractController
         $data = [];
         $exported_date = new \DateTime('now');
         $exported_date_formatted = $exported_date->format('d-M-Y');
-        $exported_date_formatted_for_file = $exported_date->format('d-m-Y');
-        $fileName = 'business_types_export_' . $exported_date_formatted_for_file . '.csv';
+        $fileName = 'business_types_export_' . $exported_date_formatted . '.csv';
 
         $count = 0;
         $business_types_list = $businessTypesRepository->findAll();
@@ -174,7 +173,6 @@ class BusinessTypesController extends AbstractController
                 $business_type->getBusinessType(),
                 $business_type->getDescription(),
                 $business_type->getMapIcon()->getName(),
-                $business_type->getMapIconColour(),
             ];
         }
         $spreadsheet = new Spreadsheet();
@@ -184,7 +182,6 @@ class BusinessTypesController extends AbstractController
         $sheet->getCell('B1')->setValue('Business Type');
         $sheet->getCell('C1')->setValue('Description');
         $sheet->getCell('D1')->setValue('Map Icon');
-        $sheet->getCell('E1')->setValue('Map Icon Colour');
 
         $sheet->fromArray($data, null, 'A2', true);
         $total_rows = $sheet->getHighestRow();

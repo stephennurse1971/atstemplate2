@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Photos{% endblock %}
+{% block title %}Uploading Photos: {{ location }}{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">New Photo</h1>
+    <h1 style="color: red">{{ location }}</h1>
 
     {{ include('photos/_form.html.twig') }}
 

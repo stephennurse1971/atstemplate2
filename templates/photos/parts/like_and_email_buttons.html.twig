@@ -15,13 +15,14 @@
         <i style="color: grey" title="{{ photo.uploadedBy.firstName }} {{ photo.uploadedBy.lastName }}"
            class="fas fa-user"></i>
     {% endif %}
-    {% if app.user %}
-        <a title="Email to {{ app.user.email }}" href="{{ path('email_photo', {'photoId': photo.id}) }}">
-            <i style="color: blue" class="fa fa-envelope"></i></a>
-        <a title="Download photo" href="{{ path('download_photo', {'photoId': photo.id}) }}">
-            <i style="color: red" class="fa fa-download"></i></a>
-    {% endif %}
+    <a title="Email to {{ app.user.email }}" href="{{ path('email_photo', {'photoId': photo.id}) }}">
+        <i style="color: blue" class="fa fa-envelope"></i></a>
+{% endif %}
 
+    <a title="Download photo" href="{{ path('download_photo', {'photoId': photo.id}) }}">
+        <i style="color: red" class="fa fa-download"></i></a>
+
+{% if app.user %}
     {% if is_granted('ROLE_ADMIN') or app.user.id==photo.uploadedBy.id %}
         <form class="d-inline" method="post"
               action="{{ path('photos_delete', {'id': photo.id}) }}">

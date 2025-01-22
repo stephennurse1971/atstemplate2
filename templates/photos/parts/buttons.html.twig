@@ -12,7 +12,7 @@
     <div class="col-12 col-md-2">
         {% if format =='Full' %}
             <a class="btn btn-outline-secondary btn-sm mt-2"
-               href="{{ path('show_photos_by_location', {location: location.location, author: 'All', format: 'Thumbnail' }) }}">Thumbnail</a>
+               href="{{ path('show_photos_by_location', {id: location.id, author: 'All', format: 'Thumbnail' }) }}">Thumbnail</a>
         {% endif %}
         {% if format == 'Thumbnail' %}
             <a class="btn btn-outline-secondary btn-sm mt-2"
@@ -22,11 +22,11 @@
 
     <div class="col-12 col-md-2">
         <a class="btn btn-info btn-sm mt-2"
-           href="{{ path('show_photos_by_location', {location: location.location, format: 'Full', author: 'All' }) }}">All</a>
+           href="{{ path('show_photos_by_location', {id: location.id, format: 'Full', author: 'All' }) }}">All</a>
 
         {% for author in authors %}
             <a class="btn btn-outline-info btn-sm mt-2"
-               href="{{ path('show_photos_by_location', {location: location.location, format: 'Full', author: author.fullName }) }}">{{ author.fullName }}</a>
+               href="{{ path('show_photos_by_location', {id: location.id, format: 'Full', author: author.fullName }) }}">{{ author.fullName }}</a>
         {% endfor %}
 
     </div>
@@ -35,7 +35,7 @@
     <div class="col-12 col-md-2">
         {% if all_or_by_author != 'All' %}
             <a class="btn btn-outline-success btn-sm mt-2" target="_blank"
-               href="{{ path('download_all_photo_all_by_author_and_location', {author: specified_author, location: location.location}) }}">Download {{ specified_author }}'s photos   </a>
+               href="{{ path('download_all_photo_all_by_author_and_location', {author: specified_author, id: location.id}) }}">Download {{ specified_author }}'s photos   </a>
         {% endif %}
     </div>
 

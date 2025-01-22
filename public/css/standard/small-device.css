@@ -66,4 +66,9 @@
         margin-bottom: 0;
     }
 
+    .image-containerFull a img {
+        width: 100%;
+    }
+
+
 }

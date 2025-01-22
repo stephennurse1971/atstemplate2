@@ -35,11 +35,9 @@
                 {% else %}
                         <div class="col-12">
                 {% endif %}
-
                         {% for cms_copy in cms_copy_array|sort((a, b) => a.ranking <=> b.ranking) %}
                             {% if cms_copy.pageLayout is not null %}
                                 {% if is_granted('ROLE_ADMIN') %}
-{#                                    <span style="color: red"><b>{{ cms_copy.getPageLayout.name }}</b></span>#}
                                     <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
                                         <i title="{{ cms_copy.getPageLayout.name }}" style="color: red" class="fa fa-pen"></i>
                                     </a>
@@ -106,7 +104,6 @@
                                 {% endif %}
                             {% else %}
                                 {% if is_granted('ROLE_ADMIN') %}
-{#                                    <span style="color: red"><b>TBC Format</b></span>#}
                                     <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
                                         <i title="Format TBC" style="color: red" class="fa fa-pen">!</i>
                                     </a>

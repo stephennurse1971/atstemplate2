@@ -109,7 +109,6 @@ class WebsiteContactsController extends AbstractController
             $manager->flush($websiteContact);
         }
         return $this->redirect($referer);
-
     }
 
 

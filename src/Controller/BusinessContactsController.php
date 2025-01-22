@@ -7,8 +7,6 @@ use App\Form\BusinessContactsType;
 use App\Form\ImportType;
 use App\Repository\BusinessContactsRepository;
 use App\Repository\BusinessTypesRepository;
-use App\Repository\FileAttachmentsRepository;
-use App\Repository\PhotosRepository;
 use App\Services\BusinessContactsImportService;
 use App\Services\CompanyDetailsService;
 use App\Services\CountBusinessContactsService;
@@ -146,7 +144,7 @@ class BusinessContactsController extends AbstractController
             $file = $form['files']->getData();
             if ($file) {
                 $file_name = [];
-                $file_directory = $this->getParameter('business_contacts_files_directory');
+                $file_directory = $this->getParameter('business_contacts_attachments_directory');
                 $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $file->guessExtension();
                 $newFileName = $fileName . "." . $file_extension;
@@ -224,7 +222,7 @@ class BusinessContactsController extends AbstractController
             $file = $form['files']->getData();
             if ($file) {
                 $file_name = [];
-                $file_directory = $this->getParameter('business_contacts_files_directory');
+                $file_directory = $this->getParameter('business_contacts_attachments_directory');
                 $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $file->guessExtension();
                 $newFileName = $fileName . "." . $file_extension;
@@ -297,7 +295,7 @@ class BusinessContactsController extends AbstractController
         $referer = $request->headers->get('referer');
         $file_name = $businessContacts->getFiles();
         if ($file_name) {
-            $file = $this->getParameter('business_contacts_files_directory') . "/" . $file_name;
+            $file = $this->getParameter('business_contacts_attachments_directory') . "/" . $file_name;
             if (file_exists($file)) {
                 unlink($file);
             }
@@ -325,8 +323,7 @@ class BusinessContactsController extends AbstractController
         $data = [];
         $exported_date = new \DateTime('now');
         $exported_date_formatted = $exported_date->format('d-M-Y');
-        $exported_date_formatted_for_file = $exported_date->format('d-m-Y');
-        $fileName = 'business_contacts_export_' . $exported_date_formatted_for_file . '.csv';
+        $fileName = 'business_contacts_export_' . $exported_date_formatted . '.csv';
 
         $count = 0;
         $business_contact_list = $businessContactsRepository->findAll();

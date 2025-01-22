@@ -171,8 +171,6 @@ class TranslationController extends AbstractController
             'form' => $form->createView(),
             'heading'=>'Translations',
         ]);
-
-
         return $this->redirectToRoute('translation_index');
     }
 

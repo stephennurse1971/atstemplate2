@@ -142,11 +142,10 @@
                         {% if CompanyDetailsService.companyDetails.headerDisplayPhotos ==1 %}
                             <li class="nav-item">
                                 {% if CountPhotoLocationsService.count() >1 %}
-                                    <a class="nav-link" href="{{ path('photos_index' ) }}">Photos</a>
+                                    <a class="nav-link" href="{{ path('photos_index' ) }}">Photos - Multiple locations</a>
                                 {% else %}
-{#                                    {{ CountPhotoLocationsService.photoLocation() }}#}
-{#                                    <a class="nav-link" href="{{ path('show_photos_by_location', { location: CountPhotoLocationService.photolocation, author: 'All', format: 'Full' }) }}">Gallery</a>#}
-                                    <a class="nav-link" href="{{ path('photos_index' ) }}">Gallery TBC</a>
+                                    {{ CountPhotoLocationsService.maxId() }}
+                                    <a class="nav-link" href="{{ path('show_photos_by_location', { id: CountPhotoLocationsService.maxId(), author: 'All', format: 'Full' }) }}">Gallery</a>
                                 {% endif %}
                             </li>
                         {% endif %}
@@ -273,14 +272,12 @@
                                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                                         <i title="Super-Admin" style="color: green" class="fa fa-hat-wizard"></i>
                                     {% endif %}
-
                                     {% if is_granted('ROLE_ADMIN') %}
                                         <i title="Admin" style="color: orange" class="fa fa-user-tie"></i>
                                     {% endif %}
                                 </a>
 
                                 {% include 'template_parts_project_specific/header_project_specific3.html.twig' %}
-
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item"

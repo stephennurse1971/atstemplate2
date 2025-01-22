@@ -5,8 +5,8 @@
 {% block body %}
     <h1 style="color: red">Photos: Locations & Viewers</h1>
 
-    <a class="btn btn-success btn-sm mt-2" href="{{ path('photo_locations_new') }}">New</a>
-    <a class="btn btn-outline-info btn-sm" href="{{ path('photos_index') }}">Photos</a>
+    <a class="btn btn-success btn-sm" href="{{ path('photo_locations_new') }}">New</a>
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('photos_index') }}">Photos</a>
 
     <table class="table table-responsive">
         <thead>
@@ -47,7 +47,7 @@
                 </td>
                 <td style="text-align: center">
                     <a target="_blank" class="btn btn-outline-primary btn-sm"
-                       href="{{ path('show_photos_by_location', {location: photo_location.location, author: 'All', format:'Full'}) }}">
+                       href="{{ path('show_photos_by_location', {id: photo_location.id, author: 'All', format:'Full'}) }}">
                         <i class="fa fa-photo"></i>
                     </a>
                 </td>

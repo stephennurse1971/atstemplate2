@@ -163,6 +163,4 @@ class ProductController extends AbstractController
         $manager->flush();
         return $this->redirect($referer);
     }
-
-
 }

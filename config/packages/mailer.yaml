@@ -1,3 +1,9 @@
 framework:
     mailer:
         dsn: '%env(MAILER_DSN)%'
+#mailer:
+#    dsn: 'smtp://smtp-mail.outlook.com:465'
+#    transport: 'smtp'
+#    username: 'your-email@outlook.com'
+#    password: 'your-password'
+#    encryption: 'ssl'

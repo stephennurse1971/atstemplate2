@@ -124,7 +124,6 @@ class CmsPhotoController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('cms_photo_index');
         }
-
         return $this->render('cms_photo/edit.html.twig', [
             'cms_photo' => $cmsPhoto,
             'form' => $form->createView(),
@@ -181,7 +180,6 @@ class CmsPhotoController extends AbstractController
             }
             $cmsPhoto->setPhoto('');
             $entityManager->flush();
-
         }
         return $this->redirect($referer);
     }
@@ -217,6 +215,4 @@ class CmsPhotoController extends AbstractController
         }
         return $this->redirect($referer);
     }
-
-
 }

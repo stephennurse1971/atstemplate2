@@ -216,6 +216,4 @@ class FacebookGroupsReviewsController extends AbstractController
             'heading' => 'Facebook Groups Reviews Import',
         ]);
     }
-
-
 }

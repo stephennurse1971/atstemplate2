@@ -11,12 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/competitor/service")
+ * @Route("/competitor_service")
  */
 class CompetitorServiceController extends AbstractController
 {
     /**
-     * @Route("/", name="competitor_service_index", methods={"GET"})
+     * @Route("/index", name="competitor_service_index", methods={"GET"})
      */
     public function index(CompetitorServiceRepository $competitorServiceRepository): Response
     {
@@ -47,7 +47,7 @@ class CompetitorServiceController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="competitor_service_show", methods={"GET"})
+     * @Route("/show/{id}", name="competitor_service_show", methods={"GET"})
      */
     public function show(CompetitorService $competitorService): Response
     {
@@ -57,7 +57,7 @@ class CompetitorServiceController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="competitor_service_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="competitor_service_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, CompetitorService $competitorService, CompetitorServiceRepository $competitorServiceRepository): Response
     {
@@ -69,7 +69,6 @@ class CompetitorServiceController extends AbstractController
 
             return $this->redirectToRoute('competitor_service_index', [], Response::HTTP_SEE_OTHER);
         }
-
         return $this->renderForm('competitor_service/edit.html.twig', [
             'competitor_service' => $competitorService,
             'form' => $form,
@@ -77,14 +76,13 @@ class CompetitorServiceController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="competitor_service_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="competitor_service_delete", methods={"POST"})
      */
     public function delete(Request $request, CompetitorService $competitorService, CompetitorServiceRepository $competitorServiceRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$competitorService->getId(), $request->request->get('_token'))) {
             $competitorServiceRepository->remove($competitorService, true);
         }
-
         return $this->redirectToRoute('competitor_service_index', [], Response::HTTP_SEE_OTHER);
     }
 }

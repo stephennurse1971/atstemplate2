@@ -34,7 +34,7 @@ class InstructionsController extends AbstractController
             $newFilename = $originalFilename .".". $media->guessExtension();
             try {
                 $media->move(
-                    $this->getParameter('instructions_directory'),
+                    $this->getParameter('instructions_attachments_directory'),
                     $newFilename
                 );
                 $instruction->setMedia($newFilename);
@@ -74,7 +74,7 @@ class InstructionsController extends AbstractController
                 $newFilename = $originalFilename .".". $media->guessExtension();
                 try {
                     $media->move(
-                        $this->getParameter('instructions_directory'),
+                        $this->getParameter('instructions_attachments_directory'),
                         $newFilename
                     );
                     $instruction->setMedia($newFilename);

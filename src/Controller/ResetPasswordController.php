@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\ProjectSpecific\User;
-use App\Form\ProjectSpecific\ChangePasswordFormType;
+use App\Entity\User;
+use App\Form\ChangePasswordFormType;
 use App\Form\ResetPasswordRequestFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

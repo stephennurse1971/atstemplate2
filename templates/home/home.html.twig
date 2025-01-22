@@ -7,7 +7,7 @@
         {% for photo in photos %}
             {% set image = asset('administration/Attachments/CMSPhotos')~"/"~photo.photo %}
             {% set fileType =  photo.photo|split('.')|last %}
-            <div class="col-lg-3 col-md-4 col-xl-4 p-4">
+            <div class="col-lg-6 col-md-4 col-xl-4 p-4">
                 <div class="justify-content-center d-flex">
                     <div class="homepage-gallery-image-container">
                         {% if photo.photo is not null %}
@@ -16,9 +16,13 @@
                                     <source src="{{ image }}" type="video/mp4"/>
                                 </video>
                             {% else %}
-                                <a title="{{ photo.title }}" target="_blank" href="{{ photo.link }}">
+                                {% if photo.link is not null %}
+                                    <a title="{{ photo.title }}" target="_blank" href="{{ photo.link }}">
+                                        <img class="homepage-image rotate-{{ photo.rotate }}" src="{{ image }}">
+                                    </a>
+                                {% else %}
                                     <img class="homepage-image rotate-{{ photo.rotate }}" src="{{ image }}">
-                                </a>
+                                {% endif %}
                             {% endif %}
                         {% endif %}
                     </div>
@@ -26,5 +30,4 @@
             </div>
         {% endfor %}
     </div>
-
 {% endblock body %}

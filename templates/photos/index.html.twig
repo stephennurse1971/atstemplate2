@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Photos Index{% endblock %}
+{% block title %}Photos{% endblock %}
 
 {% block body %}
 
@@ -51,7 +51,7 @@
                                         <td style="text-align: right" title="{{ location.date|date('d-M-Y') }}"
                                             data-sort="{{ location.date|date('Y-m-d') }}">{{ location.date|date('M-Y') }}</td>
                                         <td style="text-align: right">
-                                            {{ CountPhotos.calculateTotalPhotos(location) }}
+                                            {{ CountPhotosService.calculateTotalPhotos(location) }}
                                         </td>
                                         <td style="text-align: left">
                                             {% for user_id in location.enabledUsers %}
@@ -63,7 +63,7 @@
                                         </td>
                                         <td style="text-align: center">
                                             <a title="Private" class="btn btn-outline-danger btn-sm" target="_blank"
-                                               href="{{ path('show_photos_by_location', { location: location.location, author: 'All', format: 'Full' }) }}">
+                                               href="{{ path('show_photos_by_location', { id: location.id, author: 'All', format: 'Full' }) }}">
                                                 <i class="fa fa-picture-o"></i>
                                             </a>
                                         </td>
@@ -126,8 +126,8 @@
                         </td>
 
                         {% if is_granted('ROLE_ADMIN') %}
-                            <td style="text-align: center">
-                                <i title="Open To All" style="color: green" class="fa fa-user"></i>
+                            <td style="text-align: left">
+                                <i title="Open To All" style="color: green" class="fa fa-user"></i> All
                             </td>
                         {% endif %}
                         <td style="text-align: center">

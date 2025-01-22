@@ -37,7 +37,7 @@ class FileAttachmentsController extends AbstractController
      */
     public function showAttachment(string $filename, int $id, FileAttachmentsRepository $fileAttachmentsRepository)
     {
-        $filepath = $this->getParameter('file_attachments_directory') . "/" . $filename;
+        $filepath = $this->getParameter('file_attachments_directory') . $filename;
         if (file_exists($filepath)) {
             return $this->file($filepath, 'sample.pdf', ResponseHeaderBag::DISPOSITION_INLINE);
         } else {
@@ -50,7 +50,7 @@ class FileAttachmentsController extends AbstractController
      */
     public function showAttachmentFileUploadDirectory(string $filename, int $id, FileAttachmentsRepository $fileAttachmentsRepository)
     {
-        $filepath = $this->getParameter('file_attachments_directory') . "/" . $filename;
+        $filepath = $this->getParameter('file_attachments_directory')  . $filename;
         if (file_exists($filepath)) {
             $response = new BinaryFileResponse($filepath);
             $response->setContentDisposition(
@@ -187,8 +187,7 @@ class FileAttachmentsController extends AbstractController
     /**
      * @Route("/email_fileattachments/{fileid}/{recipientid}", name="file_attachments_email")
      */
-    public function emailFileAttachments(Security                  $security, int $fileid, int $recipientid, Request $request, UserRepository $userRepository,
-                                         FileAttachmentsRepository $fileAttachmentsRepository, MailerInterface $mailer)
+    public function emailFileAttachments(Security $security, int $fileid, int $recipientid, Request $request, UserRepository $userRepository, FileAttachmentsRepository $fileAttachmentsRepository, MailerInterface $mailer)
     {
         $file = $fileAttachmentsRepository->find($fileid);
         $senderEmail = $security->getUser()->getEmail();
@@ -206,7 +205,7 @@ class FileAttachmentsController extends AbstractController
             ->html($html);
         if ($attachments) {
             foreach ($attachments as $attachment) {
-                $attachment_path = $this->getParameter('file_attachments_directory') . "/" . $attachment;
+                $attachment_path = $this->getParameter('file_attachments_directory') . $attachment;
                 $email->attachFromPath($attachment_path);
             }
         }
