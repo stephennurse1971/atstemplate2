@@ -144,7 +144,6 @@
                                 {% if CountPhotoLocationsService.count() >1 %}
                                     <a class="nav-link" href="{{ path('photos_index' ) }}">Photos - Multiple locations</a>
                                 {% else %}
-                                    {{ CountPhotoLocationsService.maxId() }}
                                     <a class="nav-link" href="{{ path('show_photos_by_location', { id: CountPhotoLocationsService.maxId(), author: 'All', format: 'Full' }) }}">Gallery</a>
                                 {% endif %}
                             </li>
