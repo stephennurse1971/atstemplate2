@@ -139,11 +139,12 @@
 
                     <!-- Nav Item #5 - Photos -->
                     {% if CompanyDetailsService.companyDetails is not null %}
-                        {% if CompanyDetailsService.companyDetails.headerDisplayPhotos ==1 %}
+                        {% if CompanyDetailsService.companyDetails.headerDisplayPhotos ==1 and CountPhotoLocationsService.count() >0 %}
                             <li class="nav-item">
                                 {% if CountPhotoLocationsService.count() >1 %}
-                                    <a class="nav-link" href="{{ path('photos_index' ) }}">Photos - Multiple locations</a>
-                                {% else %}
+                                    <a class="nav-link" href="{{ path('photos_index' ) }}">Photos</a>
+                                {% endif %}
+                                {% if CountPhotoLocationsService.count() ==1 %}
                                     <a class="nav-link" href="{{ path('show_photos_by_location', { id: CountPhotoLocationsService.maxId(), author: 'All', format: 'Full' }) }}">Gallery</a>
                                 {% endif %}
                             </li>

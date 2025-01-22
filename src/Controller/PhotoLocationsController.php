@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/photolocations")
- * @IsGranted("ROLE_USER")
+ *
  */
 class PhotoLocationsController extends AbstractController
 {
