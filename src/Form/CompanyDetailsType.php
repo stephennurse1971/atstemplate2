@@ -169,6 +169,10 @@ class CompanyDetailsType extends AbstractType
                 'label' => $this->translationsWorker->getTranslations('Company Address Instructions'),
                 'required' => false,
             ])
+            ->add('registrationEmail', TextareaType::class, [
+                'label' => $this->translationsWorker->getTranslations('Registration Email'),
+                'required' => false,
+            ])
             ->add('facebook', TextType::class, [
                 'label' => $this->translationsWorker->getTranslations('Facebook'),
                 'required' => false,

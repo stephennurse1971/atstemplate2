@@ -11,7 +11,9 @@
 {% endblock %}
 
 {% block body %}
-    <h2 style="color: red">{{ business_contact.businessType.businessType }}: {{ business_contact.company }}</h2>
+    <h2 style="color: red">{{ business_contact.company }}</h2>
+
+    <h3 style="colour: grey">({{ business_contact.businessType.businessType }})</h3>
 
     <table class="table">
         <tbody>

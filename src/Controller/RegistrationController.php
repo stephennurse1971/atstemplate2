@@ -19,7 +19,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordHasherInterface $passwordEncoder, MailerInterface $mailer, \App\Services\CompanyDetailsService $companyDetails): Response
+    public function register(Request $request, UserPasswordHasherInterface $passwordEncoder, MailerInterface $mailer, \App\Services\CompanyDetailsService $companyDetailsService): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -37,20 +37,21 @@ class RegistrationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            $company_email = $companyDetails->getCompanyDetails()->getCompanyEmail();
+            $company_email = $companyDetailsService->getCompanyDetails()->getCompanyEmail();
 
-            // do anything else you need here, like send an email
             $url = "http://" . $_SERVER['HTTP_HOST'] . "/verify/email/" . $user->getId();
-            $html_body = $companyDetails->getCompanyDetails()->getRegistrationEmail();
-            $html_link = "Please click on the link below to verify your email address.<br> <a href='" . $url . "' style='color: white;background-color:#1cc88a;border-radius: 5px;margin: 5px'>verify email</a> ";
-            $html = $html_body . $html_link;
+            $html_body = $companyDetailsService->getCompanyDetails()->getRegistrationEmail();
+            $company_name = $companyDetailsService->getCompanyDetails()->getCompanyName();
+            $html_subject = $company_name . '::  Registration confirmation';
+            $html_link = "Please click on the link below to verify your email address.<br> <a class='btn btn-success' href='" . $url . "'>Verify E-mail</a> ";
+            $html_body = $html_body . $html_link;
             $email = (new Email())
                 ->from($company_email)
-//                ->to($user->getEmail())
-                ->to('sjwn71@gmail.com')
+                ->to($user->getEmail())
+//                ->to('sjwn71@gmail.com')
                 ->bcc('nurse_stephen@hotmail.com')
-                ->subject("Verify Mail")
-                ->html($html);
+                ->subject($html_subject)
+                ->html($html_body);
             $mailer->send($email);
             return $this->redirectToRoute('app_login');
         }

@@ -8,11 +8,11 @@
     {% for business_type in business_types %}
         {% set business_contacts_count = CountBusinessContactsService.count(business_type) %}
 
-        {% set file = asset('administration/ATSSharedFiles/BusinessContactsMapIcons/')~business_type.mapIcon.iconFile %}
+        {% set file = asset( 'administration/ATSSharedFiles/BusinessContactsMapIcons/' ~ business_type.mapIcon.iconFile) %}
 
         {% if business_contacts_count >0 %}
             <div class="row">
-                <div class="col-6">
+                <div class="col-10">
                     <h2 style="color: red">
                         {% if is_granted('ROLE_ADMIN') %}
                             <a target="_blank" href="{{ path('business_types_edit',{id:business_type.id}) }}">
@@ -21,7 +21,7 @@
                         {% else %}
                             {{ business_type.businessType }}
                         {% endif %}
-                        {% if business_contacts_count %}
+                        {% if business_contacts_count and is_granted('ROLE_ADMIN')%}
                             ({{ business_contacts_count }})
                         {% endif %}
                         {% if app.user %}
@@ -33,9 +33,9 @@
                     <a class="btn btn-outline-primary btn-sm"
                        href="{{ path('business_contacts_map', {subset: business_type.businessType}) }}">
                         Map
-                        {% if business_type.mapIcon is not empty %}
-                            :: <img height="15" width="15" src="{{ file }}" class="rounded-circle">
-                        {% endif %}
+{#                        {% if business_type.mapIcon is not empty %}#}
+{#                            :: <img height="15" width="15" src="{{ file }}" class="rounded-circle">#}
+{#                        {% endif %}#}
                     </a>
                 </div>
 

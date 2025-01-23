@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
 
-
-
 {% block title %}
     {% if business_contact.firstName is not empty %}
         {{ business_contact.firstName }} {{ business_contact.lastName }} (
@@ -22,7 +20,7 @@
         {% endif %}
         {% if business_contact.firstName is not empty %}){% endif %}
     </h1>
-    {% set image = asset('administration/Attachments/BusinessContacts/Photos/')~business_contact.photo %}
+    {% set image = asset(business_contacts_photos_directory~business_contact.photo) %}
 
     <div class="row ">
         <div class="col-12 m-auto">

@@ -15,7 +15,7 @@
         <i style="color: grey" title="{{ photo.uploadedBy.firstName }} {{ photo.uploadedBy.lastName }}"
            class="fas fa-user"></i>
     {% endif %}
-    <a title="Email to {{ app.user.email }}" href="{{ path('email_photo', {'photoId': photo.id}) }}">
+    <a onclick="return confirm('The photo has been sent to your e-mail address (your login). Please check spam folder');" title="Send photo to your e-mail address: {{ app.user.email }}"  href="{{ path('email_photo', {'photoId': photo.id}) }}">
         <i style="color: blue" class="fa fa-envelope"></i></a>
 {% endif %}
 

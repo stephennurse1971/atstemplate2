@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\CompanyDetails;
 use App\Entity\Photos;
 use App\Form\PhotosType;
 use App\Repository\PhotoLocationsRepository;
 use App\Repository\PhotosRepository;
 use App\Repository\UserRepository;
+use App\Services\CompanyDetailsService;
 use App\Services\CountPhotosService;
 use App\Services\PhotoAuthorsByLocation;
 use Doctrine\ORM\EntityManagerInterface;
@@ -289,17 +291,18 @@ class PhotosController extends AbstractController
     /**
      * @Route("/{photoId}/email_photo", name="email_photo")
      */
-    public function emailPhoto(Request $request, Security $security, string $photoId, UserRepository $userRepository, PhotosRepository $photosRepository, MailerInterface $mailer)
+    public function emailPhoto(Request $request, Security $security, string $photoId, CompanyDetailsService $companyDetailsService, UserRepository $userRepository, PhotosRepository $photosRepository, MailerInterface $mailer)
     {
         $referer = $request->headers->get('referer');
         $photo = $photosRepository->find($photoId);
-        $senderEmail = 'nurse_stephen@hotmail.com';
+        $senderEmail = $companyDetailsService->getCompanyDetails()->getCompanyEmail();
         $recipient = $userRepository->findOneBy([
             'email' => $security->getUser()->getEmail()]);
         $subject = 'Photo: ' . $photo->getLocation()->getLocation();
         $html = $this->renderView('photos/email_photo.html.twig', [
             'description' => $photo->getLocation()->getLocation(),
         ]);
+        $content = 'xxxxxx';
         $photo_file_name = $photo->getPhotoFile();
         $attachments = [];
         $attachments[] = $photo_file_name;

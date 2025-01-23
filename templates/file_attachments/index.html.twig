@@ -52,7 +52,8 @@
                 <td data-sort='{{ file_attachment.date|date('Y-m-d') }}'>{{ file_attachment.date ? file_attachment.date|date('d-M-Y') : '' }}</td>
                 {% if app.user %}
                     <td style="text-align: center">
-                        <a href="{{ path('file_attachments_email', {'fileid': file_attachment.id, 'recipientid': app.user.id}) }}">
+                        <a onclick="return confirm('Email sent');"
+                        href="{{ path('file_attachments_email', {'fileid': file_attachment.id, 'recipientid': app.user.id}) }}">
                             <i class="fa fa-envelope"></i></a>
                     </td>
                 {% endif %}
@@ -69,8 +70,8 @@
                     <td>
                         <form method="post"
                               action="{{ path('file_attachments_delete', {'id': file_attachment.id}) }}"
-                              onsubmit="return confirm('Are you sure you want to delete this item?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ file_attachment.id) }}">
+                                  onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ file_attachment.id) }}">
                             <button class="btn btn-danger btn-sm"><i style="color: white;" class="fa fa-trash"></i>
                             </button>
                         </form>

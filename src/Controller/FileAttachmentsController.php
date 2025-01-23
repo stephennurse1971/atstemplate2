@@ -6,6 +6,7 @@ use App\Entity\FileAttachments;
 use App\Form\FileAttachmentsType;
 use App\Repository\FileAttachmentsRepository;
 use App\Repository\UserRepository;
+use App\Services\CompanyDetailsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -187,10 +188,10 @@ class FileAttachmentsController extends AbstractController
     /**
      * @Route("/email_fileattachments/{fileid}/{recipientid}", name="file_attachments_email")
      */
-    public function emailFileAttachments(Security $security, int $fileid, int $recipientid, Request $request, UserRepository $userRepository, FileAttachmentsRepository $fileAttachmentsRepository, MailerInterface $mailer)
+    public function emailFileAttachments(Security $security, int $fileid, int $recipientid, Request $request, CompanyDetailsService $companyDetailsService, UserRepository $userRepository, FileAttachmentsRepository $fileAttachmentsRepository, MailerInterface $mailer)
     {
         $file = $fileAttachmentsRepository->find($fileid);
-        $senderEmail = $security->getUser()->getEmail();
+        $senderEmail = $companyDetailsService->getCompanyDetails()->getCompanyEmail();
         $recipient = $userRepository->find($recipientid);
         $subject = 'File Attachments: ' . $file->getCategory();
         $html = $this->renderView('file_attachments/email_attachment.html.twig', [

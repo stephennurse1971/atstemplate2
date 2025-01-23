@@ -333,6 +333,11 @@ class CompanyDetails
      */
     private $companyAddressInstructions;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $registrationEmail;
+
 
     public function getId(): ?int
     {
@@ -1062,6 +1067,18 @@ class CompanyDetails
     public function setCompanyAddressInstructions(?string $companyAddressInstructions): self
     {
         $this->companyAddressInstructions = $companyAddressInstructions;
+
+        return $this;
+    }
+
+    public function getRegistrationEmail(): ?string
+    {
+        return $this->registrationEmail;
+    }
+
+    public function setRegistrationEmail(?string $registrationEmail): self
+    {
+        $this->registrationEmail = $registrationEmail;
 
         return $this;
     }

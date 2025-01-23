@@ -5,7 +5,12 @@
 {% block body %}
     <div class="row">
         <div class="col-10">
-            <h3 style="color: red">Business Contacts: {{ subset }}
+            <h3 style="color: red">
+                {% if subset=='All' %}
+                    Business Contacts: All
+                {% else %}
+                    {{ subset }}
+                {% endif %}
             </h3>
         </div>
         <div class="col-2">
@@ -14,7 +19,7 @@
     </div>
     {% include 'business_contacts/parts/map/subset_buttons.html.twig' %}
     <br>
-    {% include 'business_contacts/parts/map/List_of_business_contacts.html.twig' %}
+    {% include 'business_contacts/parts/map/list_of_business_contacts.html.twig' %}
     {% include 'business_contacts/parts/map/Max_Min_Average_Latitude_and_Longitude.html.twig' %}
 
     <hr>
@@ -32,7 +37,7 @@
             "lat": {{ business_contact.locationLatitude }},
             "lng": {{ business_contact.locationLongitude }},
             "name": "{{ business_contact.company | e('js') }}",
-            "icon": "{{ asset('administration/ATSSharedFiles/BusinessContactsMapIcons/'~iconFileName) | e('js') }}"
+            "icon": "{{ asset('/administration/ATSSharedFiles/BusinessContactsMapIcons/'~iconFileName) | e('js') }}"
           }
           {% if not loop.last %}, {% endif %}
         {% endfor %}

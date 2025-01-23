@@ -11,8 +11,8 @@
                 {% endif %}
                 {% if app.user %}
                     <div class="mb-3">
-                        You are logged in as {{ app.user.fullName }}, <a
-                                href="{{ path('app_logout') }}">Logout</a>
+                        You are logged in as {{ app.user.fullName }},
+                        <a href="{{ path('app_logout') }}">Logout</a>
                     </div>
                 {% endif %}
 
@@ -27,63 +27,42 @@
                 <input type="hidden" name="_csrf_token"
                        value="{{ csrf_token('authenticate') }}">
                 <br>
-                <button class="btn btn-primary btn-sm" type="submit">Sign in</button>
+                <button class="btn btn-primary" type="submit">Sign in</button>
                 <br><br>
                 <a href="{{ path('app_forgot_password_request') }}">Forgot password</a>
-                <br><br><br>
-
-
-                {% if CompanyDetailsService.companyDetails is not null %}
-                    {% if CompanyDetailsService.companyDetails.enableUserRegistration ==1 %}
-                        <h1 style="color: red" class="h3 mb-3 font-weight-normal">Welcome New Users</h1>
-                        If you would like to register for this website, please click <a href="{{ path('app_register') }}">here</a>
-                    {% endif %}
-                {% endif %}
             </form>
-            <hr>
-            <br><br><br><br>
+            <hr><br>
 
-
-            {% if CompanyDetailsService.companyDetails is not null %}
-                {% if app.request.getSchemeAndHttpHost() != CompanyDetailsService.companyDetails.companyWebsite %}
-
-                    <button onclick="fillForm()"><i class="fa fa-info-circle"> </i> nurse_stephen@hotmail.com
-                        (Super-Admin)
-                    </button>
-
-                    <br>
-                    <button onclick="fillForm2()"><i class="fa fa-info-circle"> </i> nurse_stephen2@hotmail.com
-                        (Super-Admin)
-                    </button>
-                    <br>
-                    <button onclick="fillForm3()"><i class="fa fa-info-circle"> </i> amankr.99.a@gmail.com
-                        (User)
-                    </button>
-                    <br>
-                {% endif %}
-            {% else %}
-                <b>Please set up your "Company Details" profile.</b>
-                <br>
-                <br>
-                <br>
-
-                <button onclick="fillForm()"><i class="fa fa-info-circle"> </i> nurse_stephen@hotmail.com
-                    (Super-Admin)
-                </button>
-
-                <br>
-                <button onclick="fillForm2()"><i class="fa fa-info-circle"> </i> nurse_stephen2@hotmail.com
-                    (Super-Admin)
-                </button>
-                <br>
-                <br>
-                <button onclick="fillForm3()"><i class="fa fa-info-circle"> </i> amankr.99.a@gmail.com
-                    (User)
-                </button>
-                <br>
-            {% endif %}
         </div>
     </div>
+
+    {% if CompanyDetailsService.companyDetails is not null %}
+        {% if CompanyDetailsService.companyDetails.enableUserRegistration ==1 %}
+            If you would like to register website, please click on the button below: <br>
+            <a class="btn btn-success" href="{{ path('app_register') }}">Register</a>
+        {% endif %}
+    {% endif %}
+    <br><br><br><br>
+
+    {% if CompanyDetailsService.companyDetails is not null %}
+        {% if app.request.getSchemeAndHttpHost() != CompanyDetailsService.companyDetails.companyWebsite %}
+            <button onclick="fillForm()"><i class="fa fa-info-circle"> </i> nurse_stephen@hotmail.com
+                (Super-Admin)
+            </button>
+            <br>
+            <br>
+            <button onclick="fillForm2()"><i class="fa fa-info-circle"> </i> nurse_stephen2@hotmail.com
+                (Super-Admin)
+            </button>
+            <br>
+            <br>
+            <button onclick="fillForm3()"><i class="fa fa-info-circle"> </i> stephen@stephen-nurse.com
+                (Unverifed)
+            </button>
+        {% endif %}
+    {% else %}
+        <b>Please set up your "Company Details" profile.</b>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
@@ -99,9 +78,8 @@
         }
 
         function fillForm3() {
-            $("#inputEmail").val("amankr.99.a@gmail.com").change();
+            $("#inputEmail").val("stephen@stephen-nurse.com").change();
             $("#inputPassword").val("password").change();
         }
-
     </script>
 {% endblock %}
