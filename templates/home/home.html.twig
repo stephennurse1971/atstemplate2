@@ -4,6 +4,14 @@
 
 {% block body %}
     <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="default-title">
+                {% include 'home/products_page/title.html.twig' %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         {% for photo in photos %}
             {% set image = asset('administration/Attachments/CMSPhotos')~"/"~photo.photo %}
             {% set fileType =  photo.photo|split('.')|last %}

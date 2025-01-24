@@ -45,7 +45,6 @@ class   HomeController extends AbstractController
             ['ranking' => 'ASC']
         );
 
-
         $cms_copy_ranking1 = $cmsCopyRepository->findOneBy([
             'staticPageName' => 'Home',
             'ranking' => '1',
@@ -71,7 +70,8 @@ class   HomeController extends AbstractController
 
         if ($homePagePhotosOnly == 1) {
             return $this->render('home/home.html.twig', [
-                'photos' => $cms_photo
+                'photos' => $cms_photo,
+                'cms_copy_array' => $cms_copy,
             ]);
         } else {
             return $this->render('home/products.html.twig', [

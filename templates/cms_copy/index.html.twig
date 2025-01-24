@@ -31,9 +31,9 @@
             <th style="width: 60px; border-right: dotted 1px">File</th>
             <th style="width: 20px">Count:<br>Users</th>
             <th style="width: 20px; border-right: dotted 1px">Count:<br>Admin</th>
-            <th style="width: 30px"></th>
-            <th style="width: 30px"></th>
-            <th style="width: 30px"></th>
+            <th style="width: 40px"></th>
+            <th style="width: 40px"></th>
+            <th style="width: 40px"></th>
         </tr>
         </thead>
         <tbody>
@@ -69,13 +69,21 @@
                 </td>
 
                 <td>
-                    {{ cms_copy.tabTitle }}
-                    {% if cms_copy.ranking != '1' and cms_copy.tabTitle is not null and cms_copy.category == 'ProductService' %}
-                        <i style="background-color: yellow; color: red" title="Ranking must be 1 to effect tab Title"
-                           class="fa fa-warning"></i>
+                    {% if cms_copy.ranking != '1' %}
+                        <i title="Ranking must be 1 to effect the tab title" class="fa fa-info-circle"></i>
+                        ---
+                    {% else %}
+                        {{ cms_copy.tabTitle }}
                     {% endif %}
                 </td>
-                <td title="{{ cms_copy.contentTitle }}">{{ (cms_copy.contentTitle |slice (0, 50)) }}...</td>
+                <td title="{{ cms_copy.contentTitle }}">
+                    {% if cms_copy.ranking != '1' %}
+                        <i title="Ranking must be 1 to effect the heading" class="fa fa-info-circle"></i>
+                        ---
+                    {% else %}
+                        {{ (cms_copy.contentTitle |slice (0, 50)) }}...
+                    {% endif %}
+                </td>
                 <td>
                     {{ (cms_copy.contentText |slice (0, 250))|raw }}...
                 </td>

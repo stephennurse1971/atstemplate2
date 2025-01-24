@@ -40,11 +40,11 @@
                 <th>Category</th>
             {% endif %}
             <th style="width: 300px">Name</th>
-            <th style="width: 200px" class="desktop">Link</th>
+            <th style="width: 400px" class="desktop">Link</th>
             <th style="width: 10px" class="mobile">Link M</th>
-            <th style="width: 400px" class="desktop">Notes</th>
+            <th style="width: 200px; border-right: 1px dotted" class="desktop">Notes</th>
             {% if is_granted('ROLE_ADMIN') %}
-                <th class="desktop" style="color: red; background-color: lightgray">Login</th>
+                <th class="desktop" style="color: red">Login</th>
                 <th class="desktop" style="color: red">Password</th>
                 <th class="desktop" style="color: red">Edit</th>
                 <th class="desktop" style="color: red">Delete</th>
