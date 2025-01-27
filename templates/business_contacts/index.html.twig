@@ -46,14 +46,13 @@
                 <tr>
                     {#                    <---- Start of Body 1 ----> #}
                     <th>Photo</th>
-                    <th></th>
                     {#                    <---- End of Body 1 ----> #}
 
                     {#                    <---- Start of Body 2 ----> #}
                     <th style="width: 350px; text-align: left">Company</th>
                     {% if list_or_map=='map' %}
                         <th></th>{% endif %}
-                    <th style="width: 50px; text-align: left">
+                    <th style="width: 100px; text-align: left">
                         <i class="fa fa-user"></i>
                     </th>
                     {#                    <---- End of Body 2 ----> #}
@@ -81,7 +80,7 @@
                     {#                    <---- End of Body 4 ----> #}
 
                     {#                    <---- Start of Body 5 ----> #}
-                    <th class="desktop" title="Notes" style="width: 180px; text-align: left"><i class="fa fa-pen"></i>
+                    <th class="desktop" title="Notes" style="width: 100px; text-align: left"><i class="fa fa-pen"></i>
                     </th>
                     <th style="width: 10px; text-align: center" title="Business card"><i class="fa fa-address-card"></i>
                     </th>
@@ -125,7 +124,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[12, 'asc'], [13, 'asc'], [2, 'asc']],
+                "order": [[12, 'asc'], [1, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

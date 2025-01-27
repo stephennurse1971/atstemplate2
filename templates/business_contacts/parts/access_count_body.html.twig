@@ -5,10 +5,10 @@
             <i title="{{ business_contact.status }}" style="color: green" class="fa fa-check"></i>
         {% endif %}
         {% if business_contact.status == "Pending" %}
-            <i title="{{ business_contact.status }}" style="color: grey" class="fa fa-question-circle"></i>
+            <i title="{{ business_contact.status }}" style="color: orange" class="fa fa-question-circle"></i>
         {% endif %}
         {% if business_contact.status == "Not approved" %}
-            <i title="{{ business_contact.status }}" style="color: red" class="fa fa-remove"></i>
+            <i title="{{ business_contact.status }}" style="color: red; background-color: yellow" class="fa fa-warning"></i>
         {% endif %}
     </td>
 

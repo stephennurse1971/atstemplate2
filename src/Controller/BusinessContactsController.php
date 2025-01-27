@@ -58,13 +58,14 @@ class BusinessContactsController extends AbstractController
     public function map(Request $request, string $subset, BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, CountBusinessContactsService $countBusinessContacts): Response
     {
         if ($subset == 'All') {
+
             $business_contacts = $businessContactsRepository->findBy([
                 'status' => 'Approved'
             ]);
         }
 
         if ($subset != 'All') {
-            $business_type = $businessTypesRepository->findOneBy(['businessType' => $subset]);
+            $business_type= $businessTypesRepository->findOneBy(['businessType' => $subset]);
             $business_contacts = $businessContactsRepository->findBy([
                 'status' => 'Approved',
                 'businessType' => $business_type
@@ -117,7 +118,7 @@ class BusinessContactsController extends AbstractController
             $longitude_range = $longitude_max - $longitude_min;
         }
 
-        $business_types = $businessTypesRepository->findAll();
+        $business_types = $businessTypesRepository->findBy([], ['ranking' => 'ASC']);
         return $this->render('business_contacts/map_of_business_contacts.html.twig', [
             'business_contacts' => $business_contacts,
             'business_types' => $business_types,
