@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit: {{ business_contact.company }}
+{% block title %} {{ business_contact.company }}
 {% if business_contact.firstName !=null or business_contact.lastName !=null %}
 ({{ business_contact.firstName }} {{ business_contact.lastName }})
     {% endif %}

@@ -11,8 +11,7 @@
             <a class="btn btn-outline-info btn-sm" href="{{ path('business_contacts_index') }}">Return to List</a>
         </div>
     </div>
-    {% include 'business_contacts/parts/map/subset_buttons.html.twig' %}
-    <br>
+    {% include 'business_contacts/parts/map/subset_buttons.html.twig' %} <br>
     {% include 'business_contacts/parts/map/list_of_business_contacts.html.twig' %}
     {% include 'business_contacts/parts/map/max_min_average_latitude_and_longitude.html.twig' %}
 
@@ -25,7 +24,7 @@
                     {% if subset =='All' %}
                     {% set iconFileName = business_contact.businessType.mapIcon.iconFile %}
                     {% else %}
-                    {% set iconFileName = 'map-marker.webp' %}
+                    {% set iconFileName = '_map_marker.png' %}
                     {% endif %}
           {
             "lat": {{ business_contact.locationLatitude }},
@@ -37,7 +36,6 @@
         {% endfor %}
      ]'>
             </div>
-
             <br><br><br>
         </div>
     </div>
