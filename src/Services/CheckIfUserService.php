@@ -7,12 +7,12 @@ use App\Repository\WebsiteContactsRepository;
 
 class CheckIfUserService
 {
-    public function checkIfUser($websiteContact)
+    public function checkIfUser($email)
     {
-        $website_contact = $this->websiteContactsRepository->findOneBy([
-            'business_type' => $website_contact
+        $current_user = $this->userRepository->findOneBy([
+            'email' => $email
         ]);
-        if ($website_contact) {
+        if ($current_user) {
             return true;
         } else {
             return false;

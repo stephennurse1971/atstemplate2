@@ -141,8 +141,7 @@
 
 
     {% if CompanyDetailsService.companyDetails is not null %}
-        {% if CompanyDetailsService.companyDetails.includeContactFormHomePage ==1 and
-            include_contact == "Yes" %}
+        {% if CompanyDetailsService.companyDetails.includeContactFormHomePage ==1 %}
             {% include 'home/parts/contact_us.html.twig' %}
         {% endif %}
 

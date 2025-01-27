@@ -9,7 +9,9 @@
         <thead>
         <tr>
             <th>Status</th>
-            <th>#</th>
+            <th>
+                <i style="color: blue" title="Is already a User?" class="fa fa-info-circle"></i>
+            </th>
             <th>Date</th>
             <th>Time</th>
             <th>First Name</th>
@@ -30,8 +32,13 @@
                     {{ website_contact.status }}
                 </td>
                 <td>
-                ###
-{#                    {{ CheckIfUserService.checkIfUser(website_contact) }}#}
+                    {% if CheckIfUserService.checkIfUser(website_contact.email) == true %}
+                    <i style="color: green" class="fa fa-check"></i>
+                    {% endif %}
+                    {% if CheckIfUserService.checkIfUser(website_contact.email) == false %}
+                        <i style="color: red" class="fa fa-remove"></i>
+                    {% endif %}
+
                 </td>
                 <td data-sort="{{ website_contact.dateTime|date('Y-m-d H:i') }}">{{ website_contact.dateTime ? website_contact.dateTime|date('d-M-y') : '' }}</td>
                 <td>{{ website_contact.dateTime ? website_contact.dateTime|date('H:i') : '' }}</td>
@@ -74,11 +81,13 @@
                         <a class="btn btn-outline-danger btn-sm"
                            href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'Junk'}) }}">Spam</a>
                         <a class="btn btn-outline-success btn-sm"
-                           href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'New User'}) }}">Convert to User</a>
+                           href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'New User'}) }}">Convert
+                            to User</a>
                     {% endif %}
                     {% if website_contact.status == 'Junk' %}
                         <a class="btn btn-outline-primary btn-sm"
-                           href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'Pending'}) }}">Revert to
+                           href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'Pending'}) }}">Revert
+                            to
                             Pending</a>
                     {% endif %}
                 </td>
@@ -106,7 +115,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc']],
+                "order": [[0, 'asc'],[2, 'asc']],
                 "paging": true,
                 "searching": true,
                 "bInfo": true

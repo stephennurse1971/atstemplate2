@@ -1,15 +1,19 @@
 {{ form_start(form) }}
 <div class="row">
     <div class="col-2">
-        <h2 style="color: red">New Website Contacts Details</h2>
         {{ form_row(form.status) }}
         {{ form_row(form.firstName) }}
         {{ form_row(form.lastName) }}
+    </div>
+    <div class="col-2">
         {{ form_row(form.email) }}
         {{ form_row(form.mobile) }}
         {{ form_row(form.notes) }}
-        {{ form_row(form.service) }}
         {{ form_row(form.dateTime) }}
+    </div>
+    <div class="col-2">
+        xx
+{#        {{ form_row(form.) }} #}
     </div>
 </div>
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>

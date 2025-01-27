@@ -17,12 +17,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/website/contacts")
- * @Security("is_granted('ROLE_ADMIN')")
+ *
  */
 class WebsiteContactsController extends AbstractController
 {
     /**
      * @Route("/index", name="website_contacts_index", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
+     *
      */
     public function index(WebsiteContactsRepository $websiteContactsRepository, UserRepository $userRepository, CheckIfUserService $checkIfUser): Response
     {
@@ -64,6 +66,7 @@ class WebsiteContactsController extends AbstractController
 
     /**
      * @Route("/show/{id}", name="website_contacts_show", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function show(WebsiteContacts $websiteContact): Response
     {
@@ -74,6 +77,7 @@ class WebsiteContactsController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="website_contacts_edit", methods={"GET", "POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function edit(Request $request, WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository): Response
     {
@@ -94,6 +98,7 @@ class WebsiteContactsController extends AbstractController
 
     /**
      * @Route("/update_status/{new_status}/{id}", name="website_contacts_update_status", methods={"GET", "POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function setToJunk(Request $request, string $new_status,  WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository, EntityManagerInterface $manager): Response
     {
@@ -117,6 +122,7 @@ class WebsiteContactsController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="website_contacts_delete", methods={"POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public
     function delete(Request $request, WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository): Response

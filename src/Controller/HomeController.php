@@ -26,10 +26,12 @@ class   HomeController extends AbstractController
     {
         $companyDetails = $companyDetailsRepository->find('1');
         $homePagePhotosOnly = 0;
+
         $qrcode=false;
         if ($companyDetails) {
             $homePagePhotosOnly = $companyDetails->isHomePagePhotosOnly();
             $qrcode = $companyDetails->isIncludeQRCodeHomePage();
+            $contactform = $companyDetails->isIncludeContactFormHomePage();
         }
 
         $cms_copy = [];
@@ -78,8 +80,7 @@ class   HomeController extends AbstractController
                 'product' => $product,
                 'cms_copy_array' => $cms_copy,
                 'cms_photo_array' => $cms_photo,
-                'sub_pages' => $sub_pages,
-                'include_contact' => 'Yes',
+                'sub_pages' => $sub_pages, 
                 'include_QR_code' => $qrcode,
                 'format' => $page_layout
             ]);

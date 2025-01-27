@@ -24,7 +24,6 @@ class WebsiteContactsType extends AbstractType
                 'widget' => 'single_text',
                 'required' => false,
             ])
-
             ->add('status', ChoiceType::class, [
                 'multiple' => false,
                 'placeholder' => false,
@@ -33,7 +32,7 @@ class WebsiteContactsType extends AbstractType
                 'choices' => [
                     'Pending' => 'Pending',
                     'Accepted' => 'Accepted',
-                    'Junk' => 'Junk',
+                    'Spam' => 'Spam',
                 ],
             ])
         ;
