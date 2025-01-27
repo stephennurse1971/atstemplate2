@@ -214,7 +214,7 @@ class CompanyDetailsController extends AbstractController
 
     /**
      * @Route("/export/database", name="export_database", methods={"POST", "GET"})
-     *
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function exportDatabase(Request $request, EntityManagerInterface $entityManager, \App\Services\CompanyDetailsService $companyDetails)
     {
@@ -241,6 +241,7 @@ class CompanyDetailsController extends AbstractController
 
     /**
      * @Route("/edit/update/location", name="update_company_details_location", methods={"POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function updateLocation(CompanyDetailsRepository $companyDetailsRepository, EntityManagerInterface $manager): Response
     {

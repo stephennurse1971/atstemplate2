@@ -6,6 +6,7 @@ use App\Entity\CmsPhoto;
 use App\Form\CmsPhotoType;
 use App\Repository\CmsPhotoRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,10 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @Route("/cmsphoto")
+ * @Security("is_granted('ROLE_ADMIN')")
  */
+
+
 class CmsPhotoController extends AbstractController
 {
     /**

@@ -30,14 +30,14 @@
                 <img title="{{ business_contact.photo }}" height="50" width="50"
                      src="{{ photo }}" class="rounded-circle"></a>
             <br>
-            <b>{{ business_contact.photo }}</b>
-            <a class="btn btn-sm btn-danger"
-               href="{{ path('business_contact_delete_photo_file', {'id': business_contact.id }) }} ">Delete
-                photo</a>
-
-        {% else %}
-            {{ form_row(form.photo) }}
+            <b>{{ business_contact.photo }}</b><br>
+            <a class="btn btn-sm btn-outline-danger mb-1"
+               href="{{ path('business_contact_delete_photo_file', {'id': business_contact.id }) }} ">Delete photo</a>
         {% endif %}
+        <div class="business_contact_photo_container">
+            {{ form_row(form.photo) }}
+        </div>
+
     </div>
     <div class="col-2">
         {{ form_row(form.email) }}
@@ -78,12 +78,14 @@
                     <i class="fa fa-paperclip"></i></a>
                 <br>
                 <b>{{ business_contact.files }}</b><br>
-                <a class="btn btn-sm btn-danger"
+                <a class="btn btn-sm btn-outline-danger"
                    href="{{ path('business_contact_delete_attachment_file', {'id': business_contact.id }) }} ">Delete
                     file</a>
-            {% else %}
-                {{ form_row(form.files) }}
             {% endif %}
+            <div class="business_contact_files_container">
+                {{ form_row(form.files) }}
+            </div>
+
         </div>
     </div>
     <div class="col-2">
@@ -99,6 +101,6 @@
         {{ form_row(form.notes) }}
     </div>
 </div>
-<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+<button class="btn btn-success btn-sm mb-1">{{ button_label|default('Save') }}</button>
 
 {{ form_end(form) }}

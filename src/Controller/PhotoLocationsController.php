@@ -7,7 +7,7 @@ use App\Form\PhotoLocationsType;
 use App\Repository\PhotoLocationsRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/photolocations")
+ * @Security("is_granted('ROLE_ADMIN')")
  *
  */
 class PhotoLocationsController extends AbstractController
@@ -24,9 +25,6 @@ class PhotoLocationsController extends AbstractController
      */
     public function index(PhotoLocationsRepository $photoLocationsRepository): Response
     {
-//        $photoLocationResult = $countPhotoLocationsService->photoLocation();
-
-
         return $this->render('photo_locations/index.html.twig', [
             'photo_locations' => $photoLocationsRepository->findAll(),
         ]);

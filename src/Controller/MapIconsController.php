@@ -10,6 +10,7 @@ use App\Services\MapIconsImportService;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route('/map_icons')]
+/**
+ * @Route("/map_icons")
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
 class MapIconsController extends AbstractController
 {
     #[Route('/index', name: 'map_icons_index', methods: ['GET'])]

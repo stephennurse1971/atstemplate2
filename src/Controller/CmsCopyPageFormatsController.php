@@ -10,6 +10,7 @@ use App\Services\CmsPageCopyPageFormatImportService;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,14 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route('/cms_copy_page_formats')]
+
+/**
+ * @Route("/cms_copy_page_formats")
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
+
+
+
 class CmsCopyPageFormatsController extends AbstractController
 {
     #[Route('/index', name: 'cms_copy_page_formats_index', methods: ['GET'])]

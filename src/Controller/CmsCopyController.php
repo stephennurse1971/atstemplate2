@@ -7,6 +7,7 @@ use App\Form\CmsCopyType;
 use App\Repository\CmsCopyRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/cmscopy")
+ * @Security("is_granted('ROLE_ADMIN')")
  */
 class CmsCopyController extends AbstractController
 {
@@ -232,7 +234,4 @@ class CmsCopyController extends AbstractController
         }
         return $this->redirect($referer);
     }
-
-
-
 }

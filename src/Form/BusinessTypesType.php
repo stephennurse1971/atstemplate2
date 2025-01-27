@@ -5,6 +5,8 @@ namespace App\Form;
 use App\Entity\BusinessTypes;
 use App\Entity\CmsCopyPageFormats;
 use App\Entity\MapIcons;
+use App\Repository\BusinessTypesRepository;
+use App\Repository\MapIconsRepository;
 use App\Services\TranslationsWorkerService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -23,7 +25,11 @@ class BusinessTypesType extends AbstractType
                 'label' => $this->translationsWorker->getTranslations('Map Icon'),
                 'class' => MapIcons::class,
                 'required' => true,
-                'choice_label' => 'name'
+                'choice_label' => 'name',
+                'query_builder' => function (MapIconsRepository $er) {
+                    return $er->createQueryBuilder('bt')
+                        ->orderBy('bt.name', 'ASC');
+                },
             ]);
     }
 
