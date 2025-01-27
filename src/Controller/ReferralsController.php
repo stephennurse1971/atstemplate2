@@ -53,7 +53,7 @@ class ReferralsController extends AbstractController
     /**
      * @Route("/new_from_businesscontacts/{business_referred}/{action}", name="referrals_new_from_business_contact", methods={"GET", "POST"})
      */
-    public function newFromBusinessContacts(Request $request, int $business_referred, string $action, ReferralsRepository $referralsRepository, BusinessTypesRepository $businessTypesRepository, BusinessContactsRepository $businessContactsRepository,EntityManagerInterface $manager,Security $security): Response
+    public function newFromBusinessContacts(Request $request, int $business_referred, string $action, ReferralsRepository $referralsRepository, BusinessTypesRepository $businessTypesRepository, BusinessContactsRepository $businessContactsRepository, EntityManagerInterface $manager, Security $security): Response
     {
         $user = $security->getUser();
         $now = new \DateTime('now');
@@ -62,7 +62,7 @@ class ReferralsController extends AbstractController
             ->setBusinessContact($businessContactsRepository->find($business_referred))
             ->setAction($action)
             ->setDateTime($now);
-        if($user){
+        if ($user) {
             $referral->setUser($user);
         }
         $manager->persist($referral);
@@ -115,7 +115,7 @@ class ReferralsController extends AbstractController
     /**
      * @Route("/referrals/delete_all", name="referrals_delete_all")
      */
-    public function deleteAllReferrals(ReferralsRepository $referralsRepository,EntityManagerInterface $entityManager): Response
+    public function deleteAllReferrals(ReferralsRepository $referralsRepository, EntityManagerInterface $entityManager): Response
     {
         $referrals = $referralsRepository->findAll();
         foreach ($referrals as $referral) {
@@ -125,7 +125,6 @@ class ReferralsController extends AbstractController
         }
         return $this->redirectToRoute('referrals_index');
     }
-
 
 
 }

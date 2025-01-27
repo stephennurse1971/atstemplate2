@@ -9,6 +9,7 @@ use App\Repository\TranslationRepository;
 use App\Services\TranslationsImportService;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +18,11 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route('/translation')]
+/**
+ * @Route("/translation")
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
+
 class TranslationController extends AbstractController
 {
     #[Route('/index', name: 'translation_index', methods: ['GET'])]

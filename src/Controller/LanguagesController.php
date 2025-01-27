@@ -20,7 +20,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route('/languages')]
+
+/**
+ * @Route("/languages")
+ */
+
 class LanguagesController extends AbstractController
 {
     #[Route('/index', name: 'languages_index', methods: ['GET'])]

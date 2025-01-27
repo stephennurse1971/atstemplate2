@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 use App\Repository\WebsiteContactsRepository;
 use App\Services\CheckIfUserService;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/website/contacts")
+ * @Security("is_granted('ROLE_ADMIN')")
  */
 class WebsiteContactsController extends AbstractController
 {

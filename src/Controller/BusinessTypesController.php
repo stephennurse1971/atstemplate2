@@ -11,6 +11,7 @@ use App\Services\BusinessTypesImportService;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @Route("/business/types")
+ * @Security("is_granted('ROLE_ADMIN')")
  */
 class BusinessTypesController extends AbstractController
 {

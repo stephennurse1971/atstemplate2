@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/user")
- *
+ * @Security("is_granted('ROLE_STAFF')")
  */
 class UserController extends AbstractController
 {
