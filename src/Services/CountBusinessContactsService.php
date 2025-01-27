@@ -23,7 +23,7 @@ class CountBusinessContactsService
 
     public function countWithMapLocations($businessType)
     {
-        return $this->businessContactsRepository->countByBusinessTypeAndStatus($businessType);
+        return $this->businessContactsRepository->countByBusinessTypeAndStatusAndMapLocation($businessType);
     }
 
 }

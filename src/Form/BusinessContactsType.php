@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\BusinessContacts;
 use App\Entity\BusinessTypes;
+use App\Repository\BusinessTypesRepository;
 use App\Services\TranslationsWorkerService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -40,6 +41,10 @@ class BusinessContactsType extends AbstractType
                 'choice_label' => 'businessType',
                 'required' => true,
                 'empty_data' => null,
+                'query_builder' => function (BusinessTypesRepository $er) {
+                    return $er->createQueryBuilder('bt')
+                        ->orderBy('bt.ranking', 'ASC');
+                },
             ])
             ->add('businessOrPerson', ChoiceType::class, [
                 'label' => $this->translationsWorker->getTranslations('Business Or Person'),
