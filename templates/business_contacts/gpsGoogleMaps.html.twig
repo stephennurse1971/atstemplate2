@@ -1,9 +1,26 @@
 
 {% extends 'base.html.twig' %}
-{% block title %}{{ business.company }} {% endblock %}
+{% block title %}{{ business_contact.company }} {% endblock %}
 {% block body %}
 {{ app.request.server.get('GOOGLE_MAP_API') }}
-    <h3 style="color: red">{{ business.company }}</h3>
+    <h3 style="color: red">{{ business_contact.company }}</h3>
+
+    <div class="row">
+        <div class="col-12">
+            <b>Address is: </b>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a target="_blank" href="{{ path('business_contacts_edit', {id:business_contact.id}) }}">
+                    <i style="color: red" class="fa fa-pencil"></i>
+                </a>
+            {% endif %}
+            {{ business_contact.addressStreet }}{% if business_contact.addressStreet is not empty and business_contact.addressCity is not empty %}, {% endif %}{{ business_contact.addressCity }}{% if business_contact.addressCity is not empty and business_contact.addressPostCode is not empty %}, {% endif %}{{ business_contact.addressPostCode }}
+            <br>
+
+            <b>Notes:</b> <br>
+            {{ business_contact.notes|raw }}
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-12 text-center">
             <iframe src="https://maps.google.com/maps?q={{ latitude }},{{ longitude }} &hl=es;z=14&amp;output=embed"
@@ -12,25 +29,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-12">
-            <b>Address is: </b>
-            {% if is_granted('ROLE_ADMIN') %}
-                <a target="_blank" href="{{ path('business_contacts_edit', {id:business.id}) }}">
-                    <i style="color: red" class="fa fa-pencil"></i>
-                </a>
-            {% endif %}
-            {{ business.addressStreet }},
-            {{ business.addressStreet|raw }},
-            {{ business.addressCity|raw }}
-            {{ business.addressCountry|raw }}
-            {{ business.addressPostCode|raw }}
-            <br>
-            <br>
-            <b>Notes:</b> <br>
-            {{ business.notes|raw }}
-        </div>
-    </div>
+
 
 
 

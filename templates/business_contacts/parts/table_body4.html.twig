@@ -1,20 +1,35 @@
+{#<td class="mobile">#}
+{#    {% if business_contact.locationLongitude|length >3 %}#}
+{#        <a target="_blank"#}
+{#           href="{{ path('show_location_google_maps',{id: business_contact.id}) }}"#}
+{#           class="action" data-id="{{ business_contact.id }}"#}
+{#           data-action="Map">#}
+{#            <i title="Go to map" class='fas fa-map-marker-alt text-danger'></i></a>#}
+{#    {% else %}#}
+{#        {% if is_granted('ROLE_ADMIN') %}#}
+{#            <button class="btn btn-primary btn-sm"#}
+{#                    onclick="getLocation('{{ business_contact.id }}')">#}
+{#                <i title="Set current location as location of the contact" class="fa fa-arrow-down"></i>#}
+{#            </button>#}
+{#        {% endif %}#}
+{#    {% endif %}#}
+{#</td>#}
 
 <td class="desktop">
-    {% if business_contact.locationLongitude is not empty %}
+    {% if business_contact.locationLongitude|length >3 %}
         <a target="_blank"
            href="{{ path('show_location_google_maps',{id: business_contact.id}) }}"
            class="action" data-id="{{ business_contact.id }}"
            data-action="Map">
-            <i class='fas fa-map-marker-alt text-danger'></i></a>
+            <i title="Go to map" class='fas fa-map-marker-alt text-danger'></i></a>
     {% else %}
         {% if is_granted('ROLE_ADMIN') %}
             <button class="btn btn-primary btn-sm"
                     onclick="getLocation('{{ business_contact.id }}')">
-                <i class="fa fa-arrow-down"></i>
+                <i title="Set current location as location of the contact" class="fa fa-arrow-down"></i>
             </button>
         {% endif %}
     {% endif %}
-    {{ business_contact.addressStreet }},
-    {{ business_contact.addressCity }},
-    {{ business_contact.addressPostCode }}
+
+    {{ business_contact.addressStreet }}{% if business_contact.addressStreet is not empty and business_contact.addressCity is not empty %}, {% endif %}{{ business_contact.addressCity }}{% if business_contact.addressCity is not empty and business_contact.addressPostCode is not empty %}, {% endif %}{{ business_contact.addressPostCode }}
 </td>

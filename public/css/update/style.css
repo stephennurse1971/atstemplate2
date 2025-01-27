@@ -3,15 +3,12 @@
     filter: grayscale(90%);
 }
 
-
 /* GeneratePress Site CSS */ /* mobile header spacing */
 
 .mobile-header-navigation {
     padding: 10px;
     box-sizing: border-box;
 }
-
-
 /* navigation phone button */
 
 .main-navigation:not(.slideout-navigation) .main-nav li.nav-button a {

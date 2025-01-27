@@ -1,41 +1,56 @@
 {% if is_granted('ROLE_ADMIN') %}
-    <td style="text-align: center; border-left: 1px dotted">
-        {% if business_contact.publicPrivate == "Public" %}
-            <i class="fa fa-circle" style="color: green; text-align: center"></i>
-        {% elseif business_contact.publicPrivate == "Private" %}
-            <i class="fa fa-circle" style="color: red; text-align: center"></i>
-        {% else %}
-            <i class="fa fa-circle" style="color: grey; text-align: center"></i>
+    {#    <div class="desktop"> #}
+    <td style="width: 10px; text-align: center; border-left: dotted 1px">
+        {% if business_contact.status == "Approved" %}
+            <i title="{{ business_contact.status }}" style="color: green" class="fa fa-check"></i>
+        {% endif %}
+        {% if business_contact.status == "Pending" %}
+            <i title="{{ business_contact.status }}" style="color: grey" class="fa fa-question-circle"></i>
+        {% endif %}
+        {% if business_contact.status == "Not approved" %}
+            <i title="{{ business_contact.status }}" style="color: red" class="fa fa-remove"></i>
         {% endif %}
     </td>
 
-    <td style="text-align: center;">
+
+    <td style="text-align: center">
         {{ CountBusinessContactReferralsService.countReferrals(business_contact.id, null,null, 'Website')|number_format() }}
     </td>
-    <td style="text-align: center;">
+
+    <td style="text-align: center">
         {{ CountBusinessContactReferralsService.countReferrals(business_contact.id, null,null, 'Email')|number_format() }}
     </td>
-    <td style="text-align: center;">
+
+    <td style="text-align: center">
         {{ (
         (CountBusinessContactReferralsService.countReferrals(business_contact.id, null,null, 'WhatsApp')) +
         (CountBusinessContactReferralsService.countReferrals(business_contact.id, null,null, 'Phone'))
         )|number_format() }}
     </td>
-    <td style="text-align: center;">
+
+    <td style="text-align: center">
         {{ CountBusinessContactReferralsService.countReferrals(business_contact.id, null,null, 'Map')|number_format() }}
     </td>
-    <td style="text-align: center;">
+
+    <td style="text-align: center; border-right: 1px dotted">
         {{ CountBusinessContactReferralsService.countReferrals(business_contact.id, null,null, 'VCF')|number_format() }}
     </td>
+
     <td>
         <a class="btn btn-outline-danger btn-sm" target="_blank"
-           href="{{ path('business_contacts_edit', {'id': business_contact.id}) }}">Edit</a>
+           href="{{ path('business_contacts_edit', {'id': business_contact.id}) }}">
+            <i style="color: red" class="fa fa-pen"></i>
+        </a>
     </td>
+
     <td>
         <form method="post" action="{{ path('business_contacts_delete', {'id': business_contact.id}) }}"
               onsubmit="return confirm('Are you sure you want to delete this item?');">
             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ business_contact.id) }}">
-            <button class="btn btn-danger btn-sm">Delete</button>
+            <button class="btn btn-danger btn-sm">
+                <i class="fa fa-trash"></i>
+            </button>
         </form>
     </td>
+    {#    </div> #}
 {% endif %}

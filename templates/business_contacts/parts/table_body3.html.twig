@@ -1,18 +1,8 @@
-
-
-{% if business_contact.website is not empty %}
-    {% if business_contact.website starts with 'http' %}
-        {% set web = business_contact.website %}
-    {% else %}
-        {% set web = 'https://'~ business_contact.website %}
-    {% endif %}
-{% endif %}
-
 <td class="desktop" style="text-align: center">
     {% if business_contact.website is not empty %}
-        <a data-title="{{ web }}" target="_blank"
-           title="{{ web }}"
-           href="{{ web }}" class="action"
+        <a data-title="{{ business_contact_website }}" target="_blank"
+           title="{{ business_contact_website }}"
+           href="{{ business_contact_website }}" class="action"
            data-id="{{ business_contact.id }}" data-action="Website">
             <i class="fas fa-link"> </i></a>
     {% endif %}

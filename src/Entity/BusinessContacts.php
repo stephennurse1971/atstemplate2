@@ -54,11 +54,6 @@ class BusinessContacts
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $PublicPrivate;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
     private $AddressStreet;
 
     /**
@@ -214,20 +209,6 @@ class BusinessContacts
     }
 
 
-
-
-
-    public function getPublicPrivate(): ?string
-    {
-        return $this->PublicPrivate;
-    }
-
-    public function setPublicPrivate(?string $PublicPrivate): self
-    {
-        $this->PublicPrivate = $PublicPrivate;
-
-        return $this;
-    }
 
     public function getAddressStreet(): ?string
     {

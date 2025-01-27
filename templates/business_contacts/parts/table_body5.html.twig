@@ -1,11 +1,11 @@
-
 <td class="desktop">
     {% if business_contact.notes is not empty %}
-        {% if business_contact.notes|length >10 %}
-            <i style="color: grey" class="fa fa-info-circle" title="{{ business_contact.notes }}"></i>
-            {{ business_contact.notes|slice(0,10) }}...
+        {% if business_contact.notes|length >50 %}
+            {% set raw_notes = business_contact.notes|striptags %}
+            <i style="color: grey" class="fa fa-info-circle" title="{{ raw_notes }}"></i>
+            {{ raw_notes|slice(0,10) }}...
         {% else %}
-            {{ business_contact.notes }}
+            {{ business_contact.notes|raw }}
         {% endif %}
     {% endif %}
 </td>

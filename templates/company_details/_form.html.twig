@@ -20,6 +20,8 @@
         {{ form_row(form.companyTel) }}
         {{ form_row(form.companyMobile) }}
         {{ form_row(form.companySkype) }}
+
+
         {% if company_details.faviconLive is not null %}
             <b>Favicon (Live):</b><br>
             {{ company_details.faviconLive }}
@@ -35,6 +37,8 @@
             {{ form_row(form.faviconLive) }}
         </div>
         <hr>
+
+
         {% if company_details.faviconDev is not null %}
             <b>Favicon (Dev):</b><br>
             {{ company_details.faviconDev }}
@@ -50,6 +54,8 @@
         <div class="favicon-upload-dev-container">
             {{ form_row(form.faviconDev) }}
         </div>
+
+
     </div>
 
     <div class="col-2">
@@ -184,10 +190,8 @@
     var companyDetailId = '';
 
     function getLocation(id) {
-        //alert(getLocation(id));
         companyDetailId = id;//alert(companyDetailId);
         if (navigator.geolocation) {
-            // alert("a");
             navigator.geolocation.getCurrentPosition(showLocation);
         } else {
             $('#location').html('Geolocation is not supported by this browser.');

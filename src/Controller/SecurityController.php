@@ -21,9 +21,9 @@ class SecurityController extends AbstractController
         if ($userEmail) {
             $user = $userRepository->findOneBy(['email' => $userEmail]);
 
-            if ($user && !$user->isEmailVerified()) {
-                $this->addFlash('error', 'Please verify your email before logging in.');
-            }
+//            if ($user && !$user->isEmailVerified()) {
+//                $this->addFlash('error', 'Please verify your email before logging in.');
+//            }
         }
         return $this->render('security/login.html.twig', [
             'last_username' => $userEmail,

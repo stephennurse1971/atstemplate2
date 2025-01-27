@@ -61,6 +61,19 @@ class BusinessContactsRepository extends ServiceEntityRepository
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
+    public function countByBusinessTypeAndStatusAndMapLocation($businessType, $status = 'Approved')
+    {
+        $qb = $this->createQueryBuilder('bc');
+        $qb->select('COUNT(bc.id)')
+            ->where('bc.businessType = :businessType')
+            ->andWhere('bc.status = :status')
+            ->andWhere('bc.locationLatitude != 0')
+            ->setParameter('businessType', $businessType)
+            ->setParameter('status', $status);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
 
 //    /**
 //     * @return BusinessContacts[] Returns an array of BusinessContacts objects

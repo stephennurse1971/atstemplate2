@@ -3,69 +3,108 @@
 {% block title %}Business Contacts{% endblock %}
 
 {% block body %}
-    {% include 'business_contacts/parts/import_and_export.html.twig' %}
+    {#    {% include 'business_contacts/parts/import_and_export.html.twig' %} #}
 
     {% for business_type in business_types %}
         {% set business_contacts_count = CountBusinessContactsService.count(business_type) %}
+        {% set business_contacts_count_with_map_locations = CountBusinessContactsService.countWithMapLocations(business_type) %}
 
         {% set file = asset( 'administration/ATSSharedFiles/BusinessContactsMapIcons/' ~ business_type.mapIcon.iconFile) %}
 
         {% if business_contacts_count >0 %}
             <div class="row">
                 <div class="col-10">
+
                     <h2 style="color: red">
+                        {% if business_contacts_count_with_map_locations> 6 %}
+                            <a class="btn btn-danger btn-sm"
+                               href="{{ path('business_contacts_map',{subset: business_type.businessType}) }}">
+                                <i class="fa fa-map-marker"></i>
+                            </a>
+                        {% endif %}
+                        {% if business_type.mapIcon is not empty %}
+                            <img height="15" width="15" src="{{ file }}" class="rounded-circle">
+                        {% endif %}
+
                         {% if is_granted('ROLE_ADMIN') %}
                             <a target="_blank" href="{{ path('business_types_edit',{id:business_type.id}) }}">
-                            {{ business_type.businessType }}
+                                {{ business_type.businessType }}
                             </a>
                         {% else %}
                             {{ business_type.businessType }}
                         {% endif %}
-                        {% if business_contacts_count and is_granted('ROLE_ADMIN')%}
+                        {% if business_contacts_count and is_granted('ROLE_ADMIN') %}
                             ({{ business_contacts_count }})
+                            CHECK...:[{{ business_contacts_count_with_map_locations }}]
                         {% endif %}
                         {% if app.user %}
                             <a href="{{ path('business_contacts_new', {business_type: business_type.id}) }}">+</a>
                         {% endif %}
                     </h2>
                 </div>
-                <div class="col-1">
-                    <a class="btn btn-outline-primary btn-sm"
-                       href="{{ path('business_contacts_map', {subset: business_type.businessType}) }}">
-                        Map
-{#                        {% if business_type.mapIcon is not empty %}#}
-{#                            :: <img height="15" width="15" src="{{ file }}" class="rounded-circle">#}
-{#                        {% endif %}#}
-                    </a>
-                </div>
-
             </div>
 
 
-            <table class="table table-responsive-sm">
+            <table class="table table-responsive">
                 <thead>
                 <tr>
+                    {#                    <---- Start of Body 1 ----> #}
                     <th>Photo</th>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <th style="width: 10px; text-align: left; color: red">Status</th>
-                        <th style="width: 10px; text-align: left; color: red"></th>
-                    {% endif %}
-                    <th style="width: 150px; text-align: left">Company</th>
-                    <th style="width: 150px; text-align: left">Name</th>
-                    <th class="desktop" style="width: 10px; text-align: center">Website</th>
-                    <th class="desktop" style="width: 10px; text-align: center">Email</th>
-                    <th class="desktop" style="width: 10px; text-align: center">Mobile</th>
-                    <th class="desktop" style="width: 10px; text-align: center">Landline</th>
-                    <th class="desktop" style="width: 400px; text-align: left">Address</th>
-                    <th class="desktop" style="width: 180px; text-align: left">Notes</th>
-                    <th style="width: 10px; text-align: center">VCF</th>
-                    <th class="desktop" style="width: 10px; text-align: center">Files</th>
+                    <th></th>
+                    {#                    <---- End of Body 1 ----> #}
+
+                    {#                    <---- Start of Body 2 ----> #}
+                    <th style="width: 350px; text-align: left">Company</th>
+                    {% if list_or_map=='map' %}
+                        <th></th>{% endif %}
+                    <th style="width: 50px; text-align: left">
+                        <i class="fa fa-user"></i>
+                    </th>
+                    {#                    <---- End of Body 2 ----> #}
+                    {#                    <---- Start of Body 3 ----> #}
+                    <th class="desktop" title="Website" style="width: 10px; text-align: center">
+                        <i class="fa fa-link"></i>
+                    </th>
+                    <th class="desktop" title="Email" style="width: 10px; text-align: center">
+                        <i class="fa fa-envelope"></i>
+                    </th>
+                    <th class="desktop" title="Mobile" style="width: 10px; text-align: center">
+                        <i class="fab fa-whatsapp"></i>
+                    </th>
+                    <th class="desktop" title="Phone" style="width: 10px; text-align: center">
+                        <i class="fa fa-phone"></i>
+                    </th>
+                    {#                    <---- End of Body 3 ----> #}
+                    {#                    <---- Start of Body 4 ----> #}
+
+{#                    <th class="mobile">' '</th>#}
+                    <th class="desktop" title="Address" style="width: 400px; text-align: left">
+                        <i class="fa fa-building"></i>
+                    </th>
+                    {#                    <---- End of Body 4 ----> #}
+
+                    {#                    <---- Start of Body 5 ----> #}
+                    <th class="desktop" title="Notes" style="width: 180px; text-align: left"><i class="fa fa-pen"></i>
+                    </th>
+                    <th style="width: 10px; text-align: center" title="Business card"><i class="fa fa-address-card"></i>
+                    </th>
+                    <th class="desktop" title="Files" style="width: 10px; text-align: center"><i
+                                class="fa fa-file-pdf"></i></th>
+
                     {% include 'business_contacts/parts/access_count_headers.html.twig' %}
                 </tr>
                 </thead>
                 <tbody>
                 {% for business_contact in business_contacts %}
                     {% if business_type == business_contact.businessType %}
+                        {% set business_contact_website =[] %}
+                        {% if business_contact.website is not empty %}
+                            {% if business_contact.website starts with 'http' %}
+                                {% set business_contact_website = business_contact.website %}
+                            {% else %}
+                                {% set business_contact_website = 'https://'~ business_contact.website %}
+                            {% endif %}
+                        {% endif %}
                         <tr>
                             {% include 'business_contacts/parts/table_body1.html.twig' %}
                             {% include 'business_contacts/parts/table_body2.html.twig' %}
@@ -81,8 +120,6 @@
             <br><br>
         {% endif %}
     {% endfor %}
-
-
 {% endblock %}
 
 {% block datatable %}
@@ -91,7 +128,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[1, 'asc'], [3, 'asc']],
+                "order": [[12, 'asc'], [13, 'asc'], [2, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

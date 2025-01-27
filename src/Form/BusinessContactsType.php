@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,14 +28,7 @@ class BusinessContactsType extends AbstractType
                     'Approved' => 'Approved',
                     'Not approved' => 'Not approved'
                 ],])
-            ->add('publicPrivate', ChoiceType::class, [
-                'label' => $this->translationsWorker->getTranslations('Public/Private Live'),
-                'multiple' => false,
-                'expanded' => false,
-                'choices' => [
-                    'Public' => 'Public',
-                    'Private' => 'Private'
-                ],])
+
             ->add('photo', FileType::class, [
                 'label' => $this->translationsWorker->getTranslations('Photo'),
                 'mapped' => false,
@@ -111,7 +105,7 @@ class BusinessContactsType extends AbstractType
                 'label' => $this->translationsWorker->getTranslations('Location Latitude'),
                 'required' => false,
             ])
-            ->add('notes', TextType::class, [
+            ->add('notes', TextareaType::class, [
                 'label' => $this->translationsWorker->getTranslations('Notes'),
                 'required' => false,
             ])

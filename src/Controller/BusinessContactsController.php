@@ -48,7 +48,7 @@ class BusinessContactsController extends AbstractController
             'business_contacts' => $business_contacts,
             'business_types' => $business_types,
             'countBusinessContactsService' => $countBusinessContactsService,
-            'list_or_map'=>'list'
+            'list_or_map' => 'list'
         ]);
     }
 
@@ -80,39 +80,59 @@ class BusinessContactsController extends AbstractController
         $longitude_min = +100;
 
         foreach ($business_contacts as $business_contact) {
-            $latitude_total = $latitude_total + $business_contact->getLocationLatitude();
-            $longitude_total = $longitude_total + $business_contact->getLocationLongitude();
-            $count = $count + 1;
-
-            if ($business_contact->getLocationLatitude() > $latitude_max) {
-                $latitude_max = $business_contact->getLocationLatitude();
-            }
-            if ($business_contact->getLocationLatitude() < $latitude_min) {
-                $latitude_min = $business_contact->getLocationLatitude();
-            }
-            if ($business_contact->getLocationLongitude() > $longitude_max) {
-                $longitude_max = $business_contact->getLocationLongitude();
-            }
-            if ($business_contact->getLocationLongitude() < $longitude_min) {
-                $longitude_min = $business_contact->getLocationLongitude();
+            if ($business_contact->getLocationLatitude() != 0 or $business_contact->getLocationLatitude() != null) {
+                $count = $count + 1;
+                $latitude_total = $latitude_total + $business_contact->getLocationLatitude();
+                $longitude_total = $longitude_total + $business_contact->getLocationLongitude();
+                if ($business_contact->getLocationLatitude() > $latitude_max) {
+                    $latitude_max = $business_contact->getLocationLatitude();
+                }
+                if ($business_contact->getLocationLatitude() < $latitude_min) {
+                    $latitude_min = $business_contact->getLocationLatitude();
+                }
+                if ($business_contact->getLocationLongitude() > $longitude_max) {
+                    $longitude_max = $business_contact->getLocationLongitude();
+                }
+                if ($business_contact->getLocationLongitude() < $longitude_min) {
+                    $longitude_min = $business_contact->getLocationLongitude();
+                }
             }
         }
 
-        $latitude_average = $latitude_total / $count;
-        $longitude_average = $longitude_total / $count;
+        if ($count == 0) {
+            $latitude_average = 'No data';
+            $longitude_average = 'No data';
+        }
+        if ($count >= 1) {
+            $latitude_average = $latitude_total / $count;
+            $longitude_average = $longitude_total / $count;
+        }
+
+        if ($count < 2) {
+            $latitude_range = "TBD";
+            $longitude_range = "TBD";
+        }
+        if ($count > 1) {
+            $latitude_range = $latitude_max - $latitude_min;
+            $longitude_range = $longitude_max - $longitude_min;
+        }
 
         $business_types = $businessTypesRepository->findAll();
         return $this->render('business_contacts/map_of_business_contacts.html.twig', [
             'business_contacts' => $business_contacts,
             'business_types' => $business_types,
             'subset' => $subset,
-            'latitude_average' => $latitude_average,
-            'longitude_average' => $longitude_average,
+
             'latitude_max' => $latitude_max,
             'latitude_min' => $latitude_min,
+            'latitude_average' => $latitude_average,
+            'latitude_range' => $latitude_range,
             'longitude_max' => $longitude_max,
             'longitude_min' => $longitude_min,
-            'list_or_map'=>'map'
+            'longitude_average' => $longitude_average,
+            'longitude_range' => $longitude_range,
+            'count' => $count,
+            'list_or_map' => 'map'
         ]);
     }
 
@@ -136,7 +156,7 @@ class BusinessContactsController extends AbstractController
                 $photo_directory = $this->getParameter('business_contacts_photos_directory');
                 $fileName = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $photo->guessExtension();
-                $newFileName = $businessContact->getFirstName() . "_" . $businessContact->getLastName() . "_" . uniqid() . "." . $file_extension;
+                $newFileName = $businessContact->getCompany() . "_" . $businessContact->getFirstName() . "_" . $businessContact->getLastName() . "." . $file_extension;
                 $photo->move($photo_directory, $newFileName);
                 $businessContact->setPhoto($newFileName);
             }
@@ -214,7 +234,12 @@ class BusinessContactsController extends AbstractController
                 $photo_directory = $this->getParameter('business_contacts_photos_directory');
                 $fileName = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $photo->guessExtension();
-                $newFileName = $businessContact->getFirstName() . "_" . $businessContact->getLastName() . "_" . uniqid() . "." . $file_extension;
+                if ($businessContact->getFirstName() == '') {
+                    $newFileName = $businessContact->getCompany() . "." . $file_extension;
+                } else {
+                    $newFileName = $businessContact->getCompany() . "_" . $businessContact->getFirstName() . "_" . $businessContact->getLastName() . "." . $file_extension;
+                }
+
                 $photo->move($photo_directory, $newFileName);
                 $businessContact->setPhoto($newFileName);
             }
@@ -244,14 +269,34 @@ class BusinessContactsController extends AbstractController
     /**
      * @Route("/delete/{id}", name="business_contacts_delete", methods={"POST"})
      */
-    public function delete(Request $request, BusinessContacts $businessContact, BusinessContactsRepository $businessContactsRepository): Response
+    public function delete(Request $request, BusinessContacts $businessContact, BusinessContactsRepository $businessContactsRepository, EntityManagerInterface $entityManager): Response
     {
+        $referer = $request->headers->get('referer');
+        $file_name = $businessContact->getFiles();
+
+        if ($file_name) {
+            $file = $this->getParameter('business_contacts_attachments_directory') . $file_name;
+            if (file_exists($file)) {
+                unlink($file);
+            }
+            $businessContact->setFiles('');
+            $entityManager->flush();
+        }
+
+        $photo_file_name = $businessContact->getPhoto();
+        if ($photo_file_name) {
+            $photo_file_name = $this->getParameter('business_contacts_photos_directory') . $photo_file_name;
+            if (file_exists($photo_file_name)) {
+                unlink($photo_file_name);
+            }
+            $businessContact->setPhoto('');
+            $entityManager->flush();
+        }
 
         if ($this->isCsrfTokenValid('delete' . $businessContact->getId(), $request->request->get('_token'))) {
             $businessContactsRepository->remove($businessContact, true);
         }
-
-        return $this->redirectToRoute('business_contacts_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirect($referer);
     }
 
 
@@ -272,16 +317,16 @@ class BusinessContactsController extends AbstractController
     /**
      * @Route("/delete_photo_file/{id}", name="business_contact_delete_photo_file", methods={"POST", "GET"})
      */
-    public function deleteBusinessContactPhotoFile(int $id, Request $request, BusinessContacts $businessContacts, EntityManagerInterface $entityManager)
+    public function deleteBusinessContactPhotoFile(int $id, Request $request, BusinessContacts $businessContact, EntityManagerInterface $entityManager)
     {
         $referer = $request->headers->get('referer');
-        $file_name = $businessContacts->getPhoto();
-        if ($file_name) {
-            $file = $this->getParameter('business_contacts_photos_directory') . "/" . $file_name;
-            if (file_exists($file)) {
-                unlink($file);
+        $photo_file_name = $businessContact->getPhoto();
+        if ($photo_file_name) {
+            $photo_file_name = $this->getParameter('business_contacts_photos_directory') . "/" . $photo_file_name;
+            if (file_exists($photo_file_name)) {
+                unlink($photo_file_name);
             }
-            $businessContacts->setPhoto('');
+            $businessContact->setPhoto('');
             $entityManager->flush();
         }
         return $this->redirect($referer);
@@ -290,16 +335,16 @@ class BusinessContactsController extends AbstractController
     /**
      * @Route("/delete_attachment_file/{id}", name="business_contact_delete_attachment_file", methods={"POST", "GET"})
      */
-    public function deleteBusinessContactAttachmentFile(int $id, Request $request, BusinessContacts $businessContacts, EntityManagerInterface $entityManager)
+    public function deleteBusinessContactAttachmentFile(int $id, Request $request, BusinessContacts $businessContact, EntityManagerInterface $entityManager)
     {
         $referer = $request->headers->get('referer');
-        $file_name = $businessContacts->getFiles();
+        $file_name = $businessContact->getFiles();
         if ($file_name) {
             $file = $this->getParameter('business_contacts_attachments_directory') . "/" . $file_name;
             if (file_exists($file)) {
                 unlink($file);
             }
-            $businessContacts->setFiles('');
+            $businessContact->setFiles('');
             $entityManager->flush();
         }
         return $this->redirect($referer);
@@ -324,6 +369,89 @@ class BusinessContactsController extends AbstractController
         $exported_date = new \DateTime('now');
         $exported_date_formatted = $exported_date->format('d-M-Y');
         $fileName = 'business_contacts_export_' . $exported_date_formatted . '.csv';
+
+        $count = 0;
+        $business_contact_list = $businessContactsRepository->findAll();
+        foreach ($business_contact_list as $business_contact) {
+            $concatenatedNotes = "Exported on: " . $exported_date_formatted;
+            $data[] = [
+                $business_contact->getStatus(),
+                $business_contact->getBusinessOrPerson(),
+                $business_contact->getBusinessType()->getBusinessType(),
+                $business_contact->getCompany(),
+                $business_contact->getFirstName(),
+
+                $business_contact->getLastName(),
+                $business_contact->getWebsite(),
+                $business_contact->getEmail(),
+                $business_contact->getLandline(),
+                $business_contact->getMobile(),
+
+                $business_contact->getAddressStreet(),
+                $business_contact->getAddressCity(),
+                $business_contact->getAddressCounty(),
+                $business_contact->getAddressPostCode(),
+                $business_contact->getAddressCountry(),
+
+                $business_contact->getLocationLongitude(),
+                $business_contact->getLocationLatitude(),
+                $business_contact->getPublicPrivate(),
+                $concatenatedNotes,
+                $business_contact->getId()
+            ];
+        }
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Business Contacts');
+        $sheet->getCell('A1')->setValue('Status');
+        $sheet->getCell('B1')->setValue('Business Or Person');
+        $sheet->getCell('C1')->setValue('Business Type');
+        $sheet->getCell('D1')->setValue('Company');
+        $sheet->getCell('E1')->setValue('First Name');
+
+        $sheet->getCell('F1')->setValue('Last Name');
+        $sheet->getCell('G1')->setValue('Web Page');
+        $sheet->getCell('H1')->setValue('E-mail');
+        $sheet->getCell('I1')->setValue('Business Phone');
+        $sheet->getCell('J1')->setValue('Mobile Phone');
+
+        $sheet->getCell('K1')->setValue('Business Street');
+        $sheet->getCell('L1')->setValue('Business City');
+        $sheet->getCell('M1')->setValue('Business County');
+        $sheet->getCell('N1')->setValue('Business Postal Code');
+        $sheet->getCell('O1')->setValue('Business Country/Region');
+
+        $sheet->getCell('P1')->setValue('Location Longitude');
+        $sheet->getCell('Q1')->setValue('Location Latitude');
+        $sheet->getCell('R1')->setValue('Public or Private');
+        $sheet->getCell('S1')->setValue('Notes');
+        $sheet->getCell('T1')->setValue('Id');
+
+        $sheet->fromArray($data, null, 'A2', true);
+        $total_rows = $sheet->getHighestRow();
+        for ($i = 2; $i <= $total_rows; $i++) {
+            $cell = "L" . $i;
+            $sheet->getCell($cell)->getHyperlink()->setUrl("https://google.com");
+        }
+        $writer = new Csv($spreadsheet);
+        $response = new StreamedResponse(function () use ($writer) {
+            $writer->save('php://output');
+        });
+        $response->headers->set('Content-Type', 'application/vnd.ms-excel');
+        $response->headers->set('Content-Disposition', sprintf('attachment;filename="%s"', $fileName));
+        $response->headers->set('Cache-Control', 'max-age=0');
+        return $response;
+    }
+
+    /**
+     * @Route ("/export/BusinessContactsOutlook", name="business_contacts_export_for_outlook" )
+     */
+    public function businessContactsExportForOutlook(BusinessContactsRepository $businessContactsRepository)
+    {
+        $data = [];
+        $exported_date = new \DateTime('now');
+        $exported_date_formatted = $exported_date->format('d-M-Y');
+        $fileName = 'business_contacts_export_for_outlook_' . $exported_date_formatted . '.csv';
 
         $count = 0;
         $business_contact_list = $businessContactsRepository->findAll();
@@ -489,7 +617,7 @@ class BusinessContactsController extends AbstractController
         return $this->render('business_contacts/gpsGoogleMaps.html.twig', [
             'latitude' => $latitude,
             'longitude' => $longitude,
-            'business' => $business_contact
+            'business_contact' => $business_contact
         ]);
     }
 
@@ -562,7 +690,7 @@ class BusinessContactsController extends AbstractController
     {
         $business_contact = $businessContactsRepository->find($id);
         $filename = $business_contact->getFiles();
-        $filepath = $this->getParameter('business_contacts_files_directory') . "/" . $filename;
+        $filepath = $this->getParameter('business_contacts_attachments_directory') . "/" . $filename;
         if (file_exists($filepath)) {
             $response = new BinaryFileResponse($filepath);
             $response->setContentDisposition(

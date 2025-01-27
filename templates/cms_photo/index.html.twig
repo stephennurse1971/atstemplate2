@@ -57,34 +57,40 @@
                     {% if cms_photo.photo is not empty %}
                         {% set photo = asset('administration/Attachments/CMSPhotos/')~cms_photo.photo %}
 
+                        {% if cms_photo.photoOrVideo=="Photo" %}
+                            {% if cms_photo.rotate ==0 %}
+                                <a class="btn btn-outline-danger btn-sm" target="_blank"
+                                   href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
+                                    <img height="50" width="50" src="{{ photo }}" class="rounded-circle test">
+                                </a>
+                            {% endif %}
 
-                        {% if cms_photo.rotate ==0 %}
-                            <a class="btn btn-outline-danger btn-sm" target="_blank"
-                               href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
-                                <img height="50" width="50" src="{{ photo }}" class="rounded-circle test">
-                            </a>
-                        {% endif %}
+                            {% if cms_photo.rotate ==90 %}
+                                <a class="btn btn-outline-danger btn-sm" target="_blank"
+                                   href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
+                                    <img height="50" width="50" src="{{ photo }}" class="rounded-circle test rotate-90">
+                                </a>
+                            {% endif %}
 
-                        {% if cms_photo.rotate ==90 %}
-                            <a class="btn btn-outline-danger btn-sm" target="_blank"
-                               href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
-                                <img height="50" width="50" src="{{ photo }}" class="rounded-circle test rotate-90">
-                            </a>
+                            {% if cms_photo.rotate ==180 %}
+                                <a class="btn btn-outline-danger btn-sm" target="_blank"
+                                   href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
+                                    <img height="50" width="50" src="{{ photo }}"
+                                         class="rounded-circle test rotate-180">
+                                </a>
+                            {% endif %}
+                            {% if cms_photo.rotate ==270 %}
+                                <a class="btn btn-outline-danger btn-sm" target="_blank"
+                                   href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
+                                    <img height="50" width="50" src="{{ photo }}"
+                                         class="rounded-circle test rotate-270">
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            <video height="50" width="50" controls="controls">
+                                <source src="{{ photo }}" type="video/mp4"/>
+                            </video>
                         {% endif %}
-
-                        {% if cms_photo.rotate ==180 %}
-                            <a class="btn btn-outline-danger btn-sm" target="_blank"
-                               href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
-                                <img height="50" width="50" src="{{ photo }}" class="rounded-circle test rotate-180">
-                            </a>
-                        {% endif %}
-                        {% if cms_photo.rotate ==270 %}
-                            <a class="btn btn-outline-danger btn-sm" target="_blank"
-                               href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
-                                <img height="50" width="50" src="{{ photo }}" class="rounded-circle test rotate-270">
-                            </a>
-                        {% endif %}
-
                     {% endif %}
                 </td>
 

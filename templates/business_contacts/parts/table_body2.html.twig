@@ -5,7 +5,7 @@
     <td style="width: 20px"></td>
 {% endif %}
 <td>
-    {% if business_contact.firstName is not null or business_contact.lastName is not null %}
+    {% if business_contact.firstName is not empty or business_contact.lastName is not empty %}
         <i style="color: grey" class="fa fa-user"></i>
         {{ business_contact.firstName }} {{ business_contact.LastName }}
     {% endif %}

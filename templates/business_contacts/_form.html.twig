@@ -23,7 +23,8 @@
         </div>
 
         {% if business_contact.photo is not empty %}
-            {% set photo = asset(business_contacts_photos_directory~business_contact.photo) %}
+            <h4>Photo</h4>
+            {% set photo = asset('/administration/Attachments/BusinessContacts/Photos/'~business_contact.photo) %}
             <a class="btn btn-outline-danger btn-sm" target="_blank"
                href="{{ path('view_business_contact_photo', {id:business_contact.id}) }}">
                 <img title="{{ business_contact.photo }}" height="50" width="50"
@@ -33,6 +34,7 @@
             <a class="btn btn-sm btn-danger"
                href="{{ path('business_contact_delete_photo_file', {'id': business_contact.id }) }} ">Delete
                 photo</a>
+
         {% else %}
             {{ form_row(form.photo) }}
         {% endif %}
@@ -50,14 +52,18 @@
             {% endif %}
         {% endif %}
 
-
         {% if business_contact.website is not empty %}
-            <i class="fas fa-link"> </i>
-            {#            <a data-title="{{ web }}" target="_blank" #}
-            {#               title="{{ web }}" #}
-            {#               href="{{ web }}" class="action" #}
-            {#               data-id="{{ business_contact.id }}" data-action="Website"> #}
-            {#                <i class="fas fa-link"> </i></a> #}
+            {% if business_contact.website starts with 'http' %}
+                {% set business_contact_website = business_contact.website %}
+            {% else %}
+                {% set business_contact_website = 'https://'~ business_contact.website %}
+            {% endif %}
+
+            <a data-title="{{ business_contact_website }}" target="_blank"
+               title="{{ business_contact_website }}"
+               href="{{ business_contact_website }}" class="action"
+               data-id="{{ business_contact.id }}" data-action="Website">
+                <i class="fas fa-link"> </i></a>
         {% endif %}
 
         {{ form_row(form.website) }}
@@ -65,8 +71,8 @@
     <div class="col-2">
         <div class="status-container">
             {{ form_row(form.status) }}
-            {{ form_row(form.publicPrivate) }}
             {% if business_contact.files is not empty %}
+                <h4>File</h4>
                 <a title="{{ business_contact.files }}" target="_blank"
                    href="{{ path('business_contact_show_attachment',{id : business_contact.id}) }}">
                     <i class="fa fa-paperclip"></i></a>
@@ -93,6 +99,6 @@
         {{ form_row(form.notes) }}
     </div>
 </div>
-
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+
 {{ form_end(form) }}

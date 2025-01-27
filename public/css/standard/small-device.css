@@ -35,7 +35,7 @@
         object-fit: cover;
     }
     .product-image-container a:first-of-type img {
-        margin-bottom: 45px; /* Margin for the first image */
+        margin-bottom: 20px; /* Margin for the first image */
     }
     .product-image-container a img {
         max-width: 100%;
@@ -43,6 +43,17 @@
         /*max-height: 100%;*/
         /* width: auto;*/
         /* height: auto;*/
+    }
+    .product-image-container{
+        width: 100%;
+    }
+    .product-image-container .image-wrapper img{
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .image-wrapper{
+        overflow: hidden;
     }
     /*.product-image-container img:nth-of-type(1) {*/
     /*    margin-bottom: 45px;*/

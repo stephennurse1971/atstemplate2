@@ -151,7 +151,7 @@
                         {% endif %}
                     {% endif %}
 
-                    {% include 'template_parts_project_specific/header_project_specific1.html.twig' %}
+
 
                     <!-- Nav Item #6 - Useful Contacts/ Weather -->
                     {% if CompanyDetailsService.companyDetails is not null %}
@@ -167,6 +167,8 @@
                                     {% endif %}
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    {% include 'template_parts_project_specific/header_project_specific1.html.twig' %}
+
                                     {% if CompanyDetailsService.companyDetails.headerDisplayBusinessContacts ==1 %}
                                         <a class="dropdown-item" href="{{ path('business_contacts_index') }}">Useful
                                             contacts
@@ -185,7 +187,6 @@
                                         <a style="color: red" class="dropdown-item"
                                            href="{{ path('file_attachments_index') }}">Useful files</a>
                                     {% endif %}
-
                                 </div>
                             </li>
                         {% endif %}

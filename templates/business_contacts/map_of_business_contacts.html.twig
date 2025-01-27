@@ -5,13 +5,7 @@
 {% block body %}
     <div class="row">
         <div class="col-10">
-            <h3 style="color: red">
-                {% if subset=='All' %}
-                    Business Contacts: All
-                {% else %}
-                    {{ subset }}
-                {% endif %}
-            </h3>
+            <h3 style="color: red">{% if subset=='All' %}Business Contacts: All{% else %}{{ subset }}{% endif %}</h3>
         </div>
         <div class="col-2">
             <a class="btn btn-outline-info btn-sm" href="{{ path('business_contacts_index') }}">Return to List</a>
@@ -20,7 +14,7 @@
     {% include 'business_contacts/parts/map/subset_buttons.html.twig' %}
     <br>
     {% include 'business_contacts/parts/map/list_of_business_contacts.html.twig' %}
-    {% include 'business_contacts/parts/map/Max_Min_Average_Latitude_and_Longitude.html.twig' %}
+    {% include 'business_contacts/parts/map/max_min_average_latitude_and_longitude.html.twig' %}
 
     <hr>
     <div class="row">

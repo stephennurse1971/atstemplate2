@@ -1,31 +1,24 @@
 <td>
-    {% if business_contact.photo is not empty %}
+    {% if business_contact.photo|length >1 %}
         {% set photo = asset('administration/Attachments/BusinessContacts/Photos/')~business_contact.photo %}
-        <a class="btn btn-outline-danger btn-sm" target="_blank"
-           href="{{ path('view_business_contact_photo', {id:business_contact.id}) }}">
+        {% if business_contact.website|length>2 %}
+            <a target="_blank" title="{{ business_contact_website }}" href="{{ business_contact_website }}"
+               class="action"
+               data-id="{{ business_contact.id }}" data-action="Website">
+                <img title="{{ business_contact.photo }}" height="40" width="40"
+                     src="{{ photo }}">
+            </a>
+        {% else %}
             <img title="{{ business_contact.photo }}" height="50" width="50"
-                 src="{{ photo }}" class="rounded-circle"></a>
+                 src="{{ photo }}">
+        {% endif %}
     {% endif %}
 </td>
-{% if is_granted('ROLE_ADMIN') %}
-    <td data-sort="{{ business_contact.status }}" style="width: 10px; text-align: center">
-        {% if business_contact.status == "Approved" %}
-            <i title="{{ business_contact.status }}" style="color: green"
-               class="fa fa-check"></i>
-        {% elseif business_contact.status == "Pending" %}
-            <i title="{{ business_contact.status }}" style="color: grey"
-               class="fa fa-question-circle"></i>
-        {% elseif business_contact.status == "Not approved" %}
-            <i title="{{ business_contact.status }}" style="color: red"
-               class="fa fa-remove"></i>
-        {% endif %}
-    </td>
-    <td>
-        {% if business_contact.businessOrPerson == "Business" %}
-            <i title="Business" class="fa fa-building"></i>
-        {% endif %}
-        {% if business_contact.businessOrPerson == "Person" %}
-            <i title="Individual" class="fa fa-user"></i>
-        {% endif %}
-    </td>
-{% endif %}
+<td>
+    {% if business_contact.businessOrPerson == "Business" %}
+        <i title="Business" class="fa fa-building"></i>
+    {% endif %}
+    {% if business_contact.businessOrPerson == "Person" %}
+        <i title="Individual" class="fa fa-user"></i>
+    {% endif %}
+</td>

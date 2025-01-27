@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route('/map/icons')]
+#[Route('/map_icons')]
 class MapIconsController extends AbstractController
 {
     #[Route('/index', name: 'map_icons_index', methods: ['GET'])]
@@ -133,7 +133,7 @@ class MapIconsController extends AbstractController
         $fileName = $mapIcons->getIconFile();
         $mapIcons->setIconFile(null);
         $entityManager->flush();
-        $files = glob($this->getParameter('map_icon_directory') . $fileName);
+        $files = glob($this->getParameter('business_contacts_map_icon_directory') . $fileName);
         foreach ($files as $file) {
             unlink($file);
         }

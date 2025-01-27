@@ -1,7 +1,7 @@
 <div class="row">
-    <div class="col-1">
+    <div class="col-2">
         <a target="_blank" class="btn btn-outline-primary btn-sm"
-           href="{{ path('business_contacts_map', {subset:'All'}) }}">Map:: All</a>
+           href="{{ path('business_contacts_map', {subset:'All'}) }}">Map:</a>
     </div>
 
     {% if is_granted('ROLE_ADMIN') %}
@@ -9,19 +9,20 @@
             <a target="_blank" class="btn btn-success btn-sm"
                href="{{ path('business_contacts_new', {business_type:'Restaurant'}) }}">New</a>
         </div>
-        <div class="col-2">
+        <div class="col-2 desktop">
             <a class="btn btn-outline-primary btn-sm" target="_blank" href="{{ path('business_types_index') }}">Business
                 Types</a>
             <a class="btn btn-outline-primary btn-sm" target="_blank" href="{{ path('map_icons_index') }}">Map Icons</a>
         </div>
-        <div class="col-2">
+        <div class="col-2 desktop">
             <a class="btn btn-outline-primary btn-sm" href="{{ path('business_contacts_import') }}">Import</a>
             <a class="btn btn-outline-primary btn-sm" href="{{ path('business_contacts_export') }}">Export</a>
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('business_contacts_export_for_outlook') }}">Export for Outlook</a>
             <a href="{{ asset('administration/ATSSharedFiles/_ImportTemplates/BusinessContacts_ImportTemplate.csv') }}">(Template)</a>
         </div>
     {% endif %}
 
-    <div class="col-2">
+    <div class="col-2 desktop">
         {% if is_granted('ROLE_ADMIN') %}
             <a class="btn btn-outline-danger btn-sm" href="{{ path('business_contacts_delete_all') }}">Delete All</a>
             <a target="_blank" class="btn btn-outline-secondary btn-sm" href="{{ path('referrals_index') }}"> Referrals

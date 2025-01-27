@@ -44,4 +44,26 @@
             }
         })
     </script>
+
+
+    <script>
+        $('.action').click(function (e) {
+            e.preventDefault();
+            let elem = $(this);
+            let id = $(this).attr('data-id');
+            let action = $(this).attr('data-action');
+            let url = '/referrals/new_from_businesscontacts/' + id + '/' + action;
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (msg) {
+                    //window.location.href()
+                    //alert('success');
+                    let goTo = elem.attr('href');
+                    window.open(goTo, '_blank');
+                }
+            });
+        })
+    </script>
+
 {% endblock %}

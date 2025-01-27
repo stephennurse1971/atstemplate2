@@ -1,6 +1,15 @@
 <table>
     {% if subset != 'All' %}
         {% for business_contact in business_contacts %}
+            {% set business_contact_website =[] %}
+            {% if business_contact.website is not empty %}
+                {% if business_contact.website starts with 'http' %}
+                    {% set business_contact_website = business_contact.website %}
+                {% else %}
+                    {% set business_contact_website = 'https://'~ business_contact.website %}
+                {% endif %}
+            {% endif %}
+
             <tr>
                 <td>
                     - 
@@ -9,6 +18,7 @@
                 <td style="width: 50px"></td>
                 {% include 'business_contacts/parts/table_body4.html.twig' %}
                 <td style="width: 50px"></td>
+
                 {% include 'business_contacts/parts/table_body3.html.twig' %}
                 {% if is_granted('ROLE_ADMIN') %}
                     <td style="width: 50px"></td>
