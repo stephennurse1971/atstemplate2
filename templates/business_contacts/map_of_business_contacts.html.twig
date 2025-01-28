@@ -1,17 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Business Contacts Map {% endblock %}
+{% block title %}Business Contacts Map{% endblock %}
 
 {% block body %}
     <div class="row">
         <div class="col-10">
-            <h3 style="color: red">{% if subset=='All' %}Business Contacts: All{% else %}{{ subset }}{% endif %}</h3>
+            <h3 style="color: red">{% if subset == 'All' %}Business Contacts: All{% else %}{{ subset }}{% endif %}</h3>
         </div>
         <div class="col-2">
             <a class="btn btn-outline-info btn-sm" href="{{ path('business_contacts_index') }}">Return to List</a>
         </div>
     </div>
-    {% include 'business_contacts/parts/map/subset_buttons.html.twig' %} <br>
+    {% include 'business_contacts/parts/map/subset_buttons.html.twig' %}
+    <br>
     {% include 'business_contacts/parts/map/list_of_business_contacts.html.twig' %}
     {% include 'business_contacts/parts/map/max_min_average_latitude_and_longitude.html.twig' %}
 
@@ -19,39 +20,38 @@
     <div class="row">
         <div class="col-12">
             <div id="map" style="width: 100%; height: 850px;"
-                 data-locations='[
-                    {% for business_contact in business_contacts %}
-                    {% if subset =='All' %}
-                    {% set iconFileName = business_contact.businessType.mapIcon.iconFile %}
-                    {% else %}
-                    {% set iconFileName = '_map_marker.png' %}
-                    {% endif %}
-          {
-            "lat": {{ business_contact.locationLatitude }},
-            "lng": {{ business_contact.locationLongitude }},
-            "name": "{{ business_contact.company | e('js') }}",
-            "icon": "{{ asset('/administration/ATSSharedFiles/BusinessContactsMapIcons/'~iconFileName) | e('js') }}"
-          }
-          {% if not loop.last %}, {% endif %}
-        {% endfor %}
-     ]'>
+                 data-locations='{{ business_contacts | map(business_contact => {
+                     "lat": business_contact.locationLatitude,
+                     "lng": business_contact.locationLongitude,
+                     "name": business_contact.company,
+                     "icon": (subset == "All"
+                     ? asset("/administration/ATSSharedFiles/BusinessContactsMapIcons/" ~ business_contact.businessType.mapIcon.iconFile)
+                     : asset("/administration/ATSSharedFiles/BusinessContactsMapIcons/_map_marker.png"))
+                 }) | json_encode | e("html_attr") }}'>
             </div>
             <br><br><br>
         </div>
     </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Get locations data from the map container
             const mapElement = document.getElementById('map');
             const locations = JSON.parse(mapElement.getAttribute('data-locations'));
 
-            // Initialize the map with average lat and long
+            // Ensure we have valid locations and average coordinates
+            if (!locations || locations.length === 0) {
+                console.error('No locations provided for the map.');
+                return;
+            }
+
             const map = new google.maps.Map(mapElement, {
-                center: {lat: {{ latitude_average }}, lng: {{ longitude_average }} }, // Center the map on average lat/lng
-                zoom: 15,  // Adjust zoom level (range 10-14)
+                center: {
+                    lat: {{ latitude_average|default(0) }},
+                    lng: {{ longitude_average|default(0) }}
+                },
+                zoom: 12, // Adjust as necessary
             });
 
-            // Add markers to the map
             locations.forEach(location => {
                 const marker = new google.maps.Marker({
                     position: {lat: location.lat, lng: location.lng},
@@ -63,7 +63,6 @@
                     },
                 });
 
-                // Optional: Add an info window
                 const infoWindow = new google.maps.InfoWindow({
                     content: `<h3>${location.name}</h3>`,
                 });

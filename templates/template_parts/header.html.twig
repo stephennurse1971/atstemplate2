@@ -170,22 +170,14 @@
                                     {% include 'template_parts_project_specific/header_project_specific1.html.twig' %}
 
                                     {% if CompanyDetailsService.companyDetails.headerDisplayBusinessContacts ==1 %}
-                                        <a class="dropdown-item" href="{{ path('business_contacts_index') }}">Useful
+                                        <a style="color: black" class="dropdown-item" href="{{ path('business_contacts_index') }}">Useful
                                             contacts
                                         </a>
                                     {% endif %}
 
                                     {% if  CompanyDetailsService.companyDetails.headerDisplayWeather ==1 %}
-                                        <a class="dropdown-item" href="{{ path('weather_index') }}">Weather
+                                        <a style="color: black" class="dropdown-item" href="{{ path('weather_index') }}">Weather
                                         </a>
-                                    {% endif %}
-
-                                    {% if is_granted('ROLE_ADMIN') %}
-                                        <hr>
-                                        <a style="color: red" class="dropdown-item"
-                                           href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful links</a>
-                                        <a style="color: red" class="dropdown-item"
-                                           href="{{ path('file_attachments_index') }}">Useful files</a>
                                     {% endif %}
                                 </div>
                             </li>

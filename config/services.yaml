@@ -35,9 +35,6 @@ parameters:
   public:                                    '%kernel.project_dir%/public/'
 
 services:
-  App\EventListener\EmailVerifiedListener:
-    tags:
-      - { name: kernel.event_listener, event: security.authentication.check_passport }
   # default configuration for services in *this* file
   _defaults:
     autowire: true      # Automatically injects dependencies in your services.
