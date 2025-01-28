@@ -16,18 +16,24 @@
     {% include 'business_contacts/parts/map/list_of_business_contacts.html.twig' %}
     {% include 'business_contacts/parts/map/max_min_average_latitude_and_longitude.html.twig' %}
 
+
+
     <hr>
     <div class="row">
         <div class="col-12">
             <div id="map" style="width: 100%; height: 850px;"
-                 data-locations='{{ business_contacts | map(business_contact => {
-                     "lat": business_contact.locationLatitude,
-                     "lng": business_contact.locationLongitude,
-                     "name": business_contact.company,
-                     "icon": (subset == "All"
-                     ? asset("/administration/ATSSharedFiles/BusinessContactsMapIcons/" ~ business_contact.businessType.mapIcon.iconFile)
-                     : asset("/administration/ATSSharedFiles/BusinessContactsMapIcons/_map_marker.png"))
-                 }) | json_encode | e("html_attr") }}'>
+                 data-locations='[
+            {% for business_contact in business_contacts %}
+            {
+                "lat": {{ business_contact.locationLatitude }},
+                "lng": {{ business_contact.locationLongitude }},
+                "name": "{{ business_contact.company | e('js') }}",
+                "icon": "{{ subset == 'All' and business_contact.businessType.mapIcon.iconFile is not null
+                 ? asset('/administration/ATSSharedFiles/BusinessContactsMapIcons/' ~ business_contact.businessType.mapIcon.iconFile)
+                 : asset('/administration/ATSSharedFiles/BusinessContactsMapIcons/_map_marker.png') }}"
+            }{% if not loop.last %}, {% endif %}
+        {% endfor %}
+     ]'>
             </div>
             <br><br><br>
         </div>
