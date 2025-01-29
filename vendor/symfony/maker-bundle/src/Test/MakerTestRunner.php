@@ -22,23 +22,25 @@ use Twig\Loader\FilesystemLoader;
 
 class MakerTestRunner
 {
-    private $environment;
-    private $filesystem;
-    private $executedMakerProcess;
+    private Filesystem $filesystem;
+    private ?MakerTestProcess $executedMakerProcess = null;
 
-    public function __construct(MakerTestEnvironment $environment)
-    {
-        $this->environment = $environment;
+    public function __construct(
+        private MakerTestEnvironment $environment,
+    ) {
         $this->filesystem = new Filesystem();
     }
 
-    public function runMaker(array $inputs, string $argumentsString = '', bool $allowedToFail = false): string
+    public function runMaker(array $inputs, string $argumentsString = '', bool $allowedToFail = false, array $envVars = []): string
     {
-        $this->executedMakerProcess = $this->environment->runMaker($inputs, $argumentsString, $allowedToFail);
+        $this->executedMakerProcess = $this->environment->runMaker($inputs, $argumentsString, $allowedToFail, $envVars);
 
         return $this->executedMakerProcess->getOutput();
     }
 
+    /**
+     * @return void
+     */
     public function copy(string $source, string $destination)
     {
         $path = __DIR__.'/../../tests/fixtures/'.$source;
@@ -60,29 +62,6 @@ class MakerTestRunner
         foreach ($finder as $file) {
             $this->filesystem->copy($file->getPathname(), $this->getPath($file->getRelativePathname()), true);
         }
-    }
-
-    /**
-     * When using an authenticator "fixtures" file, this adjusts it to support Symfony 5.2/5.3.
-     */
-    public function adjustAuthenticatorForLegacyPassportInterface(string $filename): void
-    {
-        // no adjustment needed on 5.4 and higher
-        if ($this->getSymfonyVersion() >= 50400) {
-            return;
-        }
-
-        $this->replaceInFile(
-            $filename,
-            '\\Passport;',
-            "\\Passport;\nuse Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;"
-        );
-
-        $this->replaceInFile(
-            $filename,
-            ': Passport',
-            ': PassportInterface'
-        );
     }
 
     public function renderTemplateFile(string $source, string $destination, array $variables): void
@@ -116,6 +95,9 @@ class MakerTestRunner
         return $this->executedMakerProcess;
     }
 
+    /**
+     * @return void
+     */
     public function modifyYamlFile(string $filename, \Closure $callback)
     {
         $path = $this->getPath($filename);
@@ -130,6 +112,9 @@ class MakerTestRunner
         file_put_contents($path, $manipulator->getContents());
     }
 
+    /**
+     * @return void
+     */
     public function runConsole(string $command, array $inputs, string $arguments = '')
     {
         $process = $this->environment->createInteractiveCommandProcess(
@@ -172,7 +157,7 @@ class MakerTestRunner
     {
         $this->replaceInFile(
             '.env',
-            'postgresql://symfony:ChangeMe@127.0.0.1:5432/app?serverVersion=13&charset=utf8',
+            'postgresql://app:!ChangeMe!@127.0.0.1:5432/app?serverVersion=15&charset=utf8',
             getenv('TEST_DATABASE_DSN')
         );
 
@@ -197,7 +182,7 @@ class MakerTestRunner
         // this looks silly, but it's the only way to drop the database *for sure*,
         // as doctrine:database:drop will error if there is no database
         // also, skip for SQLITE, as it does not support --if-not-exists
-        if (0 !== strpos(getenv('TEST_DATABASE_DSN'), 'sqlite://')) {
+        if (!str_starts_with(getenv('TEST_DATABASE_DSN'), 'sqlite://')) {
             $this->runConsole('doctrine:database:create', [], '--env=test --if-not-exists');
         }
         $this->runConsole('doctrine:database:drop', [], '--env=test --force');
@@ -234,12 +219,22 @@ class MakerTestRunner
         file_put_contents($this->getPath($filename), $contents);
     }
 
+    /**
+     * @return void
+     */
     public function addToAutoloader(string $namespace, string $path)
     {
-        $this->replaceInFile(
-            'composer.json',
-            '"App\\\Tests\\\": "tests/",',
-            sprintf('"App\\\Tests\\\": "tests/",'."\n".'            "%s": "%s",', $namespace, $path)
+        $composerJson = json_decode(
+            json: file_get_contents($this->getPath('composer.json')),
+            associative: true,
+            flags: \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES
+        );
+
+        $composerJson['autoload-dev']['psr-4'][$namespace] = $path;
+
+        $this->filesystem->dumpFile(
+            $this->getPath('composer.json'),
+            json_encode($composerJson, \JSON_UNESCAPED_SLASHES | \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR)
         );
 
         $this->environment->runCommand('composer dump-autoload');
@@ -253,7 +248,10 @@ class MakerTestRunner
     public function manipulateClass(string $filename, \Closure $callback): void
     {
         $contents = file_get_contents($this->getPath($filename));
-        $manipulator = new ClassSourceManipulator($contents, true, false, true, true);
+        $manipulator = new ClassSourceManipulator(
+            sourceCode: $contents,
+            overwrite: true,
+        );
         $callback($manipulator);
 
         file_put_contents($this->getPath($filename), $manipulator->getSourceCode());

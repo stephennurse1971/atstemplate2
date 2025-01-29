@@ -6,41 +6,82 @@
 {{ form_start(form) }}
 <input type="hidden" name="referer" value="{{ app.request.headers.get('referer') }}">
 <div class="row">
-    <div class="col-12 col-lg-2">
+    <div class="col-3 col-lg-2">
         <h2 style="color: red">Personal Details</h2>
+        {{ form_row(form.salutation) }}
         {{ form_row(form.firstName) }}
         {{ form_row(form.lastName) }}
-        {{ form_row(form.email) }}
-        {{ form_row(form.mobile) }}
-        {{ form_row(form.emailVerified) }}
-        {{ form_row(form.defaultLanguage) }}
-        <input type="hidden" id="hidden_password" name="user[password]" value="{{ user.password }}">
+        {{ form_row(form.emailVerified  ) }}
+
+        <h2 style="color: red">Company</h2>
+        {% if (form.company is defined) %}
+            {{ form_row(form.company) }}
+        {% endif %}
+        {{ form_row(form.jobTitle) }}
+        {{ form_row(form.linkedIn) }}
+
+        <h2 style="color: red">Other</h2>
+        {{ form_row(form.birthday) }}
+        {{ form_row(form.webPage) }}
+        {{ form_row(form.notes) }}
     </div>
-    <div class="col-12 col-lg-2">
-        <div class="password">
+
+    <div class="col-3 col-lg-2">
+        <h2 style="color: red">Email and Tel</h2>
+        {{ form_row(form.email) }}
+        {{ form_row(form.email2) }}
+        {{ form_row(form.email3) }}
+        {{ form_row(form.mobile) }}
+        {{ form_row(form.mobile2) }}
+        {% if form.password is defined %}
             <h2 style="color: red">Password</h2>
             {{ form_row(form.password) }}
-        </div>
-
-        {% if form.roles is defined %}
-            <h2 style="color: red">Roles</h2>
-            {{ form_row(form.roles) }}
         {% endif %}
     </div>
+
+    <div class="col-3 col-lg-2">
+        <h2 style="color: red">Addresses</h2>
+        {{ form_row(form.businessStreet) }}
+        {{ form_row(form.businessCity) }}
+        {{ form_row(form.businessCountry) }}
+        {{ form_row(form.businessPostalCode) }}
+        {{ form_row(form.businessPhone) }}
+
+        {{ form_row(form.homeStreet) }}
+        {{ form_row(form.homeCity) }}
+        {{ form_row(form.homeCountry) }}
+        {{ form_row(form.homePostalCode) }}
+        {{ form_row(form.homePhone) }}
+        {{ form_row(form.homePhone2) }}
+    </div>
+    {% if (form.londoner is defined) %}
+        <div class="col-2 col-lg-2">
+            <h2 style="color: red">Messages</h2>
+            {{ form_row(form.inviteDate) }}
+            {{ form_row(form.lastEdited) }}
+        </div>
+    {% endif %}
+    {% if (form.recruiterHighPriority is defined) %}
+        <div class="col-3 col-lg-2">
+            <h2 style="color: red">Recruiters</h2>
+            {{ form_row(form.recruiterHighPriority) }}
+            {{ form_row(form.recruitingArea) }}
+            {{ form_row(form.recruitingAreaList) }}
+            {{ form_row(form.recruiterResponse) }}
+        </div>
+    {% endif %}
+
+    {% if form.roles is defined %}
+        <div class="col-3 col-lg-2">
+            <h2 style="color: red">Roles</h2>
+            {{ form_widget(form.roles) }}
+        </div>
+    {% endif %}
 </div>
 
+<div class="col-12 col-lg-2">
+    <div class="password">
+    </div>
+</div>
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
-
-{% block additionaljs %}
-    <script>
-
-        // Get the value from the hidden field
-        var savedPassword = $("#hidden_password").val();
-
-        // Set the password field value to the hidden field value
-        $("#user_password").val(savedPassword);
-
-    </script>
-{% endblock %}
-

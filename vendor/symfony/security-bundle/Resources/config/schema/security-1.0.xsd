@@ -117,7 +117,7 @@
             <xsd:element name="memory" type="memory" />
             <xsd:element name="ldap" type="ldap" />
             <!-- allow factories to use dynamic elements -->
-            <xsd:any processContents="lax" />
+            <xsd:any processContents="lax" namespace="##other" />
         </xsd:choice>
         <xsd:attribute name="name" type="xsd:string" use="required" />
         <xsd:attribute name="id" type="xsd:string" />
@@ -169,13 +169,14 @@
             <xsd:element name="http-basic-ldap" type="http_basic_ldap" minOccurs="0" maxOccurs="1" />
             <xsd:element name="json-login" type="json_login" minOccurs="0" maxOccurs="1" />
             <xsd:element name="json-login-ldap" type="json_login_ldap" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="login-link" type="login_link" minOccurs="0" maxOccurs="1" />
             <xsd:element name="login-throttling" type="login_throttling" minOccurs="0" maxOccurs="1" />
             <xsd:element name="remember-me" type="remember_me" minOccurs="0" maxOccurs="1" />
             <xsd:element name="remote-user" type="remote_user" minOccurs="0" maxOccurs="1" />
             <xsd:element name="x509" type="x509" minOccurs="0" maxOccurs="1" />
             <xsd:element name="required-badge" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
             <!-- allow factories to use dynamic elements -->
-            <xsd:any processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:any processContents="lax" minOccurs="0" maxOccurs="unbounded" namespace="##other" />
         </xsd:choice>
         <xsd:attribute name="name" type="xsd:string" use="required" />
         <xsd:attribute name="pattern" type="xsd:string" />
@@ -229,6 +230,7 @@
         <xsd:attribute name="check-path" type="xsd:string" />
         <xsd:attribute name="use-forward" type="xsd:boolean" />
         <xsd:attribute name="require-previous-session" type="xsd:boolean" />
+        <xsd:attribute name="provider" type="xsd:string" />
     </xsd:complexType>
 
     <xsd:attributeGroup name="success-handler-options">

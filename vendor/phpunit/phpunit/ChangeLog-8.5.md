@@ -2,6 +2,58 @@
 
 All notable changes of the PHPUnit 8.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [8.5.41] - 2024-12-05
+
+### Fixed
+
+* [#6071](https://github.com/sebastianbergmann/phpunit/issues/6071): PHP Archives (PHARs) of PHPUnit 8.5 and PHPUnit 9.6 bundle outdated versions of Prophecy
+
+## [8.5.40] - 2024-09-19
+
+### Changed
+
+* [#5956](https://github.com/sebastianbergmann/phpunit/issues/5956): Deprecation of the `E_STRICT` constant in PHP 8.4
+* Removed `.phpstorm.meta.php` file as methods such as `TestCase::createStub()` use generics / template types for their return types and PhpStorm, for example, uses that information
+
+## [8.5.39] - 2024-07-10
+
+### Changed
+
+* Updated dependencies (so that users that install using Composer's `--prefer-lowest` CLI option also get recent versions)
+
+## [8.5.38] - 2024-04-05
+
+### Changed
+
+* The namespaces of dependencies are now prefixed with `PHPUnitPHAR` instead of just `PHPUnit` for the PHAR distribution of PHPUnit
+
+## [8.5.37] - 2024-03-06
+
+### Changed
+
+* Improve output of `--check-version` CLI option
+* Improve description of `--check-version` CLI option
+* Show help for `--manifest`, `--sbom`, and `--composer-lock` when the PHAR is used
+* Make PHAR build reproducible (the only remaining differences were in the timestamps for the files in the PHAR)
+
+## [8.5.36] - 2023-12-01
+
+### Fixed
+
+* [#5596](https://github.com/sebastianbergmann/phpunit/issues/5596): `PHPUnit\Framework\TestCase` has `@internal` annotation in PHAR
+
+## [8.5.35] - 2023-12-01
+
+### Added
+
+* [#5577](https://github.com/sebastianbergmann/phpunit/issues/5577): `--composer-lock` CLI option for PHAR binary that displays the `composer.lock` used to build the PHAR
+
+## [8.5.34] - 2023-09-19
+
+### Changed
+
+* The child processes used for process isolation now use temporary files to communicate their result to the parent process
+
 ## [8.5.33] - 2023-02-27
 
 ### Fixed
@@ -268,6 +320,14 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 * [#3967](https://github.com/sebastianbergmann/phpunit/issues/3967): Cannot double interface that extends interface that extends `\Throwable`
 * [#3968](https://github.com/sebastianbergmann/phpunit/pull/3968): Test class run in a separate PHP process are passing when `exit` called inside
 
+[8.5.41]: https://github.com/sebastianbergmann/phpunit/compare/8.5.40...8.5.41
+[8.5.40]: https://github.com/sebastianbergmann/phpunit/compare/8.5.39...8.5.40
+[8.5.39]: https://github.com/sebastianbergmann/phpunit/compare/8.5.38...8.5.39
+[8.5.38]: https://github.com/sebastianbergmann/phpunit/compare/8.5.37...8.5.38
+[8.5.37]: https://github.com/sebastianbergmann/phpunit/compare/8.5.36...8.5.37
+[8.5.36]: https://github.com/sebastianbergmann/phpunit/compare/8.5.35...8.5.36
+[8.5.35]: https://github.com/sebastianbergmann/phpunit/compare/8.5.34...8.5.35
+[8.5.34]: https://github.com/sebastianbergmann/phpunit/compare/8.5.33...8.5.34
 [8.5.33]: https://github.com/sebastianbergmann/phpunit/compare/8.5.32...8.5.33
 [8.5.32]: https://github.com/sebastianbergmann/phpunit/compare/8.5.31...8.5.32
 [8.5.31]: https://github.com/sebastianbergmann/phpunit/compare/8.5.30...8.5.31

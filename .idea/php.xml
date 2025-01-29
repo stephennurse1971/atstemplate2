@@ -161,6 +161,7 @@
       <path value="$PROJECT_DIR$/vendor/jsvrcek/ics-bundle" />
       <path value="$PROJECT_DIR$/vendor/jsvrcek/ics" />
       <path value="$PROJECT_DIR$/vendor/welp/ical-bundle" />
+      <path value="$PROJECT_DIR$/vendor/php-imap/php-imap" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

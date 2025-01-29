@@ -1,0 +1,223 @@
+{# ------ Next radio button ROLE_SUPER_ADMIN (0)--------------- -#}
+{% set role_flag0 = 0 %}
+{% for role in user.roles %}
+    {% if role == 'ROLE_SUPER_ADMIN' %}
+        {% set role_flag0 = 1 %}
+    {% endif %}
+{% endfor %}
+
+<td class="desktop" data-sort="{{ role_flag0 }}" style="text-align: center">
+    {% set role_flag0 = 0 %}
+    {% for role in user.roles %}
+        {% if role == 'ROLE_ADMIN' %}
+            {% set role_flag0 = 1 %}
+        {% endif %}
+    {% endfor %}
+    {% if role_flag0 == 1 %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_SUPER_ADMIN", 'active': '0'}) }}"><i
+                        class="fa fa-circle" style="color: green; text-align: right"></i></a>
+        {% else %}
+            <i class="fa fa-circle" style="color: green; text-align: right"></i>
+        {% endif %}
+    {% else %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_SUPER_ADMIN", 'active': '1'}) }}"><i
+                        class="fa fa-circle" style="color: red; text-align: right"></i></a>
+        {% else %}
+            <i class="fa fa-circle" style="color: red; text-align: right"></i>
+        {% endif %}
+    {% endif %}
+</td>
+
+
+{# ------ Next radio button ROLE_ADMIN (1)--------------- -#}
+{% set role_flag1 = 0 %}
+{% for role in user.roles %}
+    {% if role == 'ROLE_ADMIN' %}
+        {% set role_flag1 = 1 %}
+    {% endif %}
+{% endfor %}
+
+<td class="desktop" data-sort="{{ role_flag1 }}" style="text-align: center">
+    {% set role_flag1 = 0 %}
+    {% for role in user.roles %}
+        {% if role == 'ROLE_ADMIN' %}
+            {% set role_flag1 = 1 %}
+        {% endif %}
+    {% endfor %}
+    {% if role_flag1 == 1 %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_ADMIN", 'active': '0'}) }}"><i
+                        class="fa fa-circle" style="color: green; text-align: right"></i></a>
+        {% else %}
+            <i class="fa fa-circle" style="color: green; text-align: right"></i>
+        {% endif %}
+    {% else %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_ADMIN", 'active': '1'}) }}"><i
+                        class="fa fa-circle" style="color: red; text-align: right"></i></a>
+        {% else %}
+            <i class="fa fa-circle" style="color: red; text-align: right"></i>
+        {% endif %}
+    {% endif %}
+</td>
+
+
+{# ------ Next radio button ROLE_IT (2)--------------- -#}
+
+{% set role_flag2 = 0 %}
+{% for role in user.roles %}
+    {% if role == 'ROLE_IT' %}
+        {% set role_flag2 = 1 %}
+    {% endif %}
+{% endfor %}
+<td class="desktop" data-sort="{{ role_flag2 }}" style="text-align: center">
+    {% if role_flag2 == 1 %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_IT", 'active': '0'}) }}"><i
+                        class="fa fa-circle" style="color: green; text-align: right"></i></a>
+        {% else %}
+            <i class="fa fa-circle" style="color: green; text-align: right"></i>
+        {% endif %}
+    {% else %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_IT", 'active': '1'}) }}"><i
+                        class="fa fa-circle" style="color: red; text-align: right"></i></a>
+        {% else %}
+            <i class="fa fa-circle" style="color: red; text-align: right"></i>
+        {% endif %}
+    {% endif %}
+</td>
+
+
+{# ------ Next radio button ROLE_FAMILY (3)--------------- -#}
+{% set role_flag3 = 0 %}
+{% for role in user.roles %}
+    {% if role == 'ROLE_FAMILY' %}
+        {% set role_flag3 = 1 %}
+    {% endif %}
+{% endfor %}
+<td class="desktop" data-sort="{{ role_flag3 }}" style="text-align: center">
+    {% if role_flag3 == 1 %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_FAMILY", 'active': '0'}) }}"><i
+                        class="fa fa-circle" style="color: green; text-align: right"></i></a>
+        {% else %}
+            <i class="fa fa-circle" style="color: green; text-align: right"></i>
+        {% endif %}
+    {% else %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_FAMILY", 'active': '1'}) }}"><i
+                        class="fa fa-circle" style="color: red; text-align: right"></i></a>
+        {% else %}
+            <i class="fa fa-circle" style="color: red; text-align: right"></i>
+        {% endif %}
+    {% endif %}
+</td>
+
+
+{# ------ Next radio button ROLE_CONTACT (4)--------------- -#}
+{% set role_flag4 = 0 %}
+{% for role in user.roles %}
+    {% if role == 'ROLE_CONTACT' %}
+        {% set role_flag4 = 1 %}
+    {% endif %}
+{% endfor %}
+<td class="desktop" data-sort="{{ role_flag4 }}" style="text-align: center">
+    {% if role_flag4 == 1 %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_CONTACT", 'active': '0'}) }}"><i
+                        class="fa fa-circle" style="color: green; text-align: right"></i></a>
+        {% else %}
+            <i class="fa fa-circle" style="color: green; text-align: right"></i>
+        {% endif %}
+    {% else %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_CONTACT", 'active': '1'}) }}"><i
+                        class="fa fa-circle" style="color: red; text-align: right"></i></a>
+        {% else %}
+            <i class="fa fa-circle" style="color: red; text-align: right"></i>
+        {% endif %}
+    {% endif %}
+</td>
+
+
+{# ------ Next radio button ROLE_GUEST (5)--------------- -#}
+{% set role_flag5 = 0 %}
+{% for role in user.roles %}
+    {% if role == 'ROLE_GUEST' %}
+        {% set role_flag5 = 1 %}
+    {% endif %}
+{% endfor %}
+<td class="desktop" data-sort="{{ role_flag5 }}" style="text-align: center">
+    {% if role_flag5 == 1 %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_GUEST", 'active': '0'}) }}"><i
+                        class="fa fa-circle" style="color: green; text-align: right"></i></a>
+        {% else %}
+            <i class="fa fa-circle" style="color: green; text-align: right"></i>
+        {% endif %}
+    {% else %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_GUEST", 'active': '1'}) }}"><i
+                        class="fa fa-circle" style="color: red; text-align: right"></i></a>
+        {% else %}
+            <i class="fa fa-circle" style="color: red; text-align: right"></i>
+        {% endif %}
+    {% endif %}
+</td>
+
+
+{# ------ Next radio button ROLE_JOB_APPLICANT (6)--------------- -#}
+{% set role_flag6 = 0 %}
+{% for role in user.roles %}
+    {% if role == 'ROLE_JOB_APPLICANT' %}
+        {% set role_flag6 = 1 %}
+    {% endif %}
+{% endfor %}
+<td class="desktop" data-sort="{{ role_flag6 }}" style="text-align: center">
+    {% if role_flag6 == 1 %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_JOB_APPLICANT", 'active': '0'}) }}"><i
+                        class="fa fa-circle" style="color: green; text-align: right"></i></a>
+        {% else %}
+            <i class="fa fa-circle" style="color: green; text-align: right"></i>
+        {% endif %}
+    {% else %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_JOB_APPLICANT", 'active': '1'}) }}"><i
+                        class="fa fa-circle" style="color: red; text-align: right"></i></a>
+        {% else %}
+            <i class="fa fa-circle" style="color: red; text-align: right"></i>
+        {% endif %}
+    {% endif %}
+</td>
+
+
+{# ------ Next radio button ROLE_RECRUITER (7)--------------- -#}
+{% set role_flag7 = 0 %}
+{% for role in user.roles %}
+    {% if role == 'ROLE_RECRUITER' %}
+        {% set role_flag7 = 1 %}
+    {% endif %}
+{% endfor %}
+<td class="desktop" data-sort="{{ role_flag7 }}" style="text-align: center">
+    {% if role_flag7 == 1 %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_RECRUITER", 'active': '0'}) }}"><i
+                        class="fa fa-circle" style="color: green; text-align: right"></i></a>
+        {% else %}
+            <i class="fa fa-circle" style="color: green; text-align: right"></i>
+        {% endif %}
+    {% else %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_edit_button', {'id':user.id, 'role': "ROLE_RECRUITER", 'active': '1'}) }}"><i
+                        class="fa fa-circle" style="color: red; text-align: right"></i></a>
+        {% else %}
+            <i class="fa fa-circle" style="color: red; text-align: right"></i>
+        {% endif %}
+    {% endif %}
+</td>
+
+

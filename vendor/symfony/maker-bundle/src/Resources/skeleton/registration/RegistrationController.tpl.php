@@ -25,7 +25,7 @@ class <?= $class_name; ?> extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->set<?= ucfirst($password_field) ?>(
-            <?= $password_hasher_variable_name ?>-><?= $use_password_hasher ? 'hashPassword' : 'encodePassword' ?>(
+                <?= $password_hasher_variable_name ?>-><?= $use_password_hasher ? 'hashPassword' : 'encodePassword' ?>(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
@@ -78,7 +78,7 @@ class <?= $class_name; ?> extends AbstractController
 <?php if (!$verify_email_anonymously): ?>
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 <?php else: ?>
-        $id = $request->get('id');
+        $id = $request->query->get('id');
 
         if (null === $id) {
             return $this->redirectToRoute('app_register');

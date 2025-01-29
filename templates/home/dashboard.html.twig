@@ -54,18 +54,25 @@
                     <div class="border py-4">
                         <h2 style="color: red">E-mails</h2>
                         <ul>
-                            <a target="_blank" href="{{ path('website_contacts_index') }}">In-Bound Requests</a>
+                            <a target="_blank" href="{{ path('website_contacts_index') }}">
+                                <i title="Website inquiries awaiting a response" style="color: purple"
+                                   class="fa fa-user-secret"></i>
+                                Website Inquiries</a>
                         </ul>
                         <hr>
+
                         <ul>
-                            <a target="_blank" href="{{ path('emails_import_index') }}">Emails: Pending</a>
+                            <a target="_blank" href="{{ path('emails_fetch') }}">Emails: Fetch from Outlook</a>
                         </ul>
                         <ul>
-                            <a target="_blank" href="{{ path('emails_import_index') }}">Emails: Processed</a>
+                            <a target="_blank" href="{{ path('emails_import_index') }}">Emails: All</a>
                         </ul>
-                        <ul>
-                            <a target="_blank" href="">Emails Sent</a>
-                        </ul>
+{#                        <ul>#}
+{#                            <a target="_blank" href="{{ path('emails_import_index') }}">Emails: Processed</a>#}
+{#                        </ul>#}
+{#                        <ul>#}
+{#                            <a target="_blank" href="">Emails Sent</a>#}
+{#                        </ul>#}
                     </div>
                 </div>
             {% endif %}

@@ -1,0 +1,22 @@
+{% if is_granted('ROLE_ADMIN') %}
+    <div class="row">
+        <div class="col-2">
+            <a class="btn btn-success btn-sm" href="{{ path('user_new') }}">New</a>
+        </div>
+
+        <div class="col-4">
+{#            <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_non_admin') }}">Delete: All (excl#}
+{#                Admin)</a>#}
+{#            <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_AX') }}">Delete: AX (excl#}
+{#                Admin)</a>#}
+{#            <a class="btn btn-danger btn-sm" href="{{ path('user_delete_all_Personal') }}">Delete: All Personal#}
+{#                (excl Admin) </a>#}
+        </div>
+
+        <div class="col-3">
+            <a class="btn btn-success btn-sm" href="{{ path('user_export', {Subset: 'All'}) }}">Export</a>
+            <a class="btn btn-primary btn-sm" href="{{ path('user_import', {source: 'Outlook'}) }}">Import (Outlook)</a>
+            <a class="btn btn-primary btn-sm" href="{{ path('user_import', {source: 'Grapevine'}) }}">Import (Grapevine)</a>
+        </div>
+    </div>
+{% endif %}

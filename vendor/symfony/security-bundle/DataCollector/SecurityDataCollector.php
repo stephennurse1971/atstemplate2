@@ -46,7 +46,7 @@ class SecurityDataCollector extends DataCollector implements LateDataCollectorIn
     private $hasVarDumper;
     private $authenticatorManagerEnabled;
 
-    public function __construct(TokenStorageInterface $tokenStorage = null, RoleHierarchyInterface $roleHierarchy = null, LogoutUrlGenerator $logoutUrlGenerator = null, AccessDecisionManagerInterface $accessDecisionManager = null, FirewallMapInterface $firewallMap = null, TraceableFirewallListener $firewall = null, bool $authenticatorManagerEnabled = false)
+    public function __construct(?TokenStorageInterface $tokenStorage = null, ?RoleHierarchyInterface $roleHierarchy = null, ?LogoutUrlGenerator $logoutUrlGenerator = null, ?AccessDecisionManagerInterface $accessDecisionManager = null, ?FirewallMapInterface $firewallMap = null, ?TraceableFirewallListener $firewall = null, bool $authenticatorManagerEnabled = false)
     {
         if (!$authenticatorManagerEnabled) {
             trigger_deprecation('symfony/security-bundle', '5.4', 'Setting the $authenticatorManagerEnabled argument of "%s" to "false" is deprecated, use the new authenticator system instead.', __METHOD__);
@@ -65,7 +65,7 @@ class SecurityDataCollector extends DataCollector implements LateDataCollectorIn
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Throwable $exception = null)
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null)
     {
         if (null === $this->tokenStorage) {
             $this->data = [
@@ -145,6 +145,7 @@ class SecurityDataCollector extends DataCollector implements LateDataCollectorIn
         // collect voters and access decision manager information
         if ($this->accessDecisionManager instanceof TraceableAccessDecisionManager) {
             $this->data['voter_strategy'] = $this->accessDecisionManager->getStrategy();
+            $this->data['voters'] = [];
 
             foreach ($this->accessDecisionManager->getVoters() as $voter) {
                 if ($voter instanceof TraceableVoter) {

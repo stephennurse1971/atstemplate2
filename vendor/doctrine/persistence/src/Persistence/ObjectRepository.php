@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Doctrine\Persistence;
 
 use UnexpectedValueException;
@@ -17,7 +19,7 @@ interface ObjectRepository
      * @param mixed $id The identifier.
      *
      * @return object|null The object.
-     * @psalm-return T|null
+     * @phpstan-return T|null
      */
     public function find($id);
 
@@ -25,7 +27,7 @@ interface ObjectRepository
      * Finds all objects in the repository.
      *
      * @return array<int, object> The objects.
-     * @psalm-return T[]
+     * @phpstan-return T[]
      */
     public function findAll();
 
@@ -36,18 +38,21 @@ interface ObjectRepository
      * an UnexpectedValueException if certain values of the sorting or limiting details are
      * not supported.
      *
-     * @param array<string, mixed> $criteria
-     * @param string[]|null        $orderBy
-     * @param int|null             $limit
-     * @param int|null             $offset
-     * @psalm-param array<string, 'asc'|'desc'|'ASC'|'DESC'>|null $orderBy
+     * @param array<string, mixed>       $criteria
+     * @param array<string, string>|null $orderBy
+     * @phpstan-param array<string, 'asc'|'desc'|'ASC'|'DESC'>|null $orderBy
      *
-     * @return object[] The objects.
-     * @psalm-return T[]
+     * @return array<int, object> The objects.
+     * @phpstan-return T[]
      *
      * @throws UnexpectedValueException
      */
-    public function findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null);
+    public function findBy(
+        array $criteria,
+        ?array $orderBy = null,
+        ?int $limit = null,
+        ?int $offset = null
+    );
 
     /**
      * Finds a single object by a set of criteria.
@@ -55,15 +60,14 @@ interface ObjectRepository
      * @param array<string, mixed> $criteria The criteria.
      *
      * @return object|null The object.
-     * @psalm-return T|null
+     * @phpstan-return T|null
      */
     public function findOneBy(array $criteria);
 
     /**
      * Returns the class name of the object managed by the repository.
      *
-     * @return string
-     * @psalm-return class-string<T>
+     * @phpstan-return class-string<T>
      */
     public function getClassName();
 }

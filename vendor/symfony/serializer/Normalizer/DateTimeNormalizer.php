@@ -54,7 +54,7 @@ class DateTimeNormalizer implements NormalizerInterface, DenormalizerInterface, 
      *
      * @throws InvalidArgumentException
      */
-    public function normalize($object, string $format = null, array $context = [])
+    public function normalize($object, ?string $format = null, array $context = [])
     {
         if (!$object instanceof \DateTimeInterface) {
             throw new InvalidArgumentException('The object must implement the "\DateTimeInterface".');
@@ -74,7 +74,7 @@ class DateTimeNormalizer implements NormalizerInterface, DenormalizerInterface, 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, string $format = null)
+    public function supportsNormalization($data, ?string $format = null)
     {
         return $data instanceof \DateTimeInterface;
     }
@@ -86,16 +86,23 @@ class DateTimeNormalizer implements NormalizerInterface, DenormalizerInterface, 
      *
      * @throws NotNormalizableValueException
      */
-    public function denormalize($data, string $type, string $format = null, array $context = [])
+    public function denormalize($data, string $type, ?string $format = null, array $context = [])
     {
-        $dateTimeFormat = $context[self::FORMAT_KEY] ?? null;
-        $timezone = $this->getTimezone($context);
+        if (\is_int($data) || \is_float($data)) {
+            switch ($context[self::FORMAT_KEY] ?? $this->defaultContext[self::FORMAT_KEY] ?? null) {
+                case 'U': $data = sprintf('%d', $data); break;
+                case 'U.u': $data = sprintf('%.6F', $data); break;
+            }
+        }
 
-        if (null === $data || !\is_string($data) || '' === trim($data)) {
+        if (!\is_string($data) || '' === trim($data)) {
             throw NotNormalizableValueException::createForUnexpectedDataType('The data is either not an string, an empty string, or null; you should pass a string that can be parsed with the passed format or a valid DateTime string.', $data, [Type::BUILTIN_TYPE_STRING], $context['deserialization_path'] ?? null, true);
         }
 
         try {
+            $timezone = $this->getTimezone($context);
+            $dateTimeFormat = $context[self::FORMAT_KEY] ?? null;
+
             if (null !== $dateTimeFormat) {
                 $object = \DateTime::class === $type ? \DateTime::createFromFormat($dateTimeFormat, $data, $timezone) : \DateTimeImmutable::createFromFormat($dateTimeFormat, $data, $timezone);
 
@@ -129,7 +136,7 @@ class DateTimeNormalizer implements NormalizerInterface, DenormalizerInterface, 
     /**
      * {@inheritdoc}
      */
-    public function supportsDenormalization($data, string $type, string $format = null)
+    public function supportsDenormalization($data, string $type, ?string $format = null)
     {
         return isset(self::SUPPORTED_TYPES[$type]);
     }

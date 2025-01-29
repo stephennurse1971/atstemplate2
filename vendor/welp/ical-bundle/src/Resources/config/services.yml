@@ -1,6 +1,0 @@
-services:
-    welp_ical.factory:
-        class: Welp\IcalBundle\Factory\Factory
-        calls:
-            - [ setTimezone, ['%welp_ical.default_timezone%']]
-            - [ setProdid, ['%welp_ical.default_prodid%']]

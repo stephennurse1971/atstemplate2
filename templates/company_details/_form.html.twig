@@ -2,9 +2,11 @@
     .ck-content {
         height: 500px;
     }
+
     #company_details_companyAddressInstructions {
         height: 500px;
     }
+
     #company_details_companyAddressMapLink {
         height: 300px;
     }
@@ -54,8 +56,6 @@
         <div class="favicon-upload-dev-container">
             {{ form_row(form.faviconDev) }}
         </div>
-
-
     </div>
 
     <div class="col-2">
@@ -68,8 +68,6 @@
         {{ form_row(form.sqlDatabase) }}
         {{ form_row(form.databasePassword) }}
         <a class="btn btn-outline-danger" href="{{ path('export_database') }}">Export database</a>
-
-
     </div>
 
     <div class="col-2">
@@ -78,7 +76,6 @@
         {{ form_row(form.companyAddressCity) }}
         {{ form_row(form.companyAddressPostalCode) }}
         {{ form_row(form.companyAddressCountry) }}
-
         <hr>
         <a target="_blank" href="{{ path('weather_index') }}">
             <i title="Please note, weather scrape is controlled by Company longitude & latitude"
@@ -105,7 +102,6 @@
     <div class="col-3">
         {{ form_row(form.companyAddressInstructions) }}
     </div>
-
 </div>
 <hr>
 <div class="row">
@@ -181,6 +177,17 @@
     </div>
 </div>
 <hr>
+
+<div class="row">
+    <div class="col-2">
+    <h4>Include in User Form:</h4>
+        XX
+        <br>
+        YY
+    </div>
+</div>
+<hr>
+
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
 

@@ -479,7 +479,6 @@ class BusinessContactsController extends AbstractController
 
                 $business_contact->getLocationLongitude(),
                 $business_contact->getLocationLatitude(),
-                $business_contact->getPublicPrivate(),
                 $concatenatedNotes,
                 $business_contact->getId()
             ];
@@ -507,9 +506,8 @@ class BusinessContactsController extends AbstractController
 
         $sheet->getCell('P1')->setValue('Location Longitude');
         $sheet->getCell('Q1')->setValue('Location Latitude');
-        $sheet->getCell('R1')->setValue('Public or Private');
-        $sheet->getCell('S1')->setValue('Notes');
-        $sheet->getCell('T1')->setValue('Id');
+        $sheet->getCell('R1')->setValue('Notes');
+        $sheet->getCell('S1')->setValue('Id');
 
         $sheet->fromArray($data, null, 'A2', true);
         $total_rows = $sheet->getHighestRow();

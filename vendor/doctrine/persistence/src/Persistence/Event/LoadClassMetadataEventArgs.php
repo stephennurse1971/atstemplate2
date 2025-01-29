@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Doctrine\Persistence\Event;
 
 use Doctrine\Common\EventArgs;
@@ -16,19 +18,19 @@ class LoadClassMetadataEventArgs extends EventArgs
 {
     /**
      * @var ClassMetadata
-     * @psalm-var TClassMetadata
+     * @phpstan-var TClassMetadata
      */
     private $classMetadata;
 
     /**
      * @var ObjectManager
-     * @psalm-var TObjectManager
+     * @phpstan-var TObjectManager
      */
     private $objectManager;
 
     /**
-     * @psalm-param TClassMetadata $classMetadata
-     * @psalm-param TObjectManager $objectManager
+     * @phpstan-param TClassMetadata $classMetadata
+     * @phpstan-param TObjectManager $objectManager
      */
     public function __construct(ClassMetadata $classMetadata, ObjectManager $objectManager)
     {
@@ -40,7 +42,7 @@ class LoadClassMetadataEventArgs extends EventArgs
      * Retrieves the associated ClassMetadata.
      *
      * @return ClassMetadata
-     * @psalm-return TClassMetadata
+     * @phpstan-return TClassMetadata
      */
     public function getClassMetadata()
     {

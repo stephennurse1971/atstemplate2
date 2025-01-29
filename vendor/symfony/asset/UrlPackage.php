@@ -41,7 +41,7 @@ class UrlPackage extends Package
     /**
      * @param string|string[] $baseUrls Base asset URLs
      */
-    public function __construct($baseUrls, VersionStrategyInterface $versionStrategy, ContextInterface $context = null)
+    public function __construct($baseUrls, VersionStrategyInterface $versionStrategy, ?ContextInterface $context = null)
     {
         parent::__construct($versionStrategy, $context);
 
@@ -123,7 +123,7 @@ class UrlPackage extends Package
         foreach ($urls as $url) {
             if ('https://' === substr($url, 0, 8) || '//' === substr($url, 0, 2)) {
                 $sslUrls[] = $url;
-            } elseif (null === parse_url($url, \PHP_URL_SCHEME)) {
+            } elseif (!parse_url($url, \PHP_URL_SCHEME)) {
                 throw new InvalidArgumentException(sprintf('"%s" is not a valid URL.', $url));
             }
         }

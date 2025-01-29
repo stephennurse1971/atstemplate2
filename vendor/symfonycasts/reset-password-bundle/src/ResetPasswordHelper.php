@@ -21,6 +21,8 @@ use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
+ *
+ * @final
  */
 class ResetPasswordHelper implements ResetPasswordHelperInterface
 {
@@ -68,9 +70,9 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
             throw new TooManyPasswordRequestsException($availableAt);
         }
 
-        $resetRequestLifetime = $resetRequestLifetime ?: $this->resetRequestLifetime;
+        $resetRequestLifetime = $resetRequestLifetime ?? $this->resetRequestLifetime;
 
-        $expiresAt = new \DateTimeImmutable(sprintf('+%d seconds', $resetRequestLifetime));
+        $expiresAt = new \DateTimeImmutable(\sprintf('+%d seconds', $resetRequestLifetime));
 
         $generatedAt = ($expiresAt->getTimestamp() - $resetRequestLifetime);
 
@@ -94,8 +96,6 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws ExpiredResetPasswordTokenException
      * @throws InvalidResetPasswordTokenException
      */
@@ -133,8 +133,6 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws InvalidResetPasswordTokenException
      */
     public function removeResetRequest(string $fullToken): void
@@ -148,9 +146,6 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
         $this->repository->removeResetPasswordRequest($request);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTokenLifetime(): int
     {
         return $this->resetRequestLifetime;
@@ -168,12 +163,14 @@ class ResetPasswordHelper implements ResetPasswordHelperInterface
      */
     public function generateFakeResetToken(?int $resetRequestLifetime = null): ResetPasswordToken
     {
-        $resetRequestLifetime = $resetRequestLifetime ?: $this->resetRequestLifetime;
-        $expiresAt = new \DateTimeImmutable(sprintf('+%d seconds', $resetRequestLifetime));
+        $resetRequestLifetime = $resetRequestLifetime ?? $this->resetRequestLifetime;
+        $expiresAt = new \DateTimeImmutable(\sprintf('+%d seconds', $resetRequestLifetime));
 
         $generatedAt = ($expiresAt->getTimestamp() - $resetRequestLifetime);
 
-        return new ResetPasswordToken('fake-token', $expiresAt, $generatedAt);
+        $fakeToken = bin2hex(random_bytes(16));
+
+        return new ResetPasswordToken($fakeToken, $expiresAt, $generatedAt);
     }
 
     private function findResetPasswordRequest(string $token): ?ResetPasswordRequestInterface

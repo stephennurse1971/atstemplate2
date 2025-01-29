@@ -25,6 +25,7 @@ class Configurator
     private $io;
     private $options;
     private $configurators;
+    private $postInstallConfigurators;
     private $cache;
 
     public function __construct(Composer $composer, IOInterface $io, Options $options)
@@ -38,12 +39,16 @@ class Configurator
             'copy-from-recipe' => Configurator\CopyFromRecipeConfigurator::class,
             'copy-from-package' => Configurator\CopyFromPackageConfigurator::class,
             'env' => Configurator\EnvConfigurator::class,
+            'dotenv' => Configurator\DotenvConfigurator::class,
             'container' => Configurator\ContainerConfigurator::class,
             'makefile' => Configurator\MakefileConfigurator::class,
             'composer-scripts' => Configurator\ComposerScriptsConfigurator::class,
             'gitignore' => Configurator\GitignoreConfigurator::class,
             'dockerfile' => Configurator\DockerfileConfigurator::class,
             'docker-compose' => Configurator\DockerComposeConfigurator::class,
+        ];
+        $this->postInstallConfigurators = [
+            'add-lines' => Configurator\AddLinesConfigurator::class,
         ];
     }
 
@@ -57,11 +62,25 @@ class Configurator
         }
     }
 
+    /**
+     * Run after all recipes have been installed to run post-install configurators.
+     */
+    public function postInstall(Recipe $recipe, Lock $lock, array $options = [])
+    {
+        $manifest = $recipe->getManifest();
+        foreach (array_keys($this->postInstallConfigurators) as $key) {
+            if (isset($manifest[$key])) {
+                $this->get($key)->configure($recipe, $manifest[$key], $lock, $options);
+            }
+        }
+    }
+
     public function populateUpdate(RecipeUpdate $recipeUpdate): void
     {
         $originalManifest = $recipeUpdate->getOriginalRecipe()->getManifest();
         $newManifest = $recipeUpdate->getNewRecipe()->getManifest();
-        foreach (array_keys($this->configurators) as $key) {
+        $allConfigurators = array_merge($this->configurators, $this->postInstallConfigurators);
+        foreach (array_keys($allConfigurators) as $key) {
             if (!isset($originalManifest[$key]) && !isset($newManifest[$key])) {
                 continue;
             }
@@ -73,7 +92,10 @@ class Configurator
     public function unconfigure(Recipe $recipe, Lock $lock)
     {
         $manifest = $recipe->getManifest();
-        foreach (array_keys($this->configurators) as $key) {
+
+        $allConfigurators = array_merge($this->configurators, $this->postInstallConfigurators);
+
+        foreach (array_keys($allConfigurators) as $key) {
             if (isset($manifest[$key])) {
                 $this->get($key)->unconfigure($recipe, $manifest[$key], $lock);
             }
@@ -82,15 +104,15 @@ class Configurator
 
     private function get($key): AbstractConfigurator
     {
-        if (!isset($this->configurators[$key])) {
-            throw new \InvalidArgumentException(sprintf('Unknown configurator "%s".', $key));
+        if (!isset($this->configurators[$key]) && !isset($this->postInstallConfigurators[$key])) {
+            throw new \InvalidArgumentException(\sprintf('Unknown configurator "%s".', $key));
         }
 
         if (isset($this->cache[$key])) {
             return $this->cache[$key];
         }
 
-        $class = $this->configurators[$key];
+        $class = isset($this->configurators[$key]) ? $this->configurators[$key] : $this->postInstallConfigurators[$key];
 
         return $this->cache[$key] = new $class($this->composer, $this->io, $this->options);
     }

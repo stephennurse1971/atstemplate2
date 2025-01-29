@@ -12,10 +12,12 @@
 namespace Symfony\Bundle\MakerBundle\Maker;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bridge\Doctrine\ArgumentResolver\EntityValueResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -36,6 +38,7 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
 use Symfony\Component\Validator\Validation;
@@ -45,16 +48,12 @@ use Symfony\Component\Validator\Validation;
  */
 final class MakeCrud extends AbstractMaker
 {
-    private $doctrineHelper;
-    private $formTypeRenderer;
-    private $inflector;
-    private $controllerClassName;
-    private $generateTests = false;
+    private Inflector $inflector;
+    private string $controllerClassName;
+    private bool $generateTests = false;
 
-    public function __construct(DoctrineHelper $doctrineHelper, FormTypeRenderer $formTypeRenderer)
+    public function __construct(private DoctrineHelper $doctrineHelper, private FormTypeRenderer $formTypeRenderer)
     {
-        $this->doctrineHelper = $doctrineHelper;
-        $this->formTypeRenderer = $formTypeRenderer;
         $this->inflector = InflectorFactory::create()->build();
     }
 
@@ -166,6 +165,10 @@ final class MakeCrud extends AbstractMaker
             Route::class,
         ]);
 
+        if (EntityManagerInterface::class !== $repositoryClassName) {
+            $useStatements->addUseStatement(EntityManagerInterface::class);
+        }
+
         $generator->generateController(
             $controllerClassDetails->getFullName(),
             'crud/controller/Controller.tpl.php',
@@ -181,7 +184,8 @@ final class MakeCrud extends AbstractMaker
                     'entity_var_singular' => $entityVarSingular,
                     'entity_twig_var_singular' => $entityTwigVarSingular,
                     'entity_identifier' => $entityDoctrineDetails->getIdentifier(),
-                    'use_render_form' => method_exists(AbstractController::class, 'renderForm'),
+                    // @legacy - Remove when support for Symfony <6 is dropped
+                    'use_render_form' => Kernel::VERSION_ID < 60200,
                 ],
                 $repositoryVars
             )
@@ -258,6 +262,10 @@ final class MakeCrud extends AbstractMaker
                 $useStatements->addUseStatement(EntityRepository::class);
             }
 
+            if (EntityManagerInterface::class !== $repositoryClassName) {
+                $useStatements->addUseStatement(EntityManagerInterface::class);
+            }
+
             $generator->generateFile(
                 'tests/Controller/'.$testClassDetails->getShortName().'.php',
                 $usesEntityManager ? 'crud/test/Test.EntityManager.tpl.php' : 'crud/test/Test.tpl.php',
@@ -320,9 +328,11 @@ final class MakeCrud extends AbstractMaker
             'security-csrf'
         );
 
+        // @legacy - Remove dependency when support for Symfony <6.2 is dropped
         $dependencies->addClassDependency(
             ParamConverter::class,
-            'annotations'
+            'annotations',
+            !class_exists(EntityValueResolver::class) // sensio/framework-extra-bundle dependency is not required when using symfony 6.2+
         );
     }
 }

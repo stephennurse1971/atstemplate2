@@ -13,30 +13,39 @@
             <th>Sender</th>
             <th>Subject</th>
             <th>Body</th>
-            <th></th>
-            <th></th>
         </tr>
         </thead>
         <tbody>
-        {% for emails_import in emails_imports %}
+        {% if emails is not empty %}
+        {% for email in emails %}
             <tr>
-                <td data-sort="{{ emails_import.date|date('Y-m-d H:i:s') }}">{{ emails_import.date|date('d-M-y H:i') }}</td>
-                <td>{{ emails_import.sender }}</td>
-                <td>{{ emails_import.subject }}</td>
-                <td>{{ emails_import.body }}</td>
+                <td data-sort="{{ email.date|date('Y-m-d H:i:s') }}">{{ email.date|date('d-M-y H:i') }}</td>
+                <td>{{ email.sender }}</td>
+                <td>{{ email.subject }}</td>
+                <td>{{ email.body }}</td>
                 <td>
                     <a target="_blank" class="btn btn-outline-danger btn-sm"
-                       href="{{ path('emails_import_edit', {'id': emails_import.id}) }}">Edit</a>
-                </td>
-                <td>
-                    <a class="btn btn-outline-secondary btn-sm" href="{{ path('app_login') }}">Court booking</a>
-                    <a class="btn btn-outline-secondary btn-sm" href="{{ path('app_login') }}">Coach booking</a>
-                    <a class="btn btn-outline-secondary btn-sm" href="{{ path('app_login') }}">Membership</a>
+                       href="{{ path('emails_import_edit', {'id': email.id}) }}">Edit</a>
                 </td>
             </tr>
         {% endfor %}
+        {% endif %}
         </tbody>
     </table>
     <hr>
     <a class="btn btn-success btn-sm" href="{{ path('emails_import_new') }}">New</a>
 {% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[0, 'asc'],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

@@ -14,8 +14,8 @@ namespace Twig\Extra\TwigExtraBundle\DependencyInjection;
 use League\CommonMark\CommonMarkConverter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Twig\Extra\TwigExtraBundle\Extensions;
 
 /**
@@ -23,6 +23,7 @@ use Twig\Extra\TwigExtraBundle\Extensions;
  */
 class TwigExtraExtension extends Extension
 {
+    /** @return void */
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
@@ -37,7 +38,7 @@ class TwigExtraExtension extends Extension
             if ($this->isConfigEnabled($container, $config[$extension])) {
                 $loader->load($extension.'.php');
 
-                if ('markdown' === $extension && \class_exists(CommonMarkConverter::class)) {
+                if ('markdown' === $extension && class_exists(CommonMarkConverter::class)) {
                     $loader->load('markdown_league.php');
                 }
             }

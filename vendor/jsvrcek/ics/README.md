@@ -85,8 +85,7 @@ $calendar->setEventsProvider(function ($startKey) use ($myDatabase) {
 	
 	$events = array();
 	
-	foreach ($eventDataArray as $row)
-	{
+	foreach ($eventDataArray as $row) {
 		$event = new CalendarEvent();
 		$event->setStart($row['start_date'])
 			->setSummary($row['summary'])
@@ -126,7 +125,7 @@ echo $calendarExport->getStream();
 
 The MIT License (MIT)
 
-Copyright (c) 2013 Justin Svrcek
+Copyright (c) 2022 Justin Svrcek
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -30,7 +30,6 @@ class BusinessContactsImportService
         $addressCountry = '';
         $locationLongitude = '';
         $locationLatitude = '';
-        $publicPrivate = '';
         $notes = '';
 
         $filepath = $this->container->getParameter('business_contacts_import_directory');
@@ -69,8 +68,7 @@ class BusinessContactsImportService
             $addressCountry = trim($oneLineFromCsv[14]);
             $locationLongitude = (float)trim($oneLineFromCsv[15]);
             $locationLatitude = (float)trim($oneLineFromCsv[16]);
-            $publicPrivate = trim($oneLineFromCsv[17]);
-            $notes = trim($oneLineFromCsv[18]);
+            $notes = trim($oneLineFromCsv[17]);
 
             $landline = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $landline);
             if ($landline != '') {
@@ -105,7 +103,6 @@ class BusinessContactsImportService
                     ->setAddressCountry($addressCountry)
                     ->setLocationLongitude($locationLongitude)
                     ->setLocationLatitude($locationLatitude)
-                    ->setPublicPrivate($publicPrivate)
                     ->setNotes($notes)
                     ->setBusinessType($this->businessTypeRepository->findOneBy([
                         'businessType' => $businessType])

@@ -20,6 +20,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Question\Question;
+use Symfony\UX\StimulusBundle\StimulusBundle;
 use Symfony\WebpackEncoreBundle\WebpackEncoreBundle;
 
 /**
@@ -176,9 +177,9 @@ final class MakeStimulusController extends AbstractMaker
 
         if ('_id' === $suffix = substr($snakeCasedField, -3)) {
             $defaultType = 'Number';
-        } elseif (0 === strpos($snakeCasedField, 'is_')) {
+        } elseif (str_starts_with($snakeCasedField, 'is_')) {
             $defaultType = 'Boolean';
-        } elseif (0 === strpos($snakeCasedField, 'has_')) {
+        } elseif (str_starts_with($snakeCasedField, 'has_')) {
             $defaultType = 'Boolean';
         }
 
@@ -227,9 +228,20 @@ final class MakeStimulusController extends AbstractMaker
 
     public function configureDependencies(DependencyBuilder $dependencies): void
     {
+        // lower than 8.1, allow WebpackEncoreBundle
+        if (\PHP_VERSION_ID < 80100) {
+            $dependencies->addClassDependency(
+                WebpackEncoreBundle::class,
+                'symfony/webpack-encore-bundle'
+            );
+
+            return;
+        }
+
+        // else: encourage StimulusBundle by requiring it
         $dependencies->addClassDependency(
-            WebpackEncoreBundle::class,
-            'webpack-encore-bundle'
+            StimulusBundle::class,
+            'symfony/stimulus-bundle'
         );
     }
 }

@@ -17,6 +17,8 @@ use SymfonyCasts\Bundle\ResetPassword\Util\ResetPasswordCleaner;
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
  * @author Ryan Weaver   <ryan@symfonycasts.com>
+ *
+ * @final
  */
 class ResetPasswordRemoveExpiredCommand extends Command
 {
@@ -29,24 +31,18 @@ class ResetPasswordRemoveExpiredCommand extends Command
         parent::__construct('reset-password:remove-expired');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this->setDescription('Remove expired reset password requests from persistence.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Removing expired reset password requests...');
 
         $intRemoved = $this->cleaner->handleGarbageCollection(true);
 
-        $output->writeln(sprintf('Garbage collection successful. Removed %s reset password request object(s).', $intRemoved));
+        $output->writeln(\sprintf('Garbage collection successful. Removed %s reset password request object(s).', $intRemoved));
 
         return 0;
     }

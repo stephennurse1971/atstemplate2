@@ -1,6 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Doctrine\Persistence;
+
+use BadMethodCallException;
+use Doctrine\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\Mapping\ClassMetadataFactory;
+
+use function get_class;
+use function method_exists;
+use function sprintf;
 
 /**
  * Base class to simplify ObjectManager decorators
@@ -13,105 +23,97 @@ abstract class ObjectManagerDecorator implements ObjectManager
     protected $wrapped;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function find($className, $id)
+    public function find(string $className, $id)
     {
         return $this->wrapped->find($className, $id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function persist($object)
+    public function persist(object $object)
     {
         $this->wrapped->persist($object);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($object)
+    public function remove(object $object)
     {
         $this->wrapped->remove($object);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function merge($object)
+    public function clear(): void
     {
-        return $this->wrapped->merge($object);
+        $this->wrapped->clear();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function clear($objectName = null)
-    {
-        $this->wrapped->clear($objectName);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function detach($object)
+    public function detach(object $object)
     {
         $this->wrapped->detach($object);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function refresh($object)
+    public function refresh(object $object)
     {
         $this->wrapped->refresh($object);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function flush()
     {
         $this->wrapped->flush();
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function getRepository($className)
+    public function getRepository(string $className)
     {
         return $this->wrapped->getRepository($className);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function getClassMetadata($className)
+    public function getClassMetadata(string $className)
     {
         return $this->wrapped->getClassMetadata($className);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    /** @phpstan-return ClassMetadataFactory<ClassMetadata<object>> */
     public function getMetadataFactory()
     {
         return $this->wrapped->getMetadataFactory();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function initializeObject($obj)
+    public function initializeObject(object $obj)
     {
         $this->wrapped->initializeObject($obj);
     }
 
+    /** @param mixed $value */
+    public function isUninitializedObject($value): bool
+    {
+        if (! method_exists($this->wrapped, 'isUninitializedObject')) {
+            $wrappedClass = get_class($this->wrapped);
+
+            throw new BadMethodCallException(sprintf(
+                <<<'EXCEPTION'
+Context: Trying to call %s
+Problem: The wrapped ObjectManager, an instance of %s does not implement this method.
+Solution: Implement %s::isUninitializedObject() with a signature compatible with this one:
+    public function isUninitializedObject(mixed $value): bool
+EXCEPTION
+                ,
+                __METHOD__,
+                $wrappedClass,
+                $wrappedClass
+            ));
+        }
+
+        return $this->wrapped->isUninitializedObject($value);
+    }
+
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function contains($object)
+    public function contains(object $object)
     {
         return $this->wrapped->contains($object);
     }

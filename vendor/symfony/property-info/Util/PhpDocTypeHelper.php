@@ -102,9 +102,9 @@ final class PhpDocTypeHelper
     /**
      * Creates a {@see Type} from a PHPDoc type.
      */
-    private function createType(DocType $type, bool $nullable, string $docType = null): ?Type
+    private function createType(DocType $type, bool $nullable): ?Type
     {
-        $docType = $docType ?? (string) $type;
+        $docType = (string) $type;
 
         if ($type instanceof Collection) {
             $fqsen = $type->getFqsen();
@@ -115,15 +115,17 @@ final class PhpDocTypeHelper
 
             [$phpType, $class] = $this->getPhpTypeAndClass((string) $fqsen);
 
-            $key = $this->getTypes($type->getKeyType());
-            $value = $this->getTypes($type->getValueType());
+            $collection = \is_a($class, \Traversable::class, true) || \is_a($class, \ArrayAccess::class, true);
 
-            // More than 1 type returned means it is a Compound type, which is
-            // not handled by Type, so better use a null value.
-            $key = 1 === \count($key) ? $key[0] : null;
-            $value = 1 === \count($value) ? $value[0] : null;
+            // it's safer to fall back to other extractors if the generic type is too abstract
+            if (!$collection && !class_exists($class)) {
+                return null;
+            }
 
-            return new Type($phpType, $nullable, $class, true, $key, $value);
+            $keys = $this->getTypes($type->getKeyType());
+            $values = $this->getTypes($type->getValueType());
+
+            return new Type($phpType, $nullable, $class, $collection, $keys, $values);
         }
 
         // Cannot guess
@@ -131,27 +133,20 @@ final class PhpDocTypeHelper
             return null;
         }
 
-        if (str_ends_with($docType, '[]')) {
-            $collectionKeyType = new Type(Type::BUILTIN_TYPE_INT);
-            $collectionValueType = $this->createType($type, false, substr($docType, 0, -2));
+        if (str_ends_with($docType, '[]') && $type instanceof Array_) {
+            $collectionKeyTypes = new Type(Type::BUILTIN_TYPE_INT);
+            $collectionValueTypes = $this->getTypes($type->getValueType());
 
-            return new Type(Type::BUILTIN_TYPE_ARRAY, $nullable, null, true, $collectionKeyType, $collectionValueType);
+            return new Type(Type::BUILTIN_TYPE_ARRAY, $nullable, null, true, $collectionKeyTypes, $collectionValueTypes);
         }
 
         if ((str_starts_with($docType, 'list<') || str_starts_with($docType, 'array<')) && $type instanceof Array_) {
             // array<value> is converted to x[] which is handled above
             // so it's only necessary to handle array<key, value> here
-            $collectionKeyType = $this->getTypes($type->getKeyType())[0];
-
+            $collectionKeyTypes = $this->getTypes($type->getKeyType());
             $collectionValueTypes = $this->getTypes($type->getValueType());
-            if (1 != \count($collectionValueTypes)) {
-                // the Type class does not support union types yet, so assume that no type was defined
-                $collectionValueType = null;
-            } else {
-                $collectionValueType = $collectionValueTypes[0];
-            }
 
-            return new Type(Type::BUILTIN_TYPE_ARRAY, $nullable, null, true, $collectionKeyType, $collectionValueType);
+            return new Type(Type::BUILTIN_TYPE_ARRAY, $nullable, null, true, $collectionKeyTypes, $collectionValueTypes);
         }
 
         $docType = $this->normalizeType($docType);

@@ -64,14 +64,12 @@ class Terminal
             return self::$stty;
         }
 
-        // skip check if exec function is disabled
-        if (!\function_exists('exec')) {
+        // skip check if shell_exec function is disabled
+        if (!\function_exists('shell_exec')) {
             return false;
         }
 
-        exec('stty 2>&1', $output, $exitcode);
-
-        return self::$stty = 0 === $exitcode;
+        return self::$stty = (bool) shell_exec('stty 2> '.('\\' === \DIRECTORY_SEPARATOR ? 'NUL' : '/dev/null'));
     }
 
     private static function initDimensions()
@@ -160,8 +158,7 @@ class Terminal
 
         $cp = \function_exists('sapi_windows_cp_set') ? sapi_windows_cp_get() : 0;
 
-        $process = proc_open($command, $descriptorspec, $pipes, null, null, ['suppress_errors' => true]);
-        if (!\is_resource($process)) {
+        if (!$process = @proc_open($command, $descriptorspec, $pipes, null, null, ['suppress_errors' => true])) {
             return null;
         }
 
