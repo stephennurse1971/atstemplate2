@@ -693,7 +693,6 @@ class ComposerStaticInit462ac8431872d18c7bc287a78f974efd
         'App\\Controller\\CompanyDetailsController' => __DIR__ . '/../..' . '/src/Controller/CompanyDetailsController.php',
         'App\\Controller\\CompetitorServiceController' => __DIR__ . '/../..' . '/src/Controller/CompetitorServiceController.php',
         'App\\Controller\\CompetitorsController' => __DIR__ . '/../..' . '/src/Controller/CompetitorsController.php',
-        'App\\Controller\\EmailController' => __DIR__ . '/../..' . '/src/Controller/EmailController.php',
         'App\\Controller\\EmailsImportController' => __DIR__ . '/../..' . '/src/Controller/EmailsImportController.php',
         'App\\Controller\\FacebookGroupsController' => __DIR__ . '/../..' . '/src/Controller/FacebookGroupsController.php',
         'App\\Controller\\FacebookGroupsReviewsController' => __DIR__ . '/../..' . '/src/Controller/FacebookGroupsReviewsController.php',

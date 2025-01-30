@@ -16,7 +16,7 @@
         {% endif %}
         {% if format == 'Thumbnail' %}
             <a class="btn btn-outline-secondary btn-sm mt-2"
-               href="{{ path('show_photos_by_location', {location: location.location, author: 'All', format: 'Full' }) }}">Full</a>
+               href="{{ path('show_photos_by_location', {id: location.id, author: 'All', format: 'Full' }) }}">Full</a>
         {% endif %}
     </div>
 

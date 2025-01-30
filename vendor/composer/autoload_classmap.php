@@ -15,7 +15,6 @@ return array(
     'App\\Controller\\CompanyDetailsController' => $baseDir . '/src/Controller/CompanyDetailsController.php',
     'App\\Controller\\CompetitorServiceController' => $baseDir . '/src/Controller/CompetitorServiceController.php',
     'App\\Controller\\CompetitorsController' => $baseDir . '/src/Controller/CompetitorsController.php',
-    'App\\Controller\\EmailController' => $baseDir . '/src/Controller/EmailController.php',
     'App\\Controller\\EmailsImportController' => $baseDir . '/src/Controller/EmailsImportController.php',
     'App\\Controller\\FacebookGroupsController' => $baseDir . '/src/Controller/FacebookGroupsController.php',
     'App\\Controller\\FacebookGroupsReviewsController' => $baseDir . '/src/Controller/FacebookGroupsReviewsController.php',

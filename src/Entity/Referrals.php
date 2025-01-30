@@ -2,48 +2,34 @@
 
 namespace App\Entity;
 
+use App\Repository\BusinessContactsRepository;
 use App\Repository\ReferralsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=ReferralsRepository::class)
- */
+#[ORM\Entity(repositoryClass: ReferralsRepository::class)]
+#[ORM\Table(name: "referrals")]
 class Referrals
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
-    private $user;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    private ?User $user = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=BusinessContacts::class)
-     */
-    private $businessSite;
+    #[ORM\ManyToOne(targetEntity: BusinessContacts::class)]
+    private ?BusinessContacts $businessSite = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $action;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $action = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $dateTime;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $dateTime = null;
 
-
-    /**
-     * @ORM\ManyToOne(targetEntity=BusinessContacts::class, inversedBy="referrals")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
-    private $businessContact;
-
+    #[ORM\ManyToOne(targetEntity: BusinessContacts::class, inversedBy: 'referrals')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    private ?BusinessContacts $businessContact = null;
 
     public function getId(): ?int
     {
@@ -74,8 +60,6 @@ class Referrals
         return $this;
     }
 
-
-
     public function getAction(): ?string
     {
         return $this->action;
@@ -100,8 +84,6 @@ class Referrals
         return $this;
     }
 
-
-
     public function getBusinessContact(): ?BusinessContacts
     {
         return $this->businessContact;
@@ -110,7 +92,7 @@ class Referrals
     public function setBusinessContact(?BusinessContacts $businessContact): self
     {
         $this->businessContact = $businessContact;
+
         return $this;
     }
-
 }

@@ -8,50 +8,34 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use App\Entity\BusinessContacts;
 
-/**
- * @ORM\Entity(repositoryClass=BusinessTypesRepository::class)
- */
+#[ORM\Entity(repositoryClass: BusinessTypesRepository::class)]
+#[ORM\Table(name: "business_types")]
 class BusinessTypes
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $businessType;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $businessType = null;
 
+    #[ORM\Column(type: "float", nullable: true)]
+    private ?float $ranking = null;
 
+    #[ORM\Column(type: "text", nullable: true)]
+    private ?string $description = null;
 
+    #[ORM\OneToMany(targetEntity: BusinessContacts::class, mappedBy: "businessType")]
+    private Collection $businessContacts;
 
+    #[ORM\ManyToOne(targetEntity: MapIcons::class)]
+    private ?MapIcons $mapIcon = null;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $ranking;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $description;
-
-
-    /**
-     * @ORM\OneToMany(targetEntity=BusinessContacts::class, mappedBy="businessType")
-     */
-    private $businessContacts;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=MapIcons::class)
-     */
-    private $mapIcon;
-
-
-
+    public function __construct()
+    {
+        $this->businessContacts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,10 +53,6 @@ class BusinessTypes
 
         return $this;
     }
-
-
-
-
 
     public function getRanking(): ?float
     {
@@ -98,11 +78,6 @@ class BusinessTypes
         return $this;
     }
 
-    public function __construct()
-    {
-        $this->businessContacts = new ArrayCollection();
-    }
-
     /**
      * @return Collection<int, BusinessContacts>
      */
@@ -122,5 +97,4 @@ class BusinessTypes
 
         return $this;
     }
-
 }

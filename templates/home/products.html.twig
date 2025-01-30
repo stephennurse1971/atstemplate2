@@ -141,9 +141,9 @@
 
 
     {% if CompanyDetailsService.companyDetails is not null %}
-        {% if CompanyDetailsService.companyDetails.includeContactFormHomePage ==1 %}
-            {% include 'home/parts/contact_us.html.twig' %}
-        {% endif %}
+{#        {% if CompanyDetailsService.companyDetails.includeContactFormHomePage ==1  %}#}
+{#            {% include 'home/parts/contact_us.html.twig' %}#}
+{#        {% endif %}#}
 
         {% set qr_code =  CompanyDetailsService.companyDetails.companyQrCode %}
         {% if include_QR_code == "Yes" and qr_code is not null %}

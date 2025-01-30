@@ -7,31 +7,22 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CompetitorServiceRepository::class)
+ * @ORM\Table(name="competitor_service")
  */
 class CompetitorService
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Competitors::class)
-     */
+    #[ORM\ManyToOne(targetEntity: Competitors::class)]
     private $competitor;
 
-
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: "text", nullable: true)]
     private $description;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: "float", nullable: true)]
     private $price;
 
     public function getId(): ?int
@@ -50,8 +41,6 @@ class CompetitorService
 
         return $this;
     }
-
-
 
     public function getDescription(): ?string
     {

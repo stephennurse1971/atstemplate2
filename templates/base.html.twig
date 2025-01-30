@@ -9,7 +9,7 @@
     <meta name="author" content="ATS Template 2">
 
 
-    {% if CompanyDetailsService.companyDetails is not null %}
+    {% if CompanyDetailsService.getCompanyDetails is not null %}
         {% if app.environment=='dev' %}
             <link rel="icon"
                   href="{{ asset('administration/Attachments/Favicons/'~CompanyDetailsService.getCompanyDetails.faviconDev) }}">

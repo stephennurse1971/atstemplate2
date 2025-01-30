@@ -7,49 +7,29 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=PhotoLocationsRepository::class)
- */
+#[ORM\Entity(repositoryClass: PhotoLocationsRepository::class)]
+#[ORM\Table(name: 'photo_locations')]
 class PhotoLocations
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $location;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $location;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Photos::class, mappedBy="location")
-     */
-    private $photos;
+    #[ORM\OneToMany(targetEntity: Photos::class, mappedBy: 'location')]
+    private Collection $photos;
 
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $enabledUsers = [];
+    #[ORM\Column(type: 'json')]
+    private array $enabledUsers = [];
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $date;
+    #[ORM\Column(type: 'date', nullable: true)]
+    private ?\DateTimeInterface $date;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $publicPrivate;
-
-
-
-
-
-
-
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $publicPrivate;
 
     public function __construct()
     {
@@ -94,7 +74,6 @@ class PhotoLocations
     public function removePhoto(Photos $photo): self
     {
         if ($this->photos->removeElement($photo)) {
-            // set the owning side to null (unless already changed)
             if ($photo->getLocation() === $this) {
                 $photo->setLocation(null);
             }
@@ -138,10 +117,4 @@ class PhotoLocations
 
         return $this;
     }
-
-
-
-
-
-
 }

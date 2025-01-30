@@ -3,45 +3,35 @@
 namespace App\Entity;
 
 use App\Repository\FileAttachmentsRepository;
+use App\Repository\UsefulLinksRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=FileAttachmentsRepository::class)
- */
+
+#[ORM\Entity(repositoryClass: FileAttachmentsRepository::class)]
+#[ORM\Table(name: "file_attachments")]
+
+
 class FileAttachments
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
+    #[ORM\Column(type: "date", nullable: true)]
     private $date;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
+    #[ORM\Column(type: "json", nullable: true)]
     private $attachments = [];
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $description;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $category;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: "text", nullable: true)]
     private $notes;
-
 
     public function getId(): ?int
     {
@@ -62,8 +52,7 @@ class FileAttachments
 
     public function getAttachments(): ?array
     {
-        $attachments = $this->attachments;
-        return $attachments;
+        return $this->attachments;
     }
 
     public function setAttachments(?array $attachments): self
@@ -72,7 +61,6 @@ class FileAttachments
 
         return $this;
     }
-
 
     public function getDescription(): ?string
     {

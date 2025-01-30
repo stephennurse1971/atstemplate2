@@ -74,6 +74,7 @@ class   HomeController extends AbstractController
             return $this->render('home/home.html.twig', [
                 'photos' => $cms_photo,
                 'cms_copy_array' => $cms_copy,
+                'include_QR_code' => $qrcode,
             ]);
         } else {
             return $this->render('home/products.html.twig', [

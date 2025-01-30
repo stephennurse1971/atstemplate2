@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\CmsCopyPageFormatsRepository;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,236 +11,144 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass=UserRepository::class)
+ *
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: "user")]
+
+
 class User implements UserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $email;
-
+    #[ORM\Column(type: "string", length: 180, unique: true)]
+    private string $email;
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
-     */
-    private $password;
+    #[ORM\Column(type: 'string')]
+    private string $password;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $fullName;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $fullName = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $mobile;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $mobile = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $plainPassword;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $plainPassword = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $email2 = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $Email2;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $mobile2 = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $mobile2;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $firstName = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $lastName = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $firstName;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $LastName;
-
-
-    /**
-     * @ORM\OneToMany(targetEntity=Log::class, mappedBy="user", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Log::class, mappedBy: 'user', orphanRemoval: true)]
     private $logs;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $company = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $company;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $businessPhone = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $homePhone = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $businessPhone;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $homePhone2 = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $homePhone;
+    #[ORM\Column(type: 'date', nullable: true)]
+    private ?\DateTimeInterface $birthday = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $homePhone2;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $email3 = null;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $birthday;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $webPage = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $email3;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $notes = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $webPage;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $inviteDate = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $notes;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $salutation = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $inviteDate;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $jobTitle = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $salutation;
+//    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+//    private ?string $recruitingArea = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $jobTitle;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $linkedIn = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $recruitingArea;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $businessStreet = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $businessCity = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $linkedIn;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $businessPostalCode = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $businessCountry = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $businessStreet;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $homeStreet = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $businessCity;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $homeCity = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $businessPostalCode;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $homePostalCode = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $businessCountry;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $homeCountry = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $homeStreet;
+///
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $homeCity;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $homePostalCode;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $homeCountry;
-
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
-    private $recruitingAreaList = [];
-
-
-    /**
-     * @ORM\OneToMany(targetEntity=PhotoLocations::class, mappedBy="enabledUsers")
-     */
+    #[ORM\OneToMany(targetEntity: PhotoLocations::class, mappedBy: 'enabledUsers')]
     private $photoLocations;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $lastEdited;
+    #[ORM\Column(type: 'date', nullable: true)]
+    private ?\DateTimeInterface $lastEdited = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $entryConflict = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $importTime = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $entryConflict;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $recruiterHighPriority = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $importTime;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $recruiterResponse = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $recruiterHighPriority;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $recruiterResponse;
-
-
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $emailVerified;
-
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $emailVerified = null;
 
     public function __construct()
     {
         $this->logs = new ArrayCollection();
-        $this->photoLocations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -255,42 +164,27 @@ class User implements UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUsername(): string
     {
         return (string)$this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
 
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
-
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getPassword(): string
     {
         return $this->password;
@@ -299,34 +193,22 @@ class User implements UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
 
-    /**
-     * Returning a salt is only needed, if you are not using a modern
-     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
-     *
-     * @see UserInterface
-     */
     public function getSalt(): ?string
     {
         return null;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function eraseCredentials()
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        // Clear any temporary, sensitive data here
     }
 
     public function getFullName(): ?string
     {
-        $fullName = $this->fullName;
-        if ($fullName == NULL) {
+        if ($this->fullName === null) {
             return $this->getFirstName() . " " . $this->getLastName();
         }
         return $this->fullName;
@@ -335,7 +217,6 @@ class User implements UserInterface
     public function setFullName(?string $fullName): self
     {
         $this->fullName = $fullName;
-
         return $this;
     }
 
@@ -347,7 +228,6 @@ class User implements UserInterface
     public function setMobile(?string $mobile): self
     {
         $this->mobile = $mobile;
-
         return $this;
     }
 
@@ -359,10 +239,8 @@ class User implements UserInterface
     public function setPlainPassword(?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
-
         return $this;
     }
-
 
     public function getEmail2(): ?string
     {
@@ -372,7 +250,6 @@ class User implements UserInterface
     public function setEmail2(?string $Email2): self
     {
         $this->Email2 = $Email2;
-
         return $this;
     }
 
@@ -384,10 +261,8 @@ class User implements UserInterface
     public function setMobile2(?string $mobile2): self
     {
         $this->mobile2 = $mobile2;
-
         return $this;
     }
-
 
     public function getFirstName(): ?string
     {
@@ -397,26 +272,20 @@ class User implements UserInterface
     public function setFirstName(?string $firstName): self
     {
         $this->firstName = $firstName;
-
         return $this;
     }
 
     public function getLastName(): ?string
     {
-        return $this->LastName;
+        return $this->lastName;
     }
 
     public function setLastName(?string $LastName): self
     {
-        $this->LastName = $LastName;
-
+        $this->lastName = $LastName;
         return $this;
     }
 
-
-    /**
-     * @return Collection|Log[]
-     */
     public function getLogs(): Collection
     {
         return $this->logs;
@@ -428,22 +297,18 @@ class User implements UserInterface
             $this->logs[] = $log;
             $log->setUser($this);
         }
-
         return $this;
     }
 
     public function removeLog(Log $log): self
     {
         if ($this->logs->removeElement($log)) {
-            // set the owning side to null (unless already changed)
             if ($log->getUser() === $this) {
                 $log->setUser(null);
             }
         }
-
         return $this;
     }
-
 
     public function getCompany(): ?string
     {
@@ -453,7 +318,6 @@ class User implements UserInterface
     public function setCompany(?string $company): self
     {
         $this->company = $company;
-
         return $this;
     }
 
@@ -465,7 +329,6 @@ class User implements UserInterface
     public function setBusinessPhone(?string $businessPhone): self
     {
         $this->businessPhone = $businessPhone;
-
         return $this;
     }
 
@@ -477,7 +340,6 @@ class User implements UserInterface
     public function setHomePhone(?string $homePhone): self
     {
         $this->homePhone = $homePhone;
-
         return $this;
     }
 
@@ -489,7 +351,6 @@ class User implements UserInterface
     public function setHomePhone2(?string $homePhone2): self
     {
         $this->homePhone2 = $homePhone2;
-
         return $this;
     }
 
@@ -501,7 +362,6 @@ class User implements UserInterface
     public function setBirthday(?\DateTimeInterface $birthday): self
     {
         $this->birthday = $birthday;
-
         return $this;
     }
 
@@ -513,7 +373,6 @@ class User implements UserInterface
     public function setEmail3(?string $email3): self
     {
         $this->email3 = $email3;
-
         return $this;
     }
 
@@ -525,7 +384,6 @@ class User implements UserInterface
     public function setWebPage(?string $webPage): self
     {
         $this->webPage = $webPage;
-
         return $this;
     }
 
@@ -537,7 +395,6 @@ class User implements UserInterface
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
-
         return $this;
     }
 
@@ -549,7 +406,6 @@ class User implements UserInterface
     public function setInviteDate(?\DateTimeInterface $inviteDate): self
     {
         $this->inviteDate = $inviteDate;
-
         return $this;
     }
 
@@ -561,7 +417,6 @@ class User implements UserInterface
     public function setSalutation(?string $salutation): self
     {
         $this->salutation = $salutation;
-
         return $this;
     }
 
@@ -573,7 +428,6 @@ class User implements UserInterface
     public function setJobTitle(?string $jobTitle): self
     {
         $this->jobTitle = $jobTitle;
-
         return $this;
     }
 
@@ -585,7 +439,6 @@ class User implements UserInterface
     public function setLinkedIn(?string $linkedIn): self
     {
         $this->linkedIn = $linkedIn;
-
         return $this;
     }
 
@@ -727,8 +580,6 @@ class User implements UserInterface
         return $this;
     }
 
-
-
     public function getEntryConflict(): ?string
     {
         return $this->entryConflict;
@@ -753,8 +604,6 @@ class User implements UserInterface
         return $this;
     }
 
-
-
     public function getEmailVerified(): ?bool
     {
         return $this->emailVerified;
@@ -766,5 +615,6 @@ class User implements UserInterface
 
         return $this;
     }
+
 
 }

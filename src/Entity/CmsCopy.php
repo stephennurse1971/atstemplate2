@@ -8,125 +8,85 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=CmsCopyRepository::class)
  */
+
+#[ORM\Entity(repositoryClass: CmsCopyRepository::class)]
+#[ORM\Table(name: 'Cms_Copy')]
+
+
 class CmsCopy
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $contentText;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $contentText = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $hyperlinks;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $hyperlinks = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $contentTitle;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $contentTitle = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $contentTextFR;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $contentTextFR = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $contentTextDE;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $contentTextDE = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $contentTitleFR;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $contentTitleFR = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $contentTitleDE;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $contentTitleDE = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $tabTitle = null;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $category;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $tabTitle;
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    private ?Product $product = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=false)
-     */
-    private $category;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $staticPageName = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Product::class)
-     */
-    private $product;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $attachment = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $staticPageName;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $ranking = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $attachment;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $tabTitleFR = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $ranking;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $tabTitleDE = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $tabTitleFR;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $pageCountUsers = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $tabTitleDE;
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $pageCountAdmin = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $pageCountUsers;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $pageCountAdmin;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=CmsCopyPageFormats::class)
-     */
-    private $pageLayout;
-
-
-
+    #[ORM\ManyToOne(targetEntity: CmsCopyPageFormats::class)]
+    private ?CmsCopyPageFormats $pageLayout = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-
     public function getContentText(): ?string
     {
         return $this->contentText;
     }
 
-    public function setContentText(string $contentText): self
+    public function setContentText(?string $contentText): self
     {
         $this->contentText = $contentText;
-
         return $this;
     }
 
@@ -138,7 +98,6 @@ class CmsCopy
     public function setHyperlinks(?string $hyperlinks): self
     {
         $this->hyperlinks = $hyperlinks;
-
         return $this;
     }
 
@@ -150,7 +109,6 @@ class CmsCopy
     public function setContentTitle(?string $contentTitle): self
     {
         $this->contentTitle = $contentTitle;
-
         return $this;
     }
 
@@ -159,10 +117,9 @@ class CmsCopy
         return $this->contentTextFR;
     }
 
-    public function setContentTextFR(string $contentTextFR): self
+    public function setContentTextFR(?string $contentTextFR): self
     {
         $this->contentTextFR = $contentTextFR;
-
         return $this;
     }
 
@@ -171,10 +128,9 @@ class CmsCopy
         return $this->contentTextDE;
     }
 
-    public function setContentTextDE(string $contentTextDE): self
+    public function setContentTextDE(?string $contentTextDE): self
     {
         $this->contentTextDE = $contentTextDE;
-
         return $this;
     }
 
@@ -186,7 +142,6 @@ class CmsCopy
     public function setContentTitleFR(?string $contentTitleFR): self
     {
         $this->contentTitleFR = $contentTitleFR;
-
         return $this;
     }
 
@@ -198,11 +153,8 @@ class CmsCopy
     public function setContentTitleDE(?string $contentTitleDE): self
     {
         $this->contentTitleDE = $contentTitleDE;
-
         return $this;
     }
-
-
 
     public function getTabTitle(): ?string
     {
@@ -212,7 +164,6 @@ class CmsCopy
     public function setTabTitle(?string $tabTitle): self
     {
         $this->tabTitle = $tabTitle;
-
         return $this;
     }
 
@@ -221,10 +172,9 @@ class CmsCopy
         return $this->category;
     }
 
-    public function setCategory(?string $category): self
+    public function setCategory(string $category): self
     {
         $this->category = $category;
-
         return $this;
     }
 
@@ -236,7 +186,6 @@ class CmsCopy
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
-
         return $this;
     }
 
@@ -248,7 +197,6 @@ class CmsCopy
     public function setStaticPageName(?string $staticPageName): self
     {
         $this->staticPageName = $staticPageName;
-
         return $this;
     }
 
@@ -260,7 +208,6 @@ class CmsCopy
     public function setAttachment(?string $attachment): self
     {
         $this->attachment = $attachment;
-
         return $this;
     }
 
@@ -272,7 +219,6 @@ class CmsCopy
     public function setRanking(?int $ranking): self
     {
         $this->ranking = $ranking;
-
         return $this;
     }
 
@@ -284,7 +230,6 @@ class CmsCopy
     public function setTabTitleFR(?string $tabTitleFR): self
     {
         $this->tabTitleFR = $tabTitleFR;
-
         return $this;
     }
 
@@ -296,7 +241,6 @@ class CmsCopy
     public function setTabTitleDE(?string $tabTitleDE): self
     {
         $this->tabTitleDE = $tabTitleDE;
-
         return $this;
     }
 
@@ -308,7 +252,6 @@ class CmsCopy
     public function setPageCountUsers(?int $pageCountUsers): self
     {
         $this->pageCountUsers = $pageCountUsers;
-
         return $this;
     }
 
@@ -320,22 +263,17 @@ class CmsCopy
     public function setPageCountAdmin(?int $pageCountAdmin): self
     {
         $this->pageCountAdmin = $pageCountAdmin;
-
         return $this;
     }
 
-    public function getPageLayout(): ?cmsCopyPageFormats
+    public function getPageLayout(): ?CmsCopyPageFormats
     {
         return $this->pageLayout;
     }
 
-    public function setPageLayout(?cmsCopyPageFormats $pageLayout): self
+    public function setPageLayout(?CmsCopyPageFormats $pageLayout): self
     {
         $this->pageLayout = $pageLayout;
-
         return $this;
     }
-
-
-
 }

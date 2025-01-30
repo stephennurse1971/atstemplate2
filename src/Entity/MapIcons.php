@@ -3,28 +3,22 @@
 namespace App\Entity;
 
 use App\Repository\MapIconsRepository;
+use App\Repository\ReferralsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=MapIconsRepository::class)
- */
+#[ORM\Entity(repositoryClass: MapIconsRepository::class)]
+#[ORM\Table(name: "map_icons")]
 class MapIcons
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $iconFile;
 
     public function getId(): ?int

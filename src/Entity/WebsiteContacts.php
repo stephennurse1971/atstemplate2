@@ -4,60 +4,41 @@ namespace App\Entity;
 
 use App\Repository\WebsiteContactsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Product;
 
-/**
- * @ORM\Entity(repositoryClass=WebsiteContactsRepository::class)
- */
+#[ORM\Entity(repositoryClass: WebsiteContactsRepository::class)]
+#[ORM\Table(name: 'website_contacts')]  // Added table name
+
 class WebsiteContacts
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $firstName;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $firstName = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $lastName;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $lastName = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $mobile;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $mobile = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $notes;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $notes = null;
 
+    #[ORM\Column(type: "datetime", nullable: true)]
+    private ?\DateTimeInterface $dateTime = null;
 
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $email = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $dateTime;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $status = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $email;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $status;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Product::class)
-     */
-    private $product;
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    private ?Product $product = null;
 
     public function getId(): ?int
     {
@@ -72,7 +53,6 @@ class WebsiteContacts
     public function setFirstName(?string $firstName): self
     {
         $this->firstName = $firstName;
-
         return $this;
     }
 
@@ -84,7 +64,6 @@ class WebsiteContacts
     public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
-
         return $this;
     }
 
@@ -96,7 +75,6 @@ class WebsiteContacts
     public function setMobile(?string $mobile): self
     {
         $this->mobile = $mobile;
-
         return $this;
     }
 
@@ -108,11 +86,8 @@ class WebsiteContacts
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
-
         return $this;
     }
-
-
 
     public function getDateTime(): ?\DateTimeInterface
     {
@@ -122,7 +97,6 @@ class WebsiteContacts
     public function setDateTime(?\DateTimeInterface $dateTime): self
     {
         $this->dateTime = $dateTime;
-
         return $this;
     }
 
@@ -134,7 +108,6 @@ class WebsiteContacts
     public function setEmail(?string $email): self
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -146,7 +119,6 @@ class WebsiteContacts
     public function setStatus(?string $status): self
     {
         $this->status = $status;
-
         return $this;
     }
 
@@ -158,7 +130,6 @@ class WebsiteContacts
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
-
         return $this;
     }
 }

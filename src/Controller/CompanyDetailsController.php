@@ -99,6 +99,7 @@ class CompanyDetailsController extends AbstractController
      */
     public function edit(Request $request, CompanyDetails $companyDetails, CompanyDetailsRepository $companyDetailsRepository): Response
     {
+
         $form = $this->createForm(CompanyDetailsType::class, $companyDetails);
         $form->handleRequest($request);
 
@@ -134,6 +135,7 @@ class CompanyDetailsController extends AbstractController
                 );
                 $companyDetails->setCompanyQrCode($newFilenameQR);
             }
+
             $companyDetailsRepository->add($companyDetails, true);
 
             return $this->redirectToRoute('company_details_index', [], Response::HTTP_SEE_OTHER);

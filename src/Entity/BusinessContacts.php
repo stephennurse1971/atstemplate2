@@ -6,130 +6,84 @@ use App\Repository\BusinessContactsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Entity\BusinessContacts;
 
-/**
- * @ORM\Entity(repositoryClass=BusinessContactsRepository::class)
- */
+#[ORM\Entity(repositoryClass: BusinessContactsRepository::class)]
+#[ORM\Table(name: "business_contacts")]
 class BusinessContacts
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $firstName;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $lastName;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $email;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $mobile;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $landline;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $company;
 
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $AddressStreet;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $AddressCity;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $AddressPostCode;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $AddressCountry;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $BusinessOrPerson;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=BusinessTypes::class)
-     * @ORM\JoinColumn(nullable=true)
-     */
+    #[ORM\ManyToOne(targetEntity: BusinessTypes::class)]
+    #[ORM\JoinColumn(nullable: true)]
     private $businessType;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $website;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $status;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: "float", nullable: true)]
     private $locationLatitude;
 
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
+    #[ORM\Column(type: "float", nullable: true)]
     private $locationLongitude;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $photo;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $files;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: "text", nullable: true)]
     private $notes;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $addressCounty;
 
-
-
-    /**
-     * @ORM\OneToMany(targetEntity=Referrals::class, mappedBy="businessContact", cascade={"remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Referrals::class, mappedBy: "businessContact", cascade: ["remove"], orphanRemoval: true)]
     private $referrals;
 
-
+    public function __construct()
+    {
+        $this->referrals = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -144,7 +98,6 @@ class BusinessContacts
     public function setFirstName(?string $firstName): self
     {
         $this->firstName = $firstName;
-
         return $this;
     }
 
@@ -156,7 +109,6 @@ class BusinessContacts
     public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
-
         return $this;
     }
 
@@ -168,7 +120,6 @@ class BusinessContacts
     public function setEmail(?string $email): self
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -180,7 +131,6 @@ class BusinessContacts
     public function setMobile(?string $mobile): self
     {
         $this->mobile = $mobile;
-
         return $this;
     }
 
@@ -192,7 +142,6 @@ class BusinessContacts
     public function setLandline(?string $landline): self
     {
         $this->landline = $landline;
-
         return $this;
     }
 
@@ -204,11 +153,8 @@ class BusinessContacts
     public function setCompany(?string $company): self
     {
         $this->company = $company;
-
         return $this;
     }
-
-
 
     public function getAddressStreet(): ?string
     {
@@ -218,7 +164,6 @@ class BusinessContacts
     public function setAddressStreet(?string $AddressStreet): self
     {
         $this->AddressStreet = $AddressStreet;
-
         return $this;
     }
 
@@ -230,7 +175,6 @@ class BusinessContacts
     public function setAddressCity(?string $AddressCity): self
     {
         $this->AddressCity = $AddressCity;
-
         return $this;
     }
 
@@ -242,7 +186,6 @@ class BusinessContacts
     public function setAddressPostCode(?string $AddressPostCode): self
     {
         $this->AddressPostCode = $AddressPostCode;
-
         return $this;
     }
 
@@ -254,7 +197,6 @@ class BusinessContacts
     public function setAddressCountry(?string $AddressCountry): self
     {
         $this->AddressCountry = $AddressCountry;
-
         return $this;
     }
 
@@ -266,7 +208,6 @@ class BusinessContacts
     public function setBusinessOrPerson(?string $BusinessOrPerson): self
     {
         $this->BusinessOrPerson = $BusinessOrPerson;
-
         return $this;
     }
 
@@ -278,7 +219,6 @@ class BusinessContacts
     public function setBusinessType(?BusinessTypes $businessType): self
     {
         $this->businessType = $businessType;
-
         return $this;
     }
 
@@ -290,7 +230,6 @@ class BusinessContacts
     public function setWebsite(?string $website): self
     {
         $this->website = $website;
-
         return $this;
     }
 
@@ -302,7 +241,6 @@ class BusinessContacts
     public function setStatus(?string $status): self
     {
         $this->status = $status;
-
         return $this;
     }
 
@@ -314,7 +252,6 @@ class BusinessContacts
     public function setLocationLatitude(?float $locationLatitude): self
     {
         $this->locationLatitude = $locationLatitude;
-
         return $this;
     }
 
@@ -326,7 +263,6 @@ class BusinessContacts
     public function setLocationLongitude(?float $locationLongitude): self
     {
         $this->locationLongitude = $locationLongitude;
-
         return $this;
     }
 
@@ -338,7 +274,6 @@ class BusinessContacts
     public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
-
         return $this;
     }
 
@@ -350,7 +285,6 @@ class BusinessContacts
     public function setFiles(?string $files): self
     {
         $this->files = $files;
-
         return $this;
     }
 
@@ -362,7 +296,6 @@ class BusinessContacts
     public function setNotes(?string $notes): self
     {
         $this->notes = $notes;
-
         return $this;
     }
 
@@ -374,18 +307,10 @@ class BusinessContacts
     public function setAddressCounty(?string $addressCounty): self
     {
         $this->addressCounty = $addressCounty;
-
         return $this;
     }
 
-
-
-    public function __construct()
-    {
-        $this->referrals = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    public function getReferrals()
+    public function getReferrals(): Collection
     {
         return $this->referrals;
     }
@@ -402,13 +327,10 @@ class BusinessContacts
     public function removeReferral(Referrals $referral): self
     {
         if ($this->referrals->removeElement($referral)) {
-            // Set the owning side to null
             if ($referral->getBusinessContact() === $this) {
                 $referral->setBusinessContact(null);
             }
         }
         return $this;
     }
-
-
 }

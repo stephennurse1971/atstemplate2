@@ -38,4 +38,28 @@
             </div>
         {% endfor %}
     </div>
+
+    {% if CompanyDetailsService.companyDetails is not null %}
+                {% if CompanyDetailsService.companyDetails.includeContactFormHomePage ==1 %}
+                    {% include 'home/parts/contact_us.html.twig' %}
+                {% endif %}
+
+        {% set qr_code =  CompanyDetailsService.companyDetails.companyQrCode %}
+        {% if include_QR_code == "Yes" and qr_code is not null %}
+            <div class="row">
+                {% set image = asset('administration/Attachments/Favicons/'~qr_code) %}
+                <div class="col-lg-12 col-md-12 m-4 p-4 col-xl-12">
+                    <div class="justify-content-center d-flex">
+                        <div class="homepage-gallery-image-container">
+                            {% if qr_code is not null %}
+                                <a title="{{ CompanyDetailsService.companyDetails.companyName }}" target="_blank" href="{{ path('create_vcard_company') }}">
+                                    <img class="homepage-image" src="{{ image }}">
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
 {% endblock body %}
