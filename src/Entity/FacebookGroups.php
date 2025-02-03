@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
+use App\Repository\BusinessContactsRepository;
 use App\Repository\FacebookGroupsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=FacebookGroupsRepository::class)
- * @ORM\Table(name="facebook_groups")
- */
+#[ORM\Entity(repositoryClass: FacebookGroupsRepository::class)]
+#[ORM\Table(name: "facebook_groups")]
+
 class FacebookGroups
 {
     #[ORM\Id]

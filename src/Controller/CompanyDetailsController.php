@@ -267,44 +267,14 @@ class CompanyDetailsController extends AbstractController
         $referer = $request->headers->get('Referer');
         $company_details = $companyDetailsRepository->find('1');
 
-        if ($input == 'headerDisplayLogin') {
-            if ($company_details->isHeaderDisplayLogin() != '1') {
-                $company_details->setHeaderDisplayLogin('1');
-            }
-            if ($company_details->isHeaderDisplayLogin() =='1') {
-                $company_details->setHeaderDisplayLogin('0');
-            }
+        $fieldname = $input;
+        $getter = 'is' . ucfirst($fieldname);
+        $setter = 'set' . ucfirst($fieldname);
+
+        if (method_exists($company_details, $getter) && method_exists($company_details, $setter)) {
+            $newValue = !$company_details->$getter();
+            $company_details->$setter($newValue);
         }
-
-//        headerDisplayPhotos
-//        headerDisplayFacebookPages
-//        headerDisplayCompetitors
-//
-//        headerDisplayBusinessContacts
-//        headerDisplayWeather
-//        homePagePhotosOnly
-//        includeContactFormHomePage
-//
-//        footerDisplayProducts
-//        footerDisplaySubProducts
-//        footerDisplaySocialMedia
-//        footerDisplayContactDetails
-//        footerDisplayAddress
-//        footerDisplayTelNumbers
-//        multiLingual
-//        enableUserRegistration
-
-
-//        headerDisplayLogin
-//        headerDisplayContactDetails
-//        headerDisplayProducts
-//        headerDisplaySubProducts
-
-//        userIncludeHomeAddress
-//        userIncludeBusinessAddress
-//        userIncludePersonalDetails
-//        userIncludeJobDetails
-
 
         $manager->persist($company_details);
         $manager->flush();

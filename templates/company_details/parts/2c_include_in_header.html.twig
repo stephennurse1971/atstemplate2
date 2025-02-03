@@ -5,7 +5,7 @@
         <tr>
             <th>Login</th>
             <td>
-                {% if company_detail.headerDisplayLogin ==1 %}
+                {% if company_detail.headerDisplayLogin %}
                     <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayLogin'}) }}">
                         <i style="color: green" class="fas fa-toggle-on"></i>
                     </a>
@@ -19,7 +19,7 @@
         <tr>
             <th>Contact Details</th>
             <td>
-                {% if company_detail.headerDisplayContactDetails ==1 %}
+                {% if company_detail.headerDisplayContactDetails ==true %}
                     <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayContactDetails'}) }}">
                         <i style="color: green" class="fas fa-toggle-on"></i>
                     </a>
@@ -28,7 +28,6 @@
                         <i style="color: grey" class="fas fa-toggle-off"></i>
                     </a>
                 {% endif %}
-                {{ company_detail.headerDisplayContactDetails }}
             </td>
         </tr>
         <tr>
@@ -43,7 +42,6 @@
                         <i style="color: grey" class="fas fa-toggle-off"></i>
                     </a>
                 {% endif %}
-                {{ company_detail.headerDisplayProducts }}
             </td>
         </tr>
         <tr>
@@ -58,7 +56,6 @@
                         <i style="color: grey" class="fas fa-toggle-off"></i>
                     </a>
                 {% endif %}
-                {{ company_detail.headerDisplaySubProducts }}
             </td>
         </tr>
         </tbody>

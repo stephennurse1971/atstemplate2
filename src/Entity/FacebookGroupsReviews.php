@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
+
 use App\Repository\FacebookGroupsReviewsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=FacebookGroupsReviewsRepository::class)
- * @ORM\Table(name="facebook_groups_reviews")
- */
+
+#[ORM\Entity(repositoryClass: FacebookGroupsReviewsRepository::class)]
+#[ORM\Table(name: "facebook_groups_reviews")]
+
+
 class FacebookGroupsReviews
 {
     #[ORM\Id]

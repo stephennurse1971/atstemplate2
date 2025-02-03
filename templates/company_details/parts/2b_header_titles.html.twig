@@ -1,18 +1,33 @@
+<style>
+    .social_media_table tr{
+        display: inline-block;
+        width: 100%;
+    }
+    .social_media_table tr th{
+        float: left;
+    }
+    .social_media_table tr td{
+        float: right;
+        margin-right: 25px;
+    }
+</style>
+
 <div class="col-2">
     <div class="row">
         <h4>Header Titles</h4>
         <table class="table small">
             <tbody>
-
             <tr>
-                <th>Header - Products</th>
+                <th>Products</th>
                 <td>
-                    {{ company_detail.headerDisplayProducts }}
+                    {{ company_detail.titleProducts }}
                 </td>
             </tr>
             <tr>
-                <th>Header - SubProducts</th>
-                <td>{{ company_detail.headerDisplaySubProducts }}</td>
+                <th>Sub-Products</th>
+                <td>
+                    {{ company_detail.titleSubProducts }}
+                </td>
             </tr>
             <tr>
                 <th>Useful Links</th>
@@ -21,12 +36,13 @@
             </tbody>
         </table>
     </div>
+
     <div class="row">
-        <h4>HomePage</h4>
+        <h4>Home Page</h4>
         <table class="table small">
             <tbody>
             <tr>
-                <th>Photos Only</th>
+                <th>Photos Only on Home</th>
                 <td>
                     {% if company_detail.homePagePhotosOnly ==1 %}
                         <a href="{{ path('company_details_change_field_status', {'input': 'homePagePhotosOnly'}) }}">
@@ -37,7 +53,6 @@
                             <i style="color: grey" class="fas fa-toggle-off"></i>
                         </a>
                     {% endif %}
-                    {{ company_detail.homePagePhotosOnly }}
                 </td>
             </tr>
             <tr>
@@ -52,7 +67,6 @@
                             <i style="color: grey" class="fas fa-toggle-off"></i>
                         </a>
                     {% endif %}
-                    {{ company_detail.includeContactFormHomePage }}
                 </td>
             </tr>
             <tr>

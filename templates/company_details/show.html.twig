@@ -18,7 +18,9 @@
         {% include 'company_details/parts/2b_header_titles.html.twig' %}
         {% include 'company_details/parts/2c_include_in_header.html.twig' %}
         {% include 'company_details/parts/2d_footer_display.html.twig' %}
-        {% include 'company_details/parts/2e_registration.html.twig' %}
+        {% if company_detail.enableUserRegistration ==1 %}
+            {% include 'company_details/parts/2e_registration.html.twig' %}
+        {% endif %}
     </div>
     <hr>
     <div class="row">

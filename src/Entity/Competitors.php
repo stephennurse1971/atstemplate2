@@ -5,10 +5,10 @@ namespace App\Entity;
 use App\Repository\CompetitorsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=CompetitorsRepository::class)
- * @ORM\Table(name="Competitors")
- */
+#[ORM\Entity(repositoryClass: CompetitorsRepository::class)]
+#[ORM\Table(name: "Competitors")]
+
+
 class Competitors
 {
     #[ORM\Id]

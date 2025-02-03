@@ -5,10 +5,10 @@ namespace App\Entity;
 use App\Repository\WeatherRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=WeatherRepository::class)
- * @ORM\Table(name="weather")  // You can specify a custom table name if needed
- */
+#[ORM\Entity(repositoryClass: WeatherRepository::class)]
+#[ORM\Table(name: "weather")]
+
+
 class Weather
 {
     #[ORM\Id]

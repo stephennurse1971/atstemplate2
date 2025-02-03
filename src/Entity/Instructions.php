@@ -5,10 +5,9 @@ namespace App\Entity;
 use App\Repository\InstructionsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=InstructionsRepository::class)
- * @ORM\Table(name="instructions")
- */
+#[ORM\Entity(repositoryClass: InstructionsRepository::class)]
+#[ORM\Table(name: "instructions")]
+
 class Instructions
 {
     #[ORM\Id]
