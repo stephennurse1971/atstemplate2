@@ -6,14 +6,16 @@ use App\Repository\DogsRepository;
 
 class AgeService
 {
-    public function computeAge($date)
+    public function computeAge(\DateTime $date1, \DateTime $date2): string
     {
-        $now = new \DateTime();
-        if($date < $now) {
-            return '11yrs 3months';
-        } else {
-            return '12';
+        if ($date1 > $date2) {
+            return '0 months';
         }
+        $interval = $date1->diff($date2);
+        $years = $interval->y;
+        $months = $interval->m;
+
+        return sprintf('%d yrs %d months', $years, $months);
     }
 
     public function __construct(DogsRepository $dogsRepository )

@@ -1,5 +1,6 @@
 <td class="mobile">
-    {% if business_contact.locationLongitude|length >3 %}
+
+    {% if business_contact.locationLongitude|length >1 %}
         <a target="_blank"
            href="{{ path('show_location_google_maps',{id: business_contact.id}) }}"
            class="action" data-id="{{ business_contact.id }}"
@@ -16,7 +17,7 @@
 </td>
 
 <td class="desktop">
-    {% if business_contact.locationLongitude|length >3 %}
+    {% if business_contact.locationLongitude|length >1 %}
         <a target="_blank"
            href="{{ path('show_location_google_maps',{id: business_contact.id}) }}"
            class="action" data-id="{{ business_contact.id }}"

@@ -119,11 +119,11 @@ class BusinessContactsController extends AbstractController
         }
 
         $business_types = $businessTypesRepository->findBy([], ['ranking' => 'ASC']);
+
         return $this->render('business_contacts/map_of_business_contacts.html.twig', [
             'business_contacts' => $business_contacts,
             'business_types' => $business_types,
             'subset' => $subset,
-
             'latitude_max' => $latitude_max,
             'latitude_min' => $latitude_min,
             'latitude_average' => $latitude_average,

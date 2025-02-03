@@ -7,6 +7,7 @@
                 </a>
             {% endif %}
             {% for business_type in business_types %}
+
                 {% if subset =='All' %}
                     {% if business_type.mapIcon is not empty %}
                         {% set file = asset('administration/ATSSharedFiles/BusinessContactsMapIcons/')~business_type.mapIcon.iconFile %}
@@ -14,23 +15,26 @@
                 {% else %}
                     {% set file = asset('administration/ATSSharedFiles/BusinessContactsMapIcons/map-marker.webp') %}
                 {% endif %}
-
-                {% if subset == business_type.businessType %}
-                    <a class="btn btn-outline-success btn-sm"
-                       href="{{ path('business_contacts_map', {subset:business_type.businessType}) }}">
-                        {{ business_type.businessType }}
-                        {% if business_type.mapIcon is not empty and subset =='All'%}
-                            <img height="15" width="15" src="{{ file }}" class="rounded-circle">
-                        {% endif %}
-                    </a>
-                {% else %}
-                    <a class="btn btn-outline-primary btn-sm"
-                       href="{{ path('business_contacts_map', {subset:business_type.businessType}) }}">
-                        {{ business_type.businessType }}
-                        {% if business_type.mapIcon is not empty and subset =='All' %}
-                            <img height="15" width="15" src="{{ file }}" class="rounded-circle">
-                        {% endif %}
-                    </a>
+                {% if CountBusinessContactsService.countWithMapLocations(business_type) >0 %}
+                    {% if subset == business_type.businessType %}
+                        <a class="btn btn-outline-success btn-sm"
+                           href="{{ path('business_contacts_map', {subset:business_type.businessType}) }}">
+                            {{ business_type.businessType }}
+                            ({{ CountBusinessContactsService.count(business_type)}})
+                            {% if business_type.mapIcon is not empty and subset =='All' %}
+                                <img height="15" width="15" src="{{ file }}" class="rounded-circle">
+                            {% endif %}
+                        </a>
+                    {% else %}
+                        <a class="btn btn-outline-primary btn-sm"
+                           href="{{ path('business_contacts_map', {subset:business_type.businessType}) }}">
+                            {{ business_type.businessType }}
+                            ({{ CountBusinessContactsService.count(business_type)}})
+                            {% if business_type.mapIcon is not empty and subset =='All' %}
+                                <img height="15" width="15" src="{{ file }}" class="rounded-circle">
+                            {% endif %}
+                        </a>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         </div>
