@@ -8,9 +8,9 @@
 
     <h1 style="color: red">Users</h1>
     {% include 'user/parts/import_and_export_buttons.html.twig' %}
-    <br>
 
-    <table class="table table-striped">
+
+    <table class="table table-responsive small">
         <thead>
         <tr>
             <th>First Name</th>
@@ -47,9 +47,18 @@
                         <i style="color: red" class="fa fa-remove"></i>
                     {% endif %}
                 </td>
-                <td>
+
+                {% if user.defaultLanguage is null %}
+                    {% set language="English" %}
+                {% else %}
+                    {% set language= user.defaultLanguage.language %}
+                {% endif %}
+
+                <td style="text-align: center" data-sort="{{ language }}">
                     {% if user.defaultLanguage is not null %}
-                        {{ user.defaultLanguage.language }}
+                        {% set image = asset('administration/ATSSharedFiles/LanguageIcons/'~ user.defaultLanguage.icon) %}
+                        <img title="{{ user.defaultLanguage.language }}" height="30" width="30" src="{{ image }}">
+
                     {% endif %}
                 </td>
                 <td>
@@ -57,18 +66,22 @@
                 </td>
                 <td>
                     <a class="btn btn-outline-danger btn-sm" target="_blank"
-                       href="{{ path('user_edit', {'id': user.id}) }}">Edit</a>
+                       href="{{ path('user_edit', {'id': user.id}) }}">
+                        <i class="fa fa-pen"></i>
+                    </a>
                 </td>
                 <td>
                     <form method="post" action="{{ path('user_delete', {'id': user.id}) }}">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-                        <button class="btn btn-danger btn-sm">Delete</button>
+                        <button class="btn btn-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                        </button>
                     </form>
                 </td>
                 <td>
-                    <a href="{{ path('create_user_vcard', {id: user.id} ) }}" class="action"
-                       data-id="{{ user.id }}"
-                       data-action="VCF"> <i style="color: blue" class="fas fa-address-card mr-0"></i></a>
+                    {#                    <a href="{{ path('create_user_vcard', {id: user.id} ) }}" class="action" #}
+                    {#                       data-id="{{ user.id }}" #}
+                    {#                       data-action="VCF"> <i style="color: blue" class="fas fa-address-card mr-0"></i></a> #}
                 </td>
             </tr>
         {% endfor %}

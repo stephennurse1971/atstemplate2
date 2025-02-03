@@ -11,13 +11,13 @@
             <a target="_blank" class="btn btn-success btn-sm" href="{{ path('cms_copy_new') }}">New</a>
             <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('cms_photo_index') }}">Photos</a>
         </div>
-        <div class="col-2">
+        <div class="col-2 desktop">
             <a target="_blank" class="btn btn-danger btn-sm" href="{{ path('cms_copy_delete_all_files') }}">Delete All
                 Files</a>
         </div>
     </div>
 
-    <table class="table table-responsive">
+    <table class="table table-responsive small">
         <thead>
         <tr>
             <th style="width: 50px">Category</th>
@@ -84,8 +84,18 @@
                         {{ (cms_copy.contentTitle |slice (0, 50)) }}...
                     {% endif %}
                 </td>
-                <td>
-                    {{ (cms_copy.contentText |slice (0, 250))|raw }}...
+
+                <td class="mobile">
+                    {% set contentText_strigtaps = cms_copy.contentText|striptags %}
+                    {{ contentText_strigtaps|slice(0,20) }}
+                    {% if contentText_strigtaps|length>20 %}...{% endif %}
+
+                </td>
+                <td class="desktop">
+                    {{ (contentText_strigtaps|slice (0, 250))|raw }}
+                    {% if contentText_strigtaps|length> 250 %}...
+                    <i title="{{ contentText_strigtaps|raw }}" class="fa fa-info-circle"></i>
+                    {% endif %}
                 </td>
                 <td>
                     {% if cms_copy.hyperlinks is not empty %}

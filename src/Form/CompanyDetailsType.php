@@ -273,7 +273,27 @@ class CompanyDetailsType extends AbstractType
             ])
             ->add('enableUserRegistration', CheckboxType::class, [
                 'label' => $this->translationsWorker->getTranslations('Enable Registration'),
-                'required' => false]);
+                'required' => false])
+
+            ->add('userIncludeHomeAddress', CheckboxType::class, [
+                'label' => $this->translationsWorker->getTranslations('User Include Home Address'),
+                'required' => false])
+
+            ->add('userIncludeBusinessAddress', CheckboxType::class, [
+                'label' => $this->translationsWorker->getTranslations('User Include Business Address'),
+                'required' => false])
+
+            ->add('userIncludePersonalDetails', CheckboxType::class, [
+                'label' => $this->translationsWorker->getTranslations('User Include Personal Details'),
+                'required' => false])
+
+            ->add('userIncludeJobDetails', CheckboxType::class, [
+                'label' => $this->translationsWorker->getTranslations('User Include Job Details'),
+                'required' => false])
+
+
+
+        ;
 
     }
 

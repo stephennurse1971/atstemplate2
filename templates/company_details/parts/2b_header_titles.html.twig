@@ -1,0 +1,67 @@
+<div class="col-2">
+    <div class="row">
+        <h4>Header Titles</h4>
+        <table class="table small">
+            <tbody>
+
+            <tr>
+                <th>Header - Products</th>
+                <td>
+                    {{ company_detail.headerDisplayProducts }}
+                </td>
+            </tr>
+            <tr>
+                <th>Header - SubProducts</th>
+                <td>{{ company_detail.headerDisplaySubProducts }}</td>
+            </tr>
+            <tr>
+                <th>Useful Links</th>
+                <td>{{ company_detail.titleUsefulLinks }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <h4>HomePage</h4>
+        <table class="table small">
+            <tbody>
+            <tr>
+                <th>Photos Only</th>
+                <td>
+                    {% if company_detail.homePagePhotosOnly ==1 %}
+                        <a href="{{ path('company_details_change_field_status', {'input': 'homePagePhotosOnly'}) }}">
+                            <i style="color: green" class="fas fa-toggle-on"></i>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('company_details_change_field_status', {'input': 'homePagePhotosOnly'}) }}">
+                            <i style="color: grey" class="fas fa-toggle-off"></i>
+                        </a>
+                    {% endif %}
+                    {{ company_detail.homePagePhotosOnly }}
+                </td>
+            </tr>
+            <tr>
+                <th>Contact Form</th>
+                <td>
+                    {% if company_detail.includeContactFormHomePage ==1 %}
+                        <a href="{{ path('company_details_change_field_status', {'input': 'includeContactFormHomePage'}) }}">
+                            <i style="color: green" class="fas fa-toggle-on"></i>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('company_details_change_field_status', {'input': 'includeContactFormHomePage'}) }}">
+                            <i style="color: grey" class="fas fa-toggle-off"></i>
+                        </a>
+                    {% endif %}
+                    {{ company_detail.includeContactFormHomePage }}
+                </td>
+            </tr>
+            <tr>
+                <th>QR code</th>
+                <td>
+                    {{ company_detail.includeQRCodeHomePage }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

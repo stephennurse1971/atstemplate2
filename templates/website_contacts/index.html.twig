@@ -5,7 +5,7 @@
 {% block body %}
     <h1 style="color: red">Website Contacts</h1>
 
-    <table class="table table-responsive">
+    <table class="table table-responsive small">
         <thead>
         <tr>
             <th>Status</th>
@@ -33,10 +33,10 @@
                 </td>
                 <td>
                     {% if CheckIfUserService.checkIfUser(website_contact.email) == true %}
-                    <i style="color: green" class="fa fa-check"></i>
+                        <i title="Already a User" style="color: green" class="fa fa-check"></i>
                     {% endif %}
                     {% if CheckIfUserService.checkIfUser(website_contact.email) == false %}
-                        <i style="color: red" class="fa fa-remove"></i>
+                        <i title="Not already a user" style="color: red" class="fa fa-remove"></i>
                     {% endif %}
 
                 </td>
@@ -74,24 +74,32 @@
 
                 <td>
                     <a class="btn btn-outline-danger btn-sm"
-                       href="{{ path('website_contacts_edit', {'id': website_contact.id}) }}">Edit</a>
+                       href="{{ path('website_contacts_edit', {'id': website_contact.id}) }}">
+                        <i class="fa fa-pen"></i>
+                    </a>
                 </td>
                 <td>
                     {% if website_contact.status == 'Pending' %}
-                        <a class="btn btn-outline-danger btn-sm"
-                           href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'Junk'}) }}">Spam</a>
-                        <a class="btn btn-outline-success btn-sm"
-                           href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'New User'}) }}">Convert
-                            to User</a>
+                        {% if CheckIfUserService.checkIfUser(website_contact.email) == false %}
+                            <a class="btn btn-outline-success btn-sm" title="Convert to User"
+                               href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'New User'}) }}">
+                                <i class="fa fa-arrow-right"></i><i class="fa fa-user"></i>
+                            </a>
+                        {% else %}
+                            Already a user
+                        {% endif %}
+                        <a class="btn btn-outline-danger btn-sm" title="Spam"
+                           href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'Junk'}) }}">
+                            <i class="fas fa-ban"></i>
+                        </a>
                     {% endif %}
                     {% if website_contact.status == 'Junk' %}
-                        <a class="btn btn-outline-primary btn-sm"
-                           href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'Pending'}) }}">Revert
-                            to
-                            Pending</a>
+                        <a class="btn btn-outline-primary btn-sm" title="Revert to Pending"
+                           href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'Pending'}) }}">
+                            <i class="fas fa-recycle"></i>
+                        </a>
                     {% endif %}
                 </td>
-
                 <td>
                     <form method="post" action="{{ path('website_contacts_delete', {'id': website_contact.id}) }}">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ website_contact.id) }}">
@@ -100,7 +108,6 @@
                         </button>
                     </form>
                 </td>
-
             </tr>
         {% endfor %}
         </tbody>
@@ -115,7 +122,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc'],[2, 'asc']],
+                "order": [[0, 'asc'], [2, 'asc']],
                 "paging": true,
                 "searching": true,
                 "bInfo": true

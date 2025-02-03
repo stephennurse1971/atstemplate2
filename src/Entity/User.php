@@ -45,8 +45,6 @@ class User implements UserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $plainPassword = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $email2 = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $mobile2 = null;
@@ -84,8 +82,7 @@ class User implements UserInterface
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $notes = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $inviteDate = null;
+
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $salutation = null;
@@ -93,8 +90,7 @@ class User implements UserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $jobTitle = null;
 
-//    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-//    private ?string $recruitingArea = null;
+
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $linkedIn = null;
@@ -123,13 +119,10 @@ class User implements UserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $homeCountry = null;
 
-///
 
     #[ORM\OneToMany(targetEntity: PhotoLocations::class, mappedBy: 'enabledUsers')]
     private $photoLocations;
 
-    #[ORM\Column(type: 'date', nullable: true)]
-    private ?\DateTimeInterface $lastEdited = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $entryConflict = null;
@@ -137,14 +130,16 @@ class User implements UserInterface
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $importTime = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $recruiterHighPriority = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $recruiterResponse = null;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $emailVerified = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email2 = null;
+
+    #[ORM\ManyToOne]
+    private ?Languages $defaultLanguage = null;
 
     public function __construct()
     {
@@ -242,16 +237,8 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getEmail2(): ?string
-    {
-        return $this->Email2;
-    }
 
-    public function setEmail2(?string $Email2): self
-    {
-        $this->Email2 = $Email2;
-        return $this;
-    }
+
 
     public function getMobile2(): ?string
     {
@@ -398,16 +385,8 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getInviteDate(): ?\DateTimeInterface
-    {
-        return $this->inviteDate;
-    }
 
-    public function setInviteDate(?\DateTimeInterface $inviteDate): self
-    {
-        $this->inviteDate = $inviteDate;
-        return $this;
-    }
+
 
     public function getSalutation(): ?string
     {
@@ -568,17 +547,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getLastEdited(): ?\DateTimeInterface
-    {
-        return $this->lastEdited;
-    }
-
-    public function setLastEdited(?\DateTimeInterface $lastEdited): self
-    {
-        $this->lastEdited = $lastEdited;
-
-        return $this;
-    }
 
     public function getEntryConflict(): ?string
     {
@@ -612,6 +580,30 @@ class User implements UserInterface
     public function setEmailVerified(?bool $emailVerified): self
     {
         $this->emailVerified = $emailVerified;
+
+        return $this;
+    }
+
+    public function getEmail2(): ?string
+    {
+        return $this->email2;
+    }
+
+    public function setEmail2(?string $email2): static
+    {
+        $this->email2 = $email2;
+
+        return $this;
+    }
+
+    public function getDefaultLanguage(): ?Languages
+    {
+        return $this->defaultLanguage;
+    }
+
+    public function setDefaultLanguage(?Languages $defaultLanguage): static
+    {
+        $this->defaultLanguage = $defaultLanguage;
 
         return $this;
     }

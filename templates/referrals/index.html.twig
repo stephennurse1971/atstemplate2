@@ -7,7 +7,7 @@
 
     {% include 'referrals/parts/import_and_export.html.twig' %}
 
-    <table class="table">
+    <table class="table table-responsive small">
         <thead>
         <tr>
             <th>Date</th>
@@ -32,7 +32,7 @@
                 </td>
                 <td>
                     {% if referral.user is null %}
-                        Not logged in
+                        <i title="No user logged in" class="fa fa-user-slash"></i>
                     {% else %}
                         {{ referral.user.fullName }}
                     {% endif %}
@@ -48,7 +48,7 @@
                     {{ referral.businessSite.lastName }}
                 </td>
                 <td style="text-align: center">
-                    {{ referral.action }}
+{#                    {{ referral.action }}#}
                     {% if referral.action == "Website" %}
                         <i title="Launched website" style="color: blue" class="fa fa-globe"></i>
                     {% endif %}
@@ -73,11 +73,14 @@
                         <i title="Downloaded VCF" style="color: blue" class="fas fa-address-card"></i>
                     {% endif %}
                 </td>
-                <td style="text-align: center">
+
+                <td>
+                    <a class="btn btn-outline-danger btn-sm"
                     <a href="{{ path('referrals_edit', {'id': referral.id}) }}">
                         <i class="fa fa-pen"></i>
                     </a>
                 </td>
+
                 <td style="text-align: center">
                     <form method="post" action="{{ path('referrals_delete', {'id': referral.id}) }}">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ referral.id) }}">

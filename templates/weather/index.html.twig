@@ -15,7 +15,7 @@
 
     {% include 'weather/parts/update_and_delete_buttons.html.twig' %}
 
-    <table class="table table-responsive">
+    <table class="table table-responsive small">
         <thead>
         <tr>
             <th>Location</th>
@@ -24,7 +24,6 @@
             <th>Rain</th>
             <th></th>
             <th>Temperature</th>
-
         </tr>
         </thead>
         <tbody>
@@ -49,9 +48,7 @@
                     <i class="fa fa-sun-o" style="color: orange"></i>
                 {% endif %}
             </td>
-            <td>
-
-            </td>
+            <td></td>
             <td style="text-align: right">
                 {{ weather.weather|number_format(0, '.', ',') }} °C
             </td>
@@ -59,7 +56,6 @@
         {% endfor %}
         </tbody>
     </table>
-
     <a class="btn btn-success btn-sm" href="{{ path('weather_new') }}">New</a>
 {% endblock %}
 

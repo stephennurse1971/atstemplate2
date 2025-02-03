@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Languages;
+use App\Entity\Product;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -35,6 +38,11 @@ class UserType extends AbstractType
             ->add('emailVerified')
             ->add('jobTitle', TextType::class, [
                 'required' => false
+            ])
+            ->add('defaultLanguage', EntityType::class, [
+                'class' => Languages::class,
+                'required' => false,
+                'choice_label' => 'language'
             ])
             ->add('linkedIn', TextType::class, [
                 'required' => false
@@ -105,17 +113,8 @@ class UserType extends AbstractType
         $logged_user_roles = $this->security->getUser()->getRoles();
 
         $user_roles = $options['user']->getRoles();
-        if (in_array('ROLE_ADMIN', $logged_user_roles) or in_array('ROLE_SUPER_ADMIN', $logged_user_roles) ) {
+        if (in_array('ROLE_ADMIN', $logged_user_roles) or in_array('ROLE_SUPER_ADMIN', $logged_user_roles)) {
             $builder
-                ->add('lastEdited', DateType::class, [
-                    'required' => false,
-                    'widget' => 'single_text'
-                ])
-                ->add('inviteDate', DateType::class, [
-                    'required' => false,
-                    'widget' => 'single_text'
-                ])
-
                 ->add('roles', ChoiceType::class, [
                     'multiple' => true,
                     'expanded' => true,
@@ -138,41 +137,6 @@ class UserType extends AbstractType
                     'required' => false
                 ]);
         }
-
-        if (in_array('ROLE_RECRUITER', $user_roles)) {
-            $builder
-                ->add('recruiterHighPriority')
-                ->add('recruitingArea')
-                ->add('recruitingAreaList', ChoiceType::class, [
-                    'multiple' => true,
-                    'expanded' => true,
-                    'choices' => [
-                        'Asset Management' => 'AM',
-                        'Investment Banking' => 'IB',
-                        'Fixed Income' => 'FI',
-                        'Equities' => 'Eq',
-                        'Hedge Funds' => 'HF',
-                        'Risk' => 'Risk',
-                        'Private Equity' => 'PE',
-                        'CEOs' => 'CEOs',
-                        'Compliance' => 'Compl',
-                        'HR' => 'HR',
-                        'Human Resources' => 'Human Resources',
-                        'Benefits' => 'Benefits'
-                    ],])
-                ->add('recruiterResponse', ChoiceType::class, [
-                    'multiple' => false,
-                    'required' => false,
-                    'expanded' => false,
-                    'choices' => [
-                        'No reply' => 'No reply',
-                        'Replied and No' => 'Replied and No',
-                        'Replied and Follow-up' => 'Replied and Follow-up'
-                    ],
-                    'data' => 'No reply',
-                ]);
-        }
-
     }
 
     public function __construct(Security $security)

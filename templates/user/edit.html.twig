@@ -14,10 +14,61 @@
     <a class="btn btn-outline-primary btn-sm" href="{{ path('user_index', {status: 'All'}) }}">Return to list</a>
 
     {{ include('user/_delete_form.html.twig') }}
-{% endblock %}
 
+
+{#{{ CompanyDetailsService.getCompanyDetails.userIncludeHomeAddress }}#}
+{#{{ CompanyDetailsService.getCompanyDetails.userIncludeBusinessAddress }}#}
+{#{{ CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails }}#}
+{#{{ CompanyDetailsService.getCompanyDetails.userIncludeJobDetails }}#}
+
+{% endblock %}
 {% block additionaljs %}
+
 <script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+        function hideFieldsIfSectionNotIncluded(sectionFlag, fieldNames) {
+            if (sectionFlag === "0") {
+                fieldNames.forEach(function(fieldName) {
+                    let fieldElement = document.querySelector('[name="' + fieldName + '"]');
+                    if (fieldElement) {
+                        fieldElement.closest('.form-group').style.display = 'none';
+                    }
+                });
+            }
+        }
+
+        // Hide fields based on settings
+        hideFieldsIfSectionNotIncluded("{{ CompanyDetailsService.getCompanyDetails.userIncludeJobDetails }}", [
+            "{{ form.company.vars.full_name }}",
+            "{{ form.jobTitle.vars.full_name }}",
+            "{{ form.linkedIn.vars.full_name }}"
+        ]);
+
+        hideFieldsIfSectionNotIncluded("{{ CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails }}", [
+            "{{ form.birthday.vars.full_name }}",
+            "{{ form.webPage.vars.full_name }}",
+            "{{ form.notes.vars.full_name }}"
+        ]);
+
+        hideFieldsIfSectionNotIncluded("{{ CompanyDetailsService.getCompanyDetails.userIncludeBusinessAddress }}", [
+            "{{ form.businessStreet.vars.full_name }}",
+            "{{ form.businessCity.vars.full_name }}",
+            "{{ form.businessCountry.vars.full_name }}",
+            "{{ form.businessPostalCode.vars.full_name }}",
+            "{{ form.businessPhone.vars.full_name }}"
+        ]);
+
+        hideFieldsIfSectionNotIncluded("{{ CompanyDetailsService.getCompanyDetails.userIncludeHomeAddress }}", [
+            "{{ form.homeStreet.vars.full_name }}",
+            "{{ form.homeCity.vars.full_name }}",
+            "{{ form.homeCountry.vars.full_name }}",
+            "{{ form.homePostalCode.vars.full_name }}",
+            "{{ form.homePhone.vars.full_name }}",
+            "{{ form.homePhone2.vars.full_name }}"
+        ]);
+    });
+
     $('.password').hide();
     $('.password-reset').click(function () {
         $('.password').toggle();

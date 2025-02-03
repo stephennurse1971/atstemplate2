@@ -40,7 +40,7 @@ class UserController extends AbstractController
      */
     public function index(UserRepository $userRepository): Response
     {
-        return $this->render('user/index_project_specific.html.twig', [
+        return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
             'role' => 'All',
             'title' => 'All'
@@ -147,16 +147,6 @@ class UserController extends AbstractController
             'id' => $id,
         ]);
         $referer = $request->server->get('HTTP_REFERER');
-//        $cmsContact = $cmsCopyRepository->findOneBy([
-//            'staticPageName' => 'Introduction Email - Contact']);
-//        $cmsFamily = $cmsCopyRepository->findOneBy([
-//            'staticPageName' => 'Introduction Email - Family']);
-//        $cmsGuest = $cmsCopyRepository->findOneBy([
-//            'staticPageName' => 'Introduction Email - Guest']);
-//        $cmsRecruiter = $cmsCopyRepository->findOneBy([
-//            'staticPageName' => 'Introduction Email - Recruiter']);
-//        $cmsJobApplicant = $cmsCopyRepository->findOneBy([
-//            'staticPageName' => 'Introduction Email - Job Applicant']);
 
         $hasAccess = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
         if ($this->getUser()->getId() == $id || $hasAccess) {

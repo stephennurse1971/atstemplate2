@@ -9,7 +9,7 @@
             <a target="_blank" class="btn btn-success btn-sm" href="{{ path('cms_photo_new') }}">New</a>
             <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('cms_copy_index') }}">CMS Copy</a>
         </div>
-        <div class="col-2">
+        <div class="col-2 desktop">
             {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <a class="btn btn-danger btn-sm" href="{{ path('cms_photos_delete_all_files') }}">Delete All Photos (but
                     keep record)</a>
@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <table class="table table-responsive">
+    <table class="table table-responsive small">
         <thead>
         <tr>
             <th>Category</th>
@@ -129,12 +129,17 @@
 
                 <td>
                     <a class="btn btn-outline-danger btn-sm" target="_blank"
-                       href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">Edit</a>
+                       href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">
+                        <i class="fa fa-pen"></i>
+                    </a>
                 </td>
                 <td>
                     {% if cms_photo.photo|length>0 %}
                         <a class="btn btn-outline-danger btn-sm"
-                           href="{{ path('cms_photo_file_delete', {'id': cms_photo.id}) }}">Delete Photo</a>
+                           href="{{ path('cms_photo_file_delete', {'id': cms_photo.id}) }}">
+{#                            <i class="fab fa-ban"></i>#}
+                            Delete Photo
+                        </a>
                     {% endif %}
                 </td>
                 <td>

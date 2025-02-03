@@ -197,6 +197,18 @@ class CompanyDetails
     #[ORM\Column(type: "text", nullable: true)]
     private ?string $registrationEmail;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $userIncludeHomeAddress = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $userIncludeBusinessAddress = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $userIncludePersonalDetails = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $userIncludeJobDetails = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -865,6 +877,54 @@ class CompanyDetails
     public function setRegistrationEmail(?string $registrationEmail): self
     {
         $this->registrationEmail = $registrationEmail;
+        return $this;
+    }
+
+    public function isUserIncludeHomeAddress(): ?bool
+    {
+        return $this->userIncludeHomeAddress;
+    }
+
+    public function setUserIncludeHomeAddress(?bool $userIncludeHomeAddress): static
+    {
+        $this->userIncludeHomeAddress = $userIncludeHomeAddress;
+
+        return $this;
+    }
+
+    public function isUserIncludeBusinessAddress(): ?bool
+    {
+        return $this->userIncludeBusinessAddress;
+    }
+
+    public function setUserIncludeBusinessAddress(?bool $userIncludeBusinessAddress): static
+    {
+        $this->userIncludeBusinessAddress = $userIncludeBusinessAddress;
+
+        return $this;
+    }
+
+    public function isUserIncludePersonalDetails(): ?bool
+    {
+        return $this->userIncludePersonalDetails;
+    }
+
+    public function setUserIncludePersonalDetails(?bool $userIncludePersonalDetails): static
+    {
+        $this->userIncludePersonalDetails = $userIncludePersonalDetails;
+
+        return $this;
+    }
+
+    public function isUserIncludeJobDetails(): ?bool
+    {
+        return $this->userIncludeJobDetails;
+    }
+
+    public function setUserIncludeJobDetails(?bool $userIncludeJobDetails): static
+    {
+        $this->userIncludeJobDetails = $userIncludeJobDetails;
+
         return $this;
     }
 

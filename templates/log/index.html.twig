@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log index{% endblock %}
+{% block title %}User Log{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Log index</h1>
-
-    <table class="table table-responsive">
+    <h1 style="color: red">User Log</h1>
+    <a class="btn btn-success btn-sm" href="{{ path('log_new') }}">New</a>
+    <table class="table table-responsive small">
         <thead>
         <tr>
             <th>Date</th>
@@ -18,28 +18,36 @@
         <tbody>
         {% for log in logs %}
             <tr>
-                <td data-sort="{{ log.createdAt|date('Y-m-d H:i') }}">{{ log.createdAt ? log.createdAt|date('d-M-Y') : '' }}</td>
-                <td data-sort="{{ log.createdAt|date('Y-m-d H:i') }}">{{ log.createdAt ? log.createdAt|date('H:i') : '' }}</td>
+                <td data-sort="{{ log.createdAt|date('Y-m-d H:i') }}">
+                    {{ log.createdAt ? log.createdAt|date('d-M-Y') : '' }}
+                </td>
+
+                <td data-sort="{{ log.createdAt|date('Y-m-d H:i') }}">
+                    {{ log.createdAt ? log.createdAt|date('H:i') : '' }}
+                </td>
+
                 <td>
                     {{ log.user.fullName }}
                 </td>
 
                 <td>
-                    <a class="btn btn-outline-danger btn-sm" href="{{ path('log_edit', {'id': log.id}) }}">Edit</a>
+                    <a class="btn btn-outline-danger btn-sm" href="{{ path('log_edit', {'id': log.id}) }}">
+                        <i class="fa fa-pen"></i>
+                    </a>
                 </td>
+
                 <td>
                     <form method="post" action="{{ path('log_delete', {'id': log.id}) }}">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ log.id) }}">
-                        <button class="btn btn-danger btn-sm">Delete</button>
+                        <button class="btn btn-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                        </button>
                     </form>
-
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a class="btn btn-success btn-sm" href="{{ path('log_new') }}">New</a>
 {% endblock %}
 
 {% block datatable %}

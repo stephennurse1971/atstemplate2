@@ -6,7 +6,7 @@
     <h1 style="color: red">CMS Copy Page Layouts</h1>
     {% include 'cms_copy_page_formats/parts/import_and_export.html.twig' %}
 
-    <table class="table table-responsive">
+    <table class="table table-responsive small">
         <thead>
         <tr>
             <th>Name</th>
@@ -29,17 +29,23 @@
                 <td>{{ cms_copy_page_format.code }}</td>
                 <td>
                     <a class="btn btn-outline-primary btn-sm"
-                       href="{{ path('cms_copy_page_formats_show', {'id': cms_copy_page_format.id}) }}">Show</a>
+                       href="{{ path('cms_copy_page_formats_show', {'id': cms_copy_page_format.id}) }}">
+                        <i class="fa fa-eye"></i>
+                    </a>
                 </td>
                 <td>
                     <a class="btn btn-outline-danger btn-sm"
-                       href="{{ path('cms_copy_page_formats_edit', {'id': cms_copy_page_format.id}) }}">Edit</a>
+                       href="{{ path('cms_copy_page_formats_edit', {'id': cms_copy_page_format.id}) }}">
+                        <i class="fa fa-pen"></i>
+                    </a>
                 </td>
                 <td>
                     <form method="post"
                           action="{{ path('cms_copy_page_formats_delete', {'id': cms_copy_page_format.id}) }}">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cms_copy_page_format.id) }}">
-                        <button class="btn btn-danger btn-sm">Delete</button>
+                        <button class="btn btn-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                        </button>
                     </form>
 
                 </td>

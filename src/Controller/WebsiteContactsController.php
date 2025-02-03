@@ -111,8 +111,8 @@ class WebsiteContactsController extends AbstractController
             $websiteContact->setStatus('Pending');
             $manager->flush($websiteContact);
         }
-        if($new_status = "Pending"){
-            $websiteContact->setStatus('Pending');
+        if($new_status = "New"){
+            $websiteContact->setStatus('Accepted');
             $manager->flush($websiteContact);
         }
         return $this->redirect($referer);

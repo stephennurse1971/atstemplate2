@@ -53,6 +53,10 @@
         transition: transform 0.3s ease;
     }
 
+    .dashboard {
+        margin-left: 5px;
+    }
+
     .image-wrapper {
         position: relative;
         width: 100%; /* Allow flexibility */

@@ -1,0 +1,66 @@
+<div class="col-2">
+    <table class="table small">
+        <tbody>
+        <h4>Include in Header</h4>
+        <tr>
+            <th>Login</th>
+            <td>
+                {% if company_detail.headerDisplayLogin ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayLogin'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayLogin'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Contact Details</th>
+            <td>
+                {% if company_detail.headerDisplayContactDetails ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayContactDetails'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayContactDetails'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+                {{ company_detail.headerDisplayContactDetails }}
+            </td>
+        </tr>
+        <tr>
+            <th>Products</th>
+            <td>
+                {% if company_detail.headerDisplayProducts ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayProducts'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayProducts'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+                {{ company_detail.headerDisplayProducts }}
+            </td>
+        </tr>
+        <tr>
+            <th>Sub Products Details</th>
+            <td>
+                {% if company_detail.headerDisplaySubProducts ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplaySubProducts'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplaySubProducts'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+                {{ company_detail.headerDisplaySubProducts }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

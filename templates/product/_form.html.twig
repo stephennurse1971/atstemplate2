@@ -1,9 +1,21 @@
+<style>
+    .product_comments {
+        height: 500px;
+    }
+</style>
 {{ form_start(form) }}
 <div class="row">
-    <div class="col-3">
-        {{ form_widget(form) }}
+    <div class="col-2">
+        {{ form_row(form.ranking) }}
+        {{ form_row(form.product) }}
+        {{ form_row(form.category) }}
+        {{ form_row(form.isActive) }}
+        {{ form_row(form.includeInFooter) }}
+    </div>
+    <div class="col-9">
+        {{ form_row(form.comments) }}
     </div>
 </div>
 
-<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+<button class="btn btn-success btn-sm mb-1">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

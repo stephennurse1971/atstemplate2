@@ -1,0 +1,39 @@
+<div class="col-2">
+    <table class="table small">
+        <tbody>
+        <tr>
+            <th>Website</th>
+            <td>
+                <a target="_blank" href="{{ company_detail.companyWebsite }}">
+                    <i title="{{ company_detail.companyWebsite }}" class="fa fa-link"></i>
+                </a>
+                {{ company_detail.companyWebsite }}
+            </td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ company_detail.companyEmail }}</td>
+        </tr>
+        <tr>
+            <th>Password</th>
+            <td>{{ company_detail.companyEmailPassword }}</td>
+        </tr>
+        <tr>
+            <th>Import</th>
+            <td>{{ company_detail.companyEmailImportDirectory }}</td>
+        </tr>
+        <tr>
+            <th>Import Processed</th>
+            <td>{{ company_detail.companyEmailImportProcessedDirectory }}</td>
+        </tr>
+        <tr>
+            <th>SQL</th>
+            <td>{{ company_detail.sqlDatabase }}</td>
+        </tr>
+        <tr>
+            <th>Password</th>
+            <td>{{ company_detail.databasePassword }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

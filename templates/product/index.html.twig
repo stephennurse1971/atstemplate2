@@ -4,8 +4,7 @@
 
 {% block body %}
     <h1 style="color: red">Products</h1>
-
-    <table class="table table-responsive">
+    <table class="table table-responsive small">
         <thead>
         <tr>
             <th>Rank</th>
@@ -40,17 +39,18 @@
                     {% endif %}
                 </td>
                 <td>
+                    {{ product.category }}
                     {% if product.category =='Main' %}
                     <a href="{{ path('product_change_status', {input: 'main_sub', status:'Sub', id:product.id}) }}">
-                        Main
+                        <i class="fa fa-recycle"></i>
                     </a>
                     {% elseif product.category =='Sub'   %}
                         <a href="{{ path('product_change_status', {input: 'main_sub', status:'Main', id:product.id}) }}">
-                            {{ product.category }}
+                            <i class="fa fa-recycle"></i>
                         </a>
                     {% elseif product.category is null %}
                         <a href="{{ path('product_change_status', {input: 'main_sub', status:'Main', id:product.id}) }}">
-                            TBD
+                            <i class="fa fa-recycle"></i>
                         </a>
                     {% endif %}
 
@@ -80,10 +80,17 @@
                     {% endif %}
                 </td>
 
-                <td>{{ product.comments }}</td>
+                <td class="mobile">
+                    {{ product.comments|slice(0,20) }}
+                </td>
+                <td class="desktop">
+                    {{ product.comments  }}
+                </td>
                 <td>
-                    <a class="btn btn-outline-danger btn-sm"
-                       href="{{ path('product_edit', {'id': product.id}) }}">Edit</a>
+                    <a class="btn btn-outline-danger btn-sm" target="_blank"
+                       href="{{ path('product_edit', {'id': product.id}) }}">
+                        <i class="fa fa-pen"></i>
+                    </a>
                 </td>
             </tr>
         {% endfor %}

@@ -5,27 +5,35 @@
 </style>
 {{ form_start(form) }}
 <input type="hidden" name="referer" value="{{ app.request.headers.get('referer') }}">
-<div class="row">
+<div class="row" >
     <div class="col-3 col-lg-2">
         <h2 style="color: red">Personal Details</h2>
         {{ form_row(form.salutation) }}
         {{ form_row(form.firstName) }}
         {{ form_row(form.lastName) }}
         {{ form_row(form.emailVerified  ) }}
+        {{ form_row(form.defaultLanguage  ) }}
 
-        <h2 style="color: red">Company</h2>
-        {% if (form.company is defined) %}
-            {{ form_row(form.company) }}
+        {% if CompanyDetailsService.getCompanyDetails.userIncludeJobDetails == 1 %}
+        <div class="container-job-details">
+            <h2 style="color: red">Company</h2>
+            {% if (form.company is defined) %}
+                {{ form_row(form.company) }}
+            {% endif %}
+            {{ form_row(form.jobTitle) }}
+            {{ form_row(form.linkedIn) }}
+        </div>
+        <div class="container-personal-details">
+            <h2 style="color: red">Other</h2>
+            {{ form_row(form.birthday) }}
+            {{ form_row(form.webPage) }}
+            {{ form_row(form.notes) }}
+        </div>
+        {% else %}
         {% endif %}
-        {{ form_row(form.jobTitle) }}
-        {{ form_row(form.linkedIn) }}
-
-        <h2 style="color: red">Other</h2>
-        {{ form_row(form.birthday) }}
-        {{ form_row(form.webPage) }}
-        {{ form_row(form.notes) }}
     </div>
 
+    {% if CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails == 1 %}
     <div class="col-3 col-lg-2">
         <h2 style="color: red">Email and Tel</h2>
         {{ form_row(form.email) }}
@@ -38,15 +46,24 @@
             {{ form_row(form.password) }}
         {% endif %}
     </div>
+    {% else %}
+    {% endif %}
 
-    <div class="col-3 col-lg-2">
+    {% if CompanyDetailsService.getCompanyDetails.userIncludeBusinessAddress == 1 %}
+    <div class="col-3 col-lg-2 container-business-address">
         <h2 style="color: red">Addresses</h2>
         {{ form_row(form.businessStreet) }}
         {{ form_row(form.businessCity) }}
         {{ form_row(form.businessCountry) }}
         {{ form_row(form.businessPostalCode) }}
         {{ form_row(form.businessPhone) }}
+    </div>
+    {% else %}
+    {% endif %}
 
+    {% if CompanyDetailsService.getCompanyDetails.userIncludeHomeAddress == 1 %}
+    <div class="col-3 col-lg-2 container-home-address">
+        <h2 style="color: red">Addresses</h2>
         {{ form_row(form.homeStreet) }}
         {{ form_row(form.homeCity) }}
         {{ form_row(form.homeCountry) }}
@@ -54,23 +71,8 @@
         {{ form_row(form.homePhone) }}
         {{ form_row(form.homePhone2) }}
     </div>
-    {% if (form.londoner is defined) %}
-        <div class="col-2 col-lg-2">
-            <h2 style="color: red">Messages</h2>
-            {{ form_row(form.inviteDate) }}
-            {{ form_row(form.lastEdited) }}
-        </div>
+    {% else %}
     {% endif %}
-    {% if (form.recruiterHighPriority is defined) %}
-        <div class="col-3 col-lg-2">
-            <h2 style="color: red">Recruiters</h2>
-            {{ form_row(form.recruiterHighPriority) }}
-            {{ form_row(form.recruitingArea) }}
-            {{ form_row(form.recruitingAreaList) }}
-            {{ form_row(form.recruiterResponse) }}
-        </div>
-    {% endif %}
-
     {% if form.roles is defined %}
         <div class="col-3 col-lg-2">
             <h2 style="color: red">Roles</h2>
@@ -85,3 +87,5 @@
 </div>
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+
+

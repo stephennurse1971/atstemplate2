@@ -9,6 +9,10 @@
                         <a target="_blank" href="{{ path('company_details_edit', {'id': '1'}) }}">
                             <i style="color: red" class="fa fa-pen"></i>
                         </a>
+                        <a target="_blank" href="{{ path('company_details_show', {'id': '1'}) }}">
+                            <i style="color: red" class="fa fa-eye"></i>
+                        </a>
+
                     {% else %}
                         <a target="_blank" href="{{ path('company_details_new') }}">
                             <i style="color: blue" class="fa fa-pen"></i>

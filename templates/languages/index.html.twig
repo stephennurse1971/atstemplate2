@@ -7,7 +7,7 @@
 
     {% include 'languages/parts/import_and_export.html.twig' %}
 
-    <table class="table table-responsive">
+    <table class="table table-responsive small">
         <thead>
         <tr>
             <th>Ranking</th>
@@ -70,13 +70,17 @@
                     {{ language.icon }}
                 </td>
                 <td>
-                    <a class="btn btn-outline-danger btn-sm" href="{{ path('languages_edit', {'id': language.id}) }}">Edit</a>
+                    <a class="btn btn-outline-danger btn-sm" href="{{ path('languages_edit', {'id': language.id}) }}">
+                        <i class="fa fa-pen"></i>
+                    </a>
                 </td>
                 <td>
                     <form method="post" action="{{ path('languages_delete', {'id': language.id}) }}"
                           onsubmit="return confirm('Are you sure you want to delete this item?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ language.id) }}">
-                        <button class="btn btn-danger btn-sm">Delete</button>
+                        <button class="btn btn-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                        </button>
                     </form>
                 </td>
             </tr>

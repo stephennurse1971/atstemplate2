@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CompanyDetails;
+use App\Entity\Product;
 use App\Form\CompanyDetailsType;
 use App\Repository\CompanyDetailsRepository;
 
@@ -89,7 +90,7 @@ class CompanyDetailsController extends AbstractController
     public function show(CompanyDetails $companyDetails): Response
     {
         return $this->render('company_details/show.html.twig', [
-            'company_details' => $companyDetails,
+            'company_detail' => $companyDetails,
         ]);
     }
 
@@ -256,4 +257,59 @@ class CompanyDetailsController extends AbstractController
         $manager->flush();
         return new Response(null);
     }
+
+
+    /**
+     * @Route("/company_details_change_field_status/{input}", name="company_details_change_field_status", methods={"GET", "POST"})
+     */
+    public function changeStatus(Request $request, string $input, CompanyDetailsRepository $companyDetailsRepository, EntityManagerInterface $manager): Response
+    {
+        $referer = $request->headers->get('Referer');
+        $company_details = $companyDetailsRepository->find('1');
+
+        if ($input == 'headerDisplayLogin') {
+            if ($company_details->isHeaderDisplayLogin() != '1') {
+                $company_details->setHeaderDisplayLogin('1');
+            }
+            if ($company_details->isHeaderDisplayLogin() =='1') {
+                $company_details->setHeaderDisplayLogin('0');
+            }
+        }
+
+//        headerDisplayPhotos
+//        headerDisplayFacebookPages
+//        headerDisplayCompetitors
+//
+//        headerDisplayBusinessContacts
+//        headerDisplayWeather
+//        homePagePhotosOnly
+//        includeContactFormHomePage
+//
+//        footerDisplayProducts
+//        footerDisplaySubProducts
+//        footerDisplaySocialMedia
+//        footerDisplayContactDetails
+//        footerDisplayAddress
+//        footerDisplayTelNumbers
+//        multiLingual
+//        enableUserRegistration
+
+
+//        headerDisplayLogin
+//        headerDisplayContactDetails
+//        headerDisplayProducts
+//        headerDisplaySubProducts
+
+//        userIncludeHomeAddress
+//        userIncludeBusinessAddress
+//        userIncludePersonalDetails
+//        userIncludeJobDetails
+
+
+        $manager->persist($company_details);
+        $manager->flush();
+        return $this->redirect($referer);
+    }
+
+
 }

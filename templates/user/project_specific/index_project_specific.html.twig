@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends '../../base.html.twig' %}
 
 {% block title %}
     Users: {{ title }}
@@ -6,7 +6,10 @@
 
 {% block body %}
     <h1 style="color: red">Users: {{ title }}</h1>
-    {% include 'user/parts/delete_and_import_and_export_buttons.html.twig' %}
+    <div class="desktop">
+        {% include '../parts/delete_and_import_and_export_buttons.html.twig' %}
+    </div>
+
 
     <table class="table table-responsive">
         <thead>
@@ -15,10 +18,10 @@
                 <th>Festive<br>Message</th>
                 <th>Date</th>
             {% endif %}
-            <th>First Name</th>
+            <th>First Namex</th>
             <th>Last Name</th>
             <th>Company</th>
-            {% include 'user/parts/roles_headers.html.twig' %}
+            {% include '../parts/roles_headers.html.twig' %}
             <th title="Home/Business">Address</th>
             <th>Mobile(s)</th>
             <th>Landlines</th>
@@ -63,7 +66,7 @@
 
                 <td>{{ user.company }}</td>
 
-                {% include 'user/parts/roles_body.html.twig' %}
+                {% include '../parts/roles_body.html.twig' %}
 
                 <td style="text-align: center">
                     {% if user.homeStreet is not empty %}

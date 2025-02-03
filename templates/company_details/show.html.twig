@@ -1,58 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Cms{% endblock %}
+{% block title %}Website Set-up: {{ company_detail.companyName }}{% endblock %}
 
 {% block body %}
-    <h1>Cms</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ cm.id }}</td>
-            </tr>
-            <tr>
-                <th>CompanyEmail</th>
-                <td>{{ cm.companyEmail }}</td>
-            </tr>
-            <tr>
-                <th>CompanyTel</th>
-                <td>{{ cm.companyTel }}</td>
-            </tr>
-            <tr>
-                <th>CompanyAddress</th>
-                <td>{{ cm.companyAddress }}</td>
-            </tr>
-            <tr>
-                <th>Cms1EN</th>
-                <td>{{ cm.cms1EN }}</td>
-            </tr>
-            <tr>
-                <th>Cms2EN</th>
-                <td>{{ cm.cms2EN }}</td>
-            </tr>
-            <tr>
-                <th>Cms3EN</th>
-                <td>{{ cm.cms3EN }}</td>
-            </tr>
-            <tr>
-                <th>Cms4EN</th>
-                <td>{{ cm.cms4EN }}</td>
-            </tr>
-            <tr>
-                <th>Facebook</th>
-                <td>{{ cm.facebook }}</td>
-            </tr>
-            <tr>
-                <th>LinkedIn</th>
-                <td>{{ cm.linkedIn }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a class="btn btn-outline-primary btn-sm" href="{{ path('company_details_index') }}">Return to list</a>
-
-    <a class="btn btn-outline-danger btn-sm" href="{{ path('company_details_edit', {'id': cm.id}) }}">Edit</a>
-
-    {{ include('company_details/_delete_form.html.twig') }}
+    <div class="d-inline-block">
+        <h2 style="color: red">Website Set-up: {{ company_detail.companyName }}</h2>
+    </div>
+    <div class="row">
+        {% include 'company_details/parts/1a_name_contact_tel_favicon.html.twig' %}
+        {% include 'company_details/parts/1b_website_email_sql.html.twig' %}
+        {% include 'company_details/parts/1c_functionality.html.twig' %}
+        {% include 'company_details/parts/1d_address_and_gps.html.twig' %}
+    </div>
+    <hr>
+    <div class="row">
+        {% include 'company_details/parts/2a_social_media.html.twig' %}
+        {% include 'company_details/parts/2b_header_titles.html.twig' %}
+        {% include 'company_details/parts/2c_include_in_header.html.twig' %}
+        {% include 'company_details/parts/2d_footer_display.html.twig' %}
+        {% include 'company_details/parts/2e_registration.html.twig' %}
+    </div>
+    <hr>
+    <div class="row">
+        {% include 'company_details/parts/3a_user_profile.html.twig' %}
+    </div>
+    <a class="btn btn-outline-primary btn-sm mb-1" href="{{ path('company_details_index') }}">Return to list</a>
+    <a class="btn btn-outline-danger btn-sm mb-1" href="{{ path('company_details_edit', {'id': company_detail.id}) }}">Edit</a>
 {% endblock %}
