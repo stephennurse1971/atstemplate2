@@ -5,12 +5,9 @@ namespace App\Entity;
 use App\Repository\CmsCopyRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=CmsCopyRepository::class)
- */
 
 #[ORM\Entity(repositoryClass: CmsCopyRepository::class)]
-#[ORM\Table(name: 'Cms_Copy')]
+#[ORM\Table(name: 'cms_copy')]
 
 
 class CmsCopy

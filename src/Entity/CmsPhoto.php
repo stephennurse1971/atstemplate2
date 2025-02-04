@@ -5,11 +5,9 @@ namespace App\Entity;
 use App\Repository\CmsPhotoRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=CmsPhotoRepository::class)
- */
+
 #[ORM\Entity(repositoryClass: CmsPhotoRepository::class)]
-#[ORM\Table(name: 'Cms_Photo')]
+#[ORM\Table(name: 'cms_photo')]
 class CmsPhoto
 {
     #[ORM\Id]

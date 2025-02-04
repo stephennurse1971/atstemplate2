@@ -5,10 +5,9 @@ namespace App\Entity;
 use App\Repository\EmailsImportRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=EmailsImportRepository::class)
- * @ORM\Table(name="emails_import")
- */
+#[ORM\Entity(repositoryClass: EmailsImportRepository::class)]
+#[ORM\Table(name: "emails_import")]
+
 class EmailsImport
 {
     #[ORM\Id]

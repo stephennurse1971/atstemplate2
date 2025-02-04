@@ -59,7 +59,7 @@
                     {% for product in products %}
                         <div>
                         <span style="white-space: nowrap">
-                        <input type="radio" name="service" required
+                        <input type="checkbox" name="services[]" required
                                value="{{ product.product }}" id="{{ product.product }}">
                         <label class="pr-5" for="{{  product.product }}">{{ product.product }}</label>
                         </span>

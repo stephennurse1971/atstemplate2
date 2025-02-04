@@ -31,15 +31,16 @@
 
             <div class="row">
                 {% if cms_photo_array is not empty %}
-                         <div class="col-md-6">
-                {% else %}
-                        <div class="col-12">
-                {% endif %}
+                <div class="col-md-6">
+                    {% else %}
+                    <div class="col-12">
+                        {% endif %}
                         {% for cms_copy in cms_copy_array|sort((a, b) => a.ranking <=> b.ranking) %}
                             {% if cms_copy.pageLayout is not null %}
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
-                                        <i title="{{ cms_copy.getPageLayout.name }}" style="color: red" class="fa fa-pen"></i>
+                                        <i title="{{ cms_copy.getPageLayout.name }}" style="color: red"
+                                           class="fa fa-pen"></i>
                                     </a>
                                 {% endif %}
 
@@ -141,9 +142,14 @@
 
 
     {% if CompanyDetailsService.companyDetails is not null %}
-{#        {% if CompanyDetailsService.companyDetails.includeContactFormHomePage ==1  %}#}
-{#            {% include 'home/parts/contact_us.html.twig' %}#}
-{#        {% endif %}#}
+        {% for cms_copy in cms_copy_array %}
+            {% if cms_copy.ranking == 1 and cms_copy.staticPageName=='Home' and
+                CompanyDetailsService.companyDetails.includeContactFormHomePage ==1 %}
+                {% include 'home/parts/contact_us.html.twig' %}
+            {% endif %}
+        {% endfor %}
+
+
 
         {% set qr_code =  CompanyDetailsService.companyDetails.companyQrCode %}
         {% if include_QR_code == "Yes" and qr_code is not null %}

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Repository\BusinessContactsRepository;
 use App\Repository\UsefulLinksRepository;
 use Doctrine\ORM\Mapping as ORM;
 

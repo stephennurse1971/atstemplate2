@@ -15,59 +15,51 @@
 
     {{ include('user/_delete_form.html.twig') }}
 
-
-{#{{ CompanyDetailsService.getCompanyDetails.userIncludeHomeAddress }}#}
-{#{{ CompanyDetailsService.getCompanyDetails.userIncludeBusinessAddress }}#}
-{#{{ CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails }}#}
-{#{{ CompanyDetailsService.getCompanyDetails.userIncludeJobDetails }}#}
-
 {% endblock %}
 {% block additionaljs %}
 
 <script>
 
-    document.addEventListener("DOMContentLoaded", function() {
-        function hideFieldsIfSectionNotIncluded(sectionFlag, fieldNames) {
-            if (sectionFlag === "0") {
-                fieldNames.forEach(function(fieldName) {
-                    let fieldElement = document.querySelector('[name="' + fieldName + '"]');
-                    if (fieldElement) {
-                        fieldElement.closest('.form-group').style.display = 'none';
-                    }
-                });
-            }
+    $(document).ready(function() {
+       {#// alert({{ CompanyDetailsService.getCompanyDetails.userIncludeJobDetails }});#}
+
+        if ("{{ CompanyDetailsService.getCompanyDetails.userIncludeJobDetails }}" === "") {
+            // alert("in job details")
+            $("input[name='user[company]']").closest(".form-group").remove();
+            $("input[name='user[jobTitle]']").closest(".form-group").remove();
+            $("input[name='user[linkedIn]']").closest(".form-group").remove();
         }
 
-        // Hide fields based on settings
-        hideFieldsIfSectionNotIncluded("{{ CompanyDetailsService.getCompanyDetails.userIncludeJobDetails }}", [
-            "{{ form.company.vars.full_name }}",
-            "{{ form.jobTitle.vars.full_name }}",
-            "{{ form.linkedIn.vars.full_name }}"
-        ]);
+        if ("{{ CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails }}" === "") {
+            $("input[name='user[email2]']").closest(".form-group").remove();
+            $("input[name='user[email3]']").closest(".form-group").remove();
+            $("input[name='user[mobile2]']").closest(".form-group").remove();
+            $("input[name='user[birthday]']").closest(".form-group").remove();
+            $("input[name='user[webPage]']").closest(".form-group").remove();
+            $("input[name='user[notes]']").closest(".form-group").remove();
+        }
 
-        hideFieldsIfSectionNotIncluded("{{ CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails }}", [
-            "{{ form.birthday.vars.full_name }}",
-            "{{ form.webPage.vars.full_name }}",
-            "{{ form.notes.vars.full_name }}"
-        ]);
+        if ("{{ CompanyDetailsService.getCompanyDetails.userIncludeBusinessAddress }}" === "") {
+            $("input[name='user[businessStreet]']").closest(".form-group").remove();
+            $("input[name='user[businessCity]']").closest(".form-group").remove();
+            $("input[name='user[businessCountry]']").closest(".form-group").remove();
+            $("input[name='user[businessPostalCode]']").closest(".form-group").remove();
+            $("input[name='user[businessPhone]']").closest(".form-group").remove();
+        }
 
-        hideFieldsIfSectionNotIncluded("{{ CompanyDetailsService.getCompanyDetails.userIncludeBusinessAddress }}", [
-            "{{ form.businessStreet.vars.full_name }}",
-            "{{ form.businessCity.vars.full_name }}",
-            "{{ form.businessCountry.vars.full_name }}",
-            "{{ form.businessPostalCode.vars.full_name }}",
-            "{{ form.businessPhone.vars.full_name }}"
-        ]);
+        if ("{{ CompanyDetailsService.getCompanyDetails.userIncludeHomeAddress }}" === "") {
+            $("input[name='user[homeStreet]']").closest(".form-group").remove();
+            $("input[name='user[homeCity]']").closest(".form-group").remove();
+            $("input[name='user[homeCountry]']").closest(".form-group").remove();
+            $("input[name='user[homePostalCode]']").closest(".form-group").remove();
+            $("input[name='user[homePhone]']").closest(".form-group").remove();
+            $("input[name='user[homePhone2]']").closest(".form-group").remove();
+        }
 
-        hideFieldsIfSectionNotIncluded("{{ CompanyDetailsService.getCompanyDetails.userIncludeHomeAddress }}", [
-            "{{ form.homeStreet.vars.full_name }}",
-            "{{ form.homeCity.vars.full_name }}",
-            "{{ form.homeCountry.vars.full_name }}",
-            "{{ form.homePostalCode.vars.full_name }}",
-            "{{ form.homePhone.vars.full_name }}",
-            "{{ form.homePhone2.vars.full_name }}"
-        ]);
     });
+
+
+
 
     $('.password').hide();
     $('.password-reset').click(function () {

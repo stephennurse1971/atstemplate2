@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\User;
 use App\Repository\LogRepository;
 use Doctrine\ORM\Mapping as ORM;
 

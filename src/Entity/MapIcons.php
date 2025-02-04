@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\MapIconsRepository;
-use App\Repository\ReferralsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MapIconsRepository::class)]

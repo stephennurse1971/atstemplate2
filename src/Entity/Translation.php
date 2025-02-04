@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductRepository;
 use App\Repository\TranslationRepository;
 use Doctrine\ORM\Mapping as ORM;
 

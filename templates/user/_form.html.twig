@@ -36,17 +36,19 @@
     <div class="col-3 col-lg-2">
         <h2 style="color: red">Email and Tel</h2>
         {{ form_row(form.email) }}
-
-        {% if CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails == 1 %}
-            {{ form_row(form.email2) }}
-            {{ form_row(form.email3) }}
-        {% endif %}
+        <div class="container-personal-details">
+            {% if CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails == 1 %}
+                {{ form_row(form.email2) }}
+                {{ form_row(form.email3) }}
+            {% endif %}
+        </div>
 
         {{ form_row(form.mobile) }}
-
-        {% if CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails == 1 %}
-            {{ form_row(form.mobile2) }}
-        {% endif %}
+        <div class="container-personal-details">
+            {% if CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails == 1 %}
+                {{ form_row(form.mobile2) }}
+            {% endif %}
+        </div>
 
         {% if form.password is defined %}
             <h2 style="color: red">Password</h2>

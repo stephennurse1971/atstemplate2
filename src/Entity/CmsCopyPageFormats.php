@@ -5,9 +5,7 @@ namespace App\Entity;
 use App\Repository\CmsCopyPageFormatsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=CmsCopyPageFormatsRepository::class)
- */
+
 #[ORM\Entity(repositoryClass: CmsCopyPageFormatsRepository::class)]
 #[ORM\Table(name: "cms_copy_page_formats")]
 

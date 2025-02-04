@@ -165,27 +165,9 @@ class UserController extends AbstractController
                 $lastName = $user->getLastName();
                 $user->setFullName($firstName . ' ' . $lastName);
                 $today = new \DateTime('now');
-                $user->setLastEdited($today);
                 $this->getDoctrine()->getManager()->flush();
 
-                if ($form['sendEmail']->getData() == 1) {
-                    $html = $this->renderView('emails/welcome_email.html.twig', [
-                        'user' => $user,
-                        'roles' => $roles,
-                        'cmsContact' => $cmsContact,
-                        'cmsFamily' => $cmsFamily,
-                        'cmsGuest' => $cmsGuest,
-                        'cmsRecruiter' => $cmsRecruiter,
-                        'cmsJobApplicant' => $cmsJobApplicant,
-                    ]);
-                    $email = (new Email())
-                        ->from('nurse_stephen@hotmail.com')
-                        ->to($user->getEmail())
-                        ->bcc('nurse_stephen@hotmail.com')
-                        ->subject("Welcome to SN's personal website")
-                        ->html($html);
-                    $mailer->send($email);
-                }
+
                 return $this->redirect($referer);
             }
 

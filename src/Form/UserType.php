@@ -121,15 +121,7 @@ class UserType extends AbstractType
                     'choices' => [
                         'Super-Admin' => 'ROLE_SUPER_ADMIN',
                         'Admin' => 'ROLE_ADMIN',
-                        'IT' => 'ROLE_IT',
-                        'Family' => 'ROLE_FAMILY',
-                        'Health' => 'ROLE_HEALTH',
-                        'HMRC' => 'ROLE_HMRC',
-                        'Accountant' => 'ROLE_ACCOUNTANT',
-                        'Contact' => 'ROLE_CONTACT',
-                        'Recruiter' => 'ROLE_RECRUITER',
-                        'Job applicant' => 'ROLE_JOB_APPLICANT',
-                        'Guest' => 'ROLE_GUEST'
+                        'User' => 'ROLE_USER'
                     ],
                     // 'mapped' => false
                 ])

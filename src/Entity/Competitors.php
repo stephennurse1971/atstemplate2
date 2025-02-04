@@ -6,7 +6,7 @@ use App\Repository\CompetitorsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompetitorsRepository::class)]
-#[ORM\Table(name: "Competitors")]
+#[ORM\Table(name: "competitors")]
 
 
 class Competitors

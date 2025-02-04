@@ -4,10 +4,9 @@ namespace App\Entity;
 
 use App\Repository\WebsiteContactsRepository;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Product;
 
 #[ORM\Entity(repositoryClass: WebsiteContactsRepository::class)]
-#[ORM\Table(name: 'website_contacts')]  // Added table name
+#[ORM\Table(name: 'website_contacts')]
 
 class WebsiteContacts
 {
