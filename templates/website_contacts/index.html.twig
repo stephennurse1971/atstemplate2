@@ -4,6 +4,7 @@
 
 {% block body %}
     <h1 style="color: red">Website Contacts</h1>
+    <a class="btn btn-success btn-sm" href="{{ path('new') }}">New</a>
 
     <table class="table table-responsive small">
         <thead>
@@ -18,7 +19,7 @@
             <th>Last Name</th>
             <th>Email</th>
             <th>Mobile</th>
-            <th>Service</th>
+            <th>Product</th>
             <th>Notes</th>
             <th></th>
             <th></th>
@@ -66,9 +67,10 @@
                     {{ website_contact.mobile }}
                 </td>
                 <td style="text-align: left">
-                    {% if website_contact.product is not null %}
-                        {{ website_contact.product.product }}
-                    {% endif %}
+
+                    {% for product in website_contact.product %}
+                        {{ product.product }};
+                    {% endfor %}
                 </td>
                 <td style="text-align: left">{{ website_contact.notes }}</td>
 
@@ -113,8 +115,7 @@
         </tbody>
     </table>
 
-    <a class="btn btn-success btn-sm" href="{{ path('website_contacts_new') }}">New</a>
-{% endblock %}
+   {% endblock %}
 
 
 {% block datatable %}
@@ -122,7 +123,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc'], [2, 'asc']],
+                "order": [[0, 'asc'], [2, 'desc']],
                 "paging": true,
                 "searching": true,
                 "bInfo": true

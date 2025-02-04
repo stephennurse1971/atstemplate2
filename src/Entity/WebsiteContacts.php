@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\WebsiteContactsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WebsiteContactsRepository::class)]
@@ -36,8 +38,17 @@ class WebsiteContacts
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $status = null;
 
-    #[ORM\ManyToOne(targetEntity: Product::class)]
-    private ?Product $product = null;
+    #[ORM\ManyToMany(targetEntity: Product::class)]
+    private Collection $product;
+
+
+
+    public function __construct()
+    {
+        $this->product = new ArrayCollection();
+    }
+
+
 
     public function getId(): ?int
     {
@@ -121,14 +132,31 @@ class WebsiteContacts
         return $this;
     }
 
-    public function getProduct(): ?Product
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProduct(): Collection
     {
         return $this->product;
     }
 
-    public function setProduct(?Product $product): self
+    public function addProduct(Product $product): static
     {
-        $this->product = $product;
+        if (!$this->product->contains($product)) {
+            $this->product->add($product);
+        }
+
         return $this;
     }
+
+    public function removeProduct(Product $product): static
+    {
+        $this->product->removeElement($product);
+
+        return $this;
+    }
+
+
+
+
 }

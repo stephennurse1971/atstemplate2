@@ -33,7 +33,6 @@ class   HomeController extends AbstractController
             $qrcode = $companyDetails->isIncludeQRCodeHomePage();
             $contactform = $companyDetails->isIncludeContactFormHomePage();
         }
-
         $cms_copy = [];
         $cms_photo = [];
         $product = [];

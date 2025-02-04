@@ -3,9 +3,14 @@
 {% block title %}Edit: {{ user.fullName }}{% endblock %}
 
 {% block body %}
+
+    <div id="loader">
+        <img src="loader.gif" alt="Loading..." width="80">
+    </div>
+
     <h1 style="color: red">{{ user.fullName }}</h1>
     <div class="row">
-        <div class="col-6">
+        <div class="col-7">
             <button class="btn btn-outline-danger btn-sm password-reset float-right">Reset Password</button>
         </div>
     </div>
@@ -15,13 +20,29 @@
 
     {{ include('user/_delete_form.html.twig') }}
 
+
 {% endblock %}
 {% block additionaljs %}
 
 <script>
 
     $(document).ready(function() {
-       {#// alert({{ CompanyDetailsService.getCompanyDetails.userIncludeJobDetails }});#}
+
+        $('#user_password').hide();
+
+        $("input[name='user[password]']").removeAttr("required");
+
+        $(".password-reset").click(function () {
+            $('#user_password').toggle();
+            $("input[name='user[password]']").attr("required", "required");
+        });
+
+        // If the user removes focus without entering a password, remove required again
+        $("input[name='user[password]']").blur(function () {
+            if ($(this).val() === "") {
+                $(this).removeAttr("required");
+            }
+        });
 
         if ("{{ CompanyDetailsService.getCompanyDetails.userIncludeJobDetails }}" === "") {
             // alert("in job details")
@@ -55,17 +76,9 @@
             $("input[name='user[homePhone]']").closest(".form-group").remove();
             $("input[name='user[homePhone2]']").closest(".form-group").remove();
         }
-
     });
 
 
-
-
-    $('.password').hide();
-    $('.password-reset').click(function () {
-        $('.password').toggle();
-        $('#user_password').val('');
-    });
     let roles = [];
 
     {% for role in user.roles %}
@@ -73,5 +86,10 @@
     {% endfor %}
     $("#user_roles").val(roles);
 </script>
+    <script>
+        $(window).on("load", function () {
+            $("#loader").fadeOut("fast"); // Hide loader when page is fully loaded
+        });
+    </script>
 
 {% endblock %}

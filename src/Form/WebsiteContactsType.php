@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Count;
 
 class WebsiteContactsType extends AbstractType
 {
@@ -28,14 +29,22 @@ class WebsiteContactsType extends AbstractType
                 'widget' => 'single_text',
                 'required' => false,
             ])
-            ->add('product', EntityType::class, [
+            ->add('products', EntityType::class, [
                 'class' => Product::class,
-                'choice_label' => 'Product', // Adjust to the field to display as the label
+                'multiple' => true,
+                'choice_label' => 'product', // Ensure this matches the entity property name
                 'required' => false,
                 'empty_data' => null,
+                'expanded' => true, // Renders as checkboxes
+                'constraints' => [
+                    new Count([
+                        'min' => 1,
+                        'minMessage' => 'Please select at least one product.',
+                    ])
+                ],
                 'query_builder' => function (ProductRepository $er) {
                     return $er->createQueryBuilder('p')
-                        ->orderBy('p.ranking', 'ASC'); // Replace 'rank' with your field if it's different
+                        ->orderBy('p.ranking', 'ASC');
                 },
             ])
             ->add('status', ChoiceType::class, [

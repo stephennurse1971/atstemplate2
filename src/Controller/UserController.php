@@ -69,8 +69,6 @@ class UserController extends AbstractController
     }
 
 
-
-
     /**
      * @Route("/admin/new", name="user_new", methods={"GET","POST"})
      * @Security("is_granted('ROLE_ADMIN')")
@@ -142,17 +140,14 @@ class UserController extends AbstractController
             'id' => $id,
         ]);
         $referer = $request->server->get('HTTP_REFERER');
-
         $hasAccess = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
-        if ($this->getUser()->getId() == $id || $hasAccess) {
-            $logged_user_fullName = $this->getUser()->getFullName();
 
+        if ($this->getUser()->getId() == $id || $hasAccess) {
+            $old_password = $user->getPassword();
             $roles = $user->getRoles();
             $form = $this->createForm(UserType::class, $user, ['email1' => $user->getEmail(), 'email2' => $user->getEmail2(), 'user' => $user]);
-            $logged_user_roles = $this->getUser()->getRoles();
-            $form->remove('password');
-            $form->handleRequest($request);
 
+            $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $referer = $request->request->get('referer');
                 if ($form->has('role')) {
@@ -164,11 +159,22 @@ class UserController extends AbstractController
                 $firstName = $user->getFirstName();
                 $lastName = $user->getLastName();
                 $user->setFullName($firstName . ' ' . $lastName);
-                $today = new \DateTime('now');
-                $this->getDoctrine()->getManager()->flush();
 
+                if ($form->has('password')) {
 
-                return $this->redirect($referer);
+                    $password = $form->get('password')->getData();
+
+                    if (!empty($password)) {
+                        $encodedPassword = $passwordEncoder->encodePassword($user, $password);
+                        $user->setPassword($encodedPassword);
+                    } else {
+                        // Ensure password is set to an empty string if it's empty (no change to password)
+                        $user->setPassword('');  // Set to empty string, not null
+                    }
+//
+                    $this->getDoctrine()->getManager()->flush();
+                    return $this->redirect($referer);
+                }
             }
 
             return $this->render('user/edit.html.twig', [
@@ -392,7 +398,6 @@ class UserController extends AbstractController
         $response->headers->set('Cache-Control', 'max-age=0');
         return $response;
     }
-
 
 
     /**

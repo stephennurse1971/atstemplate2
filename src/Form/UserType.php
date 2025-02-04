@@ -104,7 +104,8 @@ class UserType extends AbstractType
                 'required' => false
             ])
             ->add('password', PasswordType::class, [
-                // 'mapped' => false,
+                'required' => false,
+                'empty_data' => ''
             ])
             ->add('sendEmail', HiddenType::class, [
                 'mapped' => false,

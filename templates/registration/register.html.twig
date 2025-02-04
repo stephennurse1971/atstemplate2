@@ -7,9 +7,11 @@
     <div class="row">
         <div class="col-2">
             {{ form_start(registrationForm) }}
+            {#            {{ form_row(registrationForm.salutation) }} #}
             {{ form_row(registrationForm.firstName) }}
             {{ form_row(registrationForm.lastName) }}
             {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.mobile) }}
             {{ form_row(registrationForm.plainPassword, {
                 label: 'Password'
             }) }}
@@ -17,9 +19,5 @@
     </div>
     <button type="submit" class="btn btn-success btn-sm">Register</button>
     {{ form_end(registrationForm) }}
-    <br>
-    <br>
-    <br>
-    <br>
     <br>
 {% endblock %}
