@@ -29,6 +29,12 @@
 
 
     $(document).ready(function() {
+
+        if ($('#photo_image').attr('src') && $('#photo_image').attr('src') !== '') {
+            // $('#user_photo').show();
+            $("input[name='user[photo]']").closest(".form-group").hide();
+            //$('#custom-file').hide();
+        }
         $('#user_password').hide();
         $("input[name='user[password]']").removeAttr("required");
         $(".password-reset").click(function () {
@@ -76,12 +82,6 @@
             $("input[name='user[homePhone2]']").closest(".form-group").remove();
         }
     });
-
-
-    if ($('#photo_image').attr('src') && $('#photo_image').attr('src') !== '') {
-        // $('#user_photo').show();
-        $('#user_photo').hide();
-    }
 
     let roles = [];
 

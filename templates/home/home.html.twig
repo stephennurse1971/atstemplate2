@@ -30,7 +30,7 @@
                                     {% else %}
                                         {% set web = 'https://'~ photo.link %}
                                     {% endif %}
-                                    <a title="{{ photo.title }}" target="_blank" href="{{ webk }}">
+                                    <a title="{{ photo.title }}" target="_blank" href="{{ web }}">
                                         <img class="homepage-image rotate-{{ photo.rotate }}" src="{{ image }}">
                                     </a>
                                 {% else %}
