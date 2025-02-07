@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ImportType;
+use App\Form\PasswordResetType;
 use App\Form\UserType;
 use App\Repository\CmsCopyRepository;
 use App\Repository\UserRepository;
@@ -21,7 +22,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
@@ -29,6 +30,13 @@ use Symfony\Component\String\Slugger\SluggerInterface;
  */
 class UserController extends AbstractController
 {
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * @Route("/", name="user_index", methods={"GET"})
      * @Security("is_granted('ROLE_ADMIN')")
@@ -46,22 +54,21 @@ class UserController extends AbstractController
     /**
      * @Route("/reset/password/{id}", name="user_reset_password", methods={"GET","POST"})
      */
-    public function resetPassword(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function resetPassword(Request $request, User $user, UserPasswordHasherInterface $passwordHasher): Response
     {
         $form = $this->createForm(PasswordResetType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword(
-                $passwordEncoder->encodePassword(
+                $passwordHasher->hashPassword(
                     $user,
                     $form->get('password')->getData()
                 )
             );
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->entityManager;
             $entityManager->flush();
             $this->addFlash('success', 'Password reset successfully.');
             return $this->redirect($request->headers->get('referer'));
-
         }
         return $this->render('user/password_reset.html.twig', [
             'form' => $form->createView(),
@@ -74,7 +81,7 @@ class UserController extends AbstractController
      * @Route("/admin/new", name="user_new", methods={"GET","POST"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function new(MailerInterface $mailer, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function new(MailerInterface $mailer, Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user, ['email1' => $user->getEmail(), 'email2' => $user->getEmail2(), 'user' => $user]);
@@ -104,13 +111,13 @@ class UserController extends AbstractController
                 }
             }
 
-
             $get_roles = $form->get('role')->getData();
             $roles = $get_roles;
             $password = $form->get('password')->getData();
             if ($password != '') {
                 $user->setPlainPassword($password);
-                $user->setPassword($passwordEncoder->encodePassword($user, $password));
+                // Use the new password hasher interface here
+                $user->setPassword($passwordHasher->hashPassword($user, $password));
             }
             $user->setRoles($roles);
 
@@ -154,7 +161,7 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
-    public function edit(int $id, MailerInterface $mailer, Request $request, UserPasswordEncoderInterface $passwordEncoder, CmsCopyRepository $cmsCopyRepository, UserRepository $userRepository): Response
+    public function edit(int $id, MailerInterface $mailer, Request $request, UserPasswordHasherInterface $passwordHasher, CmsCopyRepository $cmsCopyRepository, UserRepository $userRepository): Response
     {
         $user = $userRepository->findOneBy([
             'id' => $id,
@@ -170,7 +177,6 @@ class UserController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $referer = $request->request->get('referer');
-
 
                 $photo = $form->get('photo')->getData();
                 if ($photo) {
@@ -189,7 +195,6 @@ class UserController extends AbstractController
                     }
                 }
 
-
                 if ($form->has('role')) {
                     $get_roles = $form->get('role')->getData();
                     $roles = $get_roles;
@@ -201,19 +206,20 @@ class UserController extends AbstractController
                 $user->setFullName($firstName . ' ' . $lastName);
 
                 if ($form->has('password')) {
-
                     $password = $form->get('password')->getData();
 
                     if (!empty($password)) {
-                        $encodedPassword = $passwordEncoder->encodePassword($user, $password);
+                        // Use the new password hasher interface here
+                        $encodedPassword = $passwordHasher->hashPassword($user, $password);
                         $user->setPassword($encodedPassword);
                     } else {
                         // Ensure password is set to an empty string if it's empty (no change to password)
                         $user->setPassword('');  // Set to empty string, not null
                     }
-                    $this->getDoctrine()->getManager()->flush();
-                    return $this->redirect($referer);
                 }
+
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirect($referer);
             }
             return $this->render('user/edit.html.twig', [
                 'user' => $user,
@@ -222,13 +228,14 @@ class UserController extends AbstractController
                 'user_photos_directory' => $this->getParameter('user_photos_directory'),
             ]);
         }
+
         if ($referer) {
             return $this->redirect($referer);
-
         } else {
             return $this->redirectToRoute('user_index');
         }
     }
+
 
     /**
      * @Route("/{id}/{role}/{active}/edit", name="user_edit_button", methods={"GET","POST"})

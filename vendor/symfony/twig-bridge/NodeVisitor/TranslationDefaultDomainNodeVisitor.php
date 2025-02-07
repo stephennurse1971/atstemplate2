@@ -34,7 +34,7 @@ use Twig\NodeVisitor\NodeVisitorInterface;
  */
 final class TranslationDefaultDomainNodeVisitor implements NodeVisitorInterface
 {
-    private $scope;
+    private Scope $scope;
 
     public function __construct()
     {
@@ -110,9 +110,6 @@ final class TranslationDefaultDomainNodeVisitor implements NodeVisitorInterface
         return $node;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority(): int
     {
         return -10;

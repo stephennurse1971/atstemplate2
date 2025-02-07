@@ -12,7 +12,6 @@
 namespace Symfony\Component\Form\Test;
 
 use Symfony\Component\Form\Test\Traits\RunTestTrait;
-use Symfony\Component\Form\Tests\VersionAwareTest;
 
 /**
  * Base class for performance tests.
@@ -25,17 +24,13 @@ use Symfony\Component\Form\Tests\VersionAwareTest;
 abstract class FormPerformanceTestCase extends FormIntegrationTestCase
 {
     use RunTestTrait;
-    use VersionAwareTest;
 
     /**
      * @var int
      */
     protected $maxRunningTime = 0;
 
-    /**
-     * @return mixed
-     */
-    private function doRunTest()
+    private function doRunTest(): mixed
     {
         $s = microtime(true);
         $result = parent::runTest();
@@ -62,10 +57,7 @@ abstract class FormPerformanceTestCase extends FormIntegrationTestCase
         $this->maxRunningTime = $maxRunningTime;
     }
 
-    /**
-     * @return int
-     */
-    public function getMaxRunningTime()
+    public function getMaxRunningTime(): int
     {
         return $this->maxRunningTime;
     }

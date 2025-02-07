@@ -7,14 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-/**
- * @method User|null find($id, $lockMode = null, $lockVersion = null)
- * @method User|null findOneBy(array $criteria, array $orderBy = null)
- * @method User[]    findAll()
- * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
@@ -25,16 +19,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
-    public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
+    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
-        $user->setPassword($newEncodedPassword);
+
+        // Update the user's password
+        $user->setPassword($newHashedPassword);
+
+        // Persist the changes in the database
         $this->_em->persist($user);
         $this->_em->flush();
     }
-
 
     public function User()
     {
@@ -42,13 +39,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->select('t.fullname')
             ->distinct()
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
-
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
 
     public function lastEditedListByDate(\DateTimeInterface $date)
     {
@@ -57,25 +49,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->setParameter('val', $date)
             ->orderBy('u.id', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
-
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
     /**
      * @param string $role
-     *
      * @return array
      */
     public function findByRole($role)
@@ -83,10 +61,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->createQueryBuilder('u')
             ->where('u.roles LIKE :roles')
             ->setParameter('roles', '%"'.$role.'"%')
-            ->orderBy('u.fullName','ASC')
+            ->orderBy('u.fullName', 'ASC')
             ->getQuery()
             ->getResult();
     }
+
     public function findByCompany($company)
     {
         return $this->createQueryBuilder('u')
@@ -95,6 +74,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getResult();
     }
+
     public function findByBirthday($birthday)
     {
         return $this->createQueryBuilder('u')
@@ -103,5 +83,4 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getResult();
     }
-
 }

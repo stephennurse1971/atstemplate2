@@ -7,13 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: "user")]
 
 
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -147,6 +148,13 @@ class User implements UserInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+
+    public function getUserIdentifier(): string
+    {
+        // Typically, the identifier is the user's email or username
+        return $this->email ?? '';
     }
 
     public function getEmail(): ?string

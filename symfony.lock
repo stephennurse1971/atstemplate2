@@ -38,23 +38,6 @@
             "./migrations/.gitignore"
         ]
     },
-    "jsvrcek/ics-bundle": {
-        "version": "1.1"
-    },
-    "phpunit/phpunit": {
-        "version": "8.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "4.7",
-            "ref": "b5b34fa22319ac1f7f6c180b30e160841c154a1e"
-        },
-        "files": [
-            "./.env.test",
-            "./phpunit.xml.dist",
-            "./tests/bootstrap.php"
-        ]
-    },
     "sensio/framework-extra-bundle": {
         "version": "6.2",
         "recipe": {
@@ -89,18 +72,6 @@
         },
         "files": [
             "./bin/console"
-        ]
-    },
-    "symfony/debug-bundle": {
-        "version": "5.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "5.3",
-            "ref": "5aa8aa48234c8eb6dbdd7b3cd5d791485d2cec4b"
-        },
-        "files": [
-            "./config/packages/debug.yaml"
         ]
     },
     "symfony/flex": {
@@ -155,57 +126,6 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
-    "symfony/messenger": {
-        "version": "5.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "5.4",
-            "ref": "8bd5f27013fb1d7217191c548e340f0bdb11912c"
-        },
-        "files": [
-            "./config/packages/messenger.yaml"
-        ]
-    },
-    "symfony/monolog-bundle": {
-        "version": "3.8",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "3.7",
-            "ref": "213676c4ec929f046dfde5ea8e97625b81bc0578"
-        },
-        "files": [
-            "./config/packages/monolog.yaml"
-        ]
-    },
-    "symfony/notifier": {
-        "version": "5.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "5.0",
-            "ref": "c31585e252b32fe0e1f30b1f256af553f4a06eb9"
-        },
-        "files": [
-            "./config/packages/notifier.yaml"
-        ]
-    },
-    "symfony/phpunit-bridge": {
-        "version": "6.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "5.3",
-            "ref": "819d3d2ffa4590eba0b8f4f3e5e89415ee4e45c3"
-        },
-        "files": [
-            "./.env.test",
-            "./bin/phpunit",
-            "./phpunit.xml.dist",
-            "./tests/bootstrap.php"
-        ]
-    },
     "symfony/routing": {
         "version": "5.4",
         "recipe": {
@@ -229,19 +149,6 @@
         },
         "files": [
             "./config/packages/security.yaml"
-        ]
-    },
-    "symfony/translation": {
-        "version": "5.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "5.3",
-            "ref": "da64f5a2b6d96f5dc24914517c0350a5f91dee43"
-        },
-        "files": [
-            "./config/packages/translation.yaml",
-            "./translations/.gitignore"
         ]
     },
     "symfony/twig-bundle": {
@@ -305,12 +212,6 @@
         "files": [
             "./config/packages/reset_password.yaml"
         ]
-    },
-    "symfonycasts/verify-email-bundle": {
-        "version": "v1.13.0"
-    },
-    "twig/extra-bundle": {
-        "version": "v3.6.0"
     },
     "welp/ical-bundle": {
         "version": "1.0.1"

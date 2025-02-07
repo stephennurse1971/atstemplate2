@@ -1,8 +1,11 @@
 security:
   enable_authenticator_manager: true
+
+  # Password hashers configuration (formerly 'encoders')
   password_hashers:
     App\Entity\User:
       algorithm: auto
+      cost: 12
 
   providers:
     app_user_provider:
@@ -19,6 +22,7 @@ security:
       lazy: true
       provider: app_user_provider
       custom_authenticator: App\Security\SecurityAuthenticator
+      entry_point: App\Security\AuthenticationEntryPoint  # Updated entry_point to use AuthenticationEntryPoint
       logout:
         path: app_logout
         target: app_login
@@ -33,13 +37,3 @@ security:
     ROLE_STAFF: [ROLE_USER]
     ROLE_PARTNER: [ROLE_USER]
     ROLE_USER: [ROLE_USER]
-
-# Add any test-specific security configurations if needed
-when@test:
-  security:
-    password_hashers:
-      Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
-        algorithm: auto
-        cost: 4
-        time_cost: 3
-        memory_cost: 10

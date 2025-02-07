@@ -23,20 +23,10 @@ use Twig\Node\Node;
 #[YieldReady]
 final class DumpNode extends Node
 {
-    /**
-     * @var LocalVariable|string
-     */
-    private $varPrefix;
+    private LocalVariable|string $varPrefix;
 
-    /**
-     * @param LocalVariable|string $varPrefix
-     */
-    public function __construct($varPrefix, ?Node $values, int $lineno, ?string $tag = null)
+    public function __construct(LocalVariable|string $varPrefix, ?Node $values, int $lineno, ?string $tag = null)
     {
-        if (!\is_string($varPrefix) && !$varPrefix instanceof LocalVariable) {
-            throw new \TypeError(sprintf('Expected a string or an instance of "%s", but got "%s".', LocalVariable::class, get_debug_type($varPrefix)));
-        }
-
         $nodes = [];
         if (null !== $values) {
             $nodes['values'] = $values;
