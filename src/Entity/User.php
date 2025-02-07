@@ -136,6 +136,9 @@ class User implements UserInterface
     #[ORM\ManyToOne]
     private ?Languages $defaultLanguage = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $photo = null;
+
     public function __construct()
     {
         $this->logs = new ArrayCollection();
@@ -599,6 +602,18 @@ class User implements UserInterface
     public function setDefaultLanguage(?Languages $defaultLanguage): static
     {
         $this->defaultLanguage = $defaultLanguage;
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): static
+    {
+        $this->photo = $photo;
 
         return $this;
     }

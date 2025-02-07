@@ -24,8 +24,16 @@
                                     <source src="{{ image }}" type="video/mp4"/>
                                 </video>
                             {% else %}
-                                {% if photo.link is not null %}
-                                    <a title="{{ photo.title }}" target="_blank" href="{{ photo.link }}">
+                                {% if photo.link is not null %
+
+                                    {% if photo.link starts with 'http' %}
+                                        {% set web =  photo.link %}
+                                    {% else %}
+                                        {% set web = 'https://'~ photo.link %}
+                                    {% endif %}
+
+
+                                    <a title="{{ photo.title }}" target="_blank" href="{{ webk }}">
                                         <img class="homepage-image rotate-{{ photo.rotate }}" src="{{ image }}">
                                     </a>
                                 {% else %}

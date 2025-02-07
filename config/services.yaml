@@ -20,6 +20,7 @@ parameters:
   instructions_attachments_directory:        '%kernel.project_dir%/public/administration/Attachments/Instructions/'
   photos_directory:                          '%kernel.project_dir%/public/administration/Attachments/Photos/'
   user_attachments_directory:                '%kernel.project_dir%/public/administration/Attachments/Users/'
+  user_photos_directory:                     '%kernel.project_dir%/public/administration/Attachments/Users/Photos'
 
   business_contacts_import_directory:        '%kernel.project_dir%/public/administration/Import/BusinessContacts/'
   business_types_import_directory:           '%kernel.project_dir%/public/administration/Import/BusinessTypes/'

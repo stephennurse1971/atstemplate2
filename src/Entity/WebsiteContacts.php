@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WebsiteContactsRepository::class)]
 #[ORM\Table(name: 'website_contacts')]
-
 class WebsiteContacts
 {
     #[ORM\Id]
@@ -26,7 +25,7 @@ class WebsiteContacts
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $mobile = null;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[ORM\Column(type: "text", nullable: true)]
     private ?string $notes = null;
 
     #[ORM\Column(type: "datetime", nullable: true)]
@@ -38,17 +37,13 @@ class WebsiteContacts
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $status = null;
 
-    #[ORM\ManyToMany(targetEntity: Product::class)]
-    private Collection $product;
-
-
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'websiteContacts')]
+    private Collection $productsRequested;
 
     public function __construct()
     {
-        $this->product = new ArrayCollection();
+        $this->productsRequested = new ArrayCollection();
     }
-
-
 
     public function getId(): ?int
     {
@@ -132,31 +127,22 @@ class WebsiteContacts
         return $this;
     }
 
-    /**
-     * @return Collection<int, Product>
-     */
-    public function getProduct(): Collection
+    public function getProductsRequested(): Collection
     {
-        return $this->product;
+        return $this->productsRequested;
     }
 
-    public function addProduct(Product $product): static
+    public function addProductsRequested(Product $product): static
     {
-        if (!$this->product->contains($product)) {
-            $this->product->add($product);
+        if (!$this->productsRequested->contains($product)) {
+            $this->productsRequested[] = $product;
         }
-
         return $this;
     }
 
-    public function removeProduct(Product $product): static
+    public function removeProductsRequested(Product $product): static
     {
-        $this->product->removeElement($product);
-
+        $this->productsRequested->removeElement($product);
         return $this;
     }
-
-
-
-
 }

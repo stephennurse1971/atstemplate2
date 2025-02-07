@@ -41,5 +41,14 @@
                 $(".product-container").show();
             }
         })
+
+        var photo_present = $("#cms_photo_photo").val();
+
+
+            if ($('#cms_photo_id').attr('src') && $('#cms_photo_id').attr('src') !== '') {
+                $('#cms_photo_id').show();
+                $('.photo_input_field').hide(); // Hide input field if image exists
+            }
+
     </script>
 {% endblock %}

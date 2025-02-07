@@ -29,7 +29,7 @@ class WebsiteContactsType extends AbstractType
                 'widget' => 'single_text',
                 'required' => false,
             ])
-            ->add('products', EntityType::class, [
+            ->add('productsRequested', EntityType::class, [
                 'class' => Product::class,
                 'multiple' => true,
                 'choice_label' => 'product', // Ensure this matches the entity property name

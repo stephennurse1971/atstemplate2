@@ -16,8 +16,8 @@
                 Files</a>
         </div>
     </div>
-
-    <table class="table table-responsive small">
+    <br>
+    <table class="table small">
         <thead>
         <tr>
             <th style="width: 50px">Category</th>
@@ -71,7 +71,7 @@
                 <td>
                     {% if cms_copy.ranking != '1' %}
                         <i title="Ranking must be 1 to effect the tab title" class="fa fa-info-circle"></i>
-                        ---
+                        -- -
                     {% else %}
                         {{ cms_copy.tabTitle }}
                     {% endif %}
@@ -79,22 +79,20 @@
                 <td title="{{ cms_copy.contentTitle }}">
                     {% if cms_copy.ranking != '1' %}
                         <i title="Ranking must be 1 to effect the heading" class="fa fa-info-circle"></i>
-                        ---
+                        -- -
                     {% else %}
                         {{ (cms_copy.contentTitle |slice (0, 50)) }}...
                     {% endif %}
                 </td>
-
-                <td class="mobile">
-                    {% set contentText_strigtaps = cms_copy.contentText|striptags %}
-                    {{ contentText_strigtaps|slice(0,20) }}
-                    {% if contentText_strigtaps|length>20 %}...{% endif %}
-
-                </td>
-                <td class="desktop">
+                {% set contentText_strigtaps = cms_copy.contentText|striptags %}
+                {#                <td class="mobile"> #}
+                {#                    {{ contentText_strigtaps|slice(0,20) }} #}
+                {#                    {% if contentText_strigtaps|length>20 %}...{% endif %} #}
+                {#                </td> #}
+                <td>
                     {{ (contentText_strigtaps|slice (0, 250))|raw }}
                     {% if contentText_strigtaps|length> 250 %}...
-                    <i title="{{ contentText_strigtaps|raw }}" class="fa fa-info-circle"></i>
+                        <i title="{{ contentText_strigtaps|raw }}" class="fa fa-info-circle"></i>
                     {% endif %}
                 </td>
                 <td>
@@ -162,7 +160,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[1, 'asc'], [2, 'asc']],
+                "order": [[0, 'asc'],[1, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

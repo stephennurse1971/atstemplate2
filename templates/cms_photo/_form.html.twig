@@ -38,29 +38,33 @@
 
 <h2>Photo</h2>
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-2">
         {% if cms_photo.photo is not empty %}
             {% set loc = asset('administration/Attachments/CMSPhotos/'~cms_photo.photo) %}
             <a class="btn btn-outline-danger btn-sm" target="_blank"
                href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
-                <img height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
+                <img id="cms_photo_id" height="200" width="200" src="{{ loc }}" class="rounded-circle"></a>
+            <br>
+            <b>{{ cms_photo.photo }}</b><br><br>
             <a class="btn btn-sm btn-danger" href="{{ path('cms_photo_file_delete', {'id': cms_photo.id}) }}">Delete
                 photo</a>
             <br>
-        {% endif %}
-    </div>
-</div>
-<br>
 
-<div class="row">
-    <div class="col-md-3">
-        {{ cms_photo.photo }}<br>
-        {{ form_row(form.photo) }}
+        {% endif %}
     </div>
     <div class="col-md-3">
         {{ form_row(form.rotate) }}
         <br>
     </div>
+</div>
+<br>
+
+<div class="row">
+    <div class="col-md-3 photo_input_field">
+
+        <b> {{ form_row(form.photo) }}</b>
+    </div>
+
 </div>
 <hr>
 <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>

@@ -77,7 +77,6 @@
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ facebook_group.id) }}">
                         <button class="btn btn-danger btn-sm">Delete</button>
                     </form>
-
                 </td>
             </tr>
         {% endfor %}
@@ -90,7 +89,7 @@
 {% block datatable %}
     <script>
         $(document).ready(function () {
-            $('.main-table').DataTable({
+            $('.table').DataTable({
                 'pageLength': 100,
                 "order": [[0, 'asc']],
                 "paging": false,

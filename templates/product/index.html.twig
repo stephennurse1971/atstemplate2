@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1 style="color: red">Products</h1>
-    <table class="table table-responsive small">
+    <table class="table table-responsive small" id="table">
         <thead>
         <tr>
             <th>Rank</th>
@@ -13,10 +13,13 @@
             <th>Main/<br>Sub</th>
             <th>Active</th>
             <th>Include<br>In Footer</th>
-            <th style="width: 500px">Comments</th>
+            <th>Include<br>In Contact<br>Form</th>
+{#            <th class="mobile" style="width: 500px">Comments</th>#}
+            <th class="desktop" style="width: 500px">Comments</th>
             <th></th>
         </tr>
         </thead>
+
         <tbody>
         {% for product in products %}
             <tr>
@@ -41,19 +44,18 @@
                 <td>
                     {{ product.category }}
                     {% if product.category =='Main' %}
-                    <a href="{{ path('product_change_status', {input: 'main_sub', status:'Sub', id:product.id}) }}">
-                        <i class="fa fa-recycle"></i>
+                    <a title="Change to Sub-Product" href="{{ path('product_change_status', {input: 'main_sub', status:'Sub', id:product.id}) }}">
+                        <i class="fa fa-arrow-right"></i>
                     </a>
                     {% elseif product.category =='Sub'   %}
-                        <a href="{{ path('product_change_status', {input: 'main_sub', status:'Main', id:product.id}) }}">
-                            <i class="fa fa-recycle"></i>
+                        <a title="Change to Main Product" href="{{ path('product_change_status', {input: 'main_sub', status:'Main', id:product.id}) }}">
+                            <i class="fa fa-arrow-left"></i>
                         </a>
                     {% elseif product.category is null %}
-                        <a href="{{ path('product_change_status', {input: 'main_sub', status:'Main', id:product.id}) }}">
-                            <i class="fa fa-recycle"></i>
+                        <a  title="Set to Main Product" href="{{ path('product_change_status', {input: 'main_sub', status:'Main', id:product.id}) }}">
+                            <i class="fa fa-download"></i>
                         </a>
                     {% endif %}
-
                 </td>
 
                 <td style="text-align: center">
@@ -79,10 +81,21 @@
                         </a>
                     {% endif %}
                 </td>
-
-                <td class="mobile">
-                    {{ product.comments|slice(0,20) }}
+                <td style="text-align: center">
+                    {% if product.includeInContactForm =="Yes" %}
+                        <a href="{{ path('product_change_status', {input: 'includeInContactForm', status:'No', id:product.id}) }}">
+                            <i style="color: green" class="fa fa-check"></i>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('product_change_status', {input: 'includeInContactForm', status:'Yes',id:product.id}) }}">
+                            <i style="color: red" class="fa fa-remove"></i>
+                        </a>
+                    {% endif %}
                 </td>
+
+{#                <td class="mobile">#}
+{#                    {{ product.comments|slice(0,20) }}#}
+{#                </td>#}
                 <td class="desktop">
                     {{ product.comments  }}
                 </td>
@@ -100,13 +113,12 @@
     <a class="btn btn-success btn-sm" href="{{ path('product_new') }}">New</a>
 {% endblock %}
 
-
 {% block datatable %}
     <script>
         $(document).ready(function () {
-            $('.table').DataTable({
+            $('#table').DataTable({
                 'pageLength': 100,
-                "order": [[3, 'desc'], [0, 'asc']],
+                "order": [0, 'asc'],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

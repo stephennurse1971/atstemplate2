@@ -10,10 +10,10 @@
         <div class="col-12 col-md-2">
             <div class="border py-4">
                 <h2 style="color: red">Company</h2>
-                <li style="margin-left: 10px">
+                <li style="margin-left: 20px">
                     <a target="_blank" href="{{ path('company_details_index') }}">Company Details</a>
                 </li>
-                <li style="margin-left: 10px">
+                <li style="margin-left: 20px">
                     <a target="_blank" href="{{ path('product_index') }}">Products</a>
                 </li>
             </div>
@@ -21,58 +21,60 @@
         <div class="col-12 col-md-2">
             <div class="border py-4">
                 <h2 style="color: red">CMS</h2>
-                <li style="margin-left: 10px">
+                <li style="margin-left: 20px">
                     <a target="_blank" href="{{ path('cms_copy_index') }}">Main-Page Copy</a>
                 </li>
-                <li style="margin-left: 10px">
+                <li style="margin-left: 20px">
                     <a target="_blank" href="{{ path('sub_page_index') }}">Sub-Page Copy</a>
                 </li>
-                <li style="margin-left: 10px">
+                <li style="margin-left: 20px">
                     <a target="_blank" href="{{ path('cms_photo_index') }}">Photos</a>
                 </li>
                 <hr>
-                <li style="margin-left: 10px">
+                <li style="margin-left: 20px">
                     <a target="_blank" href="{{ path('cms_copy_page_formats_index') }}">CMS Page Format</a>
                 </li>
-                <li style="margin-left: 10px">
+                <li style="margin-left: 20px">
                     <a target="_blank" href="{{ path('map_icons_index') }}">Map Icons</a>
                 </li>
             </div>
         </div>
+        {% if CompanyDetailsService.companyDetails.headerDisplayPhotos ==1 %}
         <div class="col-12 col-md-2">
             <div class="border py-4">
                 <h3 style="color: red">Photos</h3>
-                <li style="margin-left: 10px">
+                <li style="margin-left: 20px">
                     <a target="_blank" href="{{ path('photos_index') }}">Photos</a>
                 </li>
-                <li style="margin-left: 10px">
+                <li style="margin-left: 20px">
                     <a target="_blank" href="{{ path('photo_locations_index') }}">Photo Locations</a>
                 </li>
             </div>
         </div>
+        {% endif %}
 
         {% if CompanyDetailsService.companyDetails is not null %}
             {% if CompanyDetailsService.companyDetails.footerDisplayProducts ==1 %}
                 <div class="col-12 col-md-2">
                     <div class="border py-4">
                         <h2 style="color: red">E-mails</h2>
-                        <li style="margin-left: 10px">
+                        <li style="margin-left: 20px">
                             <a target="_blank" href="{{ path('website_contacts_index') }}">
                                 <i title="Website inquiries awaiting a response" style="color: purple"
                                    class="fa fa-user-secret"></i>
                                 Website Inquiries</a>
                         </li>
                         <hr>
-                        <li style="margin-left: 10px">
+                        <li style="margin-left: 20px">
                             <a target="_blank" href="{{ path('emails_fetch') }}">Emails: Fetch from Outlook</a>
                         </li>
-                        <li style="margin-left: 10px">
+                        <li style="margin-left: 20px">
                             <a target="_blank" href="{{ path('emails_import_index') }}">Emails: All</a>
                         </li>
-                        <li style="margin-left: 10px">
+                        <li style="margin-left: 20px">
                             <a target="_blank" href="{{ path('emails_import_index') }}">Emails: Processed</a>
                         </li>
-                        <li style="margin-left: 10px">
+                        <li style="margin-left: 20px">
                             <a target="_blank" href="">Emails Sent</a>
                         </li>
                     </div>
@@ -86,10 +88,10 @@
                 <div class="col-12 col-md-2">
                     <div class="border py-4">
                         <h2 style="color: red">Links/Files</h2>
-                        <li style="margin-left: 10px">
+                        <li style="margin-left: 20px">
                             <a href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful links</a>
                         </li>
-                        <li style="margin-left: 10px">
+                        <li style="margin-left: 20px">
                             <a href="{{ path('file_attachments_index') }}">Helpful files</a>
                         </li>
                     </div>
@@ -100,13 +102,10 @@
         <div class="col-12 col-md-2">
             <div class="border py-4">
                 <h2 style="color: red">Users</h2>
-                <li style="margin-left: 10px">
+                <li style="margin-left: 20px">
                     <a target="_blank" href="{{ path('user_index') }}">Users</a>
                 </li>
-                {#                <li style="margin-left: 10px"> #}
-                {#                    <a target="_blank" href="{{ path('user_staff') }}">Staff</a> #}
-                {#                </li> #}
-                <li style="margin-left: 10px">
+                <li style="margin-left: 20px">
                     <a href="{{ path('log_index') }}">User Log</a>
                 </li>
             </div>
@@ -122,27 +121,27 @@
                     <div class="border py-4">
                         <h2 style="color: red">Set-Up</h2>
                         {% if CompanyDetailsService.companyDetails.headerDisplayInstructions ==1 %}
-                            <li style="margin-left: 10px">
+                            <li style="margin-left: 20px">
                                 <a target="_blank" href="{{ path('instructions_index') }}">Instructions</a>
                             </li>
                         {% endif %}
 
                         {% if CompanyDetailsService.companyDetails.multiLingual ==1 %}
-                            <li style="margin-left: 10px">
+                            <li style="margin-left: 20px">
                                 <a target="_blank" href="{{ path('languages_index') }}">Languages</a>
                             </li>
-                            <li style="margin-left: 10px">
+                            <li style="margin-left: 20px">
                                 <a target="_blank" href="{{ path('translation_index') }}">Translations</a>
                             </li>
                         {% endif %}
                         {% if CompanyDetailsService.companyDetails.headerDisplayWeather ==1 %}
-                            <li style="margin-left: 10px">
+                            <li style="margin-left: 20px">
                                 <a target="_blank" href="{{ path('weather_index') }}">Weather</a>
                             </li>
                         {% endif %}
 
                         {% if app.request.getSchemeAndHttpHost() == CompanyDetailsService.companyDetails.companyWebsite %}
-                            <li style="margin-left: 10px">
+                            <li style="margin-left: 20px">
                                 <a class="btn btn-outline-success btn-sm" target="_blank"
                                    href="{{ path('export_database') }}">Export Live Data</a>
                             </li>
@@ -156,34 +155,33 @@
                 <div class="col-12 col-md-2">
                     <div class="border py-4">
                         <h2 style="color: red">Contacts</h2>
-                        <li style="margin-left: 10px">
+                        <li style="margin-left: 20px">
                             <a target="_blank" href="{{ path('business_contacts_index') }}">Helpful Contacts</a>
                         </li>
-                        <li style="margin-left: 10px">
+                        <li style="margin-left: 20px">
                             <a target="_blank" href="{{ path('business_types_index') }}">Business Categories</a>
                         </li>
-                        <li style="margin-left: 10px">
+                        <li style="margin-left: 20px">
                             <a target="_blank" href="{{ path('referrals_index') }}">Referrals Log</a>
                         </li>
                     </div>
                 </div>
             {% endif %}
 
-            {% if CompanyDetailsService.companyDetails.headerDisplayFacebookPages ==1 or  CompanyDetailsService.companyDetails.headerDisplayCompetitors ==1 %}
+            {% if CompanyDetailsService.companyDetails.headerDisplayFacebookPages ==1 or CompanyDetailsService.companyDetails.headerDisplayCompetitors ==1 %}
                 <div class="col-12 col-md-2">
                     <div class="border py-4">
-
                         <h2 style="color: red">Competitors</h2>
                         {% if CompanyDetailsService.companyDetails.headerDisplayFacebookPages ==1 %}
-                            <li style="margin-left: 10px">
+                            <li style="margin-left: 20px">
                                 <a target="_blank" href="{{ path('facebook_groups_index') }}">Facebook Pages</a>
                             </li>
                         {% endif %}
                         {% if CompanyDetailsService.companyDetails.headerDisplayCompetitors ==1 %}
-                            <li style="margin-left: 10px">
+                            <li style="margin-left: 20px">
                                 <a target="_blank" href="{{ path('competitors_index') }}">Competitors</a>
                             </li>
-                            <li style="margin-left: 10px">
+                            <li style="margin-left: 20px">
                                 <a target="_blank" href="{{ path('competitor_service_index') }}">Competitor Services</a>
                             </li>
                         {% endif %}

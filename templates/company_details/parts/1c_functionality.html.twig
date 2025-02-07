@@ -1,7 +1,7 @@
 <div class="col-2">
     <table class="table small">
         <tbody>
-{#        <h4>Functionality</h4>#}
+        <h4>Functionality</h4>
         <tr>
         <tr>
             <th>Multi-lingual</th>
@@ -31,18 +31,32 @@
                 {% endif %}
             </td>
         </tr>
-            <th>Photos</th>
+        <tr>
+            <th>Receive New Website Contact Alert</th>
             <td>
-                {% if company_detail.headerDisplayPhotos ==1 %}
-                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayPhotos'}) }}">
+                {% if company_detail.receiveNewWebsiteContactAlert ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'receiveNewWebsiteContactAlert'}) }}">
                         <i style="color: green" class="fas fa-toggle-on"></i>
                     </a>
                 {% else %}
-                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayPhotos'}) }}">
+                    <a href="{{ path('company_details_change_field_status', {'input': 'receiveNewWebsiteContactAlert'}) }}">
                         <i style="color: grey" class="fas fa-toggle-off"></i>
                     </a>
                 {% endif %}
             </td>
+        </tr>
+        <th>Photos</th>
+        <td>
+            {% if company_detail.headerDisplayPhotos ==1 %}
+                <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayPhotos'}) }}">
+                    <i style="color: green" class="fas fa-toggle-on"></i>
+                </a>
+            {% else %}
+                <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayPhotos'}) }}">
+                    <i style="color: grey" class="fas fa-toggle-off"></i>
+                </a>
+            {% endif %}
+        </td>
         </tr>
 
         <tr>
@@ -137,7 +151,6 @@
                 {% endif %}
             </td>
         </tr>
-
 
 
         </tbody>

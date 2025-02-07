@@ -85,6 +85,25 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $photo = $form->get('photo')->getData();
+            if ($photo) {
+                $uniqueId = uniqid(); // Generates a unique ID
+                $uniqueId3 = substr($uniqueId, 0, 3);
+                $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $user->getFirstName() . '_' . $user->getLastName() . '_' . $uniqueId3 . '.' . $photo->guessExtension();
+                try {
+                    $photo->move(
+                        $this->getParameter('user_photos_directory'),
+                        $newFilename
+                    );
+                    $user->setPhoto($newFilename);
+                } catch (FileException $e) {
+                    die('Import failed');
+                }
+            }
+
+
             $get_roles = $form->get('role')->getData();
             $roles = $get_roles;
             $password = $form->get('password')->getData();
@@ -150,6 +169,26 @@ class UserController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $referer = $request->request->get('referer');
+
+
+                $photo = $form->get('photo')->getData();
+                if ($photo) {
+                    $uniqueId = uniqid(); // Generates a unique ID
+                    $uniqueId3 = substr($uniqueId, 0, 3);
+                    $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                    $newFilename = $user->getFirstName() . '_' . $user->getLastName() . '_' . $uniqueId3 . '.' . $photo->guessExtension();
+                    try {
+                        $photo->move(
+                            $this->getParameter('user_photos_directory'),
+                            $newFilename
+                        );
+                        $user->setPhoto($newFilename);
+                    } catch (FileException $e) {
+                        die('Import failed');
+                    }
+                }
+
+
                 if ($form->has('role')) {
                     $get_roles = $form->get('role')->getData();
                     $roles = $get_roles;
@@ -171,11 +210,11 @@ class UserController extends AbstractController
                         // Ensure password is set to an empty string if it's empty (no change to password)
                         $user->setPassword('');  // Set to empty string, not null
                     }
-//
                     $this->getDoctrine()->getManager()->flush();
                     return $this->redirect($referer);
                 }
             }
+
 
             return $this->render('user/edit.html.twig', [
                 'user' => $user,
@@ -462,6 +501,55 @@ class UserController extends AbstractController
             'heading' => 'All'
         ]);
         return $this->redirectToRoute('user_index');
+    }
+
+    /**
+     * @Route ("/view_user_photo/{id}", name="user_photo_view")
+     */
+    public function viewCMSPhoto(int $id, UserRepository $userRepository)
+    {
+        $user = $userRepository->find($id);
+        return $this->render('user/image_view.html.twig',[
+            'user' => $user]);
+    }
+
+    /**
+     * @Route("/delete_user_photo_file/{id}", name="user_photo_file_delete", methods={"POST", "GET"})
+     */
+    public function deleteUserPhotoFile(int $id, Request $request, User $user, EntityManagerInterface $entityManager)
+    {
+        $referer = $request->headers->get('referer');
+        $file_name = $user->getPhoto();
+        if ($file_name) {
+            $file = $this->getParameter('user_photos_directory') . $file_name;
+            if (file_exists($file)) {
+                unlink($file);
+            }
+            $user->setPhoto('');
+            $entityManager->flush();
+        }
+        return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/user_photos_delete_all_files", name="user_photos_delete_all_files",)
+     */
+    public function deleteAll(Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    {
+        $referer = $request->server->get('HTTP_REFERER');
+        $user_photos = $userRepository->findAll();
+
+        $files = glob($this->getParameter('user_photos_directory') . "/*");
+        foreach ($files as $file) {
+            unlink($file);
+        }
+        $entityManager->flush();
+
+        foreach ($user_photos as $user_photo) {
+            $user_photo->setPhoto(null);
+            $entityManager->flush();
+        }
+        return $this->redirect($referer);
     }
 
 }

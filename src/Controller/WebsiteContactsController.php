@@ -13,6 +13,7 @@ use App\Repository\UserRepository;
 use App\Repository\WebsiteContactsRepository;
 use App\Services\CheckIfUserService;
 use Doctrine\ORM\EntityManagerInterface;
+use JetBrains\PhpStorm\NoReturn;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,8 +59,8 @@ class WebsiteContactsController extends AbstractController
     }
 
 
-    #[Route('/new_website_contact_from_contact_form', name: 'new_website_contact_from_contact_form', methods: ['GET', 'POST'])]
-    public function newFromContact(Request $request, WebsiteContactsRepository $websiteContactsRepository, EntityManagerInterface $manager, ProductRepository $productRepository): Response
+    #[NoReturn] #[Route('/new_website_contact_from_contact_form', name: 'new_website_contact_from_contact_form', methods: ['GET', 'POST'])]
+    public function newFromContact(Request $request, WebsiteContactsRepository $websiteContactsRepository, EntityManagerInterface $entityManager, ProductRepository $productRepository): Response
     {
 
         $websiteContact = new WebsiteContacts();
@@ -71,21 +72,20 @@ class WebsiteContactsController extends AbstractController
                 ->setStatus('Pending');
 
             // Get selected products
-            $selectedProducts = $form->get('products')->getData();
-            foreach ($selectedProducts as $product) {
-                $websiteContact->addProduct($product);
+            $productsRequested = $form->get('productsRequested')->getData();
+            foreach ($productsRequested as $product) {
+                $websiteContact->addProductsRequested($product);
             }
-
-            $manager->persist($websiteContact);
-            $manager->flush();
-
+            dd($productsRequested);
+            $entityManager->persist($websiteContact);
+            $entityManager->flush();
             $this->addFlash('success', 'Your contact request has been submitted.');
 
             return $this->redirect($request->headers->get('Referer'));
         }
-
+        dump('Outside the Valid and submitted'); die;
         // If validation fails, return back with errors
-        return $this->render('app_home');
+        return $this->render('website_contacts/index.html.twig');
     }
 
     /**

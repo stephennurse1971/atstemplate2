@@ -43,14 +43,15 @@ class CmsPhotoController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $photo = $form->get('photo')->getData();
             if ($photo) {
+                $uniqueId = uniqid(); // Generates a unique ID
+                $uniqueId3digits = substr($uniqueId, 0, 3); // Extracts the first 3 digits
                 $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
                 if ($cmsPhoto->getProduct()) {
-                    $safeFilename = $cmsPhoto->getProduct()->getProduct() . uniqid();
+                    $safeFilename = $cmsPhoto->getProduct()->getProduct() .'_'.$uniqueId3digits;
                 }
                 if ($cmsPhoto->getStaticPageName()) {
-                    $safeFilename = $cmsPhoto->getStaticPageName() . uniqid();
+                    $safeFilename = $cmsPhoto->getStaticPageName()  .'_'.$uniqueId3digits;
                 }
-
                 $newFilename = $safeFilename . '.' . $photo->guessExtension();
                 try {
                     $photo->move(
@@ -102,11 +103,14 @@ class CmsPhotoController extends AbstractController
             $photo = $form->get('photo')->getData();
             if ($photo) {
                 $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                $uniqueId = uniqid(); // Generates a unique ID
+                $uniqueId3digits = substr($uniqueId, 0, 3); // Extracts the first 3 digits
+
                 if ($cmsPhoto->getProduct()) {
-                    $safeFilename = $cmsPhoto->getProduct()->getProduct() . uniqid();
+                    $safeFilename = $cmsPhoto->getProduct()->getProduct()  .'_'. $uniqueId3digits;
                 }
                 if ($cmsPhoto->getStaticPageName()) {
-                    $safeFilename = $cmsPhoto->getStaticPageName() . uniqid();
+                    $safeFilename = $cmsPhoto->getStaticPageName()  .'_'. $uniqueId3digits;
                 }
                 $newFilename = $safeFilename . '.' . $photo->guessExtension();
                 try {

@@ -67,8 +67,7 @@
                     {{ website_contact.mobile }}
                 </td>
                 <td style="text-align: left">
-
-                    {% for product in website_contact.product %}
+                    {% for product in website_contact.productsRequested %}
                         {{ product.product }};
                     {% endfor %}
                 </td>

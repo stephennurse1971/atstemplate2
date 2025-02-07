@@ -3,12 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Languages;
-use App\Entity\Product;
 use App\Entity\User;
+use App\Services\TranslationsWorkerService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -107,10 +108,13 @@ class UserType extends AbstractType
                 'required' => false,
                 'empty_data' => ''
             ])
-            ->add('sendEmail', HiddenType::class, [
+
+            ->add('photo', FileType::class, [
+                'label' => 'Photo',
                 'mapped' => false,
                 'required' => false
-            ]);
+            ])
+        ;
         $logged_user_roles = $this->security->getUser()->getRoles();
 
         $user_roles = $options['user']->getRoles();
@@ -146,4 +150,5 @@ class UserType extends AbstractType
             'user' => null
         ]);
     }
+    
 }

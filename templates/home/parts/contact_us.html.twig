@@ -37,6 +37,8 @@
     <div class="row">
         <div class="col-12 col-md-4 mx-auto">
             <form class="py-5" method="post" action="{{ path('new_website_contact_from_contact_form') }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('website_contact') }}" />
+
                 <div class="user-box">
                     <label for="firstName">First Name<sup style="padding-left:5px">*</sup></label>
                     <input type="text" name="firstName" required>
@@ -55,11 +57,11 @@
                 </div>
                 <div class="user-box-radio">
                     <label class="pr-5" for="user-box-radio">Interested in:</label>
-                    {% set products = ProductService.getProductFooter %}
+                    {% set products = ProductService.getProductContactForm %}
                     {% for product in products %}
                         <div>
                         <span style="white-space: nowrap">
-                        <input type="checkbox" name="product[]"
+                        <input type="checkbox" name="productsRequested[]"
                                value="{{ product.product }}" id="{{ product.product }}">
                         <label class="pr-5" for="{{ product.product }}">{{ product.product }}</label>
                         </span>
@@ -70,7 +72,7 @@
                     <label class="pr-5" for="message-box">Message:</label>
                     <textarea style="width: 100%" rows="7" name="notes" id="message-box"></textarea>
                 </div>
-                <button class="btn btn-outline-success mt-3">Submit</button>
+                <button class="btn btn-outline-success mt-3" type="submit">Submit</button>
             </form>
         </div>
     </div>

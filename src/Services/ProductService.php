@@ -45,6 +45,14 @@ class ProductService
             ['ranking' => 'ASC']);
     }
 
+    public function getProductContactForm()
+    {
+        return $this->productRepository->findBy([
+            'includeInContactForm' => '1'
+        ],
+            ['ranking' => 'ASC']);
+    }
+
     public function __construct(ProductRepository $productRepository)
     {
         $this->productRepository = $productRepository;

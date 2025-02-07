@@ -189,6 +189,9 @@ class CompanyDetailsType extends AbstractType
                 'label' => $this->translationsWorker->getTranslations('LinkedIn'),
                 'required' => false,
             ])
+            ->add('receiveNewWebsiteContactAlert', CheckboxType::class, [
+                'label' => $this->translationsWorker->getTranslations('Receive New Website Contact Alert'),
+                'required' => false])
             ->add('headerDisplayProducts', CheckboxType::class, [
                 'label' => $this->translationsWorker->getTranslations('Products'),
                 'required' => false])

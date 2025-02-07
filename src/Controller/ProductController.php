@@ -142,6 +142,14 @@ class ProductController extends AbstractController
                 $product->setIncludeInFooter('0');
             }
         }
+        if ($input == 'includeInContactForm') {
+            if ($status == "Yes") {
+                $product->setIncludeInContactForm('1');
+            }
+            if ($status == "No") {
+                $product->setIncludeInContactForm('0');
+            }
+        }
         if ($input == 'main_sub') {
             if ($status == "Main") {
                 $product->setCategory('Main');

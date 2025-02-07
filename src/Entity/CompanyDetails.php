@@ -14,7 +14,7 @@ class CompanyDetails
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: "integer")]
-    private int $id;
+    private ?int $id = null;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $companyName;
@@ -58,8 +58,13 @@ class CompanyDetails
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $faviconLive;
 
+    public function __construct()
+    {
+        $this->faviconLive = ''; // or an appropriate default value
+    }
+
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private ?string $faviconDev;
+    private ?string $faviconDev =null;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $currency;
@@ -92,7 +97,7 @@ class CompanyDetails
     private ?string $companySkype;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private ?string $companyQrCode;
+    private ?string $companyQrCode=null;
 
     #[ORM\Column(type: "boolean", nullable: true)]
     private ?bool $footerDisplayProducts;
@@ -207,6 +212,11 @@ class CompanyDetails
 
     #[ORM\Column(nullable: true)]
     private ?bool $userIncludeJobDetails = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $receiveNewWebsiteContactAlert = null;
+
+
 
     public function getId(): ?int
     {
@@ -923,6 +933,18 @@ class CompanyDetails
     public function setUserIncludeJobDetails(?bool $userIncludeJobDetails): static
     {
         $this->userIncludeJobDetails = $userIncludeJobDetails;
+
+        return $this;
+    }
+
+    public function isReceiveNewWebsiteContactAlert(): ?bool
+    {
+        return $this->receiveNewWebsiteContactAlert;
+    }
+
+    public function setReceiveNewWebsiteContactAlert(?bool $receiveNewWebsiteContactAlert): static
+    {
+        $this->receiveNewWebsiteContactAlert = $receiveNewWebsiteContactAlert;
 
         return $this;
     }

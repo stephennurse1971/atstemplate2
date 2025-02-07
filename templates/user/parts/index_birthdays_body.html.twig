@@ -1,0 +1,5 @@
+<td style="text-align: center" ; data-sort="{{ user.birthday|date('m-d') }}">
+    {% if user.birthday is not empty %}
+        {{ user.birthday |date('d-M-Y') }}
+    {% endif %}
+</td>
