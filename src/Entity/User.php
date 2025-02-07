@@ -159,12 +159,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getEmail(): ?string
     {
-        return $this->email;
+        return $this->email ?? '';
     }
 
     public function setEmail(string $email): self
     {
-        $this->email = $email;
+        $this->email = $email ?? '';
         return $this;
     }
 
