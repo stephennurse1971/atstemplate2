@@ -38,7 +38,8 @@ class UserController extends AbstractController
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
             'role' => 'All',
-            'title' => 'All'
+            'title' => 'All',
+            'user_photos_directory' => $this->getParameter('user_photos_directory'),
         ]);
     }
 
@@ -214,12 +215,11 @@ class UserController extends AbstractController
                     return $this->redirect($referer);
                 }
             }
-
-
             return $this->render('user/edit.html.twig', [
                 'user' => $user,
                 'form' => $form->createView(),
-                'roles' => $roles
+                'roles' => $roles,
+                'user_photos_directory' => $this->getParameter('user_photos_directory'),
             ]);
         }
         if ($referer) {
@@ -510,6 +510,7 @@ class UserController extends AbstractController
     {
         $user = $userRepository->find($id);
         return $this->render('user/image_view.html.twig',[
+            'user_photos_directory' => $this->getParameter('user_photos_directory'),
             'user' => $user]);
     }
 

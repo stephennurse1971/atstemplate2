@@ -26,17 +26,15 @@
 
 <script>
 
+
+
     $(document).ready(function() {
-
         $('#user_password').hide();
-
         $("input[name='user[password]']").removeAttr("required");
-
         $(".password-reset").click(function () {
             $('#user_password').toggle();
             $("input[name='user[password]']").attr("required", "required");
         });
-
         // If the user removes focus without entering a password, remove required again
         $("input[name='user[password]']").blur(function () {
             if ($(this).val() === "") {
@@ -58,6 +56,7 @@
             $("input[name='user[birthday]']").closest(".form-group").remove();
             $("input[name='user[webPage]']").closest(".form-group").remove();
             $("input[name='user[notes]']").closest(".form-group").remove();
+            $("input[name='user[photo]']").closest(".form-group").remove();
         }
 
         if ("{{ CompanyDetailsService.getCompanyDetails.userIncludeBusinessAddress }}" === "") {
@@ -78,6 +77,11 @@
         }
     });
 
+
+    if ($('#photo_image').attr('src') && $('#photo_image').attr('src') !== '') {
+        // $('#user_photo').show();
+        $('#user_photo').hide();
+    }
 
     let roles = [];
 

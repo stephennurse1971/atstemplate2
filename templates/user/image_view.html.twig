@@ -3,8 +3,7 @@
 {% block title %}Photo: {{ user.fullName}}  {% endblock %}
 
 {% block body %}
-    {% set image = asset('administration/Attachments/User/Photos/')~user.photo %}
-{{ image }}
+    {% set image = asset(user_photos_directory~user.photo ) %}
     <div class="row ">
         <div class="col-12 m-auto">
             <div class="image-container">

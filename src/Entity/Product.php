@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,8 +26,7 @@ class Product
     #[ORM\Column(type: "boolean", nullable: true)]
     private ?bool $isActive = null;
 
-    #[ORM\Column(type: "string", length: 255, nullable: true)]
-    private ?string $comments = null;
+
 
     #[ORM\Column(type: "boolean", nullable: true)]
     private ?bool $includeInFooter = null;
@@ -40,6 +40,9 @@ class Product
     // ManyToMany relation with WebsiteContacts
     #[ORM\ManyToMany(targetEntity: WebsiteContacts::class, inversedBy: 'productsRequested')]
     private Collection $websiteContacts;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $notes = null;
 
     public function __construct()
     {
@@ -84,16 +87,7 @@ class Product
         return $this;
     }
 
-    public function getComments(): ?string
-    {
-        return $this->comments;
-    }
 
-    public function setComments(?string $comments): self
-    {
-        $this->comments = $comments;
-        return $this;
-    }
 
     public function getIncludeInFooter(): ?bool
     {
@@ -147,6 +141,18 @@ class Product
     public function removeWebsiteContact(WebsiteContacts $websiteContact): self
     {
         $this->websiteContacts->removeElement($websiteContact);
+        return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function setNotes(?string $notes): static
+    {
+        $this->notes = $notes;
+
         return $this;
     }
 }

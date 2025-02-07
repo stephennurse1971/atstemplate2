@@ -45,15 +45,7 @@
                 {{ form_row(form.birthday) }}
                 {{ form_row(form.webPage) }}
                 {{ form_row(form.notes) }}
-                {% if user.photo is not empty %}
-                    {% set loc = asset('administration/Attachments/User/Photos'~user.photo) %}
-                    <a class="btn btn-outline-danger btn-sm" target="_blank"
-                       href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
-                        <img height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
-                    <a class="btn btn-sm btn-danger" href="{{ path('user_photo_file_delete', {'id': cms_photo.id}) }}">Delete
-                        photo</a>
-                    <br>
-                {% endif %}
+
             </div>
         {% endif %}
     </div>
@@ -73,6 +65,19 @@
         <div class="container-personal-details">
             {% if CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails == 1 %}
                 {{ form_row(form.mobile2) }}
+                {% if user.photo is not empty %}
+                    {% set loc = asset(user_photos_directory ~ user.photo) %}
+                    <a  class="btn btn-outline-danger btn-sm" target="_blank"
+                       href="{{ path('user_photo_view', {'id': user.id}) }}">
+                        <img id="photo_image" height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
+                    <br>
+                    <b>{{ user.photo }}</b>
+                    <br>
+                    <a class="btn btn-sm btn-danger" href="{{ path('user_photo_file_delete', {'id': user.id}) }}">Delete
+                        photo</a>
+                    <br>
+                {% endif %}
+                {{ form_row(form.photo) }}
             {% endif %}
         </div>
     </div>

@@ -97,7 +97,7 @@
 {#                    {{ product.comments|slice(0,20) }}#}
 {#                </td>#}
                 <td class="desktop">
-                    {{ product.comments  }}
+                    {{ product.notes|striptags }}
                 </td>
                 <td>
                     <a class="btn btn-outline-danger btn-sm" target="_blank"
