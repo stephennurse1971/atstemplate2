@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CmsPhoto;
 use App\Form\CmsPhotoType;
 use App\Repository\CmsPhotoRepository;
+use App\Repository\PhotoLocationsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +22,16 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class CmsPhotoController extends AbstractController
 {
+    private EntityManagerInterface $entityManager;
+    private PhotoLocationsRepository $photoLocationsRepository;
+
+    public function __construct(EntityManagerInterface $entityManager, PhotoLocationsRepository $photoLocationsRepository)
+    {
+        $this->entityManager = $entityManager;
+        $this->photoLocationsRepository = $photoLocationsRepository;
+    }
+
+
     /**
      * @Route("/index", name="cms_photo_index", methods={"GET"})
      */
@@ -34,7 +45,7 @@ class CmsPhotoController extends AbstractController
     /**
      * @Route("/new", name="cms_photo_new", methods={"GET","POST"})
      */
-    public function new(Request $request, SluggerInterface $slugger): Response
+    public function new(Request $request, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
     {
         $cmsPhoto = new CmsPhoto();
         $form = $this->createForm(CmsPhotoType::class, $cmsPhoto);
@@ -69,7 +80,7 @@ class CmsPhotoController extends AbstractController
             if ($cmsPhoto->getCategory() == "Static") {
                 $cmsPhoto->setProduct(null);
             }
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager =$this->entityManager;
             $entityManager->persist($cmsPhoto);
             $entityManager->flush();
 
@@ -95,7 +106,7 @@ class CmsPhotoController extends AbstractController
     /**
      * @Route("/edit/{id}", name="cms_photo_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, CmsPhoto $cmsPhoto, SluggerInterface $slugger): Response
+    public function edit(Request $request, CmsPhoto $cmsPhoto, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(CmsPhotoType::class, $cmsPhoto);
         $form->handleRequest($request);
@@ -129,7 +140,9 @@ class CmsPhotoController extends AbstractController
             if ($cmsPhoto->getCategory() == "Static") {
                 $cmsPhoto->setProduct(null);
             }
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager =$this->entityManager;
+            $entityManager->persist($cmsPhoto);
+            $entityManager->flush();
             return $this->redirectToRoute('cms_photo_index');
         }
         return $this->render('cms_photo/edit.html.twig', [
@@ -164,10 +177,10 @@ class CmsPhotoController extends AbstractController
     /**
      * @Route("/delete/{id}", name="cms_photo_delete", methods={"POST"})
      */
-    public function delete(Request $request, CmsPhoto $cmsPhoto): Response
+    public function delete(Request $request, CmsPhoto $cmsPhoto, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $cmsPhoto->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager =$this->entityManager;
             $entityManager->remove($cmsPhoto);
             $entityManager->flush();
         }

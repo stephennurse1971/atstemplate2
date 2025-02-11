@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CmsCopy;
 use App\Form\CmsCopyType;
 use App\Repository\CmsCopyRepository;
+use App\Repository\PhotoLocationsRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -21,6 +22,16 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CmsCopyController extends AbstractController
 {
+    private EntityManagerInterface $entityManager;
+    private CmsCopyRepository $cmsCopyRepository;
+
+    public function __construct(EntityManagerInterface $entityManager, PhotoLocationsRepository $photoLocationsRepository)
+    {
+        $this->entityManager = $entityManager;
+        $this->photoLocationsRepository = $photoLocationsRepository;
+    }
+
+
     /**
      * @Route("/index", name="cms_copy_index", methods={"GET"})
      */
@@ -68,7 +79,7 @@ class CmsCopyController extends AbstractController
             if($cmsCopy->getCategory()=="Static"){
                 $cmsCopy->setProduct(null);
             }
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->entityManager;
             $entityManager->persist($cmsCopy);
             $entityManager->flush();
             return $this->redirectToRoute('cms_copy_index');
@@ -118,7 +129,7 @@ class CmsCopyController extends AbstractController
             if($cmsCopy->getCategory()=="Static"){
                 $cmsCopy->setProduct(null);
             }
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->entityManager;
             $entityManager->persist($cmsCopy);
             $entityManager->flush();
             return $this->redirectToRoute('cms_copy_index');
@@ -166,10 +177,10 @@ class CmsCopyController extends AbstractController
     /**
      * @Route("/delete/{id}", name="cms_copy_delete", methods={"POST"})
      */
-    public function delete(Request $request, CmsCopy $cmsCopy): Response
+    public function delete(Request $request, CmsCopy $cmsCopy, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $cmsCopy->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->entityManager;
             $entityManager->remove($cmsCopy);
             $entityManager->flush();
         }

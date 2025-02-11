@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\PhotoLocations;
 use App\Entity\User;
 use App\Repository\UserRepository;
-use App\Services\TranslationsWorkerService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,10 +17,12 @@ class PhotoLocationsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $users = [];
+        $users_super_admin = $this->userRepository->findByRole('ROLE_SUPER_ADMIN');
+        $users_admin = $this->userRepository->findByRole('ROLE_ADMIN');
         $users_family = $this->userRepository->findByRole('ROLE_FAMILY');
         $users_guest = $this->userRepository->findByRole('ROLE_GUEST');
         $users_contact = $this->userRepository->findByRole('ROLE_CONTACT');
-        $users = array_merge($users_family, $users_guest, $users_contact);
+        $users = array_merge($users_super_admin,$users_admin, $users_family, $users_guest, $users_contact);
         $users_temp = [];
         foreach ($users as $user) {
             $users_temp[] = $user->getFullName();

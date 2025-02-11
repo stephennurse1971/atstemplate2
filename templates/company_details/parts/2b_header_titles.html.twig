@@ -72,7 +72,15 @@
             <tr>
                 <th>QR code</th>
                 <td>
-                    {{ company_detail.includeQRCodeHomePage }}
+                    {% if company_detail.includeQRCodeHomePage ==1 %}
+                        <a href="{{ path('company_details_change_field_status', {'input': 'includeQRCodeHomePage'}) }}">
+                            <i style="color: green" class="fas fa-toggle-on"></i>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('company_details_change_field_status', {'input': 'includeQRCodeHomePage'}) }}">
+                            <i style="color: grey" class="fas fa-toggle-off"></i>
+                        </a>
+                    {% endif %}
                 </td>
             </tr>
             </tbody>

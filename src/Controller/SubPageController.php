@@ -36,11 +36,12 @@ class SubPageController extends AbstractController
         $sub_page = new SubPage();
         $form = $this->createForm(SubPageType::class, $sub_page);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $subPageRepository->add($sub_page, true);
-
             return $this->redirectToRoute('sub_page_index', [], Response::HTTP_SEE_OTHER);
         }
+
         return $this->render('sub_page/new.html.twig', [
             'sub_page' => $sub_page,
             'form' => $form->createView(),

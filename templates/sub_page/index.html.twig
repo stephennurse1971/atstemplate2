@@ -24,13 +24,13 @@
                     {{ sub_page.product.product }}
                 </td>
                 <td style="text-align: right">
-                    {{ sub_page.rank }}
+                    {{ sub_page.ranking}}
                 </td>
                 <td style="text-align: left">
                     {{ sub_page.title }}
                 </td>
                 <td style="text-align: left">
-                    {{ sub_page.content|slice(0,35) }}...
+                    {{ sub_page.content|striptags }}...
                 </td>
                 <td style="text-align: right">
                     {{ sub_page.image }}

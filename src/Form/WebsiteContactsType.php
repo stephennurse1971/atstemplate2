@@ -36,6 +36,7 @@ class WebsiteContactsType extends AbstractType
                 'required' => false,
                 'empty_data' => null,
                 'expanded' => true, // Renders as checkboxes
+                'by_reference' => false,
                 'constraints' => [
                     new Count([
                         'min' => 1,
@@ -50,6 +51,7 @@ class WebsiteContactsType extends AbstractType
             ->add('status', ChoiceType::class, [
                 'multiple' => false,
                 'placeholder' => false,
+                'data'=>'Pending',
                 'expanded' => true,
                 'required' => false,
                 'choices' => [

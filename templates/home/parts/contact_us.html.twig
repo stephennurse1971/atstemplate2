@@ -36,8 +36,46 @@
 <div class="container bg-gradient-dark">
     <div class="row">
         <div class="col-12 col-md-4 mx-auto">
+            {#            {% if form is defined %} #}
+
+            {#            {{ form_start(form, { 'attr': {'class': 'py-5'} }) }} #}
+
+            {#            <div class="user-box"> #}
+            {#                {{ form_label(form.firstName, 'First Name', { 'label_attr': {'for': 'firstName'} }) }}<sup style="padding-left:5px">*</sup> #}
+            {#                {{ form_widget(form.firstName, { 'attr': {'required': true} }) }} #}
+            {#            </div> #}
+
+            {#            <div class="user-box"> #}
+            {#                {{ form_label(form.lastName, 'Last Name') }}<sup style="padding-left:5px">*</sup> #}
+            {#                {{ form_widget(form.lastName, { 'attr': {'required': true} }) }} #}
+            {#            </div> #}
+
+            {#            <div class="user-box"> #}
+            {#                {{ form_label(form.email, 'Email') }}<sup style="padding-left:5px">*</sup> #}
+            {#                {{ form_widget(form.email, { 'attr': {'required': true, 'type': 'email'} }) }} #}
+            {#            </div> #}
+
+            {#            <div class="user-box"> #}
+            {#                {{ form_label(form.mobile, 'Phone') }}<sup style="padding-left:5px">*</sup> #}
+            {#                {{ form_widget(form.mobile, { 'attr': {'required': true} }) }} #}
+            {#            </div> #}
+
+            {#            <div class="user-box-radio"> #}
+            {#                {{ form_label(form.productsRequested, 'Interested in:') }} #}
+            {#                {{ form_widget(form.productsRequested, { 'expanded': true, 'multiple': true }) }} #}
+            {#            </div> #}
+
+            {#            <div class="user-box"> #}
+            {#                {{ form_label(form.notes, 'Message') }} #}
+            {#                {{ form_widget(form.notes, { 'attr': {'rows': 7, 'style': 'width: 100%'} }) }} #}
+            {#            </div> #}
+
+            {#            <button class="btn btn-outline-success mt-3" type="submit">Submit</button> #}
+
+            {#            {{ form_end(form) }} #}
+            {#            {% endif %} #}
             <form class="py-5" method="post" action="{{ path('new_website_contact_from_contact_form') }}">
-                <input type="hidden" name="_token" value="{{ csrf_token('website_contact') }}" />
+                <input type="hidden" name="_token" value="{{ csrf_token('website_contact') }}"/>
 
                 <div class="user-box">
                     <label for="firstName">First Name<sup style="padding-left:5px">*</sup></label>
@@ -74,6 +112,7 @@
                 </div>
                 <button class="btn btn-outline-success mt-3" type="submit">Submit</button>
             </form>
+
         </div>
     </div>
 </div>

@@ -108,8 +108,12 @@
                 <td style="text-align: center">
                     {{ cms_photo.ranking }}
                 </td>
-                <td>
-                    <span title="{{ cms_photo.photoOrVideo }}">{{ cms_photo.photoOrVideo|slice(0,1) }}</span>
+                <td style="text-align: center">
+                    {% if cms_photo.photoOrVideo == 'Video' %}
+                        <span style="background-color: yellow" title="{{ cms_photo.photoOrVideo }}">{{ cms_photo.photoOrVideo }}</span>
+                    {% else %}
+                    <span title="{{ cms_photo.photoOrVideo }}">{{ cms_photo.photoOrVideo }}</span>
+                        {% endif %}
                 </td>
                 <td>
                     {{ cms_photo.title }}

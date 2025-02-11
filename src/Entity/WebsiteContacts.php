@@ -37,13 +37,19 @@ class WebsiteContacts
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $status = null;
 
-    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'websiteContacts')]
+    /**
+     * @var Collection<int, Product>
+     */
+    #[ORM\ManyToMany(targetEntity: Product::class)]
     private Collection $productsRequested;
 
     public function __construct()
     {
         $this->productsRequested = new ArrayCollection();
     }
+
+
+
 
     public function getId(): ?int
     {
@@ -127,22 +133,30 @@ class WebsiteContacts
         return $this;
     }
 
+    /**
+     * @return Collection<int, Product>
+     */
     public function getProductsRequested(): Collection
     {
         return $this->productsRequested;
     }
 
-    public function addProductsRequested(Product $product): static
+    public function addProductsRequested(Product $productsRequested): static
     {
-        if (!$this->productsRequested->contains($product)) {
-            $this->productsRequested[] = $product;
+        if (!$this->productsRequested->contains($productsRequested)) {
+            $this->productsRequested->add($productsRequested);
         }
+
         return $this;
     }
 
-    public function removeProductsRequested(Product $product): static
+    public function removeProductsRequested(Product $productsRequested): static
     {
-        $this->productsRequested->removeElement($product);
+        $this->productsRequested->removeElement($productsRequested);
+
         return $this;
     }
+
+
+
 }

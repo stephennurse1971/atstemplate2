@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\WebsiteContacts;
+use App\Form\WebsiteContactsType;
 use App\Repository\CmsCopyRepository;
 use App\Repository\CmsPhotoRepository;
 use App\Repository\CompanyDetailsRepository;
@@ -13,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use JeroenDesloovere\VCard\VCard;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -22,16 +25,22 @@ class   HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository, CompanyDetailsRepository $companyDetailsRepository, \Symfony\Component\Security\Core\Security $security, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository, CompanyDetailsRepository $companyDetailsRepository, \Symfony\Component\Security\Core\Security $security, EntityManagerInterface $entityManager): Response
     {
+
         $companyDetails = $companyDetailsRepository->find('1');
         $homePagePhotosOnly = 0;
+        $website_contact = new WebsiteContacts();
+        $form = $this->createForm(WebsiteContactsType::class, $website_contact);
+        $form->handleRequest($request);
+        $include_qr_code =[];
+        $include_contact_form =[];
 
         $qrcode=false;
         if ($companyDetails) {
             $homePagePhotosOnly = $companyDetails->isHomePagePhotosOnly();
-            $qrcode = $companyDetails->isIncludeQRCodeHomePage();
-            $contactform = $companyDetails->isIncludeContactFormHomePage();
+            $include_qr_code = $companyDetails->isIncludeQRCodeHomePage();
+            $include_contact_form = $companyDetails->isIncludeContactFormHomePage();
         }
         $cms_copy = [];
         $cms_photo = [];
@@ -73,7 +82,9 @@ class   HomeController extends AbstractController
             return $this->render('home/home.html.twig', [
                 'photos' => $cms_photo,
                 'cms_copy_array' => $cms_copy,
-                'include_QR_code' => $qrcode,
+                'include_qr_code' => $include_qr_code,
+                'include_contact_form' => $include_contact_form,
+                'form' => $form?->createView(),
             ]);
         } else {
             return $this->render('home/products.html.twig', [
@@ -81,8 +92,10 @@ class   HomeController extends AbstractController
                 'cms_copy_array' => $cms_copy,
                 'cms_photo_array' => $cms_photo,
                 'sub_pages' => $sub_pages, 
-                'include_QR_code' => $qrcode,
-                'format' => $page_layout
+                'include_qr_code' => $include_qr_code,
+                'include_contact_form' => $include_contact_form,
+                'format' => $page_layout,
+                'form' => $form?->createView(),
             ]);
         }
     }

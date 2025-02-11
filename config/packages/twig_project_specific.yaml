@@ -1,4 +1,4 @@
 twig:
   globals:
-    CheckIfUserService: '@App\Services\CheckIfUserService'
+
 
