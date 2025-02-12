@@ -32,7 +32,7 @@ class FacebookGroupsController extends AbstractController
     {
         $company_details = $companyDetailsRepository->find('1');
         $today = new \DateTime('now');
-        $history_months = $company_details->getFacebookReviewsHistoryShowMonths();
+        $history_months = max(1,$company_details->getFacebookReviewsHistoryShowMonths());
         $cut_off_date = (clone $today)->modify("-{$history_months} months");
 
         return $this->render('facebook_groups/index.html.twig', [
@@ -40,7 +40,6 @@ class FacebookGroupsController extends AbstractController
             'facebook_group_reviews' => $facebookGroupsReviewsRepository->findByDateLatest(),
             'cut_off_date' => $cut_off_date,
         ]);
-
     }
 
     /**

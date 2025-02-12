@@ -173,6 +173,18 @@
                                     {% endif %}
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a style="color: red" class="dropdown-item"
+                                           href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful Links
+                                        </a>
+
+                                        <a style="color: red" class="dropdown-item" href="{{ path('file_attachments_index') }}">Helpful files
+                                        </a>
+                                        <hr>
+                                    {% endif %}
+
+
                                     {% include 'template_parts_project_specific/header_project_specific1.html.twig' %}
 
                                     {% if CompanyDetailsService.companyDetails.headerDisplayBusinessContacts ==1 %}

@@ -144,7 +144,7 @@ class CmsCopyController extends AbstractController
     /**
      * @Route("/copy_and_edit/{id}", name="cms_copy_copy_and_edit", methods={"GET","POST"})
      */
-    public function copyAndEdit(Request $request, CmsCopy $cmsCopy, EntityManagerInterface $manager): Response
+    public function copyAndEdit(Request $request, CmsCopy $cmsCopy, EntityManagerInterface $entityManager): Response
     {
         $product = $cmsCopy->getProduct();
         $sitePage = 'Test';
@@ -160,7 +160,7 @@ class CmsCopyController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager = $this->entityManager;
             $entityManager->persist($cmsCopy);
             $entityManager->flush();
             return $this->redirectToRoute('cms_copy_index');
@@ -241,6 +241,23 @@ class CmsCopyController extends AbstractController
 
         foreach ($cms_copys as $cms_copy) {
             $cms_copy->setAttachment(null);
+            $entityManager->flush();
+        }
+        return $this->redirect($referer);
+    }
+
+
+    /**
+     * @Route("/cms_copy_reset_counters", name="cms_copy_reset_counters",)
+     */
+    public function resetCounters(Request $request, CmsCopyRepository $cmsCopyRepository, EntityManagerInterface $entityManager): Response
+    {
+        $referer = $request->server->get('HTTP_REFERER');
+        $cms_copys = $cmsCopyRepository->findAll();
+
+        foreach ($cms_copys as $cms_copy) {
+            $cms_copy->setPageCountAdmin(null);
+            $cms_copy->setPageCountUsers(null);
             $entityManager->flush();
         }
         return $this->redirect($referer);

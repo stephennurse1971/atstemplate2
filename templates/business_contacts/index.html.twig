@@ -9,7 +9,9 @@
         {% set business_contacts_count = CountBusinessContactsService.count(business_type) %}
         {% set business_contacts_count_with_map_locations = CountBusinessContactsService.countWithMapLocations(business_type) %}
 
-        {% set file = asset( 'administration/ATSSharedFiles/BusinessContactsMapIcons/' ~ business_type.mapIcon.iconFile) %}
+        {% if business_type.mapicon is not null %}
+            {% set file = asset( 'administration/ATSSharedFiles/BusinessContactsMapIcons/' ~ business_type.mapIcon.iconFile) %}
+        {% endif %}
 
         {% if business_contacts_count >0 %}
             <div class="row">

@@ -1,6 +1,6 @@
 twig:
-#  imports:
-#    - { resource: twig_project_specific.yaml }
+  imports:
+    - { resource: twig_project_specific.yaml }
 
   default_path: '%kernel.project_dir%/templates'
   form_themes: [ 'bootstrap_4_layout.html.twig' ]

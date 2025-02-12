@@ -51,8 +51,9 @@
                 </td>
                 <td data-sort='{{ file_attachment.date|date('Y-m-d') }}'>{{ file_attachment.date ? file_attachment.date|date('d-M-Y') : '' }}</td>
                 {% if app.user %}
+                    {% set text = 'hello'~ file_attachment.description %}
                     <td style="text-align: center">
-                        <a onclick="return confirm('Email sent');"
+                        <a onclick="return confirm('The email was sent to {{ app.user.email }}' );"
                         href="{{ path('file_attachments_email', {'fileid': file_attachment.id, 'recipientid': app.user.id}) }}">
                             <i class="fa fa-envelope"></i></a>
                     </td>
