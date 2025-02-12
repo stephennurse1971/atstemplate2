@@ -55,13 +55,13 @@ class CmsPhotoController extends AbstractController
             $photo = $form->get('photo')->getData();
             if ($photo) {
                 $uniqueId = uniqid(); // Generates a unique ID
-                $uniqueId3digits = substr($uniqueId, 0, 3); // Extracts the first 3 digits
+//                $uniqueId3digits = substr($uniqueId, 0, 3); // Extracts the first 3 digits
                 $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
                 if ($cmsPhoto->getProduct()) {
-                    $safeFilename = $cmsPhoto->getProduct()->getProduct() .'_'.$uniqueId3digits;
+                    $safeFilename = $cmsPhoto->getProduct()->getProduct() .'_'.$cmsPhoto->getRanking().'_'.$uniqueId;
                 }
                 if ($cmsPhoto->getStaticPageName()) {
-                    $safeFilename = $cmsPhoto->getStaticPageName()  .'_'.$uniqueId3digits;
+                    $safeFilename = $cmsPhoto->getStaticPageName().'_'.$cmsPhoto->getRanking() .'_'.$uniqueId;
                 }
                 $newFilename = $safeFilename . '.' . $photo->guessExtension();
                 try {
@@ -118,10 +118,10 @@ class CmsPhotoController extends AbstractController
                 $uniqueId3digits = substr($uniqueId, 0, 3); // Extracts the first 3 digits
 
                 if ($cmsPhoto->getProduct()) {
-                    $safeFilename = $cmsPhoto->getProduct()->getProduct()  .'_'. $uniqueId3digits;
+                    $safeFilename = $cmsPhoto->getProduct()->getProduct() .'_'.$cmsPhoto->getRanking() .'_'. $uniqueId;
                 }
                 if ($cmsPhoto->getStaticPageName()) {
-                    $safeFilename = $cmsPhoto->getStaticPageName()  .'_'. $uniqueId3digits;
+                    $safeFilename = $cmsPhoto->getStaticPageName().'_'.$cmsPhoto->getRanking()  .'_'. $uniqueId;
                 }
                 $newFilename = $safeFilename . '.' . $photo->guessExtension();
                 try {

@@ -18,7 +18,14 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
 
+
+
+
     main:
+      remember_me:
+        secret: '%kernel.secret%'
+        lifetime: 604800  # 7 days
+        path: /
       lazy: true
       provider: app_user_provider
       custom_authenticator: App\Security\SecurityAuthenticator
@@ -32,8 +39,8 @@ security:
   # - { path: ^/admin, roles: ROLE_ADMIN }
 
   role_hierarchy:
-    ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_STAFF, ROLE_CLIENT]
-    ROLE_ADMIN: [ROLE_STAFF, ROLE_CLIENT, ROLE_PARTNER]
-    ROLE_STAFF: [ROLE_USER]
-    ROLE_PARTNER: [ROLE_USER]
-    ROLE_USER: [ROLE_USER]
+    ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_STAFF, ROLE_CLIENT ]
+    ROLE_ADMIN: [ ROLE_STAFF, ROLE_CLIENT, ROLE_PARTNER ]
+    ROLE_STAFF: [ ROLE_USER ]
+    ROLE_PARTNER: [ ROLE_USER ]
+    ROLE_USER: [ ROLE_USER ]
