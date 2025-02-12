@@ -1,20 +1,21 @@
 <style>
-    .ck-content {
-        height: 500px;
+    #company_details_companyAddressMapLink {
+        height: 350px;
     }
 
     #company_details_companyAddressInstructions {
-        height: 500px;
+        height: 800px;
     }
 
-    #company_details_companyAddressMapLink {
-        height: 300px;
+    #company_details_registrationEmail {
+        height: 200px;
     }
 </style>
 
 {{ form_start(form) }}
 <div class="row">
     <div class="col-2">
+        <h4>Name and Tel</h4>
         {{ form_row(form.companyName) }}
         {{ form_row(form.contactFirstName) }}
         {{ form_row(form.contactLastName) }}
@@ -22,43 +23,56 @@
         {{ form_row(form.companyTel) }}
         {{ form_row(form.companyMobile) }}
         {{ form_row(form.companySkype) }}
-
-
-        {% if company_details.faviconLive is not null %}
-            <b>Favicon (Live):</b><br>
-            {{ company_details.faviconLive }}
-            <a class="btn btn-outline-danger btn-sm"
-               href="{{ path('company_details_delete_favicon', {'id': '1', 'live_or_dev':'live'}) }}"> <i
-                        style="color: red" class="fa fa-trash"></i></a>
-            <br>
-            <img height="50" width="50"
-                 src="{{ asset('administration/Attachments/Favicons/'~ company_details.faviconLive) }}"
-                 class="rounded-circle test">
-        {% endif %}
-        <div class="favicon-upload-live-container">
-            {{ form_row(form.faviconLive) }}
+        <div class="row">
+            <div class="col-6">
+                {% if company_details.faviconLive is not null %}
+                    Favicon (Live):<br>
+                    <img title="{{ company_details.faviconLive }}" height="50" width="50"
+                         src="{{ asset('administration/Attachments/Favicons/'~ company_details.faviconLive) }}">
+                    <span style="color: white">.          .</span>
+                    <a class="btn btn-outline-danger btn-sm"
+                       href="{{ path('company_details_delete_favicon', {'id': '1', 'live_or_dev':'live'}) }}"> <i
+                                style="color: red" class="fa fa-trash"></i></a>
+                {% endif %}
+                <div class="favicon-upload-live-container">
+                    {{ form_row(form.faviconLive) }}
+                </div>
+            </div>
+            <div class="col-6">
+                {% if company_details.faviconDev is not null %}
+                    Favicon (Dev):<br>
+                    <img title="{{ company_details.faviconDev }}" height="50" width="50"
+                         src="{{ asset('administration/Attachments/Favicons/' ~ company_details.faviconDev) }}">
+                    <span style="color: white">.          .</span>
+                    <a class="btn btn-outline-danger btn-sm"
+                       href="{{ path('company_details_delete_favicon', {'id': '1', 'live_or_dev':'dev'}) }}"> <i
+                                style="color: red" class="fa fa-trash"></i></a>
+                {% endif %}
+                <div class="favicon-upload-dev-container">
+                    {{ form_row(form.faviconDev) }}
+                </div>
+            </div>
         </div>
-        <hr>
-
-
-        {% if company_details.faviconDev is not null %}
-            <b>Favicon (Dev):</b><br>
-            {{ company_details.faviconDev }}
+        <br>
+        {% if company_details.companyQrCode is not null %}
+            <b>QR Code:</b>
+            <a title="QR Monkey" target="_blank" href="https://www.qrcode-monkey.com/">
+                <i class="fa fa-link"></i>
+            </a><br>
+            <img title="{{ company_details.companyQrCode }}" height="50" width="50"
+                 src="{{ asset('administration/Attachments/Favicons/' ~ company_details.companyQrCode) }}">
+            <span style="color: white">.          .</span>
             <a class="btn btn-outline-danger btn-sm"
-               href="{{ path('company_details_delete_favicon', {'id': '1', 'live_or_dev':'dev'}) }}"> <i
+               href="{{ path('company_details_delete_qr_code', {'id': '1'}) }}"> <i
                         style="color: red" class="fa fa-trash"></i></a>
-            <br>
-            <img height="50" width="50"
-                 src="{{ asset('administration/Attachments/Favicons/' ~ company_details.faviconDev) }}"
-                 class="rounded-circle test">
-            <br>
         {% endif %}
-        <div class="favicon-upload-dev-container">
-            {{ form_row(form.faviconDev) }}
+        <div class="qr_code-upload-container">
+            {{ form_row(form.companyQrCode) }}
         </div>
     </div>
 
     <div class="col-2">
+        <h4>Email & Database</h4>
         {{ form_row(form.companyEmail) }}
         {{ form_row(form.companyEmailPassword) }}
         {{ form_row(form.companyEmailImportDirectory) }}
@@ -67,10 +81,11 @@
         <h4>SQL Export</h4>
         {{ form_row(form.sqlDatabase) }}
         {{ form_row(form.databasePassword) }}
-        <a class="btn btn-outline-danger" href="{{ path('export_database') }}">Export database</a>
+        <a class="btn btn-outline-danger btn-sm" href="{{ path('export_database') }}">Export database</a>
     </div>
 
     <div class="col-2">
+        <h4>Address</h4>
         {{ form_row(form.companyAddressStreet) }}
         {{ form_row(form.companyAddressTown) }}
         {{ form_row(form.companyAddressCity) }}
@@ -85,13 +100,15 @@
         {{ form_row(form.currency) }}
     </div>
     <div class="col-2">
+        <h4>GPS</h4>
+        {{ form_row(form.companyAddressLatitude) }}
+        {{ form_row(form.companyAddressLongitude) }}
         <button id="getLocationButton" title="Button will add current GPS co-ordinates to the record"
-                class="btn btn-primary btn-sm"
+                class="btn btn-outline-danger btn-sm"
                 onclick="getLocation('{{ company_details.id }}')">Get Longitude + Latitude
         </button>
         <hr>
-        {{ form_row(form.companyAddressLatitude) }}
-        {{ form_row(form.companyAddressLongitude) }}
+
         <a target="_blank" href="{{ path('office_address') }}">
             <i style="color: red" class="fa fa-map-marker mr-3"></i></a>
         <i style="color: blue" title="Start with 'https://https://www.google.com/maps/' and end with '2s'"
@@ -100,49 +117,52 @@
     </div>
 
     <div class="col-3">
+        <h4>Address</h4>
         {{ form_row(form.companyAddressInstructions) }}
     </div>
 </div>
 <hr>
 <div class="row">
     <div class="col-2">
-        {{ form_row(form.linkedIn) }}
-        {{ form_row(form.facebook) }}
-        {{ form_row(form.instagram) }}
-        {{ form_row(form.twitter) }}
-
-        {% if company_details.companyQrCode is not null %}
-            <b>QR Code:</b>
-            <br>
-            <a class="btn btn-warning btn-sm" title="QR Monkey" target="_blank" href="https://www.qrcode-monkey.com/">QR
-                Monkey</a>
-            <br>
-            {{ company_details.companyQrCode }}
-            <a class="btn btn-outline-danger btn-sm"
-               href="{{ path('company_details_delete_qr_code', {'id': '1'}) }}"> <i
-                        style="color: red" class="fa fa-trash"></i></a>
-            <br>
-            <img height="50" width="50"
-                 src="{{ asset('administration/Attachments/Favicons/' ~ company_details.companyQrCode) }}"
-                 class="rounded-circle test">
-            <br>
-        {% endif %}
-
-        <div class="qr_code-upload-container">
-            {{ form_row(form.companyQrCode) }}
-        </div>
+        <h4>Functionality</h4>
+        {{ form_row(form.multiLingual) }}
+        {{ form_row(form.headerDisplayFacebookPages) }}
+        {{ form_row(form.facebookReviewsHistoryShowMonths) }}
+        {{ form_row(form.headerDisplayCompetitors) }}
+        {{ form_row(form.headerDisplayInstructions) }}
+        {{ form_row(form.headerDisplayBusinessContacts) }}
+        {{ form_row(form.headerDisplayWeather) }}
     </div>
     <div class="col-2">
-        <h4>Header/Footer Titles</h4>
-        {{ form_row(form.titleProducts) }}
-        {{ form_row(form.titleSubProducts) }}
-        {{ form_row(form.titleUsefulLinks) }}
-
-        <h4>HomePage</h4>
-        {{ form_row(form.includeContactFormHomePage) }}
-        {{ form_row(form.includeQRCodeHomePage) }}
+        <h4>Homepage</h4>
         {{ form_row(form.homePagePhotosOnly) }}
+        {{ form_row(form.includeQRCodeHomePage) }}
+
+        <h4>Contact Form</h4>
+        {{ form_row(form.includeContactFormHomePage) }}
+
+
+        <div style="display: flex; align-items: center">
+            {{ form_label(form.websiteContactsEmailAlert) }}
+            {{ form_widget(form.websiteContactsEmailAlert) }}
+            <i title="Receive an email alert when a new client fills in a contact form"
+               style="color: blue; font-size: 0.8em; cursor: pointer;"
+               class="fa fa-info-circle">
+            </i>
+        </div>
+        <br>
+        <div style="display: inline; align-items: center; gap: 5px;">
+            {{ form_label(form.websiteContactsAutoReply) }}
+            <i title="Responses to new contact forms are automatic or manually triggered"
+               style="color: blue; font-size: 0.8em; cursor: pointer;"
+               class="fa fa-info-circle">
+            </i>
+            {{ form_widget(form.websiteContactsAutoReply) }}
+        </div>
+
+
     </div>
+
     <div class="col-2">
         <h4>Header: Display...</h4>
         {{ form_row(form.headerDisplayLogin) }}
@@ -152,14 +172,14 @@
         {{ form_row(form.headerDisplayPhotos) }}
         {{ form_row(form.headerDisplayTandCs) }}
         {{ form_row(form.headerDisplayPricing) }}
-        <h4>Dashboard: Display...</h4>
-        {{ form_row(form.headerDisplayFacebookPages) }}
-        {{ form_row(form.facebookReviewsHistoryShowMonths) }}
-        {{ form_row(form.headerDisplayCompetitors) }}
-        {{ form_row(form.headerDisplayInstructions) }}
-        {{ form_row(form.headerDisplayBusinessContacts) }}
-        {{ form_row(form.headerDisplayWeather) }}
     </div>
+    <div class="col-2">
+        <h4>Header: Titles</h4>
+        {{ form_row(form.titleProducts) }}
+        {{ form_row(form.titleSubProducts) }}
+        {{ form_row(form.titleUsefulLinks) }}
+    </div>
+
     <div class="col-2">
         <h4>Footer: Display...</h4>
         {{ form_row(form.footerDisplayProducts) }}
@@ -169,28 +189,36 @@
         {{ form_row(form.footerDisplayAddress) }}
         {{ form_row(form.footerDisplayTelNumbers) }}
     </div>
-    <div class="col-3">
-        <h4>Registration:</h4>
-        {{ form_row(form.multiLingual) }}
-        {{ form_row(form.receiveNewWebsiteContactAlert) }}
-        {{ form_row(form.enableUserRegistration) }}
-        {{ form_row(form.registrationEmail) }}
+    <div class="col-2">
+        <h4>Social Media</h4>
+        {{ form_row(form.linkedIn) }}
+        {{ form_row(form.facebook) }}
+        {{ form_row(form.instagram) }}
+        {{ form_row(form.twitter) }}
     </div>
+
 </div>
 <hr>
-
 <div class="row">
     <div class="col-2">
-    <h4>Include in User Form:</h4>
+        <h4>Include in User Form:</h4>
         {{ form_row(form.userIncludeHomeAddress) }}
         {{ form_row(form.userIncludeBusinessAddress) }}
         {{ form_row(form.userIncludePersonalDetails) }}
         {{ form_row(form.userIncludeJobDetails) }}
     </div>
+    <div class="col-5">
+        <h4>Registration:</h4>
+        {{ form_row(form.enableUserRegistration) }}
+        {{ form_row(form.registrationEmail) }}
+    </div>
+    <div class="col-3">
+        <button class="btn btn-success btn-sm mb-1">{{ button_label|default('Save') }}</button>
+    </div>
 </div>
 <hr>
 
-<button class="btn btn-success btn-sm mb-1">{{ button_label|default('Save') }}</button>
+
 {{ form_end(form) }}
 
 

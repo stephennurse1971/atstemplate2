@@ -40,17 +40,17 @@
             </div>
         </div>
         {% if CompanyDetailsService.companyDetails.headerDisplayPhotos ==1 %}
-        <div class="col-12 col-md-2">
-            <div class="border py-4">
-                <h3 style="color: red">Photos</h3>
-                <li style="margin-left: 20px">
-                    <a target="_blank" href="{{ path('photos_index') }}">Photos</a>
-                </li>
-                <li style="margin-left: 20px">
-                    <a target="_blank" href="{{ path('photo_locations_index') }}">Photo Locations</a>
-                </li>
+            <div class="col-12 col-md-2">
+                <div class="border py-4">
+                    <h3 style="color: red">Photos</h3>
+                    <li style="margin-left: 20px">
+                        <a target="_blank" href="{{ path('photos_index') }}">Photos</a>
+                    </li>
+                    <li style="margin-left: 20px">
+                        <a target="_blank" href="{{ path('photo_locations_index') }}">Photo Locations</a>
+                    </li>
+                </div>
             </div>
-        </div>
         {% endif %}
 
         {% if CompanyDetailsService.companyDetails is not null %}
@@ -188,29 +188,41 @@
                     </div>
                 </div>
             {% endif %}
+
+                 <div class="col-12 col-md-2">
+                    <div class="border py-4">
+                        <h2 style="color: red">Technology</h2>
+                        <li style="margin-left: 20px">
+                            <a href="{{ path('export_database') }}">Export database</a>
+                        </li>
+                    </div>
+                </div>
+
         {% endif %}
     </div>
 
 {% endblock %}
-    {% block javascripts %}
-        {{ parent() }}
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
-        <script src="{{ asset('admin/js/AGS.js') }}"></script>
-    {% endblock javascripts %}
 
 
-    {% block datatable %}
-        <script>
-            $(document).ready(function () {
-                $('#table').DataTable({
-                    'pageLength': 100,
-                    "order": [[2, 'asc'], [3, 'asc'], [4, 'asc']],
-                    "paging": true,
-                    "searching": true,
-                    "bInfo": true
-                });
+{% block javascripts %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
+    <script src="{{ asset('admin/js/AGS.js') }}"></script>
+{% endblock javascripts %}
+
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('#table').DataTable({
+                'pageLength': 100,
+                "order": [[2, 'asc'], [3, 'asc'], [4, 'asc']],
+                "paging": true,
+                "searching": true,
+                "bInfo": true
             });
-        </script>
-    {% endblock datatable %}
+        });
+    </script>
+{% endblock datatable %}

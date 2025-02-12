@@ -36,82 +36,44 @@
 <div class="container bg-gradient-dark">
     <div class="row">
         <div class="col-12 col-md-4 mx-auto">
-            {#            {% if form is defined %} #}
+            {{ form_start(form, {
+                'attr': {'class': 'py-5'},
+                'action': path('new_website_contact_from_contact_form')
+            }) }}
 
-            {#            {{ form_start(form, { 'attr': {'class': 'py-5'} }) }} #}
+            {{ form_widget(form._token) }}
 
-            {#            <div class="user-box"> #}
-            {#                {{ form_label(form.firstName, 'First Name', { 'label_attr': {'for': 'firstName'} }) }}<sup style="padding-left:5px">*</sup> #}
-            {#                {{ form_widget(form.firstName, { 'attr': {'required': true} }) }} #}
-            {#            </div> #}
+            <div class="user-box">
+                {{ form_row(form.firstName) }}
+            </div>
 
-            {#            <div class="user-box"> #}
-            {#                {{ form_label(form.lastName, 'Last Name') }}<sup style="padding-left:5px">*</sup> #}
-            {#                {{ form_widget(form.lastName, { 'attr': {'required': true} }) }} #}
-            {#            </div> #}
+            <div class="user-box">
+                {{ form_row(form.lastName) }}
+            </div>
 
-            {#            <div class="user-box"> #}
-            {#                {{ form_label(form.email, 'Email') }}<sup style="padding-left:5px">*</sup> #}
-            {#                {{ form_widget(form.email, { 'attr': {'required': true, 'type': 'email'} }) }} #}
-            {#            </div> #}
+            <div class="user-box">
+                {{ form_row(form.email) }}
+            </div>
 
-            {#            <div class="user-box"> #}
-            {#                {{ form_label(form.mobile, 'Phone') }}<sup style="padding-left:5px">*</sup> #}
-            {#                {{ form_widget(form.mobile, { 'attr': {'required': true} }) }} #}
-            {#            </div> #}
+            <div class="user-box">
+                {{ form_label(form.mobile, 'Phone', { 'label_attr': {'class': 'form-label'} }) }}<sup style="padding-left:5px">*</sup>
+                {{ form_widget(form.mobile, { 'attr': {'class': 'form-control', 'required': 'required'} }) }}
+            </div>
 
-            {#            <div class="user-box-radio"> #}
-            {#                {{ form_label(form.productsRequested, 'Interested in:') }} #}
-            {#                {{ form_widget(form.productsRequested, { 'expanded': true, 'multiple': true }) }} #}
-            {#            </div> #}
+            <div class="user-box-radio">
+                <label class="pr-5">Interested in:</label>
+                {{ form_row(form.productsRequested) }}
+            </div>
 
-            {#            <div class="user-box"> #}
-            {#                {{ form_label(form.notes, 'Message') }} #}
-            {#                {{ form_widget(form.notes, { 'attr': {'rows': 7, 'style': 'width: 100%'} }) }} #}
-            {#            </div> #}
+            <div class="user-box">
+                {{ form_label(form.notes, 'Message', { 'label_attr': {'class': 'form-label pr-5'} }) }}
+                {{ form_widget(form.notes, { 'attr': {'class': 'form-control', 'style': 'width: 100%', 'rows': '7'} }) }}
+            </div>
 
-            {#            <button class="btn btn-outline-success mt-3" type="submit">Submit</button> #}
+            <button class="btn btn-outline-success mt-3" type="submit">Submit</button>
 
-            {#            {{ form_end(form) }} #}
-            {#            {% endif %} #}
-            <form class="py-5" method="post" action="{{ path('new_website_contact_from_contact_form') }}">
-                <input type="hidden" name="_token" value="{{ csrf_token('website_contact') }}"/>
+            {{ form_end(form) }}
 
-                <div class="user-box">
-                    <label for="firstName">First Name<sup style="padding-left:5px">*</sup></label>
-                    <input type="text" name="firstName" required>
-                </div>
-                <div class="user-box">
-                    <label>Last Name<sup style="padding-left:5px">*</sup></label>
-                    <input type="text" name="lastName" required>
-                </div>
-                <div class="user-box">
-                    <label>Email<sup style="padding-left:5px">*</sup></label>
-                    <input type="email" name="email" required>
-                </div>
-                <div class="user-box">
-                    <label>Phone<sup style="padding-left:5px">*</sup></label>
-                    <input type="text" name="mobile" required>
-                </div>
-                <div class="user-box-radio">
-                    <label class="pr-5" for="user-box-radio">Interested in:</label>
-                    {% set products = ProductService.getProductContactForm %}
-                    {% for product in products %}
-                        <div>
-                        <span style="white-space: nowrap">
-                        <input type="checkbox" name="productsRequested[]"
-                               value="{{ product.product }}" id="{{ product.product }}">
-                        <label class="pr-5" for="{{ product.product }}">{{ product.product }}</label>
-                        </span>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="user-box">
-                    <label class="pr-5" for="message-box">Message:</label>
-                    <textarea style="width: 100%" rows="7" name="notes" id="message-box"></textarea>
-                </div>
-                <button class="btn btn-outline-success mt-3" type="submit">Submit</button>
-            </form>
 
         </div>
     </div>

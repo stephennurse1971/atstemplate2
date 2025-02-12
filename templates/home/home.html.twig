@@ -59,3 +59,13 @@
 
     {% endif %}
 {% endblock body %}
+{% block additionaljs %}
+    {% if include_contact_form == 1 %}
+    <script>
+        $(document).ready(function () {
+            $("input[name='website_contacts[status]']").closest(".form-group").remove();
+            $("input[name='website_contacts[dateTime]']").closest(".form-group").remove();
+        });
+    </script>
+    {% endif %}
+{% endblock %}

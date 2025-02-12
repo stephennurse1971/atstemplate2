@@ -1,0 +1,19 @@
+ <div class="col-4">
+    <table class="table small">
+        <tbody>
+
+        <h4 style="display: inline;">
+            Address Instructions
+        </h4>
+        <a target="_blank" href="{{ path('company_details_edit', {'id': '1'}) }}" style="margin-left: 5px;">
+            <i style="color: red;" class="fa fa-pen"></i>
+        </a>
+
+        <tr>
+            <td>
+                {{ company_detail.companyAddressInstructions|raw }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

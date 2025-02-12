@@ -3,7 +3,7 @@
 {% block title %}Company Details: {{ company_details.companyName }} {% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Company Details: {{ company_details.companyName }}</h1>
+    <h1 style="color: red">{{ company_details.companyName }}</h1>
 
     {{ include('company_details/_form.html.twig', {'button_label': 'Update'}) }}
 

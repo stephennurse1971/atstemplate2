@@ -17,34 +17,8 @@
                 {% endif %}
             </td>
         </tr>
-        <tr>
-            <th>Enable Registration</th>
-            <td>
-                {% if company_detail.enableUserRegistration ==1 %}
-                    <a href="{{ path('company_details_change_field_status', {'input': 'enableUserRegistration'}) }}">
-                        <i style="color: green" class="fas fa-toggle-on"></i>
-                    </a>
-                {% else %}
-                    <a href="{{ path('company_details_change_field_status', {'input': 'enableUserRegistration'}) }}">
-                        <i style="color: grey" class="fas fa-toggle-off"></i>
-                    </a>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <th>Receive New Website Contact Alert</th>
-            <td>
-                {% if company_detail.receiveNewWebsiteContactAlert ==1 %}
-                    <a href="{{ path('company_details_change_field_status', {'input': 'receiveNewWebsiteContactAlert'}) }}">
-                        <i style="color: green" class="fas fa-toggle-on"></i>
-                    </a>
-                {% else %}
-                    <a href="{{ path('company_details_change_field_status', {'input': 'receiveNewWebsiteContactAlert'}) }}">
-                        <i style="color: grey" class="fas fa-toggle-off"></i>
-                    </a>
-                {% endif %}
-            </td>
-        </tr>
+
+
         <th>Photos</th>
         <td>
             {% if company_detail.headerDisplayPhotos ==1 %}

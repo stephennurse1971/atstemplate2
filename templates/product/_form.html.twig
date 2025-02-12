@@ -1,5 +1,5 @@
 <style>
-    .product_comments {
+    .product_notes   {
         height: 500px;
     }
 </style>
@@ -13,8 +13,11 @@
         {{ form_row(form.includeInFooter) }}
         {{ form_row(form.includeInContactForm) }}
     </div>
-    <div class="col-7">
+    <div class="col-5">
         {{ form_row(form.notes) }}
+    </div>
+    <div class="col-5">
+        {{ form_row(form.newClientEmail) }}
     </div>
 </div>
 

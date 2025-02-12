@@ -66,53 +66,21 @@ class WebsiteContactsController extends AbstractController
     #[NoReturn] #[Route('/new_website_contact_from_contact_form', name: 'new_website_contact_from_contact_form', methods: ['GET', 'POST'])]
     public function newFromContact(Request $request, EntityManagerInterface $entityManager, ProductRepository $productRepository, WebsiteContactsRepository $websiteContactsRepository): Response
     {
-        dd($request->request);
         $now = new \DateTime('now');
         $website_contact = new WebsiteContacts();
         $form = $this->createForm(WebsiteContactsType::class, $website_contact);
         $form->handleRequest($request);
 
-//        $website_contact->setDateTime($now)
-//            ->setStatus('Pending')
-//            ->setFirstName('test first name')
-//            ->setLastName('test last name')
-//        ;
-//        $productIds = $request->get('website_contacts')['productsRequested'];
-//        $products = $productRepository->findBy(['id' => $productIds]);
-//
-//        // Clear the existing productsRequested collection and add the selected products
-//        //$websiteContactsRepository->getProductRequested()->clear();
-//        foreach ($products as $product) {
-//            $website_contact->addProductsRequested($product);
-//        }
-//        dd($website_contact);
-
-
         if ($form->isSubmitted() && $form->isValid()) {
-            dd('I am in if');
-//            $website_contact->setDateTime($now)
-//                ->setStatus('Pending');
-            // Get selected products
-//            dd($website_contact);
-            $productsRequested = $form->get('productsRequested')->getData();
-            //dd($productsRequested);
-
-            foreach ($productsRequested as $product) {
-                $website_contact->addProductsRequested($product);
-            }
-
+            //dump('I am in if');die;
+            $website_contact->setDateTime(new \DateTime('now'))
+                ->setStatus('Pending');
             $entityManager->persist($website_contact);
             $entityManager->flush();
             $this->addFlash('success', 'Your contact request has been submitted.');
-            //dd($productsRequested);
             return $this->redirectToRoute('app_home');
         }
-        dump("I am outside if");
-        // If validation fails, return back with errors
-        return $this->render('website_contacts/new.html.twig', [
-            'website_contact' => $website_contact,
-            'form' => $form->createView(),
-        ]);
+            return $this->redirectToRoute('app_home');
     }
 
     /**

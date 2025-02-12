@@ -29,6 +29,11 @@ class ProductType extends AbstractType
             ->add('includeInContactForm')
             ->add('notes', TextareaType::class,[
                 'required'=>false,
+                'label'=>'Notes on hover in menu list',
+            ])
+            ->add('newClientEmail', TextareaType::class,[
+                'required'=>false,
+                'label'=>'New Client Email',
             ])
         ;
     }

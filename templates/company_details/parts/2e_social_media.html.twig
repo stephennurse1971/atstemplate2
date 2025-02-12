@@ -1,0 +1,103 @@
+<style>
+    .social_media_table tr {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .social_media_table tr th {
+        float: left;
+    }
+
+    .social_media_table tr td {
+        float: right;
+        margin-right: 25px;
+    }
+</style>
+<div class="col-2">
+    <table class="table social_media_table small">
+        <tbody>
+        <h4>Social Media</h4>
+        <tr style="display: inline-block;">
+            <th>
+                {% if company_detail.linkedIn is not empty %}
+                    <a target="_blank" title="{{ company_detail.linkedIn }}"
+                       href="https://www.linkedin.com/in/{{ company_detail.linkedIn }}">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                {% else %}
+                    <i class="fab fa-linkedin"></i>
+                {% endif %}
+            </th>
+            <td>
+                {% if company_detail.linkedIn is not empty %}
+                    <a target="_blank" title="{{ company_detail.linkedIn }}"
+                       href="https://www.linkedin.com/in/{{ company_detail.linkedIn }}">
+                        {{ company_detail.linkedIn }}
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                {% if company_detail.facebook is not empty %}
+                    <a target="_blank" title="{{ company_detail.facebook }}"
+                       href="https://www.facebook.com/{{ company_detail.facebook }}">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                {% else %}
+                    <i class="fab fa-facebook"></i>
+                {% endif %}
+            </th>
+            <td>
+                {% if company_detail.facebook is not empty %}
+                    <a target="_blank" title="{{ company_detail.facebook }}"
+                       href="https://www.facebook.com/{{ company_detail.facebook }}">
+                        {{ company_detail.facebook }}
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                {% if company_detail.instagram is not empty %}
+                    <a target="_blank" title="{{ company_detail.instagram }}"
+                       href="https://www.instagram.com/{{ company_detail.instagram }}">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    {% else %}
+                        <i class="fab fa-instagram"></i>
+                {% endif %}
+            </th>
+            <td>
+                {% if company_detail.instagram is not empty %}
+                    <a target="_blank" title="{{ company_detail.instagram }}"
+                       href="https://www.instagram.com/{{ company_detail.instagram }}">
+                        {{ company_detail.instagram }}
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                {% if company_detail.twitter is not empty %}
+                    <a target="_blank" title="{{ company_detail.twitter }}"
+                       href="https://x.com/{{ company_detail.twitter }}">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    {% else %}
+                        <i class="fab fa-twitter"></i>
+                {% endif %}
+            </th>
+            <td>
+                {% if company_detail.twitter is not empty %}
+                    <a target="_blank" title="{{ company_detail.twitter }}"
+                       href="https://x.com/{{ company_detail.twitter }}">
+                        {{ company_detail.twitter }}
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>

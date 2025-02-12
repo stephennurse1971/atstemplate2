@@ -213,8 +213,13 @@ class CompanyDetails
     #[ORM\Column(nullable: true)]
     private ?bool $userIncludeJobDetails = null;
 
+
+
     #[ORM\Column(nullable: true)]
-    private ?bool $receiveNewWebsiteContactAlert = null;
+    private ?bool $websiteContactsEmailAlert = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $websiteContactsAutoReply = null;
 
 
 
@@ -937,14 +942,28 @@ class CompanyDetails
         return $this;
     }
 
-    public function isReceiveNewWebsiteContactAlert(): ?bool
+
+
+    public function isWebsiteContactsEmailAlert(): ?bool
     {
-        return $this->receiveNewWebsiteContactAlert;
+        return $this->websiteContactsEmailAlert;
     }
 
-    public function setReceiveNewWebsiteContactAlert(?bool $receiveNewWebsiteContactAlert): static
+    public function setWebsiteContactsEmailAlert(?bool $websiteContactsEmailAlert): static
     {
-        $this->receiveNewWebsiteContactAlert = $receiveNewWebsiteContactAlert;
+        $this->websiteContactsEmailAlert = $websiteContactsEmailAlert;
+
+        return $this;
+    }
+
+    public function getWebsiteContactsAutoReply(): ?string
+    {
+        return $this->websiteContactsAutoReply;
+    }
+
+    public function setWebsiteContactsAutoReply(?string $websiteContactsAutoReply): static
+    {
+        $this->websiteContactsAutoReply = $websiteContactsAutoReply;
 
         return $this;
     }

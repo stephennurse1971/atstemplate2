@@ -14,7 +14,7 @@
 
 <div class="col-2">
     <div class="row">
-        <h4>Header Titles</h4>
+        <h4>Header: Titles</h4>
         <table class="table small">
             <tbody>
             <tr>
@@ -32,56 +32,6 @@
             <tr>
                 <th>Useful Links</th>
                 <td>{{ company_detail.titleUsefulLinks }}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="row">
-        <h4>Home Page</h4>
-        <table class="table small">
-            <tbody>
-            <tr>
-                <th>Photos Only on Home</th>
-                <td>
-                    {% if company_detail.homePagePhotosOnly ==1 %}
-                        <a href="{{ path('company_details_change_field_status', {'input': 'homePagePhotosOnly'}) }}">
-                            <i style="color: green" class="fas fa-toggle-on"></i>
-                        </a>
-                    {% else %}
-                        <a href="{{ path('company_details_change_field_status', {'input': 'homePagePhotosOnly'}) }}">
-                            <i style="color: grey" class="fas fa-toggle-off"></i>
-                        </a>
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>Contact Form</th>
-                <td>
-                    {% if company_detail.includeContactFormHomePage ==1 %}
-                        <a href="{{ path('company_details_change_field_status', {'input': 'includeContactFormHomePage'}) }}">
-                            <i style="color: green" class="fas fa-toggle-on"></i>
-                        </a>
-                    {% else %}
-                        <a href="{{ path('company_details_change_field_status', {'input': 'includeContactFormHomePage'}) }}">
-                            <i style="color: grey" class="fas fa-toggle-off"></i>
-                        </a>
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>QR code</th>
-                <td>
-                    {% if company_detail.includeQRCodeHomePage ==1 %}
-                        <a href="{{ path('company_details_change_field_status', {'input': 'includeQRCodeHomePage'}) }}">
-                            <i style="color: green" class="fas fa-toggle-on"></i>
-                        </a>
-                    {% else %}
-                        <a href="{{ path('company_details_change_field_status', {'input': 'includeQRCodeHomePage'}) }}">
-                            <i style="color: grey" class="fas fa-toggle-off"></i>
-                        </a>
-                    {% endif %}
-                </td>
             </tr>
             </tbody>
         </table>

@@ -1,0 +1,33 @@
+<div class="col-4">
+    <table class="table small">
+        <tbody>
+        <h4 style="display: inline;">
+            Registration
+        </h4>
+        <a target="_blank" href="{{ path('company_details_edit', {'id': '1'}) }}" style="margin-left: 5px;">
+            <i style="color: red;" class="fa fa-pen"></i>
+        </a>
+        <tr>
+            <th>Enable Registration</th>
+            <td>
+                {% if company_detail.enableUserRegistration ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'enableUserRegistration'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'enableUserRegistration'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        {% if company_detail.enableUserRegistration ==1 %}
+            <tr>
+                <td>
+                    {{ company_detail.registrationEmail|raw }}
+                </td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>

@@ -44,6 +44,9 @@ class Product
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $notes = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $newClientEmail = null;
+
     public function __construct()
     {
         $this->websiteContacts = new ArrayCollection();
@@ -152,6 +155,18 @@ class Product
     public function setNotes(?string $notes): static
     {
         $this->notes = $notes;
+
+        return $this;
+    }
+
+    public function getNewClientEmail(): ?string
+    {
+        return $this->newClientEmail;
+    }
+
+    public function setNewClientEmail(?string $newClientEmail): static
+    {
+        $this->newClientEmail = $newClientEmail;
 
         return $this;
     }

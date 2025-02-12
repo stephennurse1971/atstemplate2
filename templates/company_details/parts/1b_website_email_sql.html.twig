@@ -35,6 +35,14 @@
             <th>Password</th>
             <td>{{ company_detail.databasePassword }}</td>
         </tr>
+        <tr>
+            <th>Export SQL</th>
+            <td>
+                <a class="btn btn-outline-danger btn-sm" href="{{ path('export_database') }}">
+                <i class="fa fa-download"></i>
+                </a>
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>

@@ -4,27 +4,27 @@
 
 {% block body %}
     <div class="d-inline-block">
-        <h2 style="color: red">Website Set-up: {{ company_detail.companyName }}</h2>
+        <h2 style="color: red">{{ company_detail.companyName }}: Configuration</h2>
     </div>
     <div class="row">
         {% include 'company_details/parts/1a_name_contact_tel_favicon.html.twig' %}
         {% include 'company_details/parts/1b_website_email_sql.html.twig' %}
         {% include 'company_details/parts/1c_functionality.html.twig' %}
         {% include 'company_details/parts/1d_address_and_gps.html.twig' %}
+        {% include 'company_details/parts/1e_address_instructions.html.twig' %}
     </div>
     <hr>
     <div class="row">
-        {% include 'company_details/parts/2a_social_media.html.twig' %}
+        {% include 'company_details/parts/2a_homepage.html.twig' %}
         {% include 'company_details/parts/2b_header_titles.html.twig' %}
-        {% include 'company_details/parts/2c_include_in_header.html.twig' %}
-        {% include 'company_details/parts/2d_footer_display.html.twig' %}
-        {% if company_detail.enableUserRegistration ==1 %}
-            {% include 'company_details/parts/2e_registration.html.twig' %}
-        {% endif %}
+        {% include 'company_details/parts/2c_header_include.html.twig' %}
+        {% include 'company_details/parts/2d_footer_include.html.twig' %}
+        {% include 'company_details/parts/2e_social_media.html.twig' %}
     </div>
     <hr>
     <div class="row">
         {% include 'company_details/parts/3a_user_profile.html.twig' %}
+        {% include 'company_details/parts/3b_registration.html.twig' %}
     </div>
     <a class="btn btn-outline-primary btn-sm mb-1" href="{{ path('company_details_index') }}">Return to list</a>
     <a class="btn btn-outline-danger btn-sm mb-1" href="{{ path('company_details_edit', {'id': company_detail.id}) }}">Edit</a>
