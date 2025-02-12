@@ -7,6 +7,7 @@ use App\Form\UsefulLinksType;
 use App\Repository\UsefulLinksRepository;
 use App\Repository\UserRepository;
 use App\Services\CountAllocatedWebsites;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -89,10 +90,9 @@ class UsefulLinksController extends AbstractController
     /**
      * @Route("/delete/{id}", name="useful_links_delete", methods={"POST"})
      */
-    public function delete(Request $request, UsefulLinks $usefulLink, UsefulLinksRepository $usefulLinksRepository): Response
+    public function delete(Request $request, UsefulLinks $usefulLink, UsefulLinksRepository $usefulLinksRepository, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $usefulLink->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($usefulLink);
             $entityManager->flush();
         }

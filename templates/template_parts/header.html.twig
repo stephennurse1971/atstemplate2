@@ -176,10 +176,10 @@
 
                                     {% if is_granted('ROLE_ADMIN') %}
                                         <a style="color: red" class="dropdown-item"
-                                           href="{{ path('useful_links_index', {'category':'All'}) }}">Helpful Links
+                                           href="{{ path('useful_links_index', {'category':'All'}) }}">Links
                                         </a>
 
-                                        <a style="color: red" class="dropdown-item" href="{{ path('file_attachments_index') }}">Helpful files
+                                        <a style="color: red" class="dropdown-item" href="{{ path('file_attachments_index') }}">Files
                                         </a>
                                         <hr>
                                     {% endif %}

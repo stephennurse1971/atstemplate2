@@ -51,7 +51,7 @@ class FileAttachmentsController extends AbstractController
      */
     public function showAttachmentFileUploadDirectory(string $filename, int $id, FileAttachmentsRepository $fileAttachmentsRepository)
     {
-        $filepath = $this->getParameter('file_attachments_directory')  . $filename;
+        $filepath = $this->getParameter('file_attachments_directory') . $filename;
         if (file_exists($filepath)) {
             $response = new BinaryFileResponse($filepath);
             $response->setContentDisposition(
@@ -67,7 +67,7 @@ class FileAttachmentsController extends AbstractController
     /**
      * @Route("/new", name="file_attachments_new", methods={"GET","POST"})
      */
-    public function new(Request $request, FileAttachmentsRepository $fileAttachmentsRepository): Response
+    public function new(Request $request, FileAttachmentsRepository $fileAttachmentsRepository, EntityManagerInterface $entityManager): Response
     {
         $fileAttachment = new FileAttachments();
         $form = $this->createForm(FileAttachmentsType::class, $fileAttachment);
@@ -89,7 +89,6 @@ class FileAttachmentsController extends AbstractController
                 $fileAttachment->setAttachments($files_name);
             }
 
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($fileAttachment);
             $entityManager->flush();
             return $this->redirectToRoute('file_attachments_index');
@@ -114,7 +113,7 @@ class FileAttachmentsController extends AbstractController
     /**
      * @Route("/edit/{id}", name="file_attachments_edit", methods={"GET","POST"})
      */
-    public function edit(int $id, Request $request, FileAttachments $fileAttachments): Response
+    public function edit(int $id, Request $request, FileAttachments $fileAttachments, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(FileAttachmentsType::class, $fileAttachments, ['id' => $id]);
         if (empty($fileAttachments->getAttachments())) {
@@ -160,7 +159,7 @@ class FileAttachmentsController extends AbstractController
                     $fileAttachments->setAttachments($files_name);
                 }
             }
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             return $this->redirectToRoute('file_attachments_index');
         }
 
@@ -174,10 +173,9 @@ class FileAttachmentsController extends AbstractController
     /**
      * @Route("/delete/{id}", name="file_attachments_delete", methods={"POST"})
      */
-    public function delete(Request $request, FileAttachments $fileAttachments): Response
+    public function delete(Request $request, FileAttachments $fileAttachments, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $fileAttachments->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($fileAttachments);
             $entityManager->flush();
         }
