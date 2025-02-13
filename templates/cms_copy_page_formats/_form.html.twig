@@ -1,0 +1,23 @@
+{{ form_start(form) }}
+
+<div class="row">
+    <div class="col-md-3">
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.uses) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_row(form.pros) }}
+        {{ form_row(form.cons) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-9">
+        {{ form_row(form.code) }}
+    </div>
+</div>
+
+<button class="btn btn-success btn-sm mb-1">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

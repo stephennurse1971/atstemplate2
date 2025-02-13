@@ -34,13 +34,8 @@ use Symfony\Component\Validator\Validation;
  */
 final class MakeForm extends AbstractMaker
 {
-    private $entityHelper;
-    private $formTypeRenderer;
-
-    public function __construct(DoctrineHelper $entityHelper, FormTypeRenderer $formTypeRenderer)
+    public function __construct(private DoctrineHelper $entityHelper, private FormTypeRenderer $formTypeRenderer)
     {
-        $this->entityHelper = $entityHelper;
-        $this->formTypeRenderer = $formTypeRenderer;
     }
 
     public static function getCommandName(): string
@@ -50,15 +45,15 @@ final class MakeForm extends AbstractMaker
 
     public static function getCommandDescription(): string
     {
-        return 'Creates a new form class';
+        return 'Create a new form class';
     }
 
     public function configureCommand(Command $command, InputConfiguration $inputConfig): void
     {
         $command
-            ->addArgument('name', InputArgument::OPTIONAL, sprintf('The name of the form class (e.g. <fg=yellow>%sType</>)', Str::asClassName(Str::getRandomTerm())))
+            ->addArgument('name', InputArgument::OPTIONAL, \sprintf('The name of the form class (e.g. <fg=yellow>%sType</>)', Str::asClassName(Str::getRandomTerm())))
             ->addArgument('bound-class', InputArgument::OPTIONAL, 'The name of Entity or fully qualified model class name that the new form will be bound to (empty for none)')
-            ->setHelp(file_get_contents(__DIR__.'/../Resources/help/MakeForm.txt'))
+            ->setHelp($this->getHelpFileContents('MakeForm.txt'))
         ;
 
         $inputConfig->setArgumentAsNonInteractive('bound-class');
@@ -72,7 +67,7 @@ final class MakeForm extends AbstractMaker
             $entities = $this->entityHelper->getEntitiesForAutocomplete();
 
             $question = new Question($argument->getDescription());
-            $question->setValidator(function ($answer) use ($entities) {return Validator::existsOrNull($answer, $entities); });
+            $question->setValidator(fn ($answer) => Validator::existsOrNull($answer, $entities));
             $question->setAutocompleterValues($entities);
             $question->setMaxAttempts(3);
 

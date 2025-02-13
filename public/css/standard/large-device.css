@@ -24,37 +24,118 @@
         height: 500px;
         align-items: center;
     }
+
+    .homepage-gallery-image-container{
+        display: flex;
+        max-height: 500px;
+        max-width: 500px;
+        height: 500px;
+        align-items: center;
+    }
+
+    .productpage-gallery-image-container{
+        display: flex;
+        max-height: 500px;
+        max-width: 500px;
+        height: 500px;
+        align-items: center;
+    }
+
+    .homepage-image{
+        height: auto;
+        width: 333px;
+        object-fit:cover;
+    }
+
+    .productpage-image {
+        width: 100%; /* Allow image to scale properly */
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .dashboard {
+        margin-left: 5px;
+    }
+
+    .image-wrapper {
+        position: relative;
+        width: 100%; /* Allow flexibility */
+        max-width: 500px; /* Optional, for consistent sizing */
+        height: auto;
+        overflow: hidden; /* Ensures no overflow from rotation */
+        display: inline-block;
+    }
+
+    .rotate-90 {
+        transform: rotate(90deg);
+        transform-origin: center; /* Rotate around the center of the image */
+    }
+
+    .rotate-180 {
+        transform: rotate(180deg);
+        transform-origin: center;
+    }
+
+    .rotate-270 {
+        transform: rotate(270deg);
+        transform-origin: center;
+    }
+
     .photosByLocationThumbnail{
         height: 100px;
         width: 100px;
         object-fit:cover;
     }
+
     .photosByLocationFull{
         height: 500px;
         width: 500px;
         object-fit:cover;
     }
+
+    .photosByLocationFullRotate-90{
+        height: 500px;
+        width: 500px;
+        transform: rotate(90deg);
+        object-fit:cover;
+    }
+
+    .photosByLocationFullRotate-180{
+          height: 500px;
+          width: 500px;
+          transform: rotate(180deg);
+          object-fit:cover;
+      }
+
+    .photosByLocationFullRotate-270{
+        height: 500px;
+        width: 500px;
+        transform: rotate(270deg);
+        object-fit:cover;
+    }
+
     .videoByLocationFull{
         width:500px;
-        height:500px
+        height:500px;
+        object-fit:cover;
     }
     .videoByLocationThumbnail{
         width:100px;
-        height:100px
+        height:100px;
+        object-fit:cover;
     }
     .videoByInstructions{
         width:150px;
         height:150px
     }
     .product-image-container{
-        width: 300px;
-        height: 300px;
+        /*width: 300px;*/
+        /*height: 300px;*/
         object-fit: cover;
     }
     .other-page-image{
         max-width: 100%;
-        max-height: 100%;
-        /*height: 100%;*/
+        height: auto;
     }
     .single-page-media-container{
         height: 500px;
@@ -64,5 +145,9 @@
     .single-page-media-container img{
         max-width: 100%;
         max-height: 100%;
+    }
+    .custom-table {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
     }
 }

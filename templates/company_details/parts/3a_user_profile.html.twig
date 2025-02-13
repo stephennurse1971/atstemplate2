@@ -1,0 +1,63 @@
+<div class="col-2">
+    <table class="table small">
+        <tbody>
+        <h4>User Profile</h4>
+        <tr>
+            <th>Home Address</th>
+            <td>
+                {% if company_detail.userIncludeHomeAddress ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'userIncludeHomeAddress'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'userIncludeHomeAddress'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Business Address</th>
+            <td>
+                {% if company_detail.userIncludeBusinessAddress ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'userIncludeBusinessAddress'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'userIncludeBusinessAddress'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Personal Details</th>
+            <td>
+                {% if company_detail.userIncludePersonalDetails ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'userIncludePersonalDetails'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'userIncludePersonalDetails'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Job Details</th>
+            <td>
+                {% if company_detail.userIncludeJobDetails ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'userIncludeJobDetails'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'userIncludeJobDetails'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

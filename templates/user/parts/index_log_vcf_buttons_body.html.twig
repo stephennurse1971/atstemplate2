@@ -1,0 +1,63 @@
+<td style="text-align: right">
+    {% for role in user.roles %}
+        {% if role=="ROLE_SUPER_ADMIN" %}
+            <i title="Super-Admin" style="color: green" class="fa fa-hat-wizard"></i>
+        {% endif %}
+        {% if role=="ROLE_ADMIN" %}
+            <i title="Admin" style="color: orange" class="fa fa-user-tie"></i>
+        {% endif %}
+        {% if role=="ROLE_USER" %}
+            <i title="User" class="fa fa-user"></i>
+        {% endif %}
+    {% endfor %}
+</td>
+<td style="text-align: center">
+    {% if user.emailVerified ==1 %}
+        <i style="color: green" class="fa fa-check"></i>
+    {% else %}
+        <i style="color: red" class="fa fa-remove"></i>
+    {% endif %}
+</td>
+
+{% if user.defaultLanguage is null %}
+    {% set language="English" %}
+{% else %}
+    {% set language= user.defaultLanguage.language %}
+{% endif %}
+
+                {% if CompanyDetailsService.companyDetails.multiLingual ==1 %}
+                    <td style="text-align: center" data-sort="{{ language }}">
+                        {% if user.defaultLanguage is not null %}
+                            {% set image = asset('administration/ATSSharedFiles/LanguageIcons/'~ user.defaultLanguage.icon) %}
+                            <img title="{{ user.defaultLanguage.language }}" height="30" width="30" src="{{ image }}">
+                        {% endif %}
+                    </td>
+                {% endif %}
+<td style="text-align: right">
+    {{ CountUserLogsService.count(user.id)|number_format }}
+</td>
+<td>
+    <a class="btn btn-outline-danger btn-sm" target="_blank"
+       href="{{ path('user_edit', {'id': user.id}) }}">
+        <i class="fa fa-pen"></i>
+    </a>
+</td>
+<td>
+    <form method="post" action="{{ path('user_delete', {'id': user.id}) }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+        <button class="btn btn-danger btn-sm">
+            <i class="fa fa-trash"></i>
+        </button>
+    </form>
+</td>
+<td style="text-align: center">
+    <a href="{{ path('create_vcard_user', {userid: user.id} ) }}" class="action"
+       data-id="{{ user.id }}" data-action="VCF"> <i style="color: blue"
+                                                     class="fas fa-address-card mr-0"></i></a>
+</td>
+<td>
+    <a title="XYZ" href="" class="btn btn-outline-primary btn-sm">Button 1</a>
+</td>
+<td>
+    <a title="XYZ" href="" class="btn btn-outline-primary btn-sm">Button 2</a>
+</td>

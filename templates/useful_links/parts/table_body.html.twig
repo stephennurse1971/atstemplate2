@@ -1,0 +1,53 @@
+{% if is_granted('ROLE_ADMIN') or (useful_link.private !=1) %}
+    <tr>
+        <td style="text-align: center">
+            {% if useful_link.private ==1 %}
+                <i title="Private" style="color: red" class="fa fa-user-secret"></i>
+            {% else %}
+                <i title="Public" style="color: green" class="fa fa-user"></i>
+            {% endif %}
+        </td>
+        {% if category_chosen=="All" %}
+            <td>{{ useful_link.category }}</td>
+        {% endif %}
+        <td>{{ useful_link.name }}</td>
+
+
+        {% if  useful_link.link is not empty %}
+            {% if   useful_link.link starts with 'http' %}
+                {% set web =   useful_link.link %}
+            {% else %}
+                {% set web = 'https://'~  useful_link.link %}
+            {% endif %}
+        {% endif %}
+
+
+        <td class="desktop">
+            <a target="_blank" href="{{ web }}">{{ web }}</a>
+        </td>
+        <td class="mobile" style="width: 10px">
+            <a target="_blank" href="{{ web }}"><i class="fa fa-link"></i></a>
+        </td>
+
+        <td class="desktop" style="border-right: 1px dotted">
+            {{ useful_link.notes }} xxx
+        </td>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <td class="desktop">{{ useful_link.login }}</td>
+            <td class="desktop">{{ useful_link.password }}</td>
+            <td class="desktop">
+                <a class="btn btn-outline-danger btn-sm" target="_blank"
+                   href="{{ path('useful_links_edit', {'id': useful_link.id}) }}">Edit</a>
+            </td>
+            <td style="text-align: center" class="desktop">
+                <form method="post" action="{{ path('useful_links_delete', {'id': useful_link.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ useful_link.id) }}">
+                    <button class="btn btn-danger btn-sm">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </form>
+            </td>
+        {% endif %}
+    </tr>
+{% endif %}

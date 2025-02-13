@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Useful URLs{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Useful URLs:  {{ category_chosen }}</h1>
+    <div class="row">
+        <div class="col-9">
+            <a class="btn btn-outline-primary btn-sm"
+               href="{{ path('useful_links_index', {category:'All'}) }}">All</a>
+            {% for category in categories %}
+                {% if CountAllocatedWebsites.countAllocatedWebsites(category) >0 %}
+                    {% if category == category_chosen %}
+                        <a class="btn btn-outline-danger btn-sm"
+                           href="{{ path('useful_links_index', {category:category}) }}">{{ category }}
+                            (#{{ CountAllocatedWebsites.countAllocatedWebsites(category) }})
+                        </a>
+                    {% else %}
+                        <a class="btn btn-outline-secondary btn-sm"
+                           href="{{ path('useful_links_index', {category:category}) }}">{{ category }}
+                            (#{{ CountAllocatedWebsites.countAllocatedWebsites(category) }})
+                        </a>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="col-2">
+            {% if is_granted('ROLE_ADMIN') %}
+                <a target="_blank" class="btn btn-success btn-sm" href="{{ path('useful_links_new') }}">New</a>
+                <br>
+            {% endif %}
+        </div>
+    </div>
+
+    <table class="table table-responsive small" style="width: 100% !important">
+        <thead>
+        <tr>
+            <th>Public/<br>Private</th>
+            {% if category_chosen=="All" %}
+                <th>Category</th>
+            {% endif %}
+            <th style="width: 300px">Name</th>
+            <th style="width: 400px" class="desktop">Link</th>
+            <th style="width: 10px" class="mobile">Link M</th>
+            <th style="width: 200px; border-right: 1px dotted" class="desktop">Notes</th>
+            {% if is_granted('ROLE_ADMIN') %}
+                <th class="desktop" style="color: red">Login</th>
+                <th class="desktop" style="color: red">Password</th>
+                <th class="desktop" style="color: red">Edit</th>
+                <th class="desktop" style="color: red">Delete</th>
+            {% endif %}
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for useful_link in useful_links %}
+            {% if useful_link.category == category_chosen or category_chosen == "All" %}
+                {% if useful_link.category !="RT" %}
+                    {% include 'useful_links/parts/table_body.html.twig' %}
+                {% elseif useful_link.category == 'RT' and app.user == sn %}
+                    {% include 'useful_links/parts/table_body.html.twig' %}
+                {% endif %}
+            {% endif %}
+
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                "pageLength": 100,
+                "order": [[1, 'asc'], [2, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

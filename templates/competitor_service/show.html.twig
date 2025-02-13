@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Competitor Services{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">CompetitorService</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ competitor_service.id }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ competitor_service.description }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ competitor_service.price }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('competitor_service_index') }}">Return to list</a>
+
+    <a class="btn btn-outline-danger btn-sm" href="{{ path('competitor_service_edit', {'id': competitor_service.id}) }}">edit</a>
+
+    {{ include('competitor_service/_delete_form.html.twig') }}
+{% endblock %}

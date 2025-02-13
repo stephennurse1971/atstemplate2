@@ -1,0 +1,13 @@
+{#<br> !list_stacked_content! <br>#}
+
+<div class="row">
+    <div class="col-12">
+        <p>{{ attribute(cms_copy,'contentText'~LanguagesService.getSelectedLanguageCode)|raw }}</p>
+        {% if cms_copy.attachment is not null %}
+            <a title="{{ cms_copy.attachment }}" target="_blank"
+               href="{{ path('cms_copy_show_attachment',{id : cms_copy.id }) }}">
+                <i class="fa fa-paperclip"></i>
+            </a>
+        {% endif %}
+    </div>
+</div>

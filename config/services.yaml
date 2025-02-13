@@ -1,28 +1,54 @@
-# This file is the entry point to configure your own services.
+  # This file is the entry point to configure your own services.
 # Files in the packages/ subdirectory configure your dependencies.
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+
+imports:
+  - { resource: 'project_specific_services.yaml' }
+
 parameters:
-  business_contact_attachments_directory: '%kernel.project_dir%/public/administration/import_export/business_contacts/'
-  favicon_directory: '%kernel.project_dir%/public/administration/attachments/Favicons/'
-  icon_directory: '%kernel.project_dir%/public/administration/attachments/LanguageIcons/'
-  instructions_directory: '%kernel.project_dir%/public/administration/attachments/Instructions/'
-  translations_directory: '%kernel.project_dir%/public/administration/attachments/Translations/'
-  user_attachments_directory: '%kernel.project_dir%/public/administration/attachments/Users/'
-  website_photos_directory: '%kernel.project_dir%/public/administration/attachments/WebsitePhotos/'
-  website_attachments_directory: '%kernel.project_dir%/public/administration/attachments/WebsiteAttachments/'
-  public: '%kernel.project_dir%/public/'
+  business_contacts_map_icon_directory:      '%kernel.project_dir%/public/administration/ATSSharedFiles/BusinessContactsMapIcons/'
+  language_icon_directory:                   '%kernel.project_dir%/public/administration/ATSSharedFiles/LanguageIcons/'
+  import_templates_directory:                '%kernel.project_dir%/public/administration/ATSSharedFiles/_ImportTemplates/'
+
+  business_contacts_attachments_directory:   '%kernel.project_dir%/public/administration/Attachments/BusinessContacts/Files/'
+  business_contacts_photos_directory:        '%kernel.project_dir%/public/administration/Attachments/BusinessContacts/Photos/'
+  cms_copy_attachments_directory:            '%kernel.project_dir%/public/administration/Attachments/CMSCopyAttachments/'
+  cms_photos_directory:                      '%kernel.project_dir%/public/administration/Attachments/CMSPhotos/'
+  favicons_directory:                        '%kernel.project_dir%/public/administration/Attachments/Favicons/'
+  file_attachments_directory:                '%kernel.project_dir%/public/administration/Attachments/FileAttachments/'
+  instructions_attachments_directory:        '%kernel.project_dir%/public/administration/Attachments/Instructions/'
+  photos_directory:                          '%kernel.project_dir%/public/administration/Attachments/Photos/'
+  user_attachments_directory:                '%kernel.project_dir%/public/administration/Attachments/Users/'
+  user_photos_directory:                     'administration/Attachments/Users/Photos/'
+
+  business_contacts_import_directory:        '%kernel.project_dir%/public/administration/Import/BusinessContacts/'
+  business_types_import_directory:           '%kernel.project_dir%/public/administration/Import/BusinessTypes/'
+  cms_copy_page_formats_import_directory:    '%kernel.project_dir%/public/administration/Import/CmsCopyPageFormats/'
+  cms_copy_import_directory:                 '%kernel.project_dir%/public/administration/Import/CmsCopy/'
+  competitors_import_directory:              '%kernel.project_dir%/public/administration/Import/Competitors/'
+  facebook_groups_import_directory:          '%kernel.project_dir%/public/administration/Import/FacebookGroups/'
+  languages_import_directory:                '%kernel.project_dir%/public/administration/Import/Languages/'
+  map_icons_import_directory:                '%kernel.project_dir%/public/administration/Import/MapIcons/'
+  facebook_groups_reviews_import_directory:  '%kernel.project_dir%/public/administration/Import/FacebookGroupsReviews/'
+  translations_import_directory:             '%kernel.project_dir%/public/administration/Import/Translations/'
+  users_import_directory:                    '%kernel.project_dir%/public/administration/Import/Users/'
+
+  public:                                    '%kernel.project_dir%/public/'
 
 
 services:
-  # default configuration for services in *this* file
-  _defaults:
-    autowire: true      # Automatically injects dependencies in your services.
-    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+  # Automatically wire and configure all services under App\Service
+  App\Service\EmailFetcherService:
+    arguments: []
 
-  # makes classes in src/ available to be used as services
-  # this creates a service per class whose id is the fully-qualified class name
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    public: false
+
+  # Makes classes in src/ available to be used as services
   App\:
     resource: '../src/'
     exclude:
@@ -31,11 +57,27 @@ services:
       - '../src/Kernel.php'
       - '../src/Tests/'
 
-  # controllers are imported separately to make sure services can be injected
-  # as action arguments even if you don't extend any base controller class
+  # Explicitly define SecurityAuthenticator service if autowiring fails
+  App\Security\SecurityAuthenticator:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  # Explicitly define the AuthenticationEntryPoint service
+  App\Security\AuthenticationEntryPoint:
+    class: App\Security\AuthenticationEntryPoint
+    arguments: []
+
+  # Explicitly inject ContainerInterface as the service container
+  Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
+
+  # Explicitly define UserPasswordHasherInterface for password hashing
+  Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface: '@security.user_password_hasher'
+
+  # controllers are imported separately to make sure services can be injected as action arguments
+  # even if you don't extend any base controller class
   App\Controller\:
     resource: '../src/Controller/'
     tags: ['controller.service_arguments']
 
-  # add more service definitions when explicit configuration is needed
-  # please note that last definitions always *replace* previous ones
+  # Additional custom service definitions can go here

@@ -40,7 +40,7 @@ class CompanyDetailsRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return CompanyDetails[] Returns an array of CompanyDetails objects
+//     * @return CompanyDetailsService[] Returns an array of CompanyDetailsService objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class CompanyDetailsRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?CompanyDetails
+//    public function findOneBySomeField($value): ?CompanyDetailsService
 //    {
 //        return $this->createQueryBuilder('c')
 //            ->andWhere('c.exampleField = :val')

@@ -2,31 +2,124 @@
     .ck-content {
         min-height: 700px;
     }
+
+    #loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9); /* Darker background */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        flex-direction: column;
+    }
 </style>
+
 {{ form_start(form) }}
 <input type="hidden" name="referer" value="{{ app.request.headers.get('referer') }}">
 <div class="row">
-    <div class="col-12 col-lg-2">
+    <div class="col-3 col-lg-2">
         <h2 style="color: red">Personal Details</h2>
+        {{ form_row(form.salutation) }}
         {{ form_row(form.firstName) }}
         {{ form_row(form.lastName) }}
-        {{ form_row(form.email) }}
-    </div>
+        {{ form_row(form.emailVerified  ) }}
 
-    <div class="col-12 col-lg-2">
-        <div class="password">
-            <h2 style="color: red">Password</h2>
-            {{ form_row(form.password) }}
-        </div>
-        {% if form.roles is defined %}
-            <h2 style="color: red">Roles</h2>
-            {{ form_row(form.roles) }}
+        {% if CompanyDetailsService.getCompanyDetails.userIncludeJobDetails == 1 %}
+            <div class="container-job-details">
+                <h2 style="color: red">Company</h2>
+                {% if (form.company is defined) %}
+                    {{ form_row(form.company) }}
+                {% endif %}
+                {{ form_row(form.jobTitle) }}
+                {{ form_row(form.linkedIn) }}
+            </div>
+            <div class="container-personal-details">
+                <h2 style="color: red">Other</h2>
+                {{ form_row(form.birthday) }}
+                {{ form_row(form.webPage) }}
+                {{ form_row(form.notes) }}
+
+            </div>
         {% endif %}
     </div>
 
 
-</div>
+    <div class="col-3 col-lg-2">
+        <h2 style="color: red">Email and Tel</h2>
+        {{ form_row(form.email) }}
+        <div class="container-personal-details">
+            {% if CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails == 1 %}
+                {{ form_row(form.email2) }}
+                {{ form_row(form.email3) }}
+            {% endif %}
+        </div>
 
-<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+        {{ form_row(form.mobile) }}
+        <div class="container-personal-details">
+            {% if CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails == 1 %}
+                {{ form_row(form.mobile2) }}
+                {% if user.photo is not empty %}
+                    {% set loc = asset(user_photos_directory ~ user.photo) %}
+                    <a  class="btn btn-outline-danger btn-sm" target="_blank"
+                       href="{{ path('user_photo_view', {'id': user.id}) }}">
+                        <img id="photo_image" height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
+                    <br>
+                    <b>{{ user.photo }}</b>
+                    <br>
+                    <a class="btn btn-sm btn-danger" href="{{ path('user_photo_file_delete', {'id': user.id}) }}">Delete
+                        photo</a>
+                    <br>
+                {% endif %}
+                {{ form_row(form.photo) }}
+            {% endif %}
+        </div>
+    </div>
+
+    {% if CompanyDetailsService.getCompanyDetails.userIncludeBusinessAddress == 1 %}
+        <div class="col-3 col-lg-2 container-business-address">
+            <h2 style="color: red">Addresses</h2>
+            {{ form_row(form.businessStreet) }}
+            {{ form_row(form.businessCity) }}
+            {{ form_row(form.businessCountry) }}
+            {{ form_row(form.businessPostalCode) }}
+            {{ form_row(form.businessPhone) }}
+        </div>
+    {% endif %}
+
+    {% if CompanyDetailsService.getCompanyDetails.userIncludeHomeAddress == 1 %}
+        <div class="col-3 col-lg-2 container-home-address">
+            <h2 style="color: red">Addresses</h2>
+            {{ form_row(form.homeStreet) }}
+            {{ form_row(form.homeCity) }}
+            {{ form_row(form.homeCountry) }}
+            {{ form_row(form.homePostalCode) }}
+            {{ form_row(form.homePhone) }}
+            {{ form_row(form.homePhone2) }}
+        </div>
+    {% endif %}
+
+
+    <div class="col-3 col-lg-2">
+        <h2 style="color: red">Roles & Language</h2>
+        {% if form.roles is defined %}
+            {{ form_widget(form.roles) }}
+        {% endif %}
+        {{ form_row(form.defaultLanguage  ) }}
+    </div>
+
+    <div class="col-2">
+        <h2 style="color: red">Reset Password</h2>
+        {{ form_row(form.password) }}
+    </div>
+
+</div>
+<button class="btn btn-success btn-sm update_button">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
 

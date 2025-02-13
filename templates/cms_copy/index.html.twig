@@ -11,35 +11,42 @@
             <a target="_blank" class="btn btn-success btn-sm" href="{{ path('cms_copy_new') }}">New</a>
             <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('cms_photo_index') }}">Photos</a>
         </div>
-        <div class="col-2">
+        <div class="col-2 desktop">
+            <a class="btn btn-outline-danger btn-sm" href="{{ path('cms_copy_reset_counters') }}">Reset counters</a>
             <a target="_blank" class="btn btn-danger btn-sm" href="{{ path('cms_copy_delete_all_files') }}">Delete All
-                FIles</a>
+                Files</a>
         </div>
     </div>
-
-    <table class="table table-responsive">
+    <br>
+    <table class="table small">
         <thead>
         <tr>
             <th style="width: 50px">Category</th>
-            <th style="width: 150px">Product or <br>Static Page Name</th>
-            <th style="width: 20px">Order</th>
+            <th style="width: 150px">Product/<br>Static Page Name</th>
+            <th style="width: 10px">#</th>
+            <th style="width: 80px">Layout</th>
             <th style="width: 50px">Tab title</th>
             <th style="width: 250px">Heading<br>(Content title)</th>
             <th style="width: 650px">Content</th>
-            <th style="width: 20px">Hyperlink</th>
-            <th style="width: 20px">File</th>
-            <th style="width: 100px"></th>
-{#            <th style="width: 20px"></th>#}
-{#            <th style="width: 20px"></th>#}
+            <th style="width: 120px">Hyperlink</th>
+            <th style="width: 60px; border-right: dotted 1px">File</th>
             <th style="width: 20px">Count:<br>Users</th>
-            <th style="width: 20px">Count:<br>Admin</th>
+            <th style="width: 20px; border-right: dotted 1px">Count:<br>Admin</th>
+            <th style="width: 40px"></th>
+            <th style="width: 40px"></th>
+            <th style="width: 40px"></th>
         </tr>
         </thead>
         <tbody>
         {% for cms_copy in cms_copies %}
+            {% if cms_copy.product is not null %}
+                {% set order = cms_copy.product.ranking %}
+            {% else %}
+                {% set order = 99 %}
+            {% endif %}
             <tr>
-                <td>{{ cms_copy.category }}</td>
-                <td>
+                <td>{{ cms_copy.category|slice(0,1) }}</td>
+                <td data-sort="{{ order }}">
                     {% if cms_copy.product is not null %}
                         <a target="_blank"
                            href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
@@ -50,31 +57,59 @@
                     {% endif %}
                 </td>
                 <td style="text-align: center">{{ cms_copy.ranking }}</td>
-
-                <td>
-                    {{ cms_copy.tabTitle }}
-                    {% if cms_copy.ranking != '1' and cms_copy.tabTitle is not null and cms_copy.category == 'Product' %}
-                        <i style="background-color: yellow; color: red" title="Ranking must be 1 to effect tab Title"
-                           class="fa fa-warning"></i>
+                <td style="text-align: right">
+                    {% if cms_copy.pageLayout is not null %}
+                        {{ cms_copy.pageLayout.name }}<br>
+                        <i style="color: blue" title="Description: {{ cms_copy.pageLayout.description }}"
+                           class="fa fa-info-circle"></i>
+                        <i style="color: grey" title="Uses: {{ cms_copy.pageLayout.uses }}" class="fa fa-cog"></i>
+                        <i style="color: green" title="Pros: {{ cms_copy.pageLayout.pros }}"
+                           class="fa fa-check"></i>
+                        <i style="color: red" title="Cons: {{ cms_copy.pageLayout.cons }}" class="fa fa-remove"></i>
                     {% endif %}
                 </td>
-                <td title="{{ cms_copy.contentTitle }}">{{ (cms_copy.contentTitle |slice (0, 50)) }}...</td>
+
                 <td>
-                    {{ (cms_copy.contentText |slice (0, 250))|raw }}...
+                    {% if cms_copy.ranking != '1' %}
+                        <i title="Ranking must be 1 to effect the tab title" class="fa fa-info-circle"></i>
+                        -- -
+                    {% else %}
+                        {{ cms_copy.tabTitle }}
+                    {% endif %}
+                </td>
+                <td title="{{ cms_copy.contentTitle }}">
+                    {% if cms_copy.ranking != '1' %}
+                        <i title="Ranking must be 1 to effect the heading" class="fa fa-info-circle"></i>
+                        -- -
+                    {% else %}
+                        {{ (cms_copy.contentTitle |slice (0, 50)) }}...
+                    {% endif %}
+                </td>
+                {% set contentText_strigtaps = cms_copy.contentText|striptags %}
+                {#                <td class="mobile"> #}
+                {#                    {{ contentText_strigtaps|slice(0,20) }} #}
+                {#                    {% if contentText_strigtaps|length>20 %}...{% endif %} #}
+                {#                </td> #}
+                <td>
+                    {{ (contentText_strigtaps|slice (0, 250))|raw }}
+                    {% if contentText_strigtaps|length> 250 %}...
+                        <i title="{{ contentText_strigtaps|raw }}" class="fa fa-info-circle"></i>
+                    {% endif %}
                 </td>
                 <td>
-                    {% if  cms_copy.hyperlinks is not empty %}
+                    {% if cms_copy.hyperlinks is not empty %}
                         {% if  cms_copy.hyperlinks starts with 'http' %}
                             {% set web =  cms_copy.hyperlinks %}
                         {% else %}
                             {% set web = 'https://'~ cms_copy.hyperlinks %}
                         {% endif %}
                         <a target="_blank" title="{{ cms_copy.hyperlinks }}" href="{{ web }}">
-                            {{ web }}
+                            <i class="fa fa-link"></i>
                         </a>
+                        {{ web }}
                     {% endif %}
                 </td>
-                <td style="text-align: center">
+                <td style="text-align: center; border-right: dotted 1px">
                     {% if cms_copy.attachment is not null %}
                         <a title="{{ cms_copy.attachment }}" target="_blank"
                            href="{{ path('cms_copy_show_attachment',{id : cms_copy.id }) }}">
@@ -82,24 +117,29 @@
                         </a>
                         <a class="d-inline btn btn-outline-danger btn-sm" target="_blank"
                            href="{{ path('cms_copy_delete_file', {'id': cms_copy.id}) }}">
-                            Delete File
+                            <i class="fa fa-trash"></i>
                         </a>
-
                     {% endif %}
                 </td>
+                <td style="text-align: center">
+                    {{ cms_copy.pageCountUsers }}
+                </td>
+                <td style="text-align: center; border-right: dotted 1px">
+                    {{ cms_copy.pageCountAdmin }}
+                </td>
                 <td>
-                    <a class="d-inline btn btn-outline-danger btn-sm" target="_blank"
+                    <a class="d-inline btn btn-outline-danger btn-sm mr-1" target="_blank"
                        href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
                         <i style="color: red" class="fa fa-pen"></i>
                     </a>
-{#                </td>#}
-
-{#                <td>#}
-{#                    <a class="d-inline btn btn-outline-danger btn-sm" target="_blank"#}
-{#                       href="{{ path('cms_copy_delete', {'id': cms_copy.id}) }}">#}
-{#                        <i style="color: red" class="fa fa-train"></i>#}
-{#                    </a>#}
-
+                </td>
+                <td>
+                    <a class="d-inline btn btn-outline-success btn-sm" target="_blank"
+                       href="{{ path('cms_copy_copy_and_edit', {'id': cms_copy.id}) }}">
+                        <i style="color: green" class="fa fa-copy"></i>
+                    </a>
+                </td>
+                <td>
                     <form class="d-inline" method="post"
                           action="{{ path('cms_copy_delete', {'id': cms_copy.id}) }}">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cms_copy.id) }}">
@@ -107,19 +147,8 @@
                             <i style="color: red" class="fa fa-trash"></i>
                         </button>
                     </form>
-{#                </td>#}
-{#                <td>#}
-                    <a class="d-inline btn btn-success btn-sm" target="_blank"
-                       href="{{ path('cms_copy_copy_and_edit', {'id': cms_copy.id}) }}">
-                        <i style="color: white" class="fa fa-copy"></i>
-                    </a>
                 </td>
-                <td style="text-align: center">
-                    {{ cms_copy.pageCountUsers }}
-                </td>
-                <td style="text-align: center">
-                    {{ cms_copy.pageCountAdmin }}
-                </td>
+
             </tr>
         {% endfor %}
         </tbody>
@@ -132,7 +161,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc'], [1, 'asc'], [2, 'asc']],
+                "order": [[0, 'asc'],[1, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

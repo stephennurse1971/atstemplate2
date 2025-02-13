@@ -1,0 +1,24 @@
+<td>
+    {% if business_contact.photo|length >1 %}
+        {% set photo = asset('administration/Attachments/BusinessContacts/Photos/')~business_contact.photo %}
+        {% if business_contact.website|length>2 %}
+            <a target="_blank" title="{{ business_contact_website }}" href="{{ business_contact_website }}"
+               class="action"
+               data-id="{{ business_contact.id }}" data-action="Website">
+                <img title="{{ business_contact.photo }}" height="40" width="40"
+                     src="{{ photo }}">
+            </a>
+        {% else %}
+            <img title="{{ business_contact.photo }}" height="50" width="50"
+                 src="{{ photo }}">
+        {% endif %}
+    {% endif %}
+</td>
+{#<td>#}
+{#    {% if business_contact.businessOrPerson == "Business" %}#}
+{#        <i title="Business" class="fa fa-building"></i>#}
+{#    {% endif %}#}
+{#    {% if business_contact.businessOrPerson == "Person" %}#}
+{#        <i title="Individual" class="fa fa-user"></i>#}
+{#    {% endif %}#}
+{#</td>#}

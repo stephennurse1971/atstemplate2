@@ -22,10 +22,16 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 abstract class AbstractMaker implements MakerInterface
 {
+    /**
+     * @return void
+     */
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command)
     {
     }
 
+    /**
+     * @return void
+     */
     protected function writeSuccessMessage(ConsoleStyle $io)
     {
         $io->newLine();
@@ -35,7 +41,8 @@ abstract class AbstractMaker implements MakerInterface
         $io->newLine();
     }
 
-    protected function addDependencies(array $dependencies, string $message = null): string
+    /** @param array<class-string, string> $dependencies */
+    protected function addDependencies(array $dependencies, ?string $message = null): string
     {
         $dependencyBuilder = new DependencyBuilder();
 
@@ -44,8 +51,21 @@ abstract class AbstractMaker implements MakerInterface
         }
 
         return $dependencyBuilder->getMissingPackagesMessage(
-            $this->getCommandName(),
+            static::getCommandName(),
             $message
         );
+    }
+
+    /**
+     * Get the help file contents needed for "setHelp()" of a maker.
+     *
+     * @param string $helpFileName the filename (omit path) of the help file located in config/help/
+     *                             e.g. MakeController.txt
+     *
+     * @internal
+     */
+    final protected function getHelpFileContents(string $helpFileName): string
+    {
+        return file_get_contents(\sprintf('%s/config/help/%s', \dirname(__DIR__, 2), $helpFileName));
     }
 }

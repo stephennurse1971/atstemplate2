@@ -2,13 +2,24 @@ twig:
   default_path: '%kernel.project_dir%/templates'
   form_themes: [ 'bootstrap_4_layout.html.twig' ]
   globals:
-    CompanyDetails: '@App\Services\CompanyDetails'
-    CountBusinessContactReferrals: '@App\Services\CountBusinessContactReferrals'
-    CountPendingWebsiteInquiries: '@App\Services\CountPendingWebsiteInquiries'
-    Languages: '@App\Services\Languages'
-    Product: '@App\Services\Product'
-    TranslationsImport: '@App\Services\TranslationsImportService'
+    CheckIfUserService: '@App\Services\CheckIfUserService'
+    CompanyDetailsService: '@App\Services\CompanyDetailsService'
+    CountAllocatedWebsites: '@App\Services\CountAllocatedWebsites'
+    CountBusinessContactsService: '@App\Services\CountBusinessContactsService'
+    CountBusinessContactReferralsService: '@App\Services\CountBusinessContactReferralsService'
+    CountPendingWebsiteInquiriesService: '@App\Services\CountPendingWebsiteInquiriesService'
+    CountPhotoLocationsService: '@App\Services\CountPhotoLocationsService'
+    CountPhotosService: '@App\Services\CountPhotosService'
+    CountUserLogsService: '@App\Services\CountUserLogsService'
+    ImportUserService: '@App\Services\ImportUserService'
+    FindUser: '@App\Services\FindUser'
+    LanguagesService: '@App\Services\LanguagesService'
+    PhotoAuthorsByLocation: '@App\Services\PhotoAuthorsByLocation'
+    ProductService: '@App\Services\ProductService'
+    TranslationsImportService: '@App\Services\TranslationsImportService'
+    TranslationsWorkerService: '@App\Services\TranslationsWorkerService'
     WeatherService: '@App\Services\WeatherService'
+
 
 when@test:
   twig:

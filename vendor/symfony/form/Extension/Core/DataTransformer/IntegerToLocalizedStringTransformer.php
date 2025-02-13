@@ -28,15 +28,12 @@ class IntegerToLocalizedStringTransformer extends NumberToLocalizedStringTransfo
      * @param int|null    $roundingMode One of the ROUND_ constants in this class
      * @param string|null $locale       locale used for transforming
      */
-    public function __construct(?bool $grouping = false, ?int $roundingMode = \NumberFormatter::ROUND_DOWN, string $locale = null)
+    public function __construct(?bool $grouping = false, ?int $roundingMode = \NumberFormatter::ROUND_DOWN, ?string $locale = null)
     {
         parent::__construct(0, $grouping, $roundingMode, $locale);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function reverseTransform($value)
+    public function reverseTransform(mixed $value): int|float|null
     {
         $decimalSeparator = $this->getNumberFormatter()->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
 
@@ -52,7 +49,7 @@ class IntegerToLocalizedStringTransformer extends NumberToLocalizedStringTransfo
     /**
      * @internal
      */
-    protected function castParsedValue($value)
+    protected function castParsedValue(int|float $value): int|float
     {
         return $value;
     }

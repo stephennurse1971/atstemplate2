@@ -1,9 +1,7 @@
-
-                             /* Recognition-Badges */
-                         .recognition-badge {
-                             filter: grayscale(90%);
-                         }
-
+/* Recognition-Badges */
+.recognition-badge {
+    filter: grayscale(90%);
+}
 
 /* GeneratePress Site CSS */ /* mobile header spacing */
 
@@ -11,10 +9,6 @@
     padding: 10px;
     box-sizing: border-box;
 }
-
-
-
-
 /* navigation phone button */
 
 .main-navigation:not(.slideout-navigation) .main-nav li.nav-button a {
@@ -50,10 +44,12 @@
     border-bottom: 1px solid #ffaa00;
     line-height: 1.6em;
     display: inline-block;
-} /* End GeneratePress Site CSS */
+}
+
+/* End GeneratePress Site CSS */
 
 /* No bottomo margin adjustment */
-.no-margin-bottom{
+.no-margin-bottom {
     margin-bottom: 0px;
 
 }
@@ -64,7 +60,7 @@
 
 }
 
-.second-nav .menu-item{
+.second-nav .menu-item {
     margin: 5px;
     border-width: 1px;
     border-style: solid;
@@ -123,7 +119,7 @@
     box-shadow: inset 0 -90px 70px 20px rgba(0, 0, 0, 0.5);
 }
 
-.post-nav-wrap>* {
+.post-nav-wrap > * {
     color: #fff;
 }
 

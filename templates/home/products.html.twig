@@ -4,7 +4,7 @@
     {% for cms_copy in cms_copy_array %}
         {% if cms_copy.ranking == 1 %}
             {% if cms_copy.tabTitle is defined %}
-                {{ attribute(cms_copy,'tabTitle'~Languages.getSelectedLanguageCode)|raw }}
+                {{ attribute(cms_copy,'tabTitle'~LanguagesService.getSelectedLanguageCode)|raw }}
             {% else %}
                 {% if CompanyDetails.getCompanyDetails is not null %}
                     {{ CompanyDetails.getCompanyDetails.companyName }}
@@ -31,38 +31,100 @@
 
             <div class="row">
                 {% if cms_photo_array is not empty %}
-                <div class="col-6">
+                <div class="col-md-6">
                     {% else %}
                     <div class="col-12">
                         {% endif %}
                         {% for cms_copy in cms_copy_array|sort((a, b) => a.ranking <=> b.ranking) %}
-                            <div class="row">
-                                <div class="col-12">
-                                    <p>{{ attribute(cms_copy,'contentText'~Languages.getSelectedLanguageCode)|raw }}</p>
-                                    {% if cms_copy.attachment is not null %}
-                                        <a title="{{ cms_copy.attachment }}" target="_blank"
-                                           href="{{ path('cms_copy_show_attachment',{id : cms_copy.id }) }}">
-                                            <i class="fa fa-paperclip"></i>
-                                        </a>
-                                    {% endif %}
+                            {% if cms_copy.pageLayout is not null %}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
+                                        <i title="{{ cms_copy.getPageLayout.name }}" style="color: red"
+                                           class="fa fa-pen"></i>
+                                    </a>
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Accordion" or cms_copy.pageLayout is null %}
+                                    {% include 'home/products_page/formats/accordion.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Card Layout" %}
+                                    {% include 'home/products_page/formats/card_layout.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Carousel/Slider" %}
+                                    {% include 'home/products_page/formats/carousel_slider.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Fullscreen Sections" %}
+                                    {% include 'home/products_page/formats/fullscreen_sections.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Grid Layout" %}
+                                    {% include 'home/products_page/formats/grid_layout.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Hero Banner" %}
+                                    {% include 'home/products_page/formats/hero_banner.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "List/Stacked Content" %}
+                                    {% include 'home/products_page/formats/list_stacked_content.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Masonry Layout" %}
+                                    {% include 'home/products_page/formats/masonry_layout.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Parallax Scrolling" %}
+                                    {% include 'home/products_page/formats/parallax_scrolling.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Sidebar Layout" %}
+                                    {% include 'home/products_page/formats/sidebar_layout.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Single Page Scroll" %}
+                                    {% include 'home/products_page/formats/single_page_scroll.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Split Screen" %}
+                                    {% include 'home/products_page/formats/split_screen.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Sticky Header/Footer" %}
+                                    {% include 'home/products_page/formats/sticky_header_footer.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Tabbed Interface" %}
+                                    {% include 'home/products_page/formats/tabbed_interface.html.twig' %}
+                                {% endif %}
+
+                                {% if cms_copy.getPageLayout.name  == "Timeline Layout" %}
+                                    {% include 'home/products_page/formats/timeline_layout.html.twig' %}
+                                {% endif %}
+                            {% else %}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
+                                        <i title="Format TBC" style="color: red" class="fa fa-pen">!</i>
+                                    </a>
+                                {% endif %}
+                                {% include 'home/products_page/formats/accordion.html.twig' %}
+                            {% endif %}
+
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-6">
+                        {% for cms_photo in cms_photo_array %}
+                            <div class="d-inline-block justify-content-center py-1 p-sm-2 product-image-container">
+                                <div class="image-wrapper">
+                                    {% include 'home/products_page/photo_or_video.html.twig' %}
                                 </div>
                             </div>
                         {% endfor %}
                     </div>
 
-                    <div class="col-6">
-                        {% for cms_photo in cms_photo_array|sort((a, b) => a.ranking <=> b.ranking) %}
-                            <div class="row">
-                                <div class="col-12 mb-5">
-                                    <div class="justify-content-center d-flex py-1 product-image-container m-auto">
-                                        {% include 'home/products_page/photo_or_video.html.twig' %}
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
                     <!------------------ END FIRST GROUP OF PHOTOS --------------->
-
                     <div class="row">
                         <div class="col-12">
                             {% for sub_page in sub_pages %}
@@ -77,11 +139,28 @@
             </div>
     </section>
 
-    {% if include_contact =="Yes" %}
-        {% if CompanyDetails.companyDetails is not null %}
-            {% if CompanyDetails.companyDetails.includeContactFormHomePage ==1 %}
-                {% include 'home/parts/contact_us.html.twig' %}
-            {% endif %}
+    {% if CompanyDetailsService.companyDetails is not null %}
+        {% if include_contact_form ==1 %}
+            {% include 'home/parts/contact_us.html.twig' %}
+            {#            {% include 'home/parts/contact_us.html.twig' with { form: form } %} #}
         {% endif %}
+
+
+        {% set qr_code =  CompanyDetailsService.companyDetails.companyQrCode %}
+        {% if include_qr_code == 1 and qr_code is not null %}
+            {% include 'home/parts/qr_code.html.twig' %}
+        {% endif %}
+
+    {% endif %}
+{% endblock %}
+
+{% block additionaljs %}
+    {% if include_contact_form == 1 %}
+        <script>
+            $(document).ready(function () {
+                $("input[name='website_contacts[status]']").closest(".form-group").remove();
+                $("input[name='website_contacts[dateTime]']").closest(".form-group").remove();
+            });
+        </script>
     {% endif %}
 {% endblock %}

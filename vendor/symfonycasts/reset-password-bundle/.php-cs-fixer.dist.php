@@ -6,6 +6,9 @@ if (!file_exists(__DIR__.'/src') || !file_exists(__DIR__.'/tests')) {
 
 $finder = (new PhpCsFixer\Finder())
     ->in([__DIR__.'/src', __DIR__.'/tests'])
+    ->exclude([
+        'tmp'
+    ])
 ;
 
 return (new PhpCsFixer\Config())
@@ -19,7 +22,9 @@ Copyright (c) SymfonyCasts <https://symfonycasts.com/>
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 EOF
-        ]
+        ],
+        // Because of the commented out argument in ResetPasswordHelperInterface
+        'no_superfluous_phpdoc_tags' => false,
     ))
     ->setRiskyAllowed(true)
     ->setFinder($finder)

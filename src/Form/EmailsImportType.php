@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\EmailsImport;
+use App\Services\TranslationsWorkerService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,4 +29,9 @@ class EmailsImportType extends AbstractType
             'data_class' => EmailsImport::class,
         ]);
     }
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
+    }
+
 }

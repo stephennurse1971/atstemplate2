@@ -1,0 +1,167 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Photos{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        {% if is_granted ('ROLE_ADMIN') %}
+            <h2 style="color: red">
+                <a href="{{ path('photo_locations_index') }}">Locations</a>
+            </h2>
+            <a href="{{ path('photo_locations_new') }}">+</a>
+        {% else %}
+            <h2 style="color: red">
+                Locations
+            </h2>
+        {% endif %}
+    </div>
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <a class="btn btn-danger btn-sm" href="{{ path('photos_delete_all') }}">Delete All</a>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-responsive small">
+                    <thead>
+                    <tr style="background-color: lightgrey">
+                        <th style="text-align: left; width: 150px; color: red">Private</th>
+                        <th style="text-align: left">Date</th>
+                        <th style="text-align: left">#</th>
+                        <th style="text-align: left; width: 250px">Access</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for location in locations_private %}
+                        <tr>
+                            {% if app.user is not null %}
+                                {% if location.publicPrivate =="Private" %}
+                                    {% if app.user.id in location.enabledUsers or (is_granted('ROLE_ADMIN')) %}
+                                        <td style="text-align: left">
+                                            {% if is_granted('ROLE_ADMIN') %}
+                                                <a target="_blank"
+                                                   href="{{ path('photo_locations_edit', {id: location.id}) }}">{{ location.location }}</a>
+                                            {% else %}
+                                                {{ location.location }}
+                                            {% endif %}
+                                        </td>
+                                        <td style="text-align: right" title="{{ location.date|date('d-M-Y') }}"
+                                            data-sort="{{ location.date|date('Y-m-d') }}">{{ location.date|date('M-Y') }}</td>
+                                        <td style="text-align: right">
+                                            {{ CountPhotosService.calculateTotalPhotos(location) }}
+                                        </td>
+                                        <td style="text-align: left">
+                                            {% for user_id in location.enabledUsers %}
+                                                {% set user = FindUser.getUser(user_id) %}
+                                                {% if user is not null %}
+                                                    {{ user.fullName }},
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                        <td style="text-align: center">
+                                            <a title="Private" class="btn btn-outline-danger btn-sm" target="_blank"
+                                               href="{{ path('show_photos_by_location', { id: location.id, author: 'All', format: 'Full' }) }}">
+                                                <i class="fa fa-picture-o"></i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ path('photo_location_public_private', {id:location.id}) }}">
+                                                <i title="Make Public" style="color: green"
+                                                   class="fa fa-arrow-down"></i>
+                                            </a>
+                                        </td>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr>
+    {% endif %}
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-responsive small">
+                <thead>
+                <tr style="background-color: lightgrey">
+                    <th style="text-align: left; width: 150px; color: green">
+                        {% if app.user %}
+                            Public
+                        {% else %}
+                            Location
+                        {% endif %}
+                    </th>
+                    <th style="text-align: left">Date</th>
+                    <th style="text-align: left">#</th>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <th style="text-align: left; width: 250px">Access</th>
+                    {% endif %}
+                    <th></th>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <th></th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for location in locations_public %}
+                    <tr>
+                        <td style="text-align: left">
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a target="_blank"
+                                   href="{{ path('photo_locations_edit', {id: location.id}) }}">{{ location.location }}</a>
+                            {% else %}
+                                {{ location.location }}
+                            {% endif %}
+                        </td>
+                        <td style="text-align: right" title="{{ location.date|date('d-M-Y') }}"
+                            data-sort="{{ location.date|date('Y-m-d') }}">{{ location.date|date('M-Y') }}</td>
+
+                        <td style="text-align: right">
+                            {{ CountPhotosService.calculateTotalPhotos(location) }}
+                        </td>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td style="text-align: left">
+                                <i title="Open To All" style="color: green" class="fa fa-user"></i> All
+                            </td>
+                        {% endif %}
+                        <td style="text-align: center">
+                            <a title="Public" class="btn btn-outline-success btn-sm" target="_blank"
+                               href="{{ path('show_photos_by_location', { id: location.id, author: 'All', format: 'Full' }) }}">
+                                <i class="fa fa-picture-o"></i>
+                            </a>
+                        </td>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td>
+                                <a href="{{ path('photo_location_public_private', {id:location.id}) }}">
+                                    <i title="Make Private" style="color: red" class="fa fa-arrow-up"></i>
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[1, 'asc'], [0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

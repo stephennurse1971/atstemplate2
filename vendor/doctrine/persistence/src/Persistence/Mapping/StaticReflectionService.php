@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Doctrine\Persistence\Mapping;
 
 use function strpos;
@@ -9,13 +11,15 @@ use function substr;
 
 /**
  * PHP Runtime Reflection Service.
+ *
+ * @deprecated No replacement planned
  */
 class StaticReflectionService implements ReflectionService
 {
     /**
      * {@inheritDoc}
      */
-    public function getParentClasses($class)
+    public function getParentClasses(string $class)
     {
         return [];
     }
@@ -23,7 +27,7 @@ class StaticReflectionService implements ReflectionService
     /**
      * {@inheritDoc}
      */
-    public function getClassShortName($class)
+    public function getClassShortName(string $class)
     {
         $nsSeparatorLastPosition = strrpos($class, '\\');
 
@@ -37,7 +41,7 @@ class StaticReflectionService implements ReflectionService
     /**
      * {@inheritDoc}
      */
-    public function getClassNamespace($class)
+    public function getClassNamespace(string $class)
     {
         $namespace = '';
 
@@ -53,7 +57,7 @@ class StaticReflectionService implements ReflectionService
      *
      * @return null
      */
-    public function getClass($class)
+    public function getClass(string $class)
     {
         return null;
     }
@@ -61,7 +65,7 @@ class StaticReflectionService implements ReflectionService
     /**
      * {@inheritDoc}
      */
-    public function getAccessibleProperty($class, $property)
+    public function getAccessibleProperty(string $class, string $property)
     {
         return null;
     }
@@ -69,7 +73,7 @@ class StaticReflectionService implements ReflectionService
     /**
      * {@inheritDoc}
      */
-    public function hasPublicMethod($class, $method)
+    public function hasPublicMethod(string $class, string $method)
     {
         return true;
     }

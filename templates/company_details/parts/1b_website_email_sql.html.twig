@@ -1,0 +1,48 @@
+<div class="col-2">
+    <table class="table small">
+        <tbody>
+        <h4>Website/Email</h4>
+        <tr>
+            <th>Website</th>
+            <td>
+                <a target="_blank" href="{{ company_detail.companyWebsite }}">
+                    <i title="{{ company_detail.companyWebsite }}" class="fa fa-link"></i>
+                </a>
+                {{ company_detail.companyWebsite }}
+            </td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ company_detail.companyEmail }}</td>
+        </tr>
+        <tr>
+            <th>Password</th>
+            <td>{{ company_detail.companyEmailPassword }}</td>
+        </tr>
+        <tr>
+            <th>Import</th>
+            <td>{{ company_detail.companyEmailImportDirectory }}</td>
+        </tr>
+        <tr>
+            <th>Import Processed</th>
+            <td>{{ company_detail.companyEmailImportProcessedDirectory }}</td>
+        </tr>
+        <tr>
+            <th>SQL</th>
+            <td>{{ company_detail.sqlDatabase }}</td>
+        </tr>
+        <tr>
+            <th>Password</th>
+            <td>{{ company_detail.databasePassword }}</td>
+        </tr>
+        <tr>
+            <th>Export SQL</th>
+            <td>
+                <a class="btn btn-outline-danger btn-sm" href="{{ path('export_database') }}">
+                <i class="fa fa-download"></i>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

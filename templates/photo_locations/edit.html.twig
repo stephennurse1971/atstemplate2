@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit: Photo Location & Viewers{% endblock %}
+
+{% block body %}
+    <h1 style="color: red;">Edit: Photo Location & Viewers</h1>
+
+    {{ include('photo_locations/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('photo_locations_index') }}">Return to list</a>
+
+    {{ include('photo_locations/_delete_form.html.twig') }}
+{% endblock %}

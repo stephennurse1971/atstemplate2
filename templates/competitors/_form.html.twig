@@ -1,0 +1,35 @@
+{{ form_start(form) }}
+
+
+<div class="row">
+    <div class="col-2">
+        {{ form_row(form.name) }}
+        {{ form_row(form.type) }}
+        {{ form_row(form.webSite) }}
+        {{ form_row(form.telephone) }}
+    </div>
+
+<div class="col-1"></div>
+
+    <div class="col-2">
+        {{ form_row(form.competitorAddressStreet) }}
+        {{ form_row(form.competitorAddressCity) }}
+        {{ form_row(form.competitorAddressPostalCode) }}
+        {{ form_row(form.competitorAddressCountry) }}
+        {{ form_row(form.competitorAddressLongitude) }}
+        {{ form_row(form.competitorAddressLatitude) }}
+    </div>
+
+    <div class="col-1"></div>
+
+    <div class="col-2">
+        {{ form_row(form.linkedIn) }}
+        {{ form_row(form.facebook) }}
+        {{ form_row(form.twitter) }}
+        {{ form_row(form.instagram) }}
+    </div>
+</div>
+
+
+<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

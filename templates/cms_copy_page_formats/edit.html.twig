@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit: CMS Copy Page Format: {{ cms_copy_page_format.name }}{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Edit: {{ cms_copy_page_format.name}}</h1>
+
+    {{ include('cms_copy_page_formats/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('cms_copy_page_formats_index') }}">Return to list</a>
+
+    {{ include('cms_copy_page_formats/_delete_form.html.twig') }}
+{% endblock %}

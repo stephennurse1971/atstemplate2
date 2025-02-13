@@ -9,19 +9,22 @@
             <a target="_blank" class="btn btn-success btn-sm" href="{{ path('cms_photo_new') }}">New</a>
             <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('cms_copy_index') }}">CMS Copy</a>
         </div>
-        <div class="col-2">
+        <div class="col-2 desktop">
             {% if is_granted('ROLE_SUPER_ADMIN') %}
-            <a class="btn btn-danger btn-sm" href="{{ path('cms_photos_delete_all_files') }}">Delete All Photos (but keep record)</a>
+                <a class="btn btn-danger btn-sm" href="{{ path('cms_photos_delete_all_files') }}">Delete All Photos (but
+                    keep record)</a>
             {% endif %}
         </div>
     </div>
 
-    <table class="table table-responsive">
+    <table class="table table-responsive small">
         <thead>
         <tr>
             <th>Category</th>
             <th style="width: 150px">Product or <br>Static Page Name</th>
             <th>Photo</th>
+            <th>Rotate</th>
+            <th></th>
             <th>Order</th>
             <th>Photo/<br>Video</th>
             <th>Title</th>
@@ -43,30 +46,79 @@
                             {{ cms_photo.product.product }}
                         </a>
                     {% else %}
-                    <a target="_blank"
-                       href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">
-                        {{ cms_photo.staticPageName }}
-                    </a>
+                        <a target="_blank"
+                           href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">
+                            {{ cms_photo.staticPageName }}
+                        </a>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if cms_photo.photo is not empty %}
+                        {% set photo = asset('administration/Attachments/CMSPhotos/')~cms_photo.photo %}
+
+                        {% if cms_photo.photoOrVideo=="Photo" %}
+                            {% if cms_photo.rotate ==0 %}
+                                <a class="btn btn-outline-danger btn-sm" target="_blank"
+                                   href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
+                                    <img height="50" width="50" src="{{ photo }}" class="rounded-circle test">
+                                </a>
+                            {% endif %}
+
+                            {% if cms_photo.rotate ==90 %}
+                                <a class="btn btn-outline-danger btn-sm" target="_blank"
+                                   href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
+                                    <img height="50" width="50" src="{{ photo }}" class="rounded-circle test rotate-90">
+                                </a>
+                            {% endif %}
+
+                            {% if cms_photo.rotate ==180 %}
+                                <a class="btn btn-outline-danger btn-sm" target="_blank"
+                                   href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
+                                    <img height="50" width="50" src="{{ photo }}"
+                                         class="rounded-circle test rotate-180">
+                                </a>
+                            {% endif %}
+                            {% if cms_photo.rotate ==270 %}
+                                <a class="btn btn-outline-danger btn-sm" target="_blank"
+                                   href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
+                                    <img height="50" width="50" src="{{ photo }}"
+                                         class="rounded-circle test rotate-270">
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            <video height="50" width="50" controls="controls">
+                                <source src="{{ photo }}" type="video/mp4"/>
+                            </video>
+                        {% endif %}
+                    {% endif %}
+                    {{ cms_photo.photo }}
+                </td>
+
+                <td style="text-align: center">
+                    {% if cms_photo.rotate is not null or cms_photo.rotate is not empty or cms_photo.rotate !=0 %}
+                        {{ cms_photo.rotate }} <span style="font-size: small">o</span>
                     {% endif %}
                 </td>
                 <td>
-                    {% if cms_photo.photo is not empty %}
-                        {% set photo = asset('administration/attachments/WebsitePhotos/')~cms_photo.photo %}
-                        <a class="btn btn-outline-danger btn-sm" target="_blank"
-                           href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
-                            <img height="50" width="50" src="{{ photo }}" class="rounded-circle test">
-                        </a>
+                    {% if is_granted ('ROLE_ADMIN') %}
+                        <a href="{{ path('rotate_cms_photo',{id:cms_photo.id}) }}">
+                            <i style="color: green" class="fa fa-rotate-right"></i></a>
                     {% endif %}
                 </td>
                 <td style="text-align: center">
                     {{ cms_photo.ranking }}
                 </td>
-                <td>
-                    <span title="{{ cms_photo.photoOrVideo }}">{{ cms_photo.photoOrVideo|slice(0,1) }}</span>
+                <td style="text-align: center">
+                    {% if cms_photo.photoOrVideo == 'Video' %}
+                        <span style="background-color: yellow" title="{{ cms_photo.photoOrVideo }}">{{ cms_photo.photoOrVideo }}</span>
+                    {% else %}
+                    <span title="{{ cms_photo.photoOrVideo }}">{{ cms_photo.photoOrVideo }}</span>
+                        {% endif %}
                 </td>
-
-
-                <td>{{ cms_photo.title }}</td>
+                <td>
+                    {{ cms_photo.title }}
+                </td>
                 <td>
                     {% if  cms_photo.link is not empty %}
                         {% if  cms_photo.link starts with 'http' %}
@@ -82,14 +134,22 @@
 
                 <td>
                     <a class="btn btn-outline-danger btn-sm" target="_blank"
-                       href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">Edit</a>
+                       href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">
+                        <i class="fa fa-pen"></i>
+                    </a>
                 </td>
                 <td>
-                    <a class="btn btn-outline-danger btn-sm"
-                       href="{{ path('cms_photo_file_delete', {'id': cms_photo.id}) }}">Delete Photo</a>
+                    {% if cms_photo.photo|length>0 %}
+                        <a class="btn btn-outline-danger btn-sm"
+                           href="{{ path('cms_photo_file_delete', {'id': cms_photo.id}) }}">
+{#                            <i class="fab fa-ban"></i>#}
+                            Delete Photo
+                        </a>
+                    {% endif %}
                 </td>
                 <td>
-                    <form method="post" action="{{ path('cms_photo_delete', {'id': cms_photo.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                    <form method="post" action="{{ path('cms_photo_delete', {'id': cms_photo.id}) }}"
+                          onsubmit="return confirm('Are you sure you want to delete this item?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cms_photo.id) }}">
                         <button>
                             <i style="color: red" class="fa fa-trash"></i>
@@ -109,7 +169,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[1, 'asc'], [3, 'asc']],
+                "order": [[0, 'asc'], [1, 'asc'], [5, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Instructions;
+use App\Services\TranslationsWorkerService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -39,4 +40,10 @@ class InstructionsType extends AbstractType
             'data_class' => Instructions::class,
         ]);
     }
+
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
+    }
+
 }

@@ -3,8 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Product;
+use App\Services\TranslationsWorkerService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,7 +26,15 @@ class ProductType extends AbstractType
             ->add('ranking')
             ->add('isActive')
             ->add('includeInFooter')
-            ->add('comments')
+            ->add('includeInContactForm')
+            ->add('notes', TextareaType::class,[
+                'required'=>false,
+                'label'=>'Notes on hover in menu list',
+            ])
+            ->add('newClientEmail', TextareaType::class,[
+                'required'=>false,
+                'label'=>'New Client Email',
+            ])
         ;
     }
 
@@ -34,4 +44,10 @@ class ProductType extends AbstractType
             'data_class' => Product::class,
         ]);
     }
+
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
+    }
+
 }

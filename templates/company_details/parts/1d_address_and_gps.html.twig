@@ -1,0 +1,51 @@
+<div class="col-2">
+    <table class="table small">
+        <tbody>
+        <h4>Address</h4>
+
+        <tr>
+            <th>Street</th>
+            <td>{{ company_detail.companyAddressStreet }}</td>
+        </tr>
+        <tr>
+            <th>Town</th>
+            <td>{{ company_detail.companyAddressTown }}</td>
+        </tr>
+        <tr>
+            <th>City</th>
+            <td>{{ company_detail.companyAddressCity }}</td>
+        </tr>
+        <tr>
+            <th>Post Code</th>
+            <td>{{ company_detail.companyAddressPostalCode }}</td>
+        </tr>
+        <tr>
+            <th>Country</th>
+            <td>{{ company_detail.companyAddressCountry }}</td>
+        </tr>
+
+        <tr>
+            <th>Latitude/Longitude</th>
+            <td>{{ company_detail.companyAddressLatitude |number_format(2, '.', ',') }}/{{ company_detail.companyAddressLongitude |number_format(2, '.', ',') }}
+                {% if company_detail.companyAddressMapLink is not empty %}
+                    <a target="_blank" href="{{ path('office_address') }}">
+                        <i style="color: red" class="fa fa-map-marker ml-2"></i></a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Weather</th>
+            <td>{{ company_detail.weatherLocation }}</td>
+        </tr>
+        <tr>
+            <th>Timezone</th>
+            <td>{{ company_detail.companyTimeZone }}</td>
+        </tr>
+
+        <tr>
+            <th>Currency</th>
+            <td>{{ company_detail.currency }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

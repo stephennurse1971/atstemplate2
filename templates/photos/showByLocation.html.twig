@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ location.location }}{% endblock %}
+{% block body %}
+    {% include 'photos/parts/buttons.html.twig' %}
+
+    {% if format == "Thumbnail" %}
+        <div class="row my-2  p-2 bg-white">
+            {% for photo in photos %}
+                {% set image = asset('administration/Attachments/Photos/')~photo.photoFile %}
+                {% set fileType =  photo.photoFile|split('.')|last %}
+
+                {% if fileType == 'mp4' or fileType == 'mov' %}
+                    <video class="videoByLocationThumbnail" controls="controls">
+                        <source src="{{ image }}" type="video/mp4"/>
+                    </video>
+                {% elseif fileType == "jpg" %}
+                    <div class="p-1 mb-1">
+                        {% if photo.rotate == 0 %}
+                            <div class="image-containerThumbnail">
+                                <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}">
+                                    <img src="{{ image }}" class="photosByLocationThumbnail">
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if photo.rotate == 90 %}
+                            <div class="image-containerThumbnail">
+                                <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}">
+                                    <img src="{{ image }}" class="photosByLocationThumbnail rotate-90">
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if photo.rotate == 180 %}
+                            <div class="image-containerThumbnail">
+                                <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}">
+                                    <img src="{{ image }}" class="photosByLocationThumbnail rotate-180">
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if photo.rotate==270 %}
+                            <div class="image-containerThumbnail">
+                                <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}">
+                                    <img src="{{ image }}" class="photosByLocationThumbnail rotate-270">
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        <div class="text-center py-2">
+                            {% if is_granted ('ROLE_ADMIN') or app.user == photo.uploadedBy %}
+                                <a href="{{ path('rotate_photo',{photoID:photo.id}) }}">
+                                    <i style="color: green" class="fa fa-rotate-right"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+
+
+        <div class="row my-2 p-2 bg-white">
+            {% for photo in photos %}
+                {% set image = asset('administration/Attachments/Photos/')~photo.photoFile %}
+                {% set fileType =  photo.photoFile|split('.')|last %}
+
+                {% if fileType == 'mp4' or fileType == 'mov' %}
+                    <video class="videoByLocationFull" controls="controls">
+                        <source src="{{ image }}" type="video/mp4"/>
+                    </video>
+                {% elseif fileType == "jpg" %}
+                    <div class="p-1 mb-1">
+                        {% if photo.rotate==0 %}
+                            <div class="image-containerFull">
+                                <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}">
+                                    <img src="{{ image }}" class="photosByLocationFull">
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if photo.rotate==90 %}
+                            <div class="image-containerFull">
+                                <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}">
+                                    <img src="{{ image }}" class="photosByLocationFullRotate-90">
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if photo.rotate==180 %}
+                            <div class="image-containerFull">
+                                <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}">
+                                    <img src="{{ image }}" class="photosByLocationFullRotate-180">
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if photo.rotate==270 %}
+                            <div class="image-containerFull">
+                                <a target="_blank" href="{{ path('view_photo', {photoId: photo.id}) }}">
+                                    <img src="{{ image }}" class="photosByLocationFullRotate-270">
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        <div class="text-center py-2">
+                            {% if is_granted ('ROLE_ADMIN') or app.user == photo.uploadedBy %}
+                                <a href="{{ path('rotate_photo',{photoID:photo.id}) }}"><i
+                                            class="fa fa-rotate-right"></i></a>
+                            {% endif %}
+                            {% include 'photos/parts/like_and_email_buttons.html.twig' %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

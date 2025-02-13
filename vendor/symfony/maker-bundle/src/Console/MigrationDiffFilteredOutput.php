@@ -14,60 +14,38 @@ namespace Symfony\Bundle\MakerBundle\Console;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-if (\PHP_VERSION_ID < 80000
-    // look for the "string|iterable" type on OutputInterface::write()
-    || !(new \ReflectionMethod(OutputInterface::class, 'write'))->getParameters()[0]->getType()) {
-    class MigrationDiffFilteredOutput implements OutputInterface
-    {
-        use BaseMakerMigrationDiffFilteredOuputTrait;
-
-        public function write($messages, $newline = false, $options = 0)
-        {
-            $this->_write($messages, $newline, $options);
-        }
-
-        public function writeln($messages, $options = 0)
-        {
-            $this->_writeln($messages, $options);
-        }
-
-        public function setVerbosity($level)
-        {
-            $this->output->setVerbosity($level);
-        }
-
-        public function setDecorated($decorated)
-        {
-            $this->output->setDecorated($decorated);
-        }
-    }
-} else {
-    require __DIR__.'/MigrationDiffFilteredOutput_php8';
-}
-
-trait BaseMakerMigrationDiffFilteredOuputTrait
+class MigrationDiffFilteredOutput implements OutputInterface
 {
-    private $output;
-    private $buffer = '';
-    private $previousLineWasRemoved = false;
+    private string $buffer = '';
+    private bool $previousLineWasRemoved = false;
 
-    public function __construct(OutputInterface $output)
-    {
-        $this->output = $output;
+    public function __construct(
+        private OutputInterface $output,
+    ) {
     }
 
-    public function _write($messages, bool $newline = false, $options = 0)
+    public function write($messages, bool $newline = false, $options = 0): void
     {
         $messages = $this->filterMessages($messages, $newline);
 
         $this->output->write($messages, $newline, $options);
     }
 
-    public function _writeln($messages, int $options = 0)
+    public function writeln($messages, int $options = 0): void
     {
         $messages = $this->filterMessages($messages, true);
 
         $this->output->writeln($messages, $options);
+    }
+
+    public function setVerbosity(int $level): void
+    {
+        $this->output->setVerbosity($level);
+    }
+
+    public function setDecorated(bool $decorated): void
+    {
+        $this->output->setDecorated($decorated);
     }
 
     public function getVerbosity(): int
@@ -100,7 +78,7 @@ trait BaseMakerMigrationDiffFilteredOuputTrait
         return $this->output->isDecorated();
     }
 
-    public function setFormatter(OutputFormatterInterface $formatter)
+    public function setFormatter(OutputFormatterInterface $formatter): void
     {
         $this->output->setFormatter($formatter);
     }
@@ -144,7 +122,7 @@ trait BaseMakerMigrationDiffFilteredOuputTrait
 
             $this->previousLineWasRemoved = false;
             foreach ($hiddenPhrases as $hiddenPhrase) {
-                if (false !== strpos($message, $hiddenPhrase)) {
+                if (str_contains($message, $hiddenPhrase)) {
                     $this->previousLineWasRemoved = true;
                     unset($messages[$key]);
 

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Competitor Service{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">New Competitor Service</h1>
+
+    {{ include('competitor_service/_form.html.twig') }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('competitor_service_index') }}">Return to list</a>
+{% endblock %}

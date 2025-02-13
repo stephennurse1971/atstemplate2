@@ -5,7 +5,7 @@
 {% block body %}
     <h1 style="color: red">Company Details</h1>
 
-    <table class="table">
+    <table class="table small">
         <thead>
         <tr>
             <th style="text-align: left">Name</th>
@@ -16,7 +16,6 @@
             <th>Mobile</th>
             <th>Skype</th>
             <th>Address</th>
-            <th>GPS</th>
             <th>Time<br>Zone</th>
             <th>Ccy</th>
             <th>Multi<br>Language</th>
@@ -36,16 +35,20 @@
             <tr>
                 <td>
                     {{ company_detail.companyName }}
+                    {% if company_detail.contactFirstName is not null or company_detail.contactLastName is not null %}
+                        <br>
+                        ({{ company_detail.contactFirstName }} {{ company_detail.contactLastName }})
+                    {% endif %}
                 </td>
                 <td>
                     <a target="_blank" href="{{ company_detail.companyWebsite }}">
-                        <i class="fa fa-link"></i>
+                        <i title="{{ company_detail.companyWebsite }}" class="fa fa-link"></i>
                     </a>
                     {{ company_detail.companyWebsite }}
                 </td>
 
-                {% set faviconLive = asset('administration/attachments/Favicons/'~CompanyDetails.getCompanyDetails.faviconLive) %}
-                {% set faviconDev = asset('administration/attachments/Favicons/'~CompanyDetails.getCompanyDetails.faviconDev) %}
+                {% set faviconLive = asset('administration/Attachments/Favicons/'~CompanyDetailsService.getCompanyDetails.faviconLive) %}
+                {% set faviconDev = asset('administration/Attachments/Favicons/'~CompanyDetailsService.getCompanyDetails.faviconDev) %}
 
                 <td style="text-align: center">
                     {% if company_detail.faviconLive is not null %}
@@ -60,51 +63,51 @@
 
                 <td style="text-align: left">
                     <a href="mailto:{{ company_detail.companyEmail }}">
-                        <i class="fas fa-envelope mr-1"> </i></a>
+                        <i class="fas fa-envelope mr-1"> </i></a><br>
                     {{ company_detail.companyEmail }}
                     <br>
                     {% if company_detail.companyEmailPassword is not null %}
-                        (Password: {{ company_detail.companyEmailPassword }})
+                        <br><b>Password:</b> {{ company_detail.companyEmailPassword }}
                     {% endif %}
                     <br>
                     {% if company_detail.companyEmailImportDirectory is not null %}
-                        (Import: {{ company_detail.companyEmailImportDirectory }} /{{ company_detail.companyEmailImportProcessedDirectory }})
+                        <br>
+                        <b>Import:</b> {{ company_detail.companyEmailImportDirectory }} /{{ company_detail.companyEmailImportProcessedDirectory }}
                     {% endif %}
                 </td>
                 <td style="text-align: center">
+                    {% if company_detail.companyTel is not empty %}
                     <a title="{{ company_detail.companyTel }}"
                        href="https://wa.me/{{ company_detail.companyTel | replace({' ': ''}) }}">
-                        <i style="color: green" class="fab fa-whatsapp"></i>
+                        <i style="color: green" class="fa fa-phone"></i>
                     </a>
-                    {#                    {{ company_detail.companyTel }} #}
+                    {% endif %}
                 </td>
                 <td style="text-align: center">
+                    {% if company_detail.companyMobile is not empty %}
                     <a title="{{ company_detail.companyMobile }}"
                        href="https://wa.me/{{ company_detail.companyMobile | replace({' ': ''}) }}">
                         <i style="color: green"
                            class="fab fa-whatsapp"></i>
                     </a>
+                    {% endif %}
                     {#                    {{ company_detail.companyMobile }} #}
                 </td>
-                <td style="text-align: center">
-                    <a title="{{ company_detail.companySkype }}"
-                       href="skype:{{ company_detail.companySkype }}?call">
-                        <i style="color: royalblue"
-                           class="fab fa-skype"></i>
-                    </a>
-                    {#                    {{ company_detail.companySkype }} #}
+                <td style="text-align: center ">
+                    {% if company_detail.companySkype is not null %}
+                        <a title="{{ company_detail.companySkype }}"
+                           href="skype:{{ company_detail.companySkype }}?call">
+                            <i style="color: royalblue" class="fab fa-skype"></i>
+                        </a>
+                    {% endif %}
                 </td>
                 <td>
+                    <a target="_blank" href="{{ path('office_address') }}">
+                        <i style="color: red" class="fa fa-map-marker ml-2"></i></a>
                     {{ company_detail.companyAddressStreet }}, <br>
                     {{ company_detail.companyAddressTown }},
                     {{ company_detail.companyAddressCity }}
                     {{ company_detail.companyAddressPostalCode }}
-                    <a target="_blank" href="{{ path('office_address') }}">
-                        <i style="color: red" class="fa fa-map-marker ml-2"></i></a>
-                </td>
-                <td style="text-align: center">
-                    <a target="_blank" href="{{ path('gps_location') }}">
-                        <i style="color: blue" class="fa fa-map-marker ml-2"></i></a>
                 </td>
                 <td style="text-align: center">
                     {{ company_detail.companyTimeZone }}
@@ -114,34 +117,38 @@
                 </td>
 
                 <td style="text-align: center">
-                    {% if company_detail.multiLingual ==1 %}
-                        <i class="fa fa-check" style="color: green" class="fa fa-check"></i>
-                    {% else %}
-                        <i class="fa fa-check" style="color: red" class="fa fa-remove"></i>
+
+                    {% if company_detail.multiLingual == 1 %}
+                        <i class="fa fa-check" style="color: green"></i>
+                    {% endif %}
+                    {% if company_detail.multiLingual == 0 or company_detail.multiLingual is empty %}
+                        <i class="fa fa-remove" style="color: red"></i>
                     {% endif %}
                 </td>
 
                 <td style="text-align: center">
                     {% if company_detail.enableUserRegistration ==1 %}
-                        <i title="{{ company_detail.registrationEmail|raw }}" class="fa fa-check" style="color: green" class="fa fa-check"></i>
+                        <i class="fa fa-check" style="color: green"></i>
                     {% else %}
-                        <i class="fa fa-check" style="color: red" class="fa fa-remove"></i>
+                        <i style="color: red" class="fa fa-remove"></i>
                     {% endif %}
                 </td>
-
 
                 <td>
                     {{ company_detail.weatherLocation }}
                 </td>
                 <td>
-                    {% set addressInstructions = (company_detail.companyAddressInstructions|slice(0,70)) %}
-                    {{ addressInstructions |raw  }}....
+                    {% set addressInstructionsRaw = company_detail.companyAddressInstructions|striptags %}
+                    {% set addressInstructionsSliced = (addressInstructionsRaw|slice(0,70)) %}
+
+                    <i title="{{ addressInstructionsRaw }}" style="color: blue" class="fa fa-info-circle"></i>
+                    {{ addressInstructionsSliced |raw }}....
                 </td>
 
                 <td style="text-align: center">
                     {% if company_detail.companyQrCode is not empty %}
                         <a target="_blank" title="{{ company_detail.companyQrCode }}"
-                           href="{{ path('app_home') }}">
+                           href="{{ path('company_qr_code') }}">
                             <i class="fa fa-qrcode"></i>
                         </a>
                     {% endif %}
@@ -154,7 +161,6 @@
                         </a>
                         <br>
                         {{ company_detail.facebook }}
-
                     {% endif %}
                 </td>
                 <td style="text-align: center">
@@ -202,6 +208,9 @@
         <a target="_blank" class="btn btn-success btn-sm" href="{{ path('company_details_new') }}">New</a>
     {% endif %}
 {% endblock %}
+
+
+
 
 {% block datatable %}
     <script>

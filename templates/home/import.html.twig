@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Import: {{ heading}}{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">{{ heading }}</h1>
+    <div class="row">
+        <div class="col-4">
+            {{ form_start(form) }}
+            {{ form_row(form.File) }}
+            <button class="btn btn-success btn-sm">{{ button_label|default('Import') }}</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

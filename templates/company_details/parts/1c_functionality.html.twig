@@ -1,0 +1,130 @@
+<div class="col-2">
+    <table class="table small">
+        <tbody>
+        <h4>Functionality</h4>
+        <tr>
+        <tr>
+            <th>Multi-lingual</th>
+            <td>
+                {% if company_detail.multiLingual ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'multiLingual'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'multiLingual'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+
+
+        <th>Photos</th>
+        <td>
+            {% if company_detail.headerDisplayPhotos ==1 %}
+                <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayPhotos'}) }}">
+                    <i style="color: green" class="fas fa-toggle-on"></i>
+                </a>
+            {% else %}
+                <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayPhotos'}) }}">
+                    <i style="color: grey" class="fas fa-toggle-off"></i>
+                </a>
+            {% endif %}
+        </td>
+        </tr>
+
+        <tr>
+            <th>Facebook</th>
+            <td>
+                {% if company_detail.headerDisplayFacebookPages ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayFacebookPages'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayFacebookPages'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        {% if company_detail.headerDisplayFacebookPages ==1 %}
+            <tr>
+                <th># months*</th>
+                <td>
+                    {{ company_detail.facebookReviewsHistoryShowMonths }}
+                </td>
+            </tr>
+        {% endif %}
+        <tr>
+            <th>Competitors</th>
+            <td>
+                {% if company_detail.headerDisplayCompetitors ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayCompetitors'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayCompetitors'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Instructions</th>
+            <td>
+                {% if company_detail.userIncludeHomeAddress ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'userIncludeHomeAddress'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'userIncludeHomeAddress'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Business Contacts</th>
+            <td>
+                {% if company_detail.headerDisplayBusinessContacts ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayBusinessContacts'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayBusinessContacts'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Weather</th>
+            <td>
+                {% if company_detail.headerDisplayWeather ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayWeather'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'headerDisplayWeather'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Pricing Form</th>
+            <td>
+                {% if company_detail.userIncludeHomeAddress ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'userIncludeHomeAddress'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'userIncludeHomeAddress'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

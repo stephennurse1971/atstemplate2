@@ -1,0 +1,86 @@
+<div class="col-2">
+    <table class="table small">
+        <tbody>
+        <h4>Company Name</h4>
+        <tr>
+            <th>Company</th>
+            <td>{{ company_detail.companyName }}</td>
+        </tr>
+        <tr>
+            <th>First Name</th>
+            <td>{{ company_detail.contactFirstName }}</td>
+        </tr>
+        <tr>
+            <th>Last Name</th>
+            <td>{{ company_detail.contactLastName }}</td>
+        </tr>
+        <tr>
+            <th>Phone</th>
+            <td>
+                {% if company_detail.companyTel is not empty %}
+                    <a title="{{ company_detail.companyTel }}"
+                       href="https://wa.me/{{ company_detail.companyTel | replace({' ': ''}) }}">
+                        <i style="color: green" class="fa fa-phone"></i>
+                    </a>
+                {% endif %}
+                {{ company_detail.companyTel }}
+            </td>
+        </tr>
+        <tr>
+            <th>Mobile</th>
+            <td>
+                {% if company_detail.companyMobile is not empty %}
+                    <a title="{{ company_detail.companyMobile }}"
+                       href="https://wa.me/{{ company_detail.companyMobile | replace({' ': ''}) }}">
+                        <i style="color: green"
+                           class="fab fa-whatsapp"></i>
+                    </a>
+                {% endif %}
+                {{ company_detail.companyMobile }}
+            </td>
+        </tr>
+        <tr>
+            <th>Skype</th>
+            <td>
+                {% if company_detail.companySkype is not null %}
+                    <a title="{{ company_detail.companySkype }}"
+                       href="skype:{{ company_detail.companySkype }}?call">
+                        <i style="color: royalblue" class="fab fa-skype"></i>
+                    </a>
+                {% endif %}
+                {{ company_detail.companySkype }}
+            </td>
+        </tr>
+
+        {% set faviconLive = asset('administration/Attachments/Favicons/'~CompanyDetailsService.getCompanyDetails.faviconLive) %}
+        {% set faviconDev = asset('administration/Attachments/Favicons/'~CompanyDetailsService.getCompanyDetails.faviconDev) %}
+        {% set qrCode = asset('administration/Attachments/Favicons/'~CompanyDetailsService.getCompanyDetails.companyQrCode) %}
+        <tr>
+            <th>Favicon (Live)</th>
+            <td>
+                {% if company_detail.faviconLive is not null %}
+                    <img height="50" width="50" src="{{ faviconLive }}">
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Favicon (Dev)</th>
+            <td>
+                {% if company_detail.faviconDev is not null %}
+                    <img height="50" width="50" src="{{ faviconDev }}">
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>QR Code</th>
+            <td>
+                {% if company_detail.companyQrCode is not null %}
+                    <a target="_blank" href="{{ path('company_qr_code') }}">
+                        <img height="50" width="50" src="{{ qrCode }}">
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,32 +1,22 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-code for the canonical source repository
- * @copyright https://github.com/laminas/laminas-code/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-code/blob/master/LICENSE.md New BSD License
- */
-
 namespace Laminas\Code\Reflection\DocBlock\Tag;
+
+use Stringable;
 
 use function explode;
 use function preg_match;
 use function rtrim;
 
-class PropertyTag implements TagInterface, PhpDocTypedTagInterface
+class PropertyTag implements TagInterface, PhpDocTypedTagInterface, Stringable
 {
-    /**
-     * @var array
-     */
+    /** @var list<string> */
     protected $types = [];
 
-    /**
-     * @var string
-     */
+    /** @var string|null */
     protected $propertyName;
 
-    /**
-     * @var string
-     */
+    /** @var string|null */
     protected $description;
 
     /**
@@ -37,15 +27,11 @@ class PropertyTag implements TagInterface, PhpDocTypedTagInterface
         return 'property';
     }
 
-    /**
-     * Initializer
-     *
-     * @param  string $tagDocblockLine
-     */
-    public function initialize($tagDocblockLine)
+    /** @inheritDoc */
+    public function initialize($content)
     {
         $match = [];
-        if (! preg_match('#^(.+)?(\$[\S]+)[\s]*(.*)$#m', $tagDocblockLine, $match)) {
+        if (! preg_match('#^(.+)?(\$[\S]+)[\s]*(.*)$#m', $content, $match)) {
             return;
         }
 
@@ -63,18 +49,20 @@ class PropertyTag implements TagInterface, PhpDocTypedTagInterface
     }
 
     /**
-     * @return null|string
      * @deprecated 2.0.4 use getTypes instead
+     *
+     * @return null|string
      */
     public function getType()
     {
         if (empty($this->types)) {
-            return;
+            return null;
         }
 
         return $this->types[0];
     }
 
+    /** @inheritDoc */
     public function getTypes()
     {
         return $this->types;
@@ -96,7 +84,10 @@ class PropertyTag implements TagInterface, PhpDocTypedTagInterface
         return $this->description;
     }
 
-    public function __toString()
+    /**
+     * @psalm-return non-empty-string
+     */
+    public function __toString(): string
     {
         return 'DocBlock Tag [ * @' . $this->getName() . ' ]' . "\n";
     }

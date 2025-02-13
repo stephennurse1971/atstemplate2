@@ -1,0 +1,16 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-4">
+        {{ form_row(form.private) }}
+        {{ form_row(form.category) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.link) }}
+    </div>
+    <div class="col-md-4">
+        {{ form_row(form.login) }}
+        {{ form_row(form.password) }}
+        {{ form_row(form.notes) }}
+    </div>
+</div>
+<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

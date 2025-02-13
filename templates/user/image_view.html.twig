@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Photo: {{ user.fullName}}  {% endblock %}
+
+{% block body %}
+    {% set image = asset(user_photos_directory~user.photo ) %}
+    <div class="row ">
+        <div class="col-12 m-auto">
+            <div class="image-container">
+                    <img class="photosOnePage" src="{{ image }}">
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,13 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ CompanyDetails.companyDetails.companyName }} {% endblock %}
+{% block title %}{{ CompanyDetailsService.companyDetails.companyName }} {% endblock %}
 
 {% block body %}
     <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="default-title">
+                {% include 'home/products_page/title.html.twig' %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         {% for photo in photos %}
-            {% set image = asset('administration/attachments/WebsitePhotos')~"/"~photo.photo %}
+            {% set image = asset('administration/Attachments/CMSPhotos')~"/"~photo.photo %}
             {% set fileType =  photo.photo|split('.')|last %}
-            <div class="col-lg-3 col-md-4 m-4 p-4">
+            <div class="col-lg-6 col-md-4 col-xl-4 p-4">
                 <div class="justify-content-center d-flex">
                     <div class="homepage-gallery-image-container">
                         {% if photo.photo is not null %}
@@ -17,11 +25,16 @@
                                 </video>
                             {% else %}
                                 {% if photo.link is not null %}
-                                    <a title="{{ photo.title }}" target="_blank" href="{{ photo.link }}">
-                                        <img class="homepage-image" src="{{ image }}">
+                                    {% if photo.link starts with 'http' %}
+                                        {% set web =  photo.link %}
+                                    {% else %}
+                                        {% set web = 'https://'~ photo.link %}
+                                    {% endif %}
+                                    <a title="{{ photo.title }}" target="_blank" href="{{ web }}">
+                                        <img class="homepage-image rotate-{{ photo.rotate }}" src="{{ image }}">
                                     </a>
                                 {% else %}
-                                    <img title="{{ photo.title }}" class="homepage-image" src="{{ image }}">
+                                    <img class="homepage-image rotate-{{ photo.rotate }}" src="{{ image }}">
                                 {% endif %}
                             {% endif %}
                         {% endif %}
@@ -31,4 +44,29 @@
         {% endfor %}
     </div>
 
+{{ include_contact_form }}
+
+    {% if CompanyDetailsService.companyDetails is not null %}
+        {% if include_contact_form == 1 %}
+            {% include 'home/parts/contact_us.html.twig' %}
+{#            {% include 'home/parts/contact_us.html.twig' with { form: form } %}#}
+        {% endif %}
+
+
+        {% set qr_code =  CompanyDetailsService.companyDetails.companyQrCode %}
+        {% if include_qr_code == 1 and qr_code is not null %}
+            {% include 'home/parts/qr_code.html.twig' %}
+        {% endif %}
+
+    {% endif %}
 {% endblock body %}
+{% block additionaljs %}
+    {% if include_contact_form == 1 %}
+    <script>
+        $(document).ready(function () {
+            $("input[name='website_contacts[status]']").closest(".form-group").remove();
+            $("input[name='website_contacts[dateTime]']").closest(".form-group").remove();
+        });
+    </script>
+    {% endif %}
+{% endblock %}

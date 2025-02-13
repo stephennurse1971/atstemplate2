@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\CmsPhoto;
 use App\Entity\Product;
+use App\Services\TranslationsWorkerService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,19 +19,33 @@ class CmsPhotoType extends AbstractType
     {
         $builder
             ->add('category', ChoiceType::class, [
+                'label' => $this->translationsWorker->getTranslations('Category'),
                 'required' => true,
                 'choices' => [
                     'Static' => 'Static',
-                    'Product' => 'Product',
+                    'ProductService' => 'ProductService',
                 ]
             ])
             ->add('staticPageName')
+            ->add('rotate', ChoiceType::class, [
+                'label' => $this->translationsWorker->getTranslations('Rotate'),
+                'multiple' => false,
+                'data'=>'0',
+                'expanded' => true,
+                'choices' => [
+                    '0' => '0',
+                    '90' => '90',
+                    '180' => '180',
+                    '270' => '270',
+                ],])
             ->add('product', EntityType::class, [
+                'label' => $this->translationsWorker->getTranslations('Product'),
                 'class' => Product::class,
                 'required' => false,
                 'choice_label' => 'product'
             ])
             ->add('photoOrVideo', ChoiceType::class, [
+                'label' => $this->translationsWorker->getTranslations('Photo or Video'),
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => [
@@ -38,13 +53,13 @@ class CmsPhotoType extends AbstractType
                     'Video' => 'Video',
                 ],])
             ->add('photo', FileType::class, [
-                'label' => false,
+                'label' => $this->translationsWorker->getTranslations('Photo'),
                 'mapped' => false,
                 'required' => false
             ])
             ->add('title', TextType::class, [
+                'label' => $this->translationsWorker->getTranslations('Title'),
                 'required' => false,
-                'label' => 'Title (English)'
             ])
             ->add('link')
             ->add('ranking');
@@ -56,5 +71,9 @@ class CmsPhotoType extends AbstractType
             'data_class' => CmsPhoto::class,
             'allow_extra_fields' => true,
         ]);
+    }
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
     }
 }

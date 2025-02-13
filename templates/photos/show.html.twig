@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Photos{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Photos</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ photo.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ photo.location.date|date('Y-m-d')  }}</td>
+            </tr>
+            <tr>
+                <th>Rotate</th>
+                <td>{{ photo.rotate  }}</td>
+            </tr>
+            <tr>
+                <th>Rotate</th>
+                <td>{{ photo.uploadedBy.fullName  }}</td>
+            </tr>
+            <tr>
+                <th>PhotoFile</th>
+                <td>{{ photo.photoFile }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('photos_index') }}">Return to list</a>
+
+    <a class="btn btn-danger btn-sm mt-2" href="{{ path('photos_edit', {'id': photo.id}) }}">Edit</a>
+
+    {{ include('Photos/_delete_form.html.twig') }}
+{% endblock %}

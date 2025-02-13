@@ -21,8 +21,7 @@ use Symfony\Component\DependencyInjection\Container;
  */
 final class Str
 {
-    /** @var Inflector|null */
-    private static $inflector;
+    private static ?Inflector $inflector = null;
 
     /**
      * Looks for suffixes in strings in a case-insensitive way.
@@ -118,7 +117,7 @@ final class Str
 
     public static function asEventMethod(string $eventName): string
     {
-        return sprintf('on%s', self::asClassName($eventName));
+        return \sprintf('on%s', self::asClassName($eventName));
     }
 
     public static function getShortClassName(string $fullClassName): string
@@ -128,6 +127,38 @@ final class Str
         }
 
         return substr($fullClassName, strrpos($fullClassName, '\\') + 1);
+    }
+
+    /**
+     * @return array{0: string, 1: string}
+     */
+    public static function getHumanDiscriminatorBetweenTwoClasses(string $className, string $classNameOther): array
+    {
+        $namespace = self::getNamespace($className);
+        $namespaceOther = self::getNamespace($classNameOther);
+        if (empty($namespace) || empty($namespaceOther)) {
+            return [$namespace, $namespaceOther];
+        }
+
+        $namespaceParts = explode('\\', $namespace);
+        $namespacePartsOther = explode('\\', $namespaceOther);
+
+        $min = min(\count($namespaceParts), \count($namespacePartsOther));
+        for ($i = 0; $i < $min; ++$i) {
+            $part = $namespaceParts[$i];
+            $partOther = $namespacePartsOther[$i];
+            if ($part !== $partOther) {
+                break;
+            }
+
+            $namespaceParts[$i] = null;
+            $namespacePartsOther[$i] = null;
+        }
+
+        return [
+            implode('\\', array_filter($namespaceParts)),
+            implode('\\', array_filter($namespacePartsOther)),
+        ];
     }
 
     public static function getNamespace(string $fullClassName): string
@@ -186,7 +217,7 @@ final class Str
             'kangaroo',
         ];
 
-        return sprintf('%s %s', $adjectives[array_rand($adjectives)], $nouns[array_rand($nouns)]);
+        return \sprintf('%s %s', $adjectives[array_rand($adjectives)], $nouns[array_rand($nouns)]);
     }
 
     /**
@@ -203,6 +234,9 @@ final class Str
         return (bool) preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $name, $matches);
     }
 
+    /**
+     * @return bool
+     */
     public static function areClassesAlphabetical(string $class1, string $class2)
     {
         $arr1 = [$class1, $class2];

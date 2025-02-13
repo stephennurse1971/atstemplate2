@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New: Useful Files{% endblock %}
+
+{% block body %}
+
+    <h1 style="color: red">New: Useful Files</h1>
+
+    {{ include('file_attachments/_form.html.twig') }}
+
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('file_attachments_index') }}">Return to list</a>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#file_attachments_notes'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+
+{% endblock %}

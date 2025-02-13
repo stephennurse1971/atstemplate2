@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Log;
 use App\Form\LogType;
 use App\Repository\LogRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/admin/log")
+ * @Security("is_granted('ROLE_ADMIN')")
+ *
  */
 class LogController extends AbstractController
 {
@@ -68,7 +71,6 @@ class LogController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('log_index');
         }
 
@@ -88,7 +90,6 @@ class LogController extends AbstractController
             $entityManager->remove($log);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('log_index');
     }
 }

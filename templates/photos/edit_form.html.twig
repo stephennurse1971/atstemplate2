@@ -1,0 +1,19 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-3">
+        <h2>
+            {% set loc = asset('Photos')~"/"~photo.photoFile %}
+
+                {% if photo.rotate==1 %}
+                <img height="200" width="200" src="{{ loc }}" class="rounded-circle rotate-90">
+                {% else %}
+                <img height="200" width="200" src="{{ loc }}" class="rounded-circle">
+            {% endif %}
+        </h2>
+        {{ form_row(form.location) }}
+    </div>
+
+</div>
+
+<button class="btn btn-success btn-sm mt-2">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

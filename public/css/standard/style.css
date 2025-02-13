@@ -15,7 +15,7 @@ ul {
 
 ul>li {
     padding: 4px;
-    color:#C5CAE9;
+    color:black;
 }
 
 ul>li:hover {
@@ -61,7 +61,7 @@ hr {
     display: none;
 }
 .product-image-container{
-    height: 300px;
+    /*height: 300px;*/
     object-fit: cover;
 }
 .ck.ck-content ul,

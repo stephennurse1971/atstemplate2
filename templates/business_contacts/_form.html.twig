@@ -1,39 +1,106 @@
+<style>
+    .ck-content {
+        height: 500px;
+    }
+</style>
 {{ form_start(form) }}
 <div class="row">
     <div class="col-2">
-        {{ form_row(form.businessOrPerson) }}
-        {{ form_row(form.company) }}
-
-        {{ form_row(form.firstName) }}
-        {{ form_row(form.lastName) }}
-
-        {{ form_row(form.email) }}
-        {{ form_row(form.mobile) }}
-        {{ form_row(form.landline) }}
-        {{ form_row(form.website) }}
-    </div>
-
-    <div class="col-2">
-        <div class="status-container">
-        {{ form_row(form.status) }}
-        {{ form_row(form.publicPrivate) }}
-        </div>
         {% if is_granted('ROLE_STAFF') %}
             <a target="_blank" href="{{ path('business_types_index') }}"><i class="fa fa-chart-line"></i></a>
             <a target="_blank" href="{{ path('business_types_new') }}">+</a>
         {% endif %}
         {{ form_row(form.businessType) }}
-    </div>
+        <div class="business_or_person">
+            {{ form_row(form.businessOrPerson) }}
+        </div>
 
+        {{ form_row(form.company) }}
+
+        <div class="person_names">
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.lastName) }}
+        </div>
+
+        {% if business_contact.photo is not empty %}
+            <h4>Photo</h4>
+            {% set photo = asset('/administration/Attachments/BusinessContacts/Photos/'~business_contact.photo) %}
+            <a class="btn btn-outline-danger btn-sm" target="_blank"
+               href="{{ path('view_business_contact_photo', {id:business_contact.id}) }}">
+                <img title="{{ business_contact.photo }}" height="50" width="50"
+                     src="{{ photo }}" class="rounded-circle"></a>
+            <br>
+            <b>{{ business_contact.photo }}</b><br>
+            <a class="btn btn-sm btn-outline-danger mb-1"
+               href="{{ path('business_contact_delete_photo_file', {'id': business_contact.id }) }} ">Delete photo</a>
+        {% endif %}
+        <div class="business_contact_photo_container">
+            {{ form_row(form.photo) }}
+        </div>
+
+    </div>
+    <div class="col-2">
+        {{ form_row(form.email) }}
+        {{ form_row(form.mobile) }}
+        {{ form_row(form.landline) }}
+
+        {% if form.website is not empty %}
+            {% if form.website starts with 'http' %}
+                {% set web = form.website %}
+            {% else %}
+                {% set web = 'https://'~ form.website %}
+            {% endif %}
+        {% endif %}
+
+        {% if business_contact.website is not empty %}
+            {% if business_contact.website starts with 'http' %}
+                {% set business_contact_website = business_contact.website %}
+            {% else %}
+                {% set business_contact_website = 'https://'~ business_contact.website %}
+            {% endif %}
+
+            <a data-title="{{ business_contact_website }}" target="_blank"
+               title="{{ business_contact_website }}"
+               href="{{ business_contact_website }}" class="action"
+               data-id="{{ business_contact.id }}" data-action="Website">
+                <i class="fas fa-link"> </i></a>
+        {% endif %}
+
+        {{ form_row(form.website) }}
+    </div>
+    <div class="col-2">
+        <div class="status-container">
+            {{ form_row(form.status) }}
+            {% if business_contact.files is not empty %}
+                <h4>File</h4>
+                <a title="{{ business_contact.files }}" target="_blank"
+                   href="{{ path('business_contact_show_attachment',{id : business_contact.id}) }}">
+                    <i class="fa fa-paperclip"></i></a>
+                <br>
+                <b>{{ business_contact.files }}</b><br>
+                <a class="btn btn-sm btn-outline-danger"
+                   href="{{ path('business_contact_delete_attachment_file', {'id': business_contact.id }) }} ">Delete
+                    file</a>
+            {% endif %}
+            <div class="business_contact_files_container">
+                {{ form_row(form.files) }}
+            </div>
+
+        </div>
+    </div>
     <div class="col-2">
         {{ form_row(form.addressStreet) }}
         {{ form_row(form.addressCity) }}
+        {{ form_row(form.addressCounty) }}
         {{ form_row(form.addressPostCode) }}
         {{ form_row(form.addressCountry) }}
-        {{ form_row(form.gpsLocation) }}
-
+        {{ form_row(form.locationLongitude) }}
+        {{ form_row(form.locationLatitude) }}
+    </div>
+    <div class="col-4">
+        {{ form_row(form.notes) }}
     </div>
 </div>
+<button class="btn btn-success btn-sm mb-1">{{ button_label|default('Save') }}</button>
 
-<button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

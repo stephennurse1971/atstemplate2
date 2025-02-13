@@ -3,28 +3,75 @@
 {% block title %}Business Categories{% endblock %}
 
 {% block body %}
+
     <h1 style="color: red">Business Categories</h1>
+
+    {% include 'business_types/parts/import_and_export.html.twig' %}
 
     <table class="table table-responsive">
         <thead>
-            <tr>
-                <th>Category</th>
-                <th>Type</th>
-                <th>#</th>
-            </tr>
+        <tr>
+            <th>#</th>
+            <th></th>
+            <th></th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Name</th>
+            <th>Icon</th>
+            <th>#</th>
+            <th>#</th>
+        </tr>
         </thead>
         <tbody>
         {% for business_type in business_types %}
             <tr>
-                <td>{{ business_type.businessCategory }}</td>
-                <td>{{ business_type.businessType }}</td>
-                <td><a class="btn btn-outline-danger btn-sm" href="{{ path('business_types_edit', {'id': business_type.id}) }}">Edit</a></td>
+                <td style="text-align: center">{{ business_type.ranking |number_format(0, '.', ',') }}</td>
+                <td>
+                    <a class="btn btn-outline-success btn-sm"
+                       href="{{ path('business_type_change_ranking', {'id':business_type.id, 'change':'Up'}) }}">
+                        <i style="color: green" class="fas fa-arrow-up"></i>
+                    </a>
+                </td>
+                <td>
+                    <a class="btn btn-outline-secondary btn-sm"
+                       href="{{ path('business_type_change_ranking', {'id':business_type.id, 'change':'Down'}) }}">
+                        <i style="color: red" class="fa fa-arrow-down"></i>
+                    </a>
+                </td>
+                <td>
+                    {{ business_type.businessType }}
+                </td>
+                <td>
+                    {{ business_type.description }}
+                </td>
+                <td>
+                    {% if business_type.mapIcon is not null %}
+                        {{ business_type.mapIcon.name }}
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if business_type.mapIcon is not empty %}
+                        {% set icon = asset('administration/ATSSharedFiles/BusinessContactsMapIcons/')~business_type.mapIcon.iconFile %}
+                        <img style="height: 50px; width: 50px" src="{{ icon }}">
+                    {% endif %}
+                </td>
+                <td>
+                    <a class="btn btn-outline-danger btn-sm"
+                       href="{{ path('business_types_edit', {'id': business_type.id}) }}">Edit</a>
+                </td>
+                <td>
+                    <form method="post" action="{{ path('business_types_delete', {'id': business_type.id}) }}"
+                          onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ business_type.id) }}">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a class="btn btn-success btn-sm" href="{{ path('business_types_new') }}">New</a>
+
 {% endblock %}
 
 {% block datatable %}

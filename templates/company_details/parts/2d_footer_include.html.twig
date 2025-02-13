@@ -1,0 +1,91 @@
+<div class="col-2">
+    <table class="table small">
+        <tbody>
+        <h4>Footer: Include</h4>
+        <tr>
+            <th>Products</th>
+            <td>
+                {% if company_detail.footerDisplayProducts ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'footerDisplayProducts'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'footerDisplayProducts'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Sub-Products</th>
+            <td>
+                {% if company_detail.footerDisplaySubProducts ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'footerDisplaySubProducts'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'footerDisplaySubProducts'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Social Media</th>
+            <td>
+                {% if company_detail.footerDisplaySocialMedia ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'footerDisplaySocialMedia'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'footerDisplaySocialMedia'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Contact Details</th>
+            <td>
+                {% if company_detail.footerDisplayContactDetails ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'footerDisplayContactDetails'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'footerDisplayContactDetails'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Contact Details (Address)</th>
+            <td>
+                {% if company_detail.footerDisplayAddress ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'footerDisplayAddress'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'footerDisplayAddress'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Contact Details (Tel)</th>
+            <td>
+                {% if company_detail.footerDisplayTelNumbers ==1 %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'footerDisplayTelNumbers'}) }}">
+                        <i style="color: green" class="fas fa-toggle-on"></i>
+                    </a>
+                {% else %}
+                    <a href="{{ path('company_details_change_field_status', {'input': 'footerDisplayTelNumbers'}) }}">
+                        <i style="color: grey" class="fas fa-toggle-off"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

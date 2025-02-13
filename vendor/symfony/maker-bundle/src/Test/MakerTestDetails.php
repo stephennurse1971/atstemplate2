@@ -16,23 +16,29 @@ use Symfony\Bundle\MakerBundle\MakerInterface;
 
 final class MakerTestDetails
 {
-    private $maker;
+    private ?\Closure $runCallback = null;
+    private array $preRunCallbacks = [];
+    private array $extraDependencies = [];
+    private string $rootNamespace = 'App';
+    private int $requiredPhpVersion = 80000;
+    private array $requiredPackageVersions = [];
+    private int $blockedPhpVersionUpper = 0;
+    private int $blockedPhpVersionLower = 0;
+    private bool $skipOnSymfony7 = false;
 
-    private $runCallback;
+    /**
+     * @internal
+     */
+    private bool $skipTest = false;
 
-    private $preRunCallbacks = [];
+    /**
+     * @internal
+     */
+    private string $skipTestMessage = '';
 
-    private $extraDependencies = [];
-
-    private $rootNamespace = 'App';
-
-    private $requiredPhpVersion;
-
-    private $requiredPackageVersions = [];
-
-    public function __construct(MakerInterface $maker)
-    {
-        $this->maker = $maker;
+    public function __construct(
+        private MakerInterface $maker,
+    ) {
     }
 
     public function run(\Closure $callback): self
@@ -49,6 +55,9 @@ final class MakerTestDetails
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getRootNamespace()
     {
         return $this->rootNamespace;
@@ -63,14 +72,32 @@ final class MakerTestDetails
 
     public function addExtraDependencies(string ...$packages): self
     {
-        $this->extraDependencies += $packages;
+        $this->extraDependencies = [...$this->extraDependencies, ...$packages];
 
         return $this;
     }
 
     public function setRequiredPhpVersion(int $version): self
     {
+        @trigger_deprecation('symfony/maker-bundle', 'v1.44.0', 'setRequiredPhpVersion() is no longer used and will be removed in a future version.');
+
         $this->requiredPhpVersion = $version;
+
+        return $this;
+    }
+
+    /**
+     * Skip a test from running between a range of PHP Versions.
+     *
+     * @param int $lowerLimit Versions below this value will be allowed
+     * @param int $upperLimit Versions above this value will be allowed
+     *
+     * @internal
+     */
+    public function setSkippedPhpVersions(int $lowerLimit, int $upperLimit): self
+    {
+        $this->blockedPhpVersionUpper = $upperLimit;
+        $this->blockedPhpVersionLower = $lowerLimit;
 
         return $this;
     }
@@ -98,11 +125,11 @@ final class MakerTestDetails
     {
         $depBuilder = $this->getDependencyBuilder();
 
-        return array_merge(
-            $depBuilder->getAllRequiredDependencies(),
-            $depBuilder->getAllRequiredDevDependencies(),
-            $this->extraDependencies
-        );
+        return [
+            ...$depBuilder->getAllRequiredDependencies(),
+            ...$depBuilder->getAllRequiredDevDependencies(),
+            ...$this->extraDependencies,
+        ];
     }
 
     public function getExtraDependencies(): array
@@ -120,7 +147,22 @@ final class MakerTestDetails
 
     public function isSupportedByCurrentPhpVersion(): bool
     {
-        return null === $this->requiredPhpVersion || \PHP_VERSION_ID >= $this->requiredPhpVersion;
+        $hasPhpVersionConstraint = $this->blockedPhpVersionLower > 0 && $this->blockedPhpVersionUpper > 0;
+        $isSupported = false;
+
+        if (!$hasPhpVersionConstraint) {
+            $isSupported = true;
+        }
+
+        if (\PHP_VERSION_ID > $this->blockedPhpVersionUpper) {
+            $isSupported = true;
+        }
+
+        if (\PHP_VERSION_ID < $this->blockedPhpVersionLower) {
+            $isSupported = true;
+        }
+
+        return $isSupported && \PHP_VERSION_ID >= $this->requiredPhpVersion;
     }
 
     public function getRequiredPackageVersions(): array
@@ -143,5 +185,66 @@ final class MakerTestDetails
     public function getPreRunCallbacks(): array
     {
         return $this->preRunCallbacks;
+    }
+
+    public function skipOnSymfony7(): self
+    {
+        @trigger_deprecation(
+            'symfony/maker-bundle',
+            'v1.53.0',
+            \sprintf('%s() will be removed in a future version, use MakerTestDetails::skipTest() instead.', __METHOD__)
+        );
+
+        $this->skipOnSymfony7 = true;
+
+        return $this;
+    }
+
+    public function getSkipOnSymfony7(): bool
+    {
+        @trigger_deprecation(
+            'symfony/maker-bundle',
+            'v1.53.0',
+            \sprintf('%s() will be removed in a future version, use MakerTestDetails::isTestSkipped() instead.', __METHOD__)
+        );
+
+        return $this->skipOnSymfony7;
+    }
+
+    /**
+     * Skip an application test by calling this method and providing an optional
+     * message.
+     *
+     * This method should not be removed even if it is not being used, it may be
+     * needed in the future.
+     *
+     * @internal
+     */
+    public function skipTest(string $message = '', bool $skipped = true): self
+    {
+        $this->skipTestMessage = $message;
+        $this->skipTest = $skipped;
+
+        return $this;
+    }
+
+    /**
+     * MakerTestCase uses this to determine if a test should be skipped.
+     *
+     * @internal
+     */
+    public function isTestSkipped(): bool
+    {
+        return $this->skipTest;
+    }
+
+    /**
+     * MakerTestCase uses this to get the skipped test message.
+     *
+     * @internal
+     */
+    public function getSkippedTestMessage(): string
+    {
+        return $this->skipTestMessage;
     }
 }

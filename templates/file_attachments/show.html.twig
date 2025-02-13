@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ file_attachment.category }}: {{ file_attachment.description }}{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">{{ file_attachment.category }}: {{ file_attachment.description }}</h1>
+
+    <table class="table">
+        <tbody>
+
+            <tr>
+                <th style="width: 150px">
+                    ID
+                </th>
+                <td>
+                    {{file_attachment.id }}
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 150px">
+                    Date
+                </th>
+                <td>{{ file_attachment.date ? file_attachment.date|date('d-M-y') : '' }}</td>
+            </tr>
+            <tr>
+                <th style="width: 150px">
+                    Description
+                </th>
+                <td>{{ file_attachment.description }}</td>
+            </tr>
+            <tr>
+                <th style="width: 150px">
+                    Category
+                </th>
+                <td>
+                    {{ file_attachment.category }}</td>
+            </tr>
+            <tr>
+                <th>
+                    Notes
+                </th>
+                <td>
+                    {{ file_attachment.notes |raw}}
+
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Attachments
+                </th>
+                <td>
+                    {% for attachment in file_attachment.attachments %}
+                       <b>{{ attachment|raw }}: </b> <a title="{{ attachment|raw }}" target="_blank"
+                           href="{{ path('show_attachment_file_upload_directory',{id : file_attachment.id,'filename':attachment}) }}"><i
+                                    class="fa fa-paperclip"></i></a><br>
+                    {% endfor %}
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('file_attachments_index') }}">Return to list</a>
+
+    <a class="btn btn-outline-success btn-sm mt-2" href="{{ path('file_attachments_edit', {'id': file_attachment.id}) }}">Edit</a>
+
+    {{ include('file_attachments/_delete_form.html.twig') }}
+{% endblock %}

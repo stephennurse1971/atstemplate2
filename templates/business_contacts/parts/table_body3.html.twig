@@ -1,0 +1,38 @@
+<td class="desktop" style="text-align: center">
+    {% if business_contact.website is not empty %}
+        <a data-title="{{ business_contact_website }}" target="_blank"
+           title="{{ business_contact_website }}"
+           href="{{ business_contact_website }}" class="action"
+           data-id="{{ business_contact.id }}" data-action="Website">
+            <i class="fas fa-link"> </i></a>
+    {% endif %}
+</td>
+<td class="desktop" style="text-align: center">
+    {% if business_contact.email is not empty %}
+        <a title="{{ business_contact.email }}"
+           href="mailto:{{ business_contact.email }}"
+           class="action" data-id="{{ business_contact.id }}"
+           data-action="Email"><i
+                    class="fas fa-envelope"> </i>
+        </a>
+    {% endif %}
+</td>
+<td class="desktop" style="text-align: center">
+    {% if business_contact.mobile is not empty %}
+        <a title="{{ business_contact.mobile }}" target="_blank"
+           href="https://wa.me/{{ business_contact.mobile|replace({' ': ''}) }}"
+           class="action"
+           data-id="{{ business_contact.id }}"
+           data-action="WhatsApp">
+            <i class="fab fa-whatsapp" style="color:green; text-align: center"></i></a>
+    {% endif %}
+</td>
+<td class="desktop" style="text-align: center">
+    {% if business_contact.landline is not empty %}
+        <a title="{{ business_contact.landline }}"
+           href="tel:{{ business_contact.landline|replace({' ': ''}) }}" class="action"
+           data-id="{{ business_contact.id }}"
+           data-action="Phone">
+            <i class="fa fa-phone" style="color:green; text-align: center"></i></a>
+    {% endif %}
+</td>

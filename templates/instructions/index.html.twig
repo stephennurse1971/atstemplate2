@@ -5,7 +5,7 @@
 {% block body %}
     <h1 style="color: red">Instructions</h1>
 
-    <table class="table table-responsive">
+    <table class="table table-responsive small">
         <thead>
         <tr>
             <th>Topic</th>
@@ -52,3 +52,17 @@
 
     <a class="btn btn-success btn-sm" href="{{ path('instructions_new') }}">New</a>
 {% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

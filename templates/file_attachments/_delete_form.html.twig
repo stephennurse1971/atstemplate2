@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('file_attachments_delete', {'id': file_attachment.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ file_attachment.id) }}">
+    <button class="btn btn-danger mt-2 btn-sm mb-1">Delete</button>
+</form>

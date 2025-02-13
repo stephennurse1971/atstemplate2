@@ -1,0 +1,24 @@
+{{ form_start(form) }}
+
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-2">
+        {{ form_row(form.name) }}
+        {% if map_icon.iconFile is not empty %}
+            <b>Icon:</b><br>
+            {% set icon = asset('/administration/ATSSharedFiles/BusinessContactsMapIcons/'~map_icon.iconFile) %}
+                <img title="{{ map_icon.iconFile }}" height="50" width="50"
+                     src="{{ icon }}" class="rounded-circle">
+            <br>
+            <b>{{ map_icon.iconFile }}</b><br>
+            <a class="btn btn-sm btn-outline-danger mb-1"
+               href="{{ path('map_icon_delete_file', {'id': map_icon.id }) }} ">Delete icon</a>
+        {% endif %}
+        <div class="map-icon-container">
+            {{ form_row(form.iconFile) }}
+        </div>
+    </div>
+</div>
+<hr>
+<button class="btn btn-success btn-sm mb-1">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

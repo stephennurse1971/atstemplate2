@@ -1,0 +1,92 @@
+<style>
+    .social_media_table tr {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .social_media_table tr th {
+        float: left;
+    }
+
+    .social_media_table tr td {
+        float: right;
+        margin-right: 25px;
+    }
+</style>
+
+<div class="col-2">
+    <div class="row">
+        <h4>HomePage</h4>
+        <table class="table small">
+            <tbody>
+            <tr>
+                <th>Photos Only on Home</th>
+                <td>
+                    {% if company_detail.homePagePhotosOnly ==1 %}
+                        <a href="{{ path('company_details_change_field_status', {'input': 'homePagePhotosOnly'}) }}">
+                            <i style="color: green" class="fas fa-toggle-on"></i>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('company_details_change_field_status', {'input': 'homePagePhotosOnly'}) }}">
+                            <i style="color: grey" class="fas fa-toggle-off"></i>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Contact Form</th>
+                <td>
+                    {% if company_detail.includeContactFormHomePage ==1 %}
+                        <a href="{{ path('company_details_change_field_status', {'input': 'includeContactFormHomePage'}) }}">
+                            <i style="color: green" class="fas fa-toggle-on"></i>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('company_details_change_field_status', {'input': 'includeContactFormHomePage'}) }}">
+                            <i style="color: grey" class="fas fa-toggle-off"></i>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% if company_detail.includeContactFormHomePage ==1 %}
+            <tr>
+                <th>New Clients: Notification</th>
+                <td>
+                    {% if company_detail.websiteContactsEmailAlert ==1 %}
+                        <a title="Admin to receive, or not, an email alert when a new client registers or fills in a Contact Form" href="{{ path('company_details_change_field_status', {'input': 'websiteContactsEmailAlert'}) }}">
+                            <i style="color: green" class="fas fa-toggle-on"></i>
+                        </a>
+                    {% else %}
+                        <a title="Admin to receive, or not, an email alert when a new client registers or fills in a Contact Form" href="{{ path('company_details_change_field_status', {'input': 'websiteContactsEmailAlert'}) }}">
+                            <i style="color: grey" class="fas fa-toggle-off"></i>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>New Clients: Auto reply</th>
+                <td>
+                    {{ company_detail.websiteContactsAutoReply }}
+                    <a href=" ">
+                        <i title="Auto: Emails immediately sent upon request.  Semi-auto: Email sent when approved.  Manual: Manually sent" style="color: green" class="fas fa-recycle"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>QR code</th>
+                <td>
+                    {% if company_detail.includeQRCodeHomePage ==1 %}
+                        <a href="{{ path('company_details_change_field_status', {'input': 'includeQRCodeHomePage'}) }}">
+                            <i style="color: green" class="fas fa-toggle-on"></i>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('company_details_change_field_status', {'input': 'includeQRCodeHomePage'}) }}">
+                            <i style="color: grey" class="fas fa-toggle-off"></i>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

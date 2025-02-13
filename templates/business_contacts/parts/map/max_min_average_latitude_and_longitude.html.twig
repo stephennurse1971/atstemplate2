@@ -1,0 +1,10 @@
+{% if is_granted('ROLE_ADMIN') %}
+            <hr>
+    <span style="color: red"><b>Maximum:</b></span> Latitude= {{ latitude_max }}; Longitude: {{ longitude_max }}<br>
+    <span style="color: red"><b>Minimum:</b></span> Latitude= {{ latitude_min }}; Longitude: {{ longitude_min }}<br>
+    <span style="color: red"><b>Average:</b></span> Latitude= {{ latitude_average|number_format(6) }}; Longitude: {{ longitude_average|number_format(6) }}
+    <br>
+    <span style="color: red"><b>Range:</b></span> Latitude= {{ (latitude_range)|number_format(5) }}; Longitude: {{ (longitude_range)|number_format(5) }}
+    <br>
+
+{% endif %}

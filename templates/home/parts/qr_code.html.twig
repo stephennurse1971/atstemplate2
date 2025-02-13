@@ -1,0 +1,13 @@
+{% set image = asset('administration/Attachments/Favicons/')~qr_code %}
+<div class="row">
+    <div class="col-12 col-md-4 mx-auto">
+        <div class="justify-content-center d-flex">
+            <div class="homepage-gallery-image-container">
+                <a title="{{ CompanyDetailsService.companyDetails.companyName }}" target="_blank"
+                   href="{{ path('create_vcard_company') }}">
+                    <img class="homepage-image" src="{{ image }}">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

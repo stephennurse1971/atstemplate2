@@ -1,0 +1,18 @@
+{% if is_granted('ROLE_ADMIN') %}
+    <div class="row">
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="col-1">
+                <a class="btn btn-success btn-sm" href="{{ path('competitors_new') }}">New</a>
+            </div>
+            <div class="col-4">
+                <a class="btn btn-outline-primary btn-sm" href="{{ path('competitors_export') }}">Export</a>
+                <a class="btn btn-outline-primary btn-sm" href="{{ path('competitors_import') }}">Import</a>
+                <a href="{{ asset('administration/ATSSharedFiles/_ImportTemplates/'~'Competitors.csv') }}">(Template)</a>
+            </div>
+            <div class="col-2">
+{#                <a class="btn btn-outline-danger btn-sm" href="{{ path('competitors_delete') }}">Delete All</a>#}
+            </div>
+            <br>
+        {% endif %}
+    </div>
+{% endif %}

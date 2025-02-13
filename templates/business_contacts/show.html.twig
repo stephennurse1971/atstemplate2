@@ -1,17 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Business Contact{% endblock %}
+{% block title %}
+    {% if business_contact.firstName is not empty %}
+        {{ business_contact.firstName }} {{ business_contact.lastName }} (
+    {% endif %}
+    {% if business_contact.company is not empty %}
+        {{ business_contact.company }}
+    {% endif %}
+    {% if business_contact.firstName is not empty %}){% endif %}
+{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Business Contacts</h1>
+    <h2 style="color: red">{{ business_contact.company }}</h2>
+
+    <h3 style="colour: grey">({{ business_contact.businessType.businessType }})</h3>
 
     <table class="table">
         <tbody>
 
         <tr>
+            <th>Company</th>
+            <td>{{ business_contact.company }}</td>
+        </tr>
+
+        {% if business_contact.firstName is not empty %}
+        <tr>
             <th> Name</th>
             <td>{{ business_contact.firstName }} {{ business_contact.LastName }}</td>
         </tr>
+        {% endif %}
+
+        {% if business_contact.email is not empty %}
         <tr>
             <th>Email</th>
             <td>
@@ -25,20 +44,31 @@
                 {% endif %}
             </td>
         </tr>
+        {% endif %}
+
+        {% if business_contact.website is not empty %}
         <tr>
             <th>Website</th>
             <td>
-                {% if business_contact.website  is not null %}
-                    <a data-title="{{ business_contact.website }}" target="_blank"
-                       title="{{ business_contact.website }}"
-                       href="{{ business_contact.website }}" class="action"
+                {% if business_contact.website|length >1 %}
+                    {% if business_contact.website starts with 'http' %}
+                        {% set business_contact_website = business_contact.website %}
+                    {% else %}
+                        {% set business_contact_website = 'https://'~ business_contact.website %}
+                    {% endif %}
+                    <a data-title="{{ business_contact_website }}" target="_blank"
+                       title="{{ business_contact_website }}"
+                       href="{{ business_contact_website }}" class="action"
                        data-id="{{ business_contact.id }}" data-action="Website">
                         <i class="fas fa-link"> </i></a>
-                    {{ business_contact.website }}
                 {% endif %}
             </td>
-        </tr>
 
+
+        </tr>
+        {% endif %}
+
+        {% if business_contact.mobile is not empty %}
         <tr>
             <th>Mobile</th>
             <td>
@@ -53,6 +83,9 @@
                 {% endif %}
             </td>
         </tr>
+        {% endif %}
+
+        {% if business_contact.landline is not empty %}
         <tr>
             <th>Landline</th>
             <td>
@@ -66,10 +99,9 @@
                 {% endif %}
             </td>
         </tr>
-        <tr>
-            <th>Company</th>
-            <td>{{ business_contact.company }}</td>
-        </tr>
+        {% endif %}
+
+        {% if business_contact.addressStreet is not empty %}
         <tr>
             <th>Address</th>
             <td>
@@ -80,10 +112,13 @@
                 {% endif %}
             </td>
         </tr>
+        {% endif %}
+
+        {% if is_granted('ROLE_ADMIN') or business_contact.locationLongitude|length >1 %}
         <tr>
-            <th>GPS</th>
+            <th>Map</th>
             <td>
-                {% if business_contact.gpsLocation is empty %}
+                {% if business_contact.locationLongitude is empty %}
                     {% if is_granted('ROLE_STAFF') %}
                         <button class="btn btn-primary btn-sm"
                                 onclick="getLocation('{{ business_contact.id }}')">
@@ -97,24 +132,102 @@
                        href="{{ path('show_location_google_maps',{id: business_contact.id}) }}"
                        class="action" data-id="{{ business_contact.id }}"
                        data-action="Map">
-                        <i class='fas fa-map-marker-alt text-danger'></i></a>
+                        <i title="Go to map" class='fas fa-map-marker-alt text-danger'></i></a>
                 {% endif %}
-
             </td>
         </tr>
+        {% endif %}
+
 
         <tr>
-            <th>Business</th>
-            <td>{{ business_contact.businessType.businessType }}</td>
+            <th>
+                VCF
+            </th>
+            <td>
+                <a href="{{ path('create_vcard', {id: business_contact.id} ) }}" class="action"
+                   data-id="{{ business_contact.id }}"
+                   data-action="VCF"> <i style="color: blue" class="fas fa-address-card mr-0"></i></a>
+            </td>
         </tr>
         </tbody>
     </table>
 
     <a class="btn btn-outline-primary btn-sm" href="{{ path('business_contacts_index') }}">Return to list</a>
+{% endblock %}
 
-    {#    <a class="btn btn-outline-danger btn-sm" href="{{ path('business_contacts_edit', {'id': business_contact.id}) }}">Edit</a> #}
+{% block datatable %}
+    <script>
+        {% if is_granted('ROLE_ADMIN') %}
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[12, 'asc'], [13, 'asc'], [2, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+        {% else %}
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[1, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+        {% endif %}
+    </script>
+{% endblock datatable %}
+{% block additionaljs %}
 
-{#    {{ include('business_contacts/_delete_form.html.twig') }}#}
+    <script>
+        var businessContactId = '';
+
+        function getLocation(id) {
+            businessContactId = id;
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showLocation);
+            } else {
+                $('#location').html('Geolocation is not supported by this browser.');
+            }
+        }
+
+        function showLocation(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            var pin = latitude + "," + longitude;
+            $.ajax({
+                type: 'POST',
+                url: 'update/location',
+                data: 'latitude=' + latitude + '&longitude=' + longitude + '&id=' + businessContactId,
+                success: function (msg) {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+
+    <script>
+        $('.action').click(function (e) {
+            e.preventDefault();
+            let elem = $(this);
+            let id = $(this).attr('data-id');
+            let action = $(this).attr('data-action');
+            let url = '/referrals/new_from_businesscontacts/' + id + '/' + action;
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (msg) {
+                    //window.location.href()
+                    //alert('success');
+                    let goTo = elem.attr('href');
+                    window.open(goTo, '_blank');
+                }
+            });
+        })
+    </script>
 {% endblock %}
 
 

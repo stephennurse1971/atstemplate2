@@ -11,8 +11,7 @@
 
 namespace Symfony\Bundle\MakerBundle\Util;
 
-use ReflectionClass;
-use ReflectionException;
+use Symfony\Bundle\MakerBundle\Util\ClassSource\Model\ClassData;
 
 /**
  * @author Jesse Rushlow <jr@rushlow.dev>
@@ -21,73 +20,54 @@ use ReflectionException;
  */
 final class TemplateComponentGenerator
 {
-    private $phpCompatUtil;
-
-    public function __construct(PhpCompatUtil $phpCompatUtil)
-    {
-        $this->phpCompatUtil = $phpCompatUtil;
+    public function __construct(
+        private bool $generateFinalClasses,
+        private bool $generateFinalEntities,
+        private string $rootNamespace,
+    ) {
     }
 
-    /** @legacy Annotation Support can be dropped w/ Symfony 6 LTS */
-    public function generateRouteForControllerMethod(string $routePath, string $routeName, array $methods = [], bool $indent = true, bool $trailingNewLine = true): string
+    /**
+     * @param string|null $routePath passing an empty string/null will create a route attribute without the "path" argument
+     */
+    public function generateRouteForControllerMethod(?string $routePath, string $routeName, array $methods = [], bool $indent = true, bool $trailingNewLine = true): string
     {
-        if ($this->phpCompatUtil->canUseAttributes()) {
-            $attribute = sprintf('%s#[Route(\'%s\', name: \'%s\'', $indent ? '    ' : null, $routePath, $routeName);
-
-            if (!empty($methods)) {
-                $attribute .= ', methods: [';
-
-                foreach ($methods as $method) {
-                    $attribute .= sprintf('\'%s\', ', $method);
-                }
-
-                $attribute = rtrim($attribute, ', ');
-
-                $attribute .= ']';
-            }
-
-            $attribute .= sprintf(')]%s', $trailingNewLine ? "\n" : null);
-
-            return $attribute;
+        if (!empty($routePath)) {
+            $path = \sprintf('\'%s\', ', $routePath);
         }
 
-        $annotation = sprintf('%s/**%s', $indent ? '    ' : null, "\n");
-        $annotation .= sprintf('%s * @Route("%s", name="%s"', $indent ? '    ' : null, $routePath, $routeName);
+        $attribute = \sprintf('%s#[Route(%sname: \'%s\'', $indent ? '    ' : null, $path ?? null, $routeName);
 
         if (!empty($methods)) {
-            $annotation .= ', methods={';
+            $attribute .= ', methods: [';
 
             foreach ($methods as $method) {
-                $annotation .= sprintf('"%s", ', $method);
+                $attribute .= \sprintf('\'%s\', ', $method);
             }
 
-            $annotation = rtrim($annotation, ', ');
+            $attribute = rtrim($attribute, ', ');
 
-            $annotation .= '}';
+            $attribute .= ']';
         }
 
-        $annotation .= sprintf(')%s', "\n");
-        $annotation .= sprintf('%s */%s', $indent ? '    ' : null, $trailingNewLine ? "\n" : null);
+        $attribute .= \sprintf(')]%s', $trailingNewLine ? "\n" : null);
 
-        return $annotation;
+        return $attribute;
     }
 
     public function getPropertyType(ClassNameDetails $classNameDetails): ?string
     {
-        if (!$this->phpCompatUtil->canUseTypedProperties()) {
-            return null;
-        }
-
-        return sprintf('%s ', $classNameDetails->getShortName());
+        return \sprintf('%s ', $classNameDetails->getShortName());
     }
 
-    /**
-     * @throws ReflectionException
-     */
-    public function repositoryHasAddRemoveMethods(string $repositoryFullClassName): bool
+    public function configureClass(ClassData $classMetadata): ClassData
     {
-        $reflectedComponents = new ReflectionClass($repositoryFullClassName);
+        $classMetadata->setRootNamespace($this->rootNamespace);
 
-        return $reflectedComponents->hasMethod('add') && $reflectedComponents->hasMethod('remove');
+        if ($classMetadata->isEntity) {
+            return $classMetadata->setIsFinal($this->generateFinalEntities);
+        }
+
+        return $classMetadata->setIsFinal($this->generateFinalClasses);
     }
 }

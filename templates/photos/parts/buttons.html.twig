@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="col-12 col-md-3">
+        {% if app.user %}
+            {% if is_granted('ROLE_ADMIN') or app.user.id in location.enabledUsers %}
+                <a class="btn btn-success btn-sm mt-2"
+                   href="{{ path('photos_new', {location: location.location }) }}">Add photos</a>
+            {% endif %}
+        {% endif %}
+        <a class="btn btn-primary btn-sm mt-2" href="{{ path('photos_index') }}">Back to List</a>
+    </div>
+
+    <div class="col-12 col-md-2">
+        {% if format =='Full' %}
+            <a class="btn btn-outline-secondary btn-sm mt-2"
+               href="{{ path('show_photos_by_location', {id: location.id, author: 'All', format: 'Thumbnail' }) }}">Thumbnail</a>
+        {% endif %}
+        {% if format == 'Thumbnail' %}
+            <a class="btn btn-outline-secondary btn-sm mt-2"
+               href="{{ path('show_photos_by_location', {id: location.id, author: 'All', format: 'Full' }) }}">Full</a>
+        {% endif %}
+    </div>
+
+    <div class="col-12 col-md-2">
+        <a class="btn btn-info btn-sm mt-2"
+           href="{{ path('show_photos_by_location', {id: location.id, format: 'Full', author: 'All' }) }}">All</a>
+
+        {% for author in authors %}
+            <a class="btn btn-outline-info btn-sm mt-2"
+               href="{{ path('show_photos_by_location', {id: location.id, format: 'Full', author: author.fullName }) }}">{{ author.fullName }}</a>
+        {% endfor %}
+
+    </div>
+
+
+    <div class="col-12 col-md-2">
+        {% if all_or_by_author != 'All' %}
+            <a class="btn btn-outline-success btn-sm mt-2" target="_blank"
+               href="{{ path('download_all_photo_all_by_author_and_location', {author: specified_author, id: location.id}) }}">Download {{ specified_author }}'s photos   </a>
+        {% endif %}
+    </div>
+
+    <div class="col-12 col-md-2">
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-danger btn-sm mt-2"
+               href="{{ path('photos_delete_all_by_location', {location: location.location }) }}">Delete All</a>
+        {% endif %}
+    </div>
+</div>
+<div>
+    <h1 style="color: red">{{ location.location }}</h1>
+    <h3> ({{ photo_date|date('M-Y') }}) </h3> <br><br>
+</div>

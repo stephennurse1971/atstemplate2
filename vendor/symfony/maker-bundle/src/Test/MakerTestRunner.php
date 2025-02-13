@@ -22,29 +22,40 @@ use Twig\Loader\FilesystemLoader;
 
 class MakerTestRunner
 {
-    private $environment;
-    private $filesystem;
-    private $executedMakerProcess;
+    private Filesystem $filesystem;
+    private ?MakerTestProcess $executedMakerProcess = null;
 
-    public function __construct(MakerTestEnvironment $environment)
-    {
-        $this->environment = $environment;
+    public function __construct(
+        private MakerTestEnvironment $environment,
+    ) {
         $this->filesystem = new Filesystem();
     }
 
-    public function runMaker(array $inputs, string $argumentsString = '', bool $allowedToFail = false): string
+    public function runMaker(array $inputs, string $argumentsString = '', bool $allowedToFail = false, array $envVars = []): string
     {
-        $this->executedMakerProcess = $this->environment->runMaker($inputs, $argumentsString, $allowedToFail);
+        $this->executedMakerProcess = $this->environment->runMaker($inputs, $argumentsString, $allowedToFail, $envVars);
 
-        return $this->executedMakerProcess->getOutput();
+        $output = $this->executedMakerProcess->getOutput();
+
+        // Allows for debugging the actual CLI output from within a test process. E.g. Manually viewing the output of the
+        // `make:voter` command that was run within the MakeVoterTest from your local command line.
+        // You should never use this in CI unless you know what you're doing - resource intensive.
+        if ('true' === getenv('MAKER_TEST_DUMP_OUTPUT')) {
+            dump(['Maker Process Output' => $output, 'Maker Process Error Output' => $this->executedMakerProcess->getErrorOutput()]);
+        }
+
+        return $output;
     }
 
+    /**
+     * @return void
+     */
     public function copy(string $source, string $destination)
     {
         $path = __DIR__.'/../../tests/fixtures/'.$source;
 
         if (!file_exists($path)) {
-            throw new \Exception(sprintf('Cannot find file "%s"', $path));
+            throw new \Exception(\sprintf('Cannot find file "%s"', $path));
         }
 
         if (is_file($path)) {
@@ -60,29 +71,6 @@ class MakerTestRunner
         foreach ($finder as $file) {
             $this->filesystem->copy($file->getPathname(), $this->getPath($file->getRelativePathname()), true);
         }
-    }
-
-    /**
-     * When using an authenticator "fixtures" file, this adjusts it to support Symfony 5.2/5.3.
-     */
-    public function adjustAuthenticatorForLegacyPassportInterface(string $filename): void
-    {
-        // no adjustment needed on 5.4 and higher
-        if ($this->getSymfonyVersion() >= 50400) {
-            return;
-        }
-
-        $this->replaceInFile(
-            $filename,
-            '\\Passport;',
-            "\\Passport;\nuse Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;"
-        );
-
-        $this->replaceInFile(
-            $filename,
-            ': Passport',
-            ': PassportInterface'
-        );
     }
 
     public function renderTemplateFile(string $source, string $destination, array $variables): void
@@ -116,6 +104,9 @@ class MakerTestRunner
         return $this->executedMakerProcess;
     }
 
+    /**
+     * @return void
+     */
     public function modifyYamlFile(string $filename, \Closure $callback)
     {
         $path = $this->getPath($filename);
@@ -130,6 +121,9 @@ class MakerTestRunner
         file_put_contents($path, $manipulator->getContents());
     }
 
+    /**
+     * @return void
+     */
     public function runConsole(string $command, array $inputs, string $arguments = '')
     {
         $process = $this->environment->createInteractiveCommandProcess(
@@ -172,7 +166,7 @@ class MakerTestRunner
     {
         $this->replaceInFile(
             '.env',
-            'postgresql://symfony:ChangeMe@127.0.0.1:5432/app?serverVersion=13&charset=utf8',
+            'postgresql://app:!ChangeMe!@127.0.0.1:5432/app?serverVersion=16&charset=utf8',
             getenv('TEST_DATABASE_DSN')
         );
 
@@ -186,23 +180,20 @@ class MakerTestRunner
             return $config;
         });
 
-        // @legacy DoctrineBundle 2.4 recipe uses when@test instead of a test/doctrine.yaml config
-        if ($this->filesystem->exists('config/packages/test/doctrine.yaml')) {
-            $this->removeFromFile(
-                'config/packages/test/doctrine.yaml',
-                "dbname_suffix: '_test%env(default::TEST_TOKEN)%'"
-            );
-        }
-
         // this looks silly, but it's the only way to drop the database *for sure*,
         // as doctrine:database:drop will error if there is no database
-        // also, skip for SQLITE, as it does not support --if-not-exists
-        if (0 !== strpos(getenv('TEST_DATABASE_DSN'), 'sqlite://')) {
+        if (!$usingSqlite = str_starts_with(getenv('TEST_DATABASE_DSN'), 'sqlite')) {
+            // --if-not-exists not supported on SQLite
             $this->runConsole('doctrine:database:create', [], '--env=test --if-not-exists');
         }
+
         $this->runConsole('doctrine:database:drop', [], '--env=test --force');
 
-        $this->runConsole('doctrine:database:create', [], '--env=test');
+        if (!$usingSqlite) {
+            // d:d:create not supported on SQLite
+            $this->runConsole('doctrine:database:create', [], '--env=test');
+        }
+
         if ($createSchema) {
             $this->runConsole('doctrine:schema:create', [], '--env=test');
         }
@@ -216,7 +207,7 @@ class MakerTestRunner
     public function runTests(): void
     {
         $internalTestProcess = MakerTestProcess::create(
-            sprintf('php %s', $this->getPath('/bin/phpunit')),
+            \sprintf('php %s', $this->getPath('bin/phpunit')),
             $this->environment->getPath())
             ->run(true)
         ;
@@ -225,7 +216,7 @@ class MakerTestRunner
             return;
         }
 
-        throw new ExpectationFailedException(sprintf("Error while running the PHPUnit tests *in* the project: \n\n %s \n\n Command Output: %s", $internalTestProcess->getErrorOutput()."\n".$internalTestProcess->getOutput(), $this->getExecutedMakerProcess()->getErrorOutput()."\n".$this->getExecutedMakerProcess()->getOutput()));
+        throw new ExpectationFailedException(\sprintf("Error while running the PHPUnit tests *in* the project: \n\n %s \n\n Command Output: %s", $internalTestProcess->getErrorOutput()."\n".$internalTestProcess->getOutput(), $this->getExecutedMakerProcess()->getErrorOutput()."\n".$this->getExecutedMakerProcess()->getOutput()));
     }
 
     public function writeFile(string $filename, string $contents): void
@@ -234,12 +225,22 @@ class MakerTestRunner
         file_put_contents($this->getPath($filename), $contents);
     }
 
+    /**
+     * @return void
+     */
     public function addToAutoloader(string $namespace, string $path)
     {
-        $this->replaceInFile(
-            'composer.json',
-            '"App\\\Tests\\\": "tests/",',
-            sprintf('"App\\\Tests\\\": "tests/",'."\n".'            "%s": "%s",', $namespace, $path)
+        $composerJson = json_decode(
+            json: file_get_contents($this->getPath('composer.json')),
+            associative: true,
+            flags: \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES
+        );
+
+        $composerJson['autoload-dev']['psr-4'][$namespace] = $path;
+
+        $this->filesystem->dumpFile(
+            $this->getPath('composer.json'),
+            json_encode($composerJson, \JSON_UNESCAPED_SLASHES | \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR)
         );
 
         $this->environment->runCommand('composer dump-autoload');
@@ -253,7 +254,10 @@ class MakerTestRunner
     public function manipulateClass(string $filename, \Closure $callback): void
     {
         $contents = file_get_contents($this->getPath($filename));
-        $manipulator = new ClassSourceManipulator($contents, true, false, true, true);
+        $manipulator = new ClassSourceManipulator(
+            sourceCode: $contents,
+            overwrite: true,
+        );
         $callback($manipulator);
 
         file_put_contents($this->getPath($filename), $manipulator->getSourceCode());

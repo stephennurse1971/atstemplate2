@@ -13,10 +13,8 @@ namespace Symfony\Bundle\MakerBundle;
 
 final class DependencyBuilder
 {
-    private $dependencies = [];
-    private $devDependencies = [];
-
-    private $minimumPHPVersion = 70100;
+    private array $dependencies = [];
+    private array $devDependencies = [];
 
     /**
      * Add a dependency that will be reported if the given class is missing.
@@ -44,7 +42,7 @@ final class DependencyBuilder
 
     public function requirePHP71(): void
     {
-        // no-op - MakerBundle now required PHP 7.1
+        trigger_deprecation('symfony/maker-bundle', 'v1.44.0', 'requirePHP71() is deprecated and will be removed in a future version.');
     }
 
     /**
@@ -93,29 +91,21 @@ final class DependencyBuilder
 
         $packagesCount = \count($packages) + \count($packagesDev);
 
-        $message = sprintf(
+        $message = \sprintf(
             "Missing package%s: %s, run:\n",
             $packagesCount > 1 ? 's' : '',
-            $message ?: sprintf('to use the %s command', $commandName)
+            $message ?: \sprintf('to use the %s command', $commandName)
         );
 
         if (!empty($packages)) {
-            $message .= sprintf("\ncomposer require %s", implode(' ', $packages));
+            $message .= \sprintf("\ncomposer require %s", implode(' ', $packages));
         }
 
         if (!empty($packagesDev)) {
-            $message .= sprintf("\ncomposer require %s --dev", implode(' ', $packagesDev));
+            $message .= \sprintf("\ncomposer require %s --dev", implode(' ', $packagesDev));
         }
 
         return $message;
-    }
-
-    /**
-     * @internal
-     */
-    public function isPhpVersionSatisfied(): bool
-    {
-        return \PHP_VERSION_ID >= $this->minimumPHPVersion;
     }
 
     private function getRequiredDependencyNames(array $dependencies): array
@@ -149,6 +139,6 @@ final class DependencyBuilder
             return [];
         }
 
-        return array_unique(array_merge($missingPackages, $missingOptionalPackages));
+        return array_unique([...$missingPackages, ...$missingOptionalPackages]);
     }
 }

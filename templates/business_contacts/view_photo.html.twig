@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if business_contact.firstName is not empty %}
+        {{ business_contact.firstName }} {{ business_contact.lastName }} (
+    {% endif %}
+    {% if business_contact.company is not empty %}
+        {{ business_contact.company }}
+    {% endif %}
+    {% if business_contact.firstName is not empty %}){% endif %}
+{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">
+        {% if business_contact.firstName is not empty %}
+            {{ business_contact.firstName }} {{ business_contact.lastName }} (
+        {% endif %}
+        {% if business_contact.company is not empty %}
+            {{ business_contact.company }}
+        {% endif %}
+        {% if business_contact.firstName is not empty %}){% endif %}
+    </h1>
+    {% set image = asset('/administration/Attachments/BusinessContacts/Photos/'~business_contact.photo) %}
+
+    <div class="row ">
+        <div class="col-12 m-auto">
+            <div class="image-container">
+                <img class="photosOnePage" src="{{ image }}">
+            </div>
+        </div>
+    </div>
+{% endblock %}

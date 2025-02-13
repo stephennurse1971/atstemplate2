@@ -1,0 +1,79 @@
+<style>
+  .social_media_table tr{
+      display: inline-block;
+      width: 100%;
+  }
+  .social_media_table tr th{
+      float: left;
+  }
+  .social_media_table tr td{
+      float: right;
+      margin-right: 25px;
+  }
+</style>
+<div class="col-2">
+    <table class="table social_media_table small">
+        <tbody>
+        <h4>Social Media</h4>
+        <tr style="display: inline-block;">
+            <th>LinkedIn</th>
+            <td>
+                {% if company_detail.linkedIn is not empty %}
+                    <a target="_blank" title="{{ company_detail.linkedIn }}"
+                       href="https://www.linkedin.com/in/{{ company_detail.linkedIn }}">
+                        <i class="fab fa-linkedin"></i>
+                    </a><br>
+                    {{ company_detail.linkedIn }}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Facebook</th>
+            <td>
+                {% if company_detail.facebook is not empty %}
+                    <a target="_blank" title="{{ company_detail.facebook }}"
+                       href="https://www.facebook.com/{{ company_detail.facebook }}">
+                        <i class="fab fa-facebook"></i>
+                    </a><br>
+                    {{ company_detail.facebook }}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Instagram</th>
+            <td>
+                {% if company_detail.instagram is not empty %}
+                    <a target="_blank" title="{{ company_detail.instagram }}"
+                       href="https://www.instagram.com/{{ company_detail.instagram }}">
+                        <i class="fab fa-instagram"></i>
+                    </a><br>
+                    {{ company_detail.instagram }}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>X/Twitter</th>
+            <td>
+                {% if company_detail.twitter is not empty %}
+                    <a target="_blank" title="{{ company_detail.twitter }}"
+                       href="https://x.com/{{ company_detail.twitter }}">
+                        <i class="fab fa-twitter"></i>
+                    </a><br>
+                    {{ company_detail.twitter }}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>QR</th>
+            <td>
+                {% if company_detail.companyQrCode is not empty %}
+                    <a target="_blank" title="{{ company_detail.companyQrCode }}"
+                       href="{{ path('company_qr_code') }}">
+                        <i class="fa fa-qrcode"></i>
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

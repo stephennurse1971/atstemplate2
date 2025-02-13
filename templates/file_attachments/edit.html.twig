@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Helpful file: {{ file_attachment.category }}{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Edit: {{ file_attachment.category }}</h1>
+
+    {{ include('file_attachments/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-info btn-sm mt-2" href="{{ path('file_attachments_index') }}">Return to list</a>
+
+    {% if 'ROLE_SUPER_ADMIN' in app.user.roles %}
+        {{ include('file_attachments/_delete_form.html.twig') }}
+    {% endif %}
+{% endblock %}
+
+{% block additionaljs %}
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#file_attachments_notes'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+{% endblock %}

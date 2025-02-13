@@ -5,12 +5,9 @@
     }
 </style>
 {{ form_start(form) }}
-<div class="col-md-3">
-    <button class="btn btn-success btn-sm">{{ button_label|default('Save') }}</button>
-    <a class="btn btn-outline-info btn-sm" href="{{ path('cms_copy_index') }}">Return to list</a>
-</div>
+
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-1">
         <h2>Category</h2>
         {{ form_row(form.category) }}
         <div class="static-container">
@@ -20,84 +17,112 @@
             {{ form_row(form.product) }}
         </div>
     </div>
-    <div class="col-md-3">
-        <h2>Attachments & Hyperlinks</h2>
+    <div class="col-md-1">
+        <h2>Ranking</h2>
+        {{ form_row(form.ranking) }}
+    </div>
+
+    <div class="col-md-2">
+        <h2>Links</h2>
         {{ form_row(form.hyperlinks) }}
-
-
         {% if cms_copy.attachment is not null %}
             <b>Attachment:</b><br>
             {{ cms_copy.attachment }}
-            <a class="btn btn-outline-danger btn-sm"
-               href="{{ path('cms_copy_delete_file', {'id': cms_copy.id}) }}"> <i
-                        style="color: red" class="fa fa-trash"></i></a>
             <br>
             <a title="{{ cms_copy.attachment }}" target="_blank"
                href="{{ path('cms_copy_show_attachment',{id : cms_copy.id }) }}">
                 <i title="{{ cms_copy.attachment }}" class="fa fa-paperclip"></i>
             </a>
+            <a class="btn btn-outline-danger btn-sm"
+               href="{{ path('cms_copy_delete_file', {'id': cms_copy.id}) }}">
+                <i style="color: red" class="fa fa-trash"></i></a>
             <br>
-            {{ form_row(form.hyperlinks) }}
         {% endif %}
-
         <div class="file-upload-container">
             {{ form_row(form.attachment) }}
         </div>
     </div>
-    <div class="col-md-3">
-        <h2>Ranking & User Count</h2>
-        <div class="row">
-            {{ form_row(form.ranking) }}
-        </div>
+
+    <div class="col-md-2">
+        <h2>User Count</h2>
         <div class="row">
             {{ form_row(form.pageCountUsers) }}
             {{ form_row(form.pageCountAdmin) }}
         </div>
     </div>
 
-</div>
-<hr>
-<h2>Tab Title</h2>
-<div class="row">
-    <div class="col-md-3">
+    <div class="col-md-1">
+        <h2>Layout</h2>
+        {{ form_row(form.pageLayout) }}
+    </div>
 
-        {{ form_row(form.tabTitle) }}
+    <div class="col-md-1">
+        <a target="_blank" href="{{ path('cms_copy_page_formats_index') }}">+</a>
     </div>
-    <div class="col-md-3">
-        {{ form_row(form.tabTitleFR) }}
+
+    <div class="col-md-2">
+        <br><br><br>
+        {% if cms_copy.pageLayout is not null %}
+            <b>Description:</b> {{ cms_copy.pageLayout.description }} <br><br>
+            <b>Uses:</b> {{ cms_copy.pageLayout.uses }}
+        {% endif %}
     </div>
-    <div class="col-md-3">
-        {{ form_row(form.tabTitleDE) }}
-    </div>
-</div>
-<hr>
-<h2>Headings</h2>
-<div class="row">
-    <div class="col-md-3">
-        {{ form_row(form.contentTitle) }}
-    </div>
-    <div class="col-md-3">
-        {{ form_row(form.contentTitleFR) }}
-    </div>
-    <div class="col-md-3">
-        {{ form_row(form.contentTitleDE) }}
+    <div class="col-md-2">
+        <br><br><br>
+        {% if cms_copy.pageLayout is not null %}
+            <b>Pros:</b> {{ cms_copy.pageLayout.pros }} <br><br>
+            <b>Cons:</b> {{ cms_copy.pageLayout.cons }}
+        {% endif %}
     </div>
 </div>
+
+
 <hr>
+{# Hide if ranking <>1  #}
+<div class="container_subject_to_ranking">
+    <div class="row">
+        <div class="col-md-2"><h2>Tab Title</h2></div>
+        <div class="col-md-4" style="border-right-style: dotted; color: lightgray"></div>
+        <div class="col-md-6"><h2>Headings</h2></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            {{ form_row(form.tabTitle) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_row(form.tabTitleFR) }}
+        </div>
+        <div class="col-md-2" style="border-right-style: dotted; color: lightgray">
+            {{ form_row(form.tabTitleDE) }}
+        </div>
+
+        <div class="col-md-2">
+            {{ form_row(form.contentTitle) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_row(form.contentTitleFR) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_row(form.contentTitleDE) }}
+        </div>
+    </div>
+    <hr>
+</div>
+{# End: Hide if ranking <>1  #}
 
 <h2>Content</h2>
 <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-12">
         {{ form_row(form.contentText) }}
     </div>
 </div>
 <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-12">
         {{ form_row(form.contentTextFR) }}
     </div>
 </div>
 <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-12">
         {{ form_row(form.contentTextDE) }}
     </div>
 </div>

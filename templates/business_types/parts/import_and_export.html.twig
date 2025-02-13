@@ -1,0 +1,27 @@
+<div class="row">
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="col-1">
+            <a target="_blank" class="btn btn-success btn-sm" href="{{ path('business_types_new') }}">New</a>
+        </div>
+        <div class="col-4">
+
+            <a class="btn btn-outline-primary btn-sm" target="_blank" href="{{ path('business_contacts_index') }}">Business
+                Contacts</a>
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('business_types_import') }}">Import</a>
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('business_types_export') }}">Export</a>
+            <a href="{{ asset('administration/ATSSharedFiles/_ImportTemplates/BusinessTypes_ImportTemplate.csv') }}">(Template)</a>
+        </div>
+        <div class="col-3">
+            <a class="btn btn-outline-primary btn-sm"
+               href="{{ path('update_business_type_ranking') }}">Re-number</a>
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('map_icons_index') }}">Map Icons</a>
+        </div>
+    {% endif %}
+
+    <div class="col-2">
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-outline-danger btn-sm" href="{{ path('business_types_delete_all') }}">Delete All</a>
+        {% endif %}
+    </div>
+</div>
+<br>

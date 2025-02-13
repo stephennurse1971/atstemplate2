@@ -4,8 +4,10 @@
 
 {% block body %}
     <h1 style="color: red">Languages</h1>
-    <a class="btn btn-success btn-sm" href="{{ path('update_ranking') }}">Re-number</a>
-    <table class="table table-responsive">
+
+    {% include 'languages/parts/import_and_export.html.twig' %}
+
+    <table class="table table-responsive small">
         <thead>
         <tr>
             <th>Ranking</th>
@@ -16,6 +18,7 @@
             <th>Abbreviation</th>
             <th>LinkedIn Other</th>
             <th>Icon</th>
+            <th>Filename</th>
             <th>#</th>
             <th>#</th>
         </tr>
@@ -24,7 +27,6 @@
         {% for language in languages %}
             <tr>
                 <td>{{ language.ranking }}</td>
-
                 <td>
                     <a class="btn btn-outline-success btn-sm"
                        href="{{ path('language_change_ranking', {'id':language.id, 'change':'Up'}) }}">
@@ -37,8 +39,6 @@
                         <i style="color: red" class="fa fa-arrow-down"></i>
                     </a>
                 </td>
-
-
                 <td data-sort="{{ language.isActive }}" style="text-align: center">
                     {% if language.isActive ==1 %}
                         <a href="{{ path('language_change_active_or_inactive', {id:language.id}) }}">
@@ -62,18 +62,25 @@
                 </td>
                 <td style="text-align: center">
                     {% if language.icon is not empty %}
-                        {% set icon = asset('administration/attachments/LanguageIcons/')~language.icon %}
+                        {% set icon = asset('administration/ATSSharedFiles/LanguageIcons/')~language.icon %}
                         <img height="50" width="50" src="{{ icon }}" class="rounded-circle test">
                     {% endif %}
                 </td>
                 <td>
-                    <a class="btn btn-outline-danger btn-sm" href="{{ path('languages_edit', {'id': language.id}) }}">Edit</a>
+                    {{ language.icon }}
+                </td>
+                <td>
+                    <a class="btn btn-outline-danger btn-sm" href="{{ path('languages_edit', {'id': language.id}) }}">
+                        <i class="fa fa-pen"></i>
+                    </a>
                 </td>
                 <td>
                     <form method="post" action="{{ path('languages_delete', {'id': language.id}) }}"
                           onsubmit="return confirm('Are you sure you want to delete this item?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ language.id) }}">
-                        <button class="btn btn-danger btn-sm">Delete</button>
+                        <button class="btn btn-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                        </button>
                     </form>
                 </td>
             </tr>
@@ -81,7 +88,7 @@
         </tbody>
     </table>
 
-    <a class="btn btn-success btn-sm" href="{{ path('languages_new') }}">New</a>
+
 {% endblock %}
 
 

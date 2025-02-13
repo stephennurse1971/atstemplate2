@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-code for the canonical source repository
- * @copyright https://github.com/laminas/laminas-code/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-code/blob/master/LICENSE.md New BSD License
- */
-
 namespace Laminas\Code\Generator;
 
 use function is_array;
@@ -14,44 +8,26 @@ use function sprintf;
 
 abstract class AbstractMemberGenerator extends AbstractGenerator
 {
-    /**#@+
-     * @const int Flags for construction usage
-     */
-    const FLAG_ABSTRACT  = 0x01;
-    const FLAG_FINAL     = 0x02;
-    const FLAG_STATIC    = 0x04;
-    const FLAG_INTERFACE = 0x08;
-    const FLAG_PUBLIC    = 0x10;
-    const FLAG_PROTECTED = 0x20;
-    const FLAG_PRIVATE   = 0x40;
-    /**#@-*/
+    public const FLAG_ABSTRACT        = 0x01;
+    public const FLAG_FINAL           = 0x02;
+    public const FLAG_STATIC          = 0x04;
+    public const FLAG_INTERFACE       = 0x08;
+    public const FLAG_PUBLIC          = 0x10;
+    public const FLAG_PROTECTED       = 0x20;
+    public const FLAG_PRIVATE         = 0x40;
+    public const VISIBILITY_PUBLIC    = 'public';
+    public const VISIBILITY_PROTECTED = 'protected';
+    public const VISIBILITY_PRIVATE   = 'private';
 
-    /**#@+
-     * @param const string
-     */
-    const VISIBILITY_PUBLIC    = 'public';
-    const VISIBILITY_PROTECTED = 'protected';
-    const VISIBILITY_PRIVATE   = 'private';
-    /**#@-*/
+    protected ?DocBlockGenerator $docBlock = null;
+
+    protected string $name = '';
+
+    protected int $flags = self::FLAG_PUBLIC;
 
     /**
-     * @var DocBlockGenerator|null
-     */
-    protected $docBlock;
-
-    /**
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * @var int
-     */
-    protected $flags = self::FLAG_PUBLIC;
-
-    /**
-     * @param  int|array $flags
-     * @return AbstractMemberGenerator
+     * @param  int|int[] $flags
+     * @return static
      */
     public function setFlags($flags)
     {
@@ -70,7 +46,7 @@ abstract class AbstractMemberGenerator extends AbstractGenerator
 
     /**
      * @param  int $flag
-     * @return AbstractMemberGenerator
+     * @return static
      */
     public function addFlag($flag)
     {
@@ -80,7 +56,7 @@ abstract class AbstractMemberGenerator extends AbstractGenerator
 
     /**
      * @param  int $flag
-     * @return AbstractMemberGenerator
+     * @return static
      */
     public function removeFlag($flag)
     {
@@ -90,7 +66,7 @@ abstract class AbstractMemberGenerator extends AbstractGenerator
 
     /**
      * @param  bool $isAbstract
-     * @return AbstractMemberGenerator
+     * @return static
      */
     public function setAbstract($isAbstract)
     {
@@ -107,7 +83,7 @@ abstract class AbstractMemberGenerator extends AbstractGenerator
 
     /**
      * @param  bool $isInterface
-     * @return AbstractMemberGenerator
+     * @return static
      */
     public function setInterface($isInterface)
     {
@@ -124,7 +100,7 @@ abstract class AbstractMemberGenerator extends AbstractGenerator
 
     /**
      * @param  bool $isFinal
-     * @return AbstractMemberGenerator
+     * @return static
      */
     public function setFinal($isFinal)
     {
@@ -141,7 +117,7 @@ abstract class AbstractMemberGenerator extends AbstractGenerator
 
     /**
      * @param  bool $isStatic
-     * @return AbstractMemberGenerator
+     * @return static
      */
     public function setStatic($isStatic)
     {
@@ -158,7 +134,7 @@ abstract class AbstractMemberGenerator extends AbstractGenerator
 
     /**
      * @param  string $visibility
-     * @return AbstractMemberGenerator
+     * @return static
      */
     public function setVisibility($visibility)
     {
@@ -181,7 +157,7 @@ abstract class AbstractMemberGenerator extends AbstractGenerator
     }
 
     /**
-     * @return string
+     * @psalm-return static::VISIBILITY_*
      */
     public function getVisibility()
     {
@@ -197,7 +173,7 @@ abstract class AbstractMemberGenerator extends AbstractGenerator
 
     /**
      * @param  string $name
-     * @return AbstractMemberGenerator
+     * @return static
      */
     public function setName($name)
     {
@@ -216,7 +192,7 @@ abstract class AbstractMemberGenerator extends AbstractGenerator
     /**
      * @param  DocBlockGenerator|string $docBlock
      * @throws Exception\InvalidArgumentException
-     * @return AbstractMemberGenerator
+     * @return static
      */
     public function setDocBlock($docBlock)
     {

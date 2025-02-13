@@ -5,12 +5,17 @@ namespace App\Controller;
 use App\Entity\Instructions;
 use App\Form\InstructionsType;
 use App\Repository\InstructionsRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/instructions')]
+/**
+ * @Route("/instructions")
+ * @Security("is_granted('ROLE_ADMIN')")
+ *
+ */
 class InstructionsController extends AbstractController
 {
     #[Route('/index', name: 'instructions_index', methods: ['GET'])]
@@ -34,7 +39,7 @@ class InstructionsController extends AbstractController
             $newFilename = $originalFilename .".". $media->guessExtension();
             try {
                 $media->move(
-                    $this->getParameter('instructions_directory'),
+                    $this->getParameter('instructions_attachments_directory'),
                     $newFilename
                 );
                 $instruction->setMedia($newFilename);
@@ -74,7 +79,7 @@ class InstructionsController extends AbstractController
                 $newFilename = $originalFilename .".". $media->guessExtension();
                 try {
                     $media->move(
-                        $this->getParameter('instructions_directory'),
+                        $this->getParameter('instructions_attachments_directory'),
                         $newFilename
                     );
                     $instruction->setMedia($newFilename);

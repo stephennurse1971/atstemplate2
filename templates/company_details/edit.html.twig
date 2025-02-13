@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit:  {{ company_details.companyName }} {% endblock %}
+{% block title %}Company Details: {{ company_details.companyName }} {% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit: Company Details: {{ company_details.companyName }}</h1>
+    <h1 style="color: red">{{ company_details.companyName }}</h1>
 
     {{ include('company_details/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a class="btn btn-outline-primary btn-sm" href="{{ path('company_details_index') }}">Return to list</a>
+    <a class="btn btn-outline-primary btn-sm mb-1" href="{{ path('company_details_index') }}">Return to list</a>
 
     {{ include('company_details/_delete_form.html.twig') }}
 {% endblock %}
@@ -38,10 +38,44 @@
             .catch(error => {
                 console.error(error);
             });
+
         ClassicEditor
             .create(document.querySelector('#company_details_registrationEmail'))
             .catch(error => {
                 console.error(error);
             });
+    </script>
+
+    <script>
+        var companyDetails = '';
+        function getLocation(id) {
+            companyDetails = id;
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showLocation);
+            } else {
+                $('#location').html('Geolocation is not supported by this browser.');
+            }
+        }
+
+        function showLocation(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            var pin = latitude + "," + longitude;
+            $.ajax({
+                type: 'POST',
+                url: 'update/location',
+                data: 'latitude=' + latitude + '&longitude=' + longitude + '&id=' + companyDetails,
+                success: function (msg) {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+    <script>
+        $('#getLocationButton').on('click', function (event) {
+            event.preventDefault();  // Prevent default action (if any)
+            // Custom action here
+            console.log("Button clicked, no reload.");
+        });
     </script>
 {% endblock %}

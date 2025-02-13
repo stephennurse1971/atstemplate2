@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col-1">
+        {% if is_granted('ROLE_STAFF') %}
+            <a class="btn btn-success btn-sm" href="{{ path('facebook_groups_new') }}">New</a>
+        {% endif %}
+    </div>
+    <div class="col-4">
+        {% if is_granted('ROLE_STAFF') %}
+            <a class="btn btn-outline-primary btn-sm" target="_blank"
+               href="{{ path('facebook_groups_reviews_index') }}">Facebook Groups Reviews</a>
+        {% endif %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('facebook_groups_import') }}">Import</a>
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('facebook_groups_export') }}">Export</a>
+{#            <a href="{{ asset(import_templates_directory~'FacebookGroups_ImportTemplate.csv') }}">(Template)</a>#}
+            <a href="{{ asset('administration/ATSSharedFiles/_ImportTemplates/'~'FacebookGroups_ImportTemplate.csv') }}">(Template)</a>
+        {% endif %}
+    </div>
+    <div class="col-2">
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-outline-danger btn-sm" href="{{ path('facebook_groups_delete_all') }}">Delete All</a>
+        {% endif %}
+    </div>
+
+    {% if CompanyDetailsService.companyDetails is not null and is_granted('ROLE_ADMIN') %}
+        <div class="col-1">
+            <b>History: </b> {{ CompanyDetailsService.companyDetails.facebookReviewsHistoryShowMonths }}
+            months
+        </div>
+        <div class="col-2">
+            <a class="btn btn-outline-success btn-sm"
+               href="{{ path('change_facebook_history_months', {change:'Up'}) }}">+</a>
+            <a class="btn btn-outline-danger btn-sm"
+               href="{{ path('change_facebook_history_months', {change:'Down'}) }}">-</a>
+        </div>
+    {% endif %}
+</div>
+<br>
+

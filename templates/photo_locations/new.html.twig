@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Photo Location{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">New Photo Location</h1>
+
+    {{ include('photo_locations/_form.html.twig') }}
+
+    <a class="btn btn-outline-primary btn-sm mt-2" href="{{ path('photo_locations_index') }}">Return to list</a>
+{% endblock %}

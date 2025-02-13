@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Services\TranslationsWorkerService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,4 +29,10 @@ class ResetPasswordRequestFormType extends AbstractType
     {
         $resolver->setDefaults([]);
     }
+
+    public function __construct(TranslationsWorkerService $translationsWorker)
+    {
+        $this->translationsWorker = $translationsWorker;
+    }
+
 }

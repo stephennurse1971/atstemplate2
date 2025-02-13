@@ -1,6 +1,0 @@
-/vendor/
-composer.lock
-/phpunit.xml
-/tests/cache
-node_modules
-Resources/assets/node_modules

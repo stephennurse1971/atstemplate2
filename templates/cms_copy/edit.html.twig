@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {% if cms_copy.category == "Product" %}
+    {% if cms_copy.category == "Product or Service" %}
         CMS: {{ cms_copy.product.product }}
     {% endif %}
     {% if cms_copy.category == "Static" %}
@@ -10,25 +10,56 @@
 {% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit:
-        {% if (cms_copy.category != "Product" and cms_copy.category != "Static") %}
-            Null
-        {% else %}
-            {% if cms_copy.category == "Product" %}
-                {{ cms_copy.product.product }}
-            {% endif %}
-            {% if cms_copy.category == "Static" %}
-                {{ cms_copy.staticPageName }}
-            {% endif %}
-        {% endif %}
-    </h1>
+    <div class="row">
+        <div class="col-9">
+            <h1 style="color: red">Edit:
+                {% if (cms_copy.category != "Product or Service" and cms_copy.category != "Static") %}
+
+                {% else %}
+                    {% if cms_copy.category == "Product or Service" %}
+                        {{ cms_copy.product.product }}
+                    {% endif %}
+                    {% if cms_copy.category == "Static" %}
+                        {{ cms_copy.staticPageName }}
+                    {% endif %}
+                {% endif %}
+            </h1>
+        </div>
+    </div>
+
     {{ include('cms_copy/_form.html.twig', {'button_label': 'Save'}) }}
-    {{ include('cms_copy/_delete_form.html.twig') }}
 {% endblock %}
 
 
 {% block additionaljs %}
     <script>
+
+
+        var ranking = $("#cms_copy_ranking").val();
+        if (ranking == 1){
+            $(".container_subject_to_ranking").show();
+        }
+        else{
+            $(".container_subject_to_ranking").hide();
+        }
+
+        $("#cms_copy_ranking").change(function () {
+            var new_ranking = $(this).val();
+            if (new_ranking === '1') {
+                $(".container_subject_to_ranking").show();
+            }
+            if (new_ranking !== '1') {
+                $(".container_subject_to_ranking").hide();
+                $("#cms_copy_tabTitle").val('');
+                $("#cms_copy_tabTitleFR").val('');
+                $("#cms_copy_tabTitleDE").val('');
+                $("#cms_copy_contentTitle").val('');
+                $("#cms_copy_contentTitleFR").val('');
+                $("#cms_copy_contentTitleDE").val('');
+            }
+        })
+
+
         {% if cms_copy.attachment %}
         $(".file-upload-container").hide();
         {% else %}
@@ -41,19 +72,27 @@
             $(".product-container").hide();
         } else {
             $(".static-container").hide();
+            //  $(".product-container").empty();
             $(".product-container").show();
         }
+
         $("#cms_copy_category").change(function () {
             var category = $(this).val();
             if (category === 'Static') {
                 $(".static-container").show();
+                $("#cms_copy_product").val(null);
                 $(".product-container").hide();
-            } else {
-                $(".static-container").hide();
+            }
+            if (category === 'Product or Service') {
                 $(".product-container").show();
+                $(".static-container").hide();
+                $("#cms_copy_staticPageName").val('');
             }
         })
+
+
     </script>
+
 
     <script>
         ClassicEditor

@@ -25,7 +25,7 @@ class MakerTestKernel extends Kernel implements CompilerPassInterface
 {
     use MicroKernelTrait;
 
-    private $testRootDir;
+    private string $testRootDir;
 
     public function __construct(string $environment, bool $debug)
     {
@@ -57,6 +57,11 @@ class MakerTestKernel extends Kernel implements CompilerPassInterface
             'router' => [
                 'utf8' => true,
             ],
+            'http_method_override' => false,
+            'handle_all_throwables' => true,
+            'php_errors' => [
+                'log' => true,
+            ],
         ]);
     }
 
@@ -70,6 +75,9 @@ class MakerTestKernel extends Kernel implements CompilerPassInterface
         return $this->testRootDir;
     }
 
+    /**
+     * @return void
+     */
     public function process(ContainerBuilder $container)
     {
         // makes all makers public to help the tests

@@ -11,7 +11,6 @@
 {% endblock %}
 {% block additionaljs %}
     <script>
-
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showLocation);
@@ -39,9 +38,15 @@
             // });
         }
 
+        ClassicEditor
+            .create(document.querySelector('#business_contacts_notes'))
+            .catch(error => {
+                console.error(error);
+            });
     </script>
+
     <script>
-        $('document').ready(function (){
+        $('document').ready(function () {
             {% if 'ROLE_CLIENT' in app.user.roles %}
             $('.status-container').hide();
             {% endif %}

@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\WebsiteContacts;
+use App\Form\WebsiteContactsType;
 use App\Repository\CmsCopyRepository;
 use App\Repository\CmsPhotoRepository;
 use App\Repository\CompanyDetailsRepository;
@@ -13,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use JeroenDesloovere\VCard\VCard;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -22,14 +25,23 @@ class   HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository, CompanyDetailsRepository $companyDetailsRepository, \Symfony\Component\Security\Core\Security $security, EntityManagerInterface $entityManager): Response
+    public function index(Request $request, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository, CompanyDetailsRepository $companyDetailsRepository, \Symfony\Component\Security\Core\Security $security, EntityManagerInterface $entityManager): Response
     {
+
         $companyDetails = $companyDetailsRepository->find('1');
         $homePagePhotosOnly = 0;
+        $website_contact = new WebsiteContacts();
+        $form = $this->createForm(WebsiteContactsType::class, $website_contact);
+        $form->handleRequest($request);
+        $include_qr_code =[];
+        $include_contact_form =[];
+
+        $qrcode=false;
         if ($companyDetails) {
             $homePagePhotosOnly = $companyDetails->isHomePagePhotosOnly();
+            $include_qr_code = $companyDetails->isIncludeQRCodeHomePage();
+            $include_contact_form = $companyDetails->isIncludeContactFormHomePage();
         }
-
         $cms_copy = [];
         $cms_photo = [];
         $product = [];
@@ -38,16 +50,23 @@ class   HomeController extends AbstractController
             'staticPageName' => 'Home'
         ]);
 
-        $cms_photo = $cmsPhotoRepository->findBy([
-            'staticPageName' => 'Home'
-        ]);
+        $cms_photo = $cmsPhotoRepository->findBy(
+            ['staticPageName' => 'Home'],
+            ['ranking' => 'ASC']
+        );
 
         $cms_copy_ranking1 = $cmsCopyRepository->findOneBy([
             'staticPageName' => 'Home',
             'ranking' => '1',
         ]);
 
-        if($cms_copy_ranking1) {
+        if ($cms_copy_ranking1) {
+            $page_layout = $cms_copy_ranking1->getPageLayout();
+        } else {
+            $page_layout = 'default';
+        }
+
+        if ($cms_copy_ranking1) {
             if ($security->getUser()) {
                 if (in_array('ROLE_ADMIN', $security->getUser()->getRoles())) {
                     $pageCountAdmin = $cms_copy_ranking1->getPageCountAdmin();
@@ -62,15 +81,21 @@ class   HomeController extends AbstractController
         if ($homePagePhotosOnly == 1) {
             return $this->render('home/home.html.twig', [
                 'photos' => $cms_photo,
-                'include_contact' => 'Yes'
+                'cms_copy_array' => $cms_copy,
+                'include_qr_code' => $include_qr_code,
+                'include_contact_form' => $include_contact_form,
+                'form' => $form?->createView(),
             ]);
         } else {
             return $this->render('home/products.html.twig', [
                 'product' => $product,
                 'cms_copy_array' => $cms_copy,
                 'cms_photo_array' => $cms_photo,
-                'sub_pages' => $sub_pages,
-                'include_contact' => 'Yes'
+                'sub_pages' => $sub_pages, 
+                'include_qr_code' => $include_qr_code,
+                'include_contact_form' => $include_contact_form,
+                'format' => $page_layout,
+                'form' => $form?->createView(),
             ]);
         }
     }
@@ -92,7 +117,7 @@ class   HomeController extends AbstractController
         } else {
             $user = new User();
             $user->setFirstName('Stephen')
-                ->setLastName('NurseHMX')
+                ->setLastName('Nurse')
                 ->setEmailVerified(1)
                 ->setEmail('nurse_stephen@hotmail.com')
                 ->setRoles(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'])
@@ -112,12 +137,12 @@ class   HomeController extends AbstractController
 
     /**
      * @Route("/dashboard", name="dashboard")
-     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function dashboard()
     {
         return $this->render('home/dashboard.html.twig', []);
     }
+
 
     /**
      * @Route("/advanced_dashboard", name="advanced_dashboard")
@@ -125,7 +150,7 @@ class   HomeController extends AbstractController
      */
     public function advancedDashboard()
     {
-        return $this->render('template_parts_project_specific/advanced_dashboard_specific.html.twig', []);
+        return $this->render('template_parts_project_specific/dashboard_project_specific.html.twig', []);
     }
 
 
@@ -167,18 +192,18 @@ class   HomeController extends AbstractController
             $cms_copy_ranking1->setPageCountUsers($pageCountUser + 1);
             $entityManager->flush($cms_copy_ranking1);
         }
-
-
         if ($productEntity) {
             $cms_photo = $cmsPhotoRepository->findBy([
-                'product' => $productEntity
-            ]);
+                'product' => $productEntity,
+            ],
+                ['ranking' => 'ASC'])
+            ;
         } else {
             $cms_photo = $cmsPhotoRepository->findBy([
                 'staticPageName' => $product
-            ]);
+            ],
+                ['ranking' => 'ASC']);
         }
-
         $sub_pages = [];
         if ($cms_copy) {
             $sub_pages = $subPageRepository->findBy([
@@ -191,56 +216,9 @@ class   HomeController extends AbstractController
             'cms_copy_array' => $cms_copy,
             'cms_photo_array' => $cms_photo,
             'sub_pages' => $sub_pages,
-            'include_contact' => 'No'
+            'include_contact_form' => 'No',
+            'include_qr_code' => 'No'
         ]);
-    }
-
-
-    /**
-     * @Route("/office_address", name="office_address", methods={"GET"})
-     */
-    public function officeAddress(CompanyDetailsRepository $companyDetailsRepository): Response
-    {
-        return $this->render('home/officeAddress.html.twig');
-    }
-
-
-    /**
-     * @Route("/gps_location", name="gps_location", methods={"GET"})
-     */
-    public function gpsLocation(CompanyDetailsRepository $companyDetailsRepository): Response
-    {
-        $companyDetails = $companyDetailsRepository->find('1');
-
-        $longitude = $companyDetails->getCompanyAddressLongitude();
-        $latitude = $companyDetails->getCompanyAddressLatitude();
-
-        return $this->render('home/gpsLocation.html.twig', [
-            'longitude' => $longitude,
-            'latitude' => $latitude,
-        ]);
-    }
-
-
-    /**
-     * @Route("/view/file/{filetype}/{id}", name="attachments_viewfile", methods={"GET"})
-     */
-    public function investmentFileLaunch(int $id, string $filetype): Response
-    {
-        $fileName = '';
-        $filepath = '';
-
-        if ($fileName != '') {
-            $ext = pathinfo($fileName, PATHINFO_EXTENSION);
-            $filepath = explode("public", $filepath);
-            $filepath = $filepath[1];
-            return $this->render('home/file_view.html.twig', [
-                'ext' => $ext,
-                'tab_title' => $fileName,
-                'filepath' => $filepath,
-            ]);
-        }
-        return $this->render('error/file_not_found.html.twig');
     }
 
 
@@ -289,5 +267,16 @@ class   HomeController extends AbstractController
         return new Response(null);
     }
 
-
+    /**
+     * @Route("/company_qr_code", name="company_qr_code")
+     *
+     */
+    public function companyQrCode(CompanyDetailsRepository $companyDetailsRepository)
+    {
+        $company_details = $companyDetailsRepository->find('1');
+        $qr_code = $company_details->getCompanyQrCode();
+        return $this->render('home/company_qr_code.html.twig', [
+            'qr_code' => $qr_code,
+        ]);
+    }
 }

@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\Security;
 class ReferralsController extends AbstractController
 {
     /**
-     * @Route("/", name="referrals_index", methods={"GET"})
+     * @Route("/index", name="referrals_index", methods={"GET"})
      */
     public function index(ReferralsRepository $referralsRepository): Response
     {
@@ -53,15 +53,16 @@ class ReferralsController extends AbstractController
     /**
      * @Route("/new_from_businesscontacts/{business_referred}/{action}", name="referrals_new_from_business_contact", methods={"GET", "POST"})
      */
-    public function newFromBusinessContacts(Request $request, int $business_referred, string $action, ReferralsRepository $referralsRepository, BusinessTypesRepository $businessTypesRepository, BusinessContactsRepository $businessContactsRepository,EntityManagerInterface $manager,Security $security): Response
+    public function newFromBusinessContacts(Request $request, int $business_referred, string $action, ReferralsRepository $referralsRepository, BusinessTypesRepository $businessTypesRepository, BusinessContactsRepository $businessContactsRepository, EntityManagerInterface $manager, Security $security): Response
     {
         $user = $security->getUser();
         $now = new \DateTime('now');
         $referral = new Referrals();
         $referral->setBusinessSite($businessContactsRepository->find($business_referred))
+            ->setBusinessContact($businessContactsRepository->find($business_referred))
             ->setAction($action)
             ->setDateTime($now);
-        if($user){
+        if ($user) {
             $referral->setUser($user);
         }
         $manager->persist($referral);
@@ -70,7 +71,7 @@ class ReferralsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="referrals_show", methods={"GET"})
+     * @Route("/show/{id}", name="referrals_show", methods={"GET"})
      */
     public function show(Referrals $referral): Response
     {
@@ -80,7 +81,7 @@ class ReferralsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="referrals_edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="referrals_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Referrals $referral, ReferralsRepository $referralsRepository): Response
     {
@@ -100,7 +101,7 @@ class ReferralsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="referrals_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="referrals_delete", methods={"POST"})
      */
     public function delete(Request $request, Referrals $referral, ReferralsRepository $referralsRepository): Response
     {
@@ -110,4 +111,20 @@ class ReferralsController extends AbstractController
 
         return $this->redirectToRoute('referrals_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    /**
+     * @Route("/referrals/delete_all", name="referrals_delete_all")
+     */
+    public function deleteAllReferrals(ReferralsRepository $referralsRepository, EntityManagerInterface $entityManager): Response
+    {
+        $referrals = $referralsRepository->findAll();
+        foreach ($referrals as $referral) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($referral);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('referrals_index');
+    }
+
+
 }

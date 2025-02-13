@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Helpful Files{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Helpful Files</h1>
+    <a class="btn btn-success mt-2" href="{{ path('file_attachments_new') }}">Add</a>
+    <table class="table table-responsive small">
+        <thead>
+        <tr>
+            <th style="width: 100px">Type</th>
+            <th style="width: 200px">Description</th>
+            <th style="width: 200px">Notes</th>
+            <th style="text-align: center; width: 50px"><i class="fa fa-paperclip"></i></th>
+            <th style="width: 130px">Date</th>
+            {% if app.user %}
+                <th style="width: 20px">Email</th>
+            {% endif %}
+            <th style="width: 10px">#</th>
+            {% if is_granted('ROLE_ADMIN') %}
+                <th style="width: 10px">#</th>
+                <th style="width: 10px">#</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for file_attachment in file_attachments %}
+            <tr>
+                <td>{{ file_attachment.category }}</td>
+                <td>
+                    {% if file_attachment.description is not null %}
+                        <i style="color: blue" title="{{ file_attachment.description }}" class="fa fa-info-circle"></i>
+                        {{ file_attachment.description|slice(0,65) }}...
+                    {% endif %}
+                </td>
+                <td>
+                    {% set rawNotes = file_attachment.notes|striptags|raw %}
+                    {% if file_attachment.notes is not null %}
+                        <i style="color: blue" title="{{ rawNotes|raw }}" class="fa fa-info-circle"></i>
+                        {{ file_attachment.notes|striptags|slice(0,65)|raw|raw }}...
+                    {% endif %}
+                </td>
+                <td style="text-align: center">
+                    {% if file_attachment.attachments is not empty %}
+                        {% for attachment in file_attachment.attachments %}
+                            <a title="{{ attachment|raw }}" target="_blank"
+                               href="{{ path('show_attachment_file_upload_directory',{id : file_attachment.id,'filename':attachment}) }}"><i
+                                        class="fa fa-paperclip"></i></a>
+                        {% endfor %}
+                    {% endif %}
+                </td>
+                <td data-sort='{{ file_attachment.date|date('Y-m-d') }}'>{{ file_attachment.date ? file_attachment.date|date('d-M-Y') : '' }}</td>
+                {% if app.user %}
+                    {% set text = 'hello'~ file_attachment.description %}
+                    <td style="text-align: center">
+                        <a onclick="return confirm('The email was sent to {{ app.user.email }}' );"
+                        href="{{ path('file_attachments_email', {'fileid': file_attachment.id, 'recipientid': app.user.id}) }}">
+                            <i class="fa fa-envelope"></i></a>
+                    </td>
+                {% endif %}
+                <td>
+                    <a target="_blank" class="btn btn-outline-primary btn-sm d-inline"
+                       href="{{ path('file_attachments_show', {'id': file_attachment.id}) }}"><i class="fa fa-eye"></i></a>
+                </td>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <td>
+                        <a target="_blank" class="btn btn-outline-primary btn-sm d-inline"
+                           href="{{ path('file_attachments_edit', {'id': file_attachment.id}) }}"><i style="color: red"
+                                                                                                     class="fa fa-pen"></i></a>
+                    </td>
+                    <td>
+                        <form method="post"
+                              action="{{ path('file_attachments_delete', {'id': file_attachment.id}) }}"
+                                  onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ file_attachment.id) }}">
+                            <button class="btn btn-danger btn-sm"><i style="color: white;" class="fa fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": true,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

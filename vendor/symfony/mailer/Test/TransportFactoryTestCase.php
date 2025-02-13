@@ -77,7 +77,7 @@ abstract class TransportFactoryTestCase extends TestCase
     /**
      * @dataProvider unsupportedSchemeProvider
      */
-    public function testUnsupportedSchemeException(Dsn $dsn, string $message = null)
+    public function testUnsupportedSchemeException(Dsn $dsn, ?string $message = null)
     {
         $factory = $this->getFactory();
 
@@ -102,16 +102,16 @@ abstract class TransportFactoryTestCase extends TestCase
 
     protected function getDispatcher(): EventDispatcherInterface
     {
-        return $this->dispatcher ?? $this->dispatcher =  $this->createMock(EventDispatcherInterface::class);
+        return $this->dispatcher ??= $this->createMock(EventDispatcherInterface::class);
     }
 
     protected function getClient(): HttpClientInterface
     {
-        return $this->client ?? $this->client = $this->createMock(HttpClientInterface::class);
+        return $this->client ??= $this->createMock(HttpClientInterface::class);
     }
 
     protected function getLogger(): LoggerInterface
     {
-        return $this->logger ?? $this->logger = $this->createMock(LoggerInterface::class);
+        return $this->logger ??= $this->createMock(LoggerInterface::class);
     }
 }

@@ -1,10 +1,39 @@
-{% if is_granted('ROLE_STAFF') %}
-    <th style="color: red">Public/Private</th>
-    <th style="color: red">Edit</th>
-    <th style="color: red">...</th>
-    <th style="color: red">Website</th>
-    <th style="color: red">Email</th>
-    <th style="color: red">Mobile/Landline</th>
-    <th style="color: red">Map</th>
-    <th style="color: red">VCF</th>
-{% endif %}
+{# <div class="desktop">#}
+    {% if is_granted('ROLE_ADMIN') %}
+        <th style="width: 5px; text-align: left; color: red;  border-left: 1px dotted">
+            <i style="color: grey" title="Status: Approved/Pending" class="fa fa-info-circle"></i>
+        </th>
+        <th style="color: red">
+            {#        URL #}
+            <i title="Number of times the weblink has been clicked on" style="color: red" class="fa fa-link"></i>
+        </th>
+        <th style="color: red">
+            {#        Email #}
+            <i title="Number of times the email link has been clicked on" style="color: red" class="fa fa-envelope"></i>
+        </th>
+        <th style="color: red">
+            {#        Mobile/<br>Landline #}
+            <i title="Number of times the phone/whatsapp link has been clicked on" style="color: red"
+               class="fa fa-phone"></i>
+            <i title="Number of times the phone/whatsapp link has been clicked on" style="color: red"
+               class="fab fa-whatsapp"></i>
+        </th>
+        <th style="color: red">
+            {#        Map #}
+            <i title="Number of times the map link has been clicked on" style="color: red" class="fa fa-map-marker"></i>
+        </th>
+        <th style="color: red; border-right: 1px dotted">
+            {#        VCF #}
+            <i title="Number of times the VCF link has been clicked on" style="color: red"
+               class="fa fa-address-card"></i>
+        </th>
+        <th style="color: red">
+            {#        Edit #}
+            {#        <i style="color: red" class="fa fa-pen"></i> #}
+        </th>
+        <th style="color: red">
+            {#        Delete #}
+            {#        <i style="color: red" class="fa fa-trash"></i> #}
+        </th>
+    {% endif %}
+{# </div>#}

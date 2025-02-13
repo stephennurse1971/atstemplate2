@@ -1,13 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit: Business Type{% endblock %}
+{% block title %} {{ business_type.businessType }}{% endblock %}
 
 {% block body %}
-    <h1 style="color: red">Edit: Business Type</h1>
+    <h1 style="color: red">{{ business_type.businessType }}</h1>
 
     {{ include('business_types/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a class="btn btn-outline-primary btn-sm" href="{{ path('business_types_index') }}">Return to list</a>
+    <a class="btn btn-outline-primary btn-sm mb-1" href="{{ path('business_types_index') }}">Return to list</a>
 
     {{ include('business_types/_delete_form.html.twig') }}
+
+    <hr>
+
+    <h4 style="color: blue">Reference: Map Icons</h4>
+
+    <table class="table table-responsive">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Icon</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for map_icon in map_icons %}
+            <tr>
+                <td>{{ map_icon.name }}</td>
+                <td style="text-align: center">
+                    {% if map_icon.iconFile is not empty %}
+                        {% set file = asset('administration/ATSSharedFiles/BusinessContactsMapIcons/')~map_icon.iconFile %}
+                        <img height="50" width="50" src="{{ file }}" class="rounded-circle">
+                    {% endif %}
+                </td>
+
+                <td>
+                    <a class="btn btn-outline-danger btn-sm" href="{{ path('map_icons_edit', {'id': map_icon.id}) }}">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success btn-sm mb-1" href="{{ path('map_icons_new') }}">New</a>
 {% endblock %}
+
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[0, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

@@ -4,18 +4,22 @@
 
 {% block body %}
     <h1 style="color: red">Website Contacts</h1>
+    <a class="btn btn-success btn-sm" href="{{ path('new') }}">New</a>
 
-    <table class="table table-responsive">
+    <table class="table table-responsive small">
         <thead>
         <tr>
             <th>Status</th>
+            <th>
+                <i style="color: blue" title="Is already a User?" class="fa fa-info-circle"></i>
+            </th>
             <th>Date</th>
             <th>Time</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
             <th>Mobile</th>
-            <th>Service</th>
+            <th>Product</th>
             <th>Notes</th>
             <th></th>
             <th></th>
@@ -27,6 +31,15 @@
             <tr>
                 <td>
                     {{ website_contact.status }}
+                </td>
+                <td>
+                    {% if CheckIfUserService.checkIfUser(website_contact.email) == true %}
+                        <i title="Already a User" style="color: green" class="fa fa-check"></i>
+                    {% endif %}
+                    {% if CheckIfUserService.checkIfUser(website_contact.email) == false %}
+                        <i title="Not already a user" style="color: red" class="fa fa-remove"></i>
+                    {% endif %}
+
                 </td>
                 <td data-sort="{{ website_contact.dateTime|date('Y-m-d H:i') }}">{{ website_contact.dateTime ? website_contact.dateTime|date('d-M-y') : '' }}</td>
                 <td>{{ website_contact.dateTime ? website_contact.dateTime|date('H:i') : '' }}</td>
@@ -50,33 +63,43 @@
                             <i title="{{ website_contact.mobile }}" class="fab fa-whatsapp"
                                style="color:green; text-align: center"></i></a>
                     {% endif %}
-
                     {{ website_contact.mobile }}
                 </td>
                 <td style="text-align: left">
-                    {% if website_contact.product is not null %}
-                        {{ website_contact.product.product }}
-                    {% endif %}
+                    {% for product in website_contact.productsRequested %}
+                        {{ product.product }};
+                    {% endfor %}
                 </td>
                 <td style="text-align: left">{{ website_contact.notes }}</td>
 
                 <td>
                     <a class="btn btn-outline-danger btn-sm"
-                       href="{{ path('website_contacts_edit', {'id': website_contact.id}) }}">Edit</a>
+                       href="{{ path('website_contacts_edit', {'id': website_contact.id}) }}">
+                        <i class="fa fa-pen"></i>
+                    </a>
                 </td>
                 <td>
                     {% if website_contact.status == 'Pending' %}
-                        <a class="btn btn-outline-danger btn-sm"
-                           href="{{ path('website_contacts_set_to_junk', {'id': website_contact.id}) }}">Spam</a>
+                        {% if CheckIfUserService.checkIfUser(website_contact.email) == false %}
+                            <a class="btn btn-outline-success btn-sm" title="Convert to User"
+                               href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'New User'}) }}">
+                                <i class="fa fa-arrow-right"></i><i class="fa fa-user"></i>
+                            </a>
+                        {% else %}
+                            Already a user
+                        {% endif %}
+                        <a class="btn btn-outline-danger btn-sm" title="Spam"
+                           href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'Junk'}) }}">
+                            <i class="fas fa-ban"></i>
+                        </a>
                     {% endif %}
                     {% if website_contact.status == 'Junk' %}
-                        <a class="btn btn-outline-primary btn-sm"
-                           href="{{ path('website_contacts_revert_to_pending', {'id': website_contact.id}) }}">Revert to
-                            Pending</a>
+                        <a class="btn btn-outline-primary btn-sm" title="Revert to Pending"
+                           href="{{ path('website_contacts_update_status', {'id': website_contact.id, 'new_status':'Pending'}) }}">
+                            <i class="fas fa-recycle"></i>
+                        </a>
                     {% endif %}
-
                 </td>
-
                 <td>
                     <form method="post" action="{{ path('website_contacts_delete', {'id': website_contact.id}) }}">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ website_contact.id) }}">
@@ -84,15 +107,13 @@
                             <i class="fa fa-trash"></i>
                         </button>
                     </form>
-
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a class="btn btn-success btn-sm" href="{{ path('website_contacts_new') }}">New</a>
-{% endblock %}
+   {% endblock %}
 
 
 {% block datatable %}
@@ -100,7 +121,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'asc']],
+                "order": [[0, 'asc'], [2, 'desc']],
                 "paging": true,
                 "searching": true,
                 "bInfo": true

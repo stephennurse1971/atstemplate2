@@ -1,0 +1,34 @@
+{% if is_granted('ROLE_ADMIN') %}
+    <div class="row">
+        <div class="col-3">
+            {% if CompanyDetailsService.companyDetails is not null %}
+                {% if CompanyDetailsService.companyDetails.companyAddressLongitude is not null and
+                    CompanyDetailsService.companyDetails.companyAddressLatitude is not null %}
+                    <a class="btn btn-outline-primary btn-sm" href="{{ path('fetch_weather_data') }}">Get Latest
+                        Update</a>
+                    <a class="btn btn-outline-primary btn-sm" href="{{ path('fetch_weather_data_hourly') }}">Get Hourly
+                        Update</a>
+                {% endif %}
+                {% set LocalWeatherPage = "https://www.google.com/search?client=firefox-b-d&q=google%20weather%20"~ CompanyDetailsService.getCompanyDetails.weatherLocation %}
+                ;
+                {% if CompanyDetailsService.companyDetails.weatherLocation is not null %}
+                    <a target="_blank" class="btn btn-outline-secondary btn-sm"
+                       href="{{ LocalWeatherPage }}">{{ CompanyDetailsService.getCompanyDetails.weatherLocation }}
+                        forecast</a>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <div class="col-2">
+            <b>Location: </b> {{ CompanyDetailsService.getCompanyDetails.weatherLocation }}
+            <a href="{{ path('office_address') }}"><i style="color: red" class="fa fa-map-marker"></i></a>
+        </div>
+
+        <div class="col-3">
+            {% if is_granted('ROLE_ADMIN') %}
+                <a class="btn btn-outline-danger btn-sm" href="{{ path('weather_delete_all') }}">Delete All</a>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+<br>

@@ -21,7 +21,7 @@ use Symfony\Bundle\MakerBundle\Util\YamlSourceManipulator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
@@ -32,11 +32,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
  */
 final class MakeMessage extends AbstractMaker
 {
-    private $fileManager;
-
-    public function __construct(FileManager $fileManager)
+    public function __construct(private FileManager $fileManager)
     {
-        $this->fileManager = $fileManager;
     }
 
     public static function getCommandName(): string
@@ -46,14 +43,14 @@ final class MakeMessage extends AbstractMaker
 
     public static function getCommandDescription(): string
     {
-        return 'Creates a new message and handler';
+        return 'Create a new message and handler';
     }
 
     public function configureCommand(Command $command, InputConfiguration $inputConfig): void
     {
         $command
             ->addArgument('name', InputArgument::OPTIONAL, 'The name of the message class (e.g. <fg=yellow>SendEmailMessage</>)')
-            ->setHelp(file_get_contents(__DIR__.'/../Resources/help/MakeMessage.txt'))
+            ->setHelp($this->getHelpFileContents('MakeMessage.txt'))
         ;
     }
 
@@ -61,13 +58,15 @@ final class MakeMessage extends AbstractMaker
     {
         $command->addArgument('chosen-transport', InputArgument::OPTIONAL);
 
+        $messengerData = [];
+
         try {
             $manipulator = new YamlSourceManipulator($this->fileManager->getFileContents('config/packages/messenger.yaml'));
             $messengerData = $manipulator->getData();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
         }
 
-        if (!isset($messengerData, $messengerData['framework']['messenger']['transports'])) {
+        if (!isset($messengerData['framework']['messenger']['transports'])) {
             return;
         }
 
@@ -104,7 +103,7 @@ final class MakeMessage extends AbstractMaker
         );
 
         $useStatements = new UseStatementGenerator([
-            MessageHandlerInterface::class,
+            AsMessageHandler::class,
             $messageClassNameDetails->getFullName(),
         ]);
 
