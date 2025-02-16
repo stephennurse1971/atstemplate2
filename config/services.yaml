@@ -5,33 +5,35 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 
 imports:
-  - { resource: 'project_specific_services.yaml' }
+  - { resource: 'services_project_specific.yaml' }
 
 parameters:
   business_contacts_map_icon_directory:      '%kernel.project_dir%/public/administration/ATSSharedFiles/BusinessContactsMapIcons/'
   language_icon_directory:                   '%kernel.project_dir%/public/administration/ATSSharedFiles/LanguageIcons/'
   import_templates_directory:                '%kernel.project_dir%/public/administration/ATSSharedFiles/_ImportTemplates/'
-
   business_contacts_attachments_directory:   '%kernel.project_dir%/public/administration/Attachments/BusinessContacts/Files/'
   business_contacts_photos_directory:        '%kernel.project_dir%/public/administration/Attachments/BusinessContacts/Photos/'
   cms_copy_attachments_directory:            '%kernel.project_dir%/public/administration/Attachments/CMSCopyAttachments/'
   cms_photos_directory:                      '%kernel.project_dir%/public/administration/Attachments/CMSPhotos/'
-  favicons_directory:                        '%kernel.project_dir%/public/administration/Attachments/Favicons/'
+  favicons_directory: '%kernel.project_dir%/public/administration/Attachments/Favicons/'
   file_attachments_directory:                '%kernel.project_dir%/public/administration/Attachments/FileAttachments/'
   instructions_attachments_directory:        '%kernel.project_dir%/public/administration/Attachments/Instructions/'
+  map_icons_import_directory:       '%kernel.project_dir%/public/administration/Import/MapIcons/'
   photos_directory:                          '%kernel.project_dir%/public/administration/Attachments/Photos/'
   user_attachments_directory:                '%kernel.project_dir%/public/administration/Attachments/Users/'
   user_photos_directory:                     'administration/Attachments/Users/Photos/'
 
   business_contacts_import_directory:        '%kernel.project_dir%/public/administration/Import/BusinessContacts/'
   business_types_import_directory:           '%kernel.project_dir%/public/administration/Import/BusinessTypes/'
+  company_details_import_directory:          '%kernel.project_dir%/public/administration/Import/CompanyDetails/'
   cms_copy_page_formats_import_directory:    '%kernel.project_dir%/public/administration/Import/CmsCopyPageFormats/'
   cms_copy_import_directory:                 '%kernel.project_dir%/public/administration/Import/CmsCopy/'
+  cms_photo_import_directory:                '%kernel.project_dir%/public/administration/Import/CmsPhotos/'
   competitors_import_directory:              '%kernel.project_dir%/public/administration/Import/Competitors/'
   facebook_groups_import_directory:          '%kernel.project_dir%/public/administration/Import/FacebookGroups/'
-  languages_import_directory:                '%kernel.project_dir%/public/administration/Import/Languages/'
-  map_icons_import_directory:                '%kernel.project_dir%/public/administration/Import/MapIcons/'
   facebook_groups_reviews_import_directory:  '%kernel.project_dir%/public/administration/Import/FacebookGroupsReviews/'
+  languages_import_directory:                '%kernel.project_dir%/public/administration/Import/Languages/'
+  product_import_directory:                  '%kernel.project_dir%/public/administration/Import/Products/'
   translations_import_directory:             '%kernel.project_dir%/public/administration/Import/Translations/'
   users_import_directory:                    '%kernel.project_dir%/public/administration/Import/Users/'
 

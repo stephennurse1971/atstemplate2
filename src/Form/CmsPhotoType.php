@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\CmsPhoto;
 use App\Entity\Product;
+use App\Repository\ProductRepository;
 use App\Services\TranslationsWorkerService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -23,7 +24,7 @@ class CmsPhotoType extends AbstractType
                 'required' => true,
                 'choices' => [
                     'Static' => 'Static',
-                    'ProductService' => 'ProductService',
+                    'Product or Service' => 'Product or Service',
                 ]
             ])
             ->add('staticPageName')
@@ -42,7 +43,12 @@ class CmsPhotoType extends AbstractType
                 'label' => $this->translationsWorker->getTranslations('Product'),
                 'class' => Product::class,
                 'required' => false,
-                'choice_label' => 'product'
+                'choice_label' => 'product',
+                'query_builder' => function (ProductRepository $er) {
+                    return $er->createQueryBuilder('p')
+                        ->orderBy('p.category', 'ASC')
+                        ->addOrderBy('p.ranking', 'ASC');
+                },
             ])
             ->add('photoOrVideo', ChoiceType::class, [
                 'label' => $this->translationsWorker->getTranslations('Photo or Video'),

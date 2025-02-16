@@ -34,7 +34,7 @@
                                         {% endif %}
                                     </h6>
                                     <div class="row">
-                                        {% set products = ProductService.getProductFooter %}
+                                        {% set products = ProductService.getProductMainFooter %}
                                         {% for i in 1..2 %}
                                             {% if i == 1 %}
                                                 <div class="col-md-4">
@@ -67,7 +67,57 @@
                                     </div>
                                 {% endif %}
                             </div>
+                        {% endif %}
+                            <!-- Grid column -->
 
+                        <!-- Grid column -->
+{#                        {% if CompanyDetailsService.companyDetails is not null %}#}
+{#                            <div style="text-align: left" class=" col-md-12 col-lg-4 mx-auto  mt-3 ">#}
+{#                                {% if CompanyDetailsService.companyDetails.footerDisplaySubProducts ==1 %}#}
+{#                                    <h6 class="text-uppercase mb-4 font-weight-bold">#}
+{#                                        {% if CompanyDetailsService.companyDetails is not null and CompanyDetailsService.companyDetails.titleSubProducts is not null %}#}
+{#                                            {{ CompanyDetailsService.companyDetails.titleSubProducts }}#}
+{#                                        {% else %}#}
+{#                                            Sub-Products#}
+{#                                        {% endif %}#}
+{#                                    </h6>#}
+{#                                    <div class="row">#}
+{#                                        {% set products = ProductService.getProductSubFooter %}#}
+{#                                        {% for i in 1..2 %}#}
+{#                                            {% if i == 1 %}#}
+{#                                                <div class="col-md-4">#}
+{#                                                    {% for product in products %}#}
+{#                                                        {% if loop.index < 6 %}#}
+{#                                                            <div>#}
+{#                                                                <li>#}
+{#                                                                    <a target="_blank" class="mb-1"#}
+{#                                                                       title="{{ product.notes|striptags }}"#}
+{#                                                                       href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}</a>#}
+{#                                                                </li>#}
+{#                                                            </div>#}
+{#                                                        {% endif %}#}
+{#                                                    {% endfor %}#}
+{#                                                </div>#}
+{#                                            {% else %}#}
+{#                                                <div class="col-md-6">#}
+{#                                                    {% for product in products %}#}
+{#                                                        {% if loop.index > 5 %}#}
+{#                                                            <div>#}
+{#                                                                <li>#}
+{#                                                                    <a target="_blank" class="mb-1"#}
+{#                                                                       title="{{ product.notes|striptags }}"#}
+{#                                                                       href="{{ path('product_display', { product: product.product}) }}">{{ product.product }}</a>#}
+{#                                                                </li>#}
+{#                                                            </div>#}
+{#                                                        {% endif %}#}
+{#                                                    {% endfor %}#}
+{#                                                </div>#}
+{#                                            {% endif %}#}
+{#                                        {% endfor %}#}
+{#                                    </div>#}
+{#                                {% endif %}#}
+{#                            </div>#}
+{#                        {% endif %}#}
                             <!-- Grid column -->
 
                             <hr class="w-100 clearfix d-md-none"/>
@@ -76,7 +126,7 @@
 {#                            <hr class="w-100 clearfix d-md-none"/>#}
 
                             <!-- Grid column -->
-
+                        {% if CompanyDetailsService.companyDetails is not null %}
                             <div class="col-md-6 mt-3 col-lg-2 mx-auto">
                                 {% if CompanyDetailsService.companyDetails.footerDisplayContactDetails ==1 %}
                                     <h6 class="text-uppercase mb-4 font-weight-bold">Contact

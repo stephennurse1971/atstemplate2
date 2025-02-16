@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-1">
+        {% if is_granted('ROLE_STAFF') %}
+            <a class="btn btn-success btn-sm" href="{{ path('product_new') }}">New</a>
+        {% endif %}
+    </div>
+    <div class="col-4">
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('product_import') }}">Import</a>
+            <a class="btn btn-outline-primary btn-sm" href="{{ path('product_export') }}">Export</a>
+            <a href="{{ asset('administration/ATSSharedFiles/_ImportTemplates/'~'FacebookGroups_ImportTemplate.csv') }}">(Template)</a>
+        {% endif %}
+    </div>
+    <div class="col-2">
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-outline-danger btn-sm" href="{{ path('products_delete_all') }}">Delete All</a>
+        {% endif %}
+    </div>
+
+</div>
+<br>
+

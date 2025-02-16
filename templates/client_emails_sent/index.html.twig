@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Client Emails Sent{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Client Emails Sent</h1>
+    <a class="btn btn-success btn-sm" href="{{ path('client_emails_sent_new') }}">New</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>User Name</th>
+            <th>User Email</th>
+            <th>Subject</th>
+            <th>Body</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for client_emails_sent in client_emails_sents %}
+            <tr>
+                <td>{{ client_emails_sent.id }}</td>
+                <td data-sort="  {{ client_emails_sent.date|date('Y-m-d H:i:s') }}">
+                    {{ client_emails_sent.date ? client_emails_sent.date|date('d-M-Y H:i') : '' }}
+                </td>
+                <td>{{ client_emails_sent.recipient.fullName }}</td>
+                <td>{{ client_emails_sent.recipient.email }}</td>
+                <td>{{ client_emails_sent.subject }}</td>
+                <td>{{ client_emails_sent.body }}</td>
+                <td>
+                    <a class="btn btn-outline-primary btn-sm" href="{{ path('client_emails_sent_show', {'id': client_emails_sent.id}) }}">Show</a>
+                    <a class="btn btn-outline-danger btn-sm" href="{{ path('client_emails_sent_edit', {'id': client_emails_sent.id}) }}">Edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block datatable %}
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                'pageLength': 100,
+                "order": [[1, 'asc']],
+                "paging": false,
+                "searching": false,
+                "bInfo": false
+            });
+        });
+    </script>
+{% endblock datatable %}

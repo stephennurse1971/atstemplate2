@@ -51,6 +51,7 @@
                 {{ company_detail.companySkype }}
             </td>
         </tr>
+        {% if hide_for_qr_code != 1 %}
 
         {% set faviconLive = asset('administration/Attachments/Favicons/'~CompanyDetailsService.getCompanyDetails.faviconLive) %}
         {% set faviconDev = asset('administration/Attachments/Favicons/'~CompanyDetailsService.getCompanyDetails.faviconDev) %}
@@ -78,9 +79,12 @@
                     <a target="_blank" href="{{ path('company_qr_code') }}">
                         <img height="50" width="50" src="{{ qrCode }}">
                     </a>
+                    {% else %}
+                    <a href="{{ path('company_details_show_qr_build', {'id': '1'}) }}">Generate</a>
                 {% endif %}
             </td>
         </tr>
+        {% endif %}
         </tbody>
     </table>
 </div>

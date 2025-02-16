@@ -140,6 +140,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
 
+    #[ORM\ManyToOne(inversedBy: 'recipient')]
+    private ?ClientEmailsSent $clientEmailsSent = null;
+
     public function __construct()
     {
         $this->logs = new ArrayCollection();
@@ -622,6 +625,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoto(?string $photo): static
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getClientEmailsSent(): ?ClientEmailsSent
+    {
+        return $this->clientEmailsSent;
+    }
+
+    public function setClientEmailsSent(?ClientEmailsSent $clientEmailsSent): static
+    {
+        $this->clientEmailsSent = $clientEmailsSent;
 
         return $this;
     }

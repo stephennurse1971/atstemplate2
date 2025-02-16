@@ -28,7 +28,7 @@
                         {% set loc = asset(user_photos_directory ~ user.photo) %}
                         <a class="btn btn-outline-danger btn-sm" target="_blank"
                            href="{{ path('user_photo_view', {'id': user.id}) }}">
-                            <img height="50" width="50" src="{{ loc }}" class="rounded-circle"></a>
+                            <img height="50" width="50" src="{{ loc }}"></a>
                         <br>
                     {% endif %}
                 </td>

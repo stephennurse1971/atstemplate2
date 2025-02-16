@@ -4,6 +4,8 @@
 
 {% block body %}
     <h1 style="color: red">Products</h1>
+    {% include 'product/parts/import_and_export.html.twig' %}
+
     <table class="table table-responsive small" id="table">
         <thead>
         <tr>
@@ -15,7 +17,9 @@
             <th>Include<br>In Footer</th>
             <th>Include<br>In Contact<br>Form</th>
 {#            <th class="mobile" style="width: 500px">Comments</th>#}
-            <th class="desktop" style="width: 500px">Comments</th>
+            <th class="desktop" style="width: 500px">Menu "hover" description</th>
+            <th class="desktop" style="width: 500px">New Client Email</th>
+            <th></th>
             <th></th>
         </tr>
         </thead>
@@ -99,18 +103,30 @@
                 <td class="desktop">
                     {{ product.notes|striptags }}
                 </td>
+                <td class="desktop">
+                    {{ product.newClientEmail|striptags }}
+                </td>
                 <td>
                     <a class="btn btn-outline-danger btn-sm" target="_blank"
                        href="{{ path('product_edit', {'id': product.id}) }}">
                         <i class="fa fa-pen"></i>
                     </a>
                 </td>
+                <td>
+                    <form method="post" action="{{ path('product_delete', {'id': product.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+                        <button class="btn btn-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </form>
+
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
     <br>
-    <a class="btn btn-success btn-sm" href="{{ path('product_new') }}">New</a>
+
 {% endblock %}
 
 {% block datatable %}
@@ -118,7 +134,7 @@
         $(document).ready(function () {
             $('#table').DataTable({
                 'pageLength': 100,
-                "order": [0, 'asc'],
+                "order": [[3, 'asc'],[0, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

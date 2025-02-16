@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ClientEmailsSent{% endblock %}
+
+{% block body %}
+    <h1>ClientEmailsSent</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ client_emails_sent.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ client_emails_sent.date ? client_emails_sent.date|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Subject</th>
+                <td>{{ client_emails_sent.subject }}</td>
+            </tr>
+            <tr>
+                <th>Body</th>
+                <td>{{ client_emails_sent.body }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_client_emails_sent_index') }}">back to list</a>
+
+    <a href="{{ path('app_client_emails_sent_edit', {'id': client_emails_sent.id}) }}">edit</a>
+
+    {{ include('client_emails_sent/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Website Set-up: {{ company_detail.companyName }}{% endblock %}
+
+{% block body %}
+    <div class="d-inline-block">
+        <h2 style="color: red">{{ company_detail.companyName }}: QR build requirements</h2>
+    </div>
+    <br>
+    <a title="QR Monkey" target="_blank" href="https://www.qrcode-monkey.com/">
+        QR Monkey
+    </a>
+    <br>
+    <br>
+    <div class="row">
+        {% include 'company_details/parts/1a_name_contact_tel_favicon.html.twig' %}
+        {% include 'company_details/parts/1b_website_email_sql.html.twig' %}
+        {% include 'company_details/parts/1d_address_and_gps.html.twig' %}
+        {% include 'company_details/parts/1e_address_instructions.html.twig' %}
+    </div>
+    <hr>
+    <div class="row">
+        {% include 'company_details/parts/2e_social_media.html.twig' %}
+    </div>
+    <a class="btn btn-outline-primary btn-sm mb-1" href="{{ path('company_details_index') }}">Return to list</a>
+    <a class="btn btn-outline-danger btn-sm mb-1" href="{{ path('company_details_edit', {'id': company_detail.id}) }}">Edit</a>
+{% endblock %}

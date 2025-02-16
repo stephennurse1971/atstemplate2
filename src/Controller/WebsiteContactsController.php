@@ -9,13 +9,16 @@ use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use App\Repository\WebsiteContactsRepository;
 use App\Services\CheckIfUserService;
+use App\Services\CompanyDetailsService;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\NoReturn;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mailer\MailerInterface;
 
 /**
  * @Route("/website/contacts")
@@ -23,6 +26,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class WebsiteContactsController extends AbstractController
 {
+    private MailerInterface $mailer;
+
+    // Inject the MailerInterface into your controller
+    public function __construct(MailerInterface $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
     /**
      * @Route("/index", name="website_contacts_index", methods={"GET"})
      * @Security("is_granted('ROLE_ADMIN')")
@@ -72,7 +83,6 @@ class WebsiteContactsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //dump('I am in if');die;
             $website_contact->setDateTime(new \DateTime('now'))
                 ->setStatus('Pending');
             $entityManager->persist($website_contact);
@@ -119,18 +129,26 @@ class WebsiteContactsController extends AbstractController
      * @Route("/update_status/{new_status}/{id}", name="website_contacts_update_status", methods={"GET", "POST"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function setToJunk(Request $request, string $new_status, WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository, EntityManagerInterface $manager): Response
+    public function updateWebsiteContact(Request $request, string $new_status, WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository, EntityManagerInterface $manager, CompanyDetailsService $companyDetailsService): Response
+
     {
         $referer = $request->headers->get('Referer');
-        if ($new_status = "Junk") {
+        $company_email = $companyDetailsService->getCompanyDetails()->getCompanyEmail();
+        $company_name = $companyDetailsService->getCompanyDetails()->getCompanyName();
+        $products_request = $websiteContact->getProductsRequested();
+
+        // Proper comparison with '=='
+        if ($new_status == "Junk") {
             $websiteContact->setStatus('Junk');
-            $manager->flush($websiteContact);
+            $manager->flush();
         }
-        if ($new_status = "Pending") {
+
+        if ($new_status == "Pending") {
             $websiteContact->setStatus('Pending');
-            $manager->flush($websiteContact);
+            $manager->flush();
         }
-        if ($new_status = "New User") {
+
+        if ($new_status == "New User") {
             $websiteContact->setStatus('Accepted');
             $new_user = new User();
 
@@ -138,15 +156,34 @@ class WebsiteContactsController extends AbstractController
                 ->setFirstName($websiteContact->getFirstName())
                 ->setLastName($websiteContact->getLastName())
                 ->setMobile($websiteContact->getMobile())
-                ->setPassword('password')
-                ->setRoles(['ROLE_USER']);  // Pass roles as an array
-            $manager->persist($new_user);
-            $manager->flush($new_user);
+                ->setPassword('password')  // Make sure to set a secure password
+                ->setRoles(['ROLE_USER']);
 
-            $manager->flush($websiteContact);
+            // Sending the email
+            $html = $this->renderView('website_contacts/welcome_new_website_contacts_email.html.twig', [
+                'contact' => $websiteContact,
+                'products_requested' => $products_request,
+                'company_name' => $company_name
+            ]);
+
+            $email = (new Email())
+                ->from($company_email)
+                ->to($new_user->getEmail())
+                ->bcc('nurse_stephen@hotmail.com')  // You may want to replace this with an actual admin email
+                ->subject("Welcome to " . $company_name)
+                ->html($html);  // Sending the rendered HTML email content
+            $this->mailer->send($email);  // Send the email
+
+            $manager->persist($new_user);
+            $manager->flush();
         }
-        return $this->redirect($referer);
+
+        // Always flush websiteContact in the end, regardless of the new_status
+        $manager->flush();
+
+        return $this->redirect($referer); // Redirect back to the referring page
     }
+
 
 
     /**

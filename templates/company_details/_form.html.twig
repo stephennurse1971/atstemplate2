@@ -54,17 +54,19 @@
             </div>
         </div>
         <br>
-        {% if company_details.companyQrCode is not null %}
+
             <b>QR Code:</b>
-            <a title="QR Monkey" target="_blank" href="https://www.qrcode-monkey.com/">
-                <i class="fa fa-link"></i>
-            </a><br>
+        {% if company_details.companyQrCode is not null %}
             <img title="{{ company_details.companyQrCode }}" height="50" width="50"
                  src="{{ asset('administration/Attachments/Favicons/' ~ company_details.companyQrCode) }}">
             <span style="color: white">.          .</span>
             <a class="btn btn-outline-danger btn-sm"
                href="{{ path('company_details_delete_qr_code', {'id': '1'}) }}"> <i
                         style="color: red" class="fa fa-trash"></i></a>
+        {% else %}
+            <br>
+            <a href="{{ path('company_details_show_qr_build', {'id': '1'}) }}">Link to generate</a>
+            <br>
         {% endif %}
         <div class="qr_code-upload-container">
             {{ form_row(form.companyQrCode) }}

@@ -4,10 +4,19 @@
 
 {% block body %}
     <h1 style="color: red">Company Details</h1>
+    {% if is_granted('ROLE_ADMIN') %}
+        {% if CompanyDetailsService.companyDetails is not null %}
+            <a target="_blank" class="btn btn-success btn-sm" href="{{ path('company_details_new') }}">New</a>
+        {% endif %}
+        <a class="btn btn-outline-primary btn-sm" href="{{ path('company_details_export') }}">Export</a>
+        <a class="btn btn-outline-primary btn-sm" href="{{ path('company_details_import') }}">Import</a>
+        <hr>
+    {% endif %}
 
     <table class="table small">
         <thead>
         <tr>
+            <th></th>
             <th style="text-align: left">Name</th>
             <th style="text-align: left">Website</th>
             <th style="text-align: left">Favicons<br>Live/Dev</th>
@@ -33,6 +42,7 @@
         <tbody>
         {% for company_detail in company_details %}
             <tr>
+                <td>{{ company_detail.id }}</td>
                 <td>
                     {{ company_detail.companyName }}
                     {% if company_detail.contactFirstName is not null or company_detail.contactLastName is not null %}
@@ -77,19 +87,19 @@
                 </td>
                 <td style="text-align: center">
                     {% if company_detail.companyTel is not empty %}
-                    <a title="{{ company_detail.companyTel }}"
-                       href="https://wa.me/{{ company_detail.companyTel | replace({' ': ''}) }}">
-                        <i style="color: green" class="fa fa-phone"></i>
-                    </a>
+                        <a title="{{ company_detail.companyTel }}"
+                           href="https://wa.me/{{ company_detail.companyTel | replace({' ': ''}) }}">
+                            <i style="color: green" class="fa fa-phone"></i>
+                        </a>
                     {% endif %}
                 </td>
                 <td style="text-align: center">
                     {% if company_detail.companyMobile is not empty %}
-                    <a title="{{ company_detail.companyMobile }}"
-                       href="https://wa.me/{{ company_detail.companyMobile | replace({' ': ''}) }}">
-                        <i style="color: green"
-                           class="fab fa-whatsapp"></i>
-                    </a>
+                        <a title="{{ company_detail.companyMobile }}"
+                           href="https://wa.me/{{ company_detail.companyMobile | replace({' ': ''}) }}">
+                            <i style="color: green"
+                               class="fab fa-whatsapp"></i>
+                        </a>
                     {% endif %}
                     {#                    {{ company_detail.companyMobile }} #}
                 </td>
@@ -203,10 +213,7 @@
         </tbody>
     </table>
 
-    {% if is_granted('ROLE_SUPER_ADMIN') %}
-        <br><br>
-        <a target="_blank" class="btn btn-success btn-sm" href="{{ path('company_details_new') }}">New</a>
-    {% endif %}
+
 {% endblock %}
 
 

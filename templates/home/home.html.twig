@@ -44,13 +44,12 @@
         {% endfor %}
     </div>
 
+{{ include_contact_form }}
 
     {% if CompanyDetailsService.companyDetails is not null %}
         {% if include_contact_form == 1 %}
             {% include 'home/parts/contact_us.html.twig' %}
-{#            {% include 'home/parts/contact_us.html.twig' with { form: form } %}#}
         {% endif %}
-
 
         {% set qr_code =  CompanyDetailsService.companyDetails.companyQrCode %}
         {% if include_qr_code == 1 and qr_code is not null %}

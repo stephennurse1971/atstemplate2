@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\PhotoLocations;
 use App\Entity\Product;
 use App\Entity\WebsiteContacts;
 use App\Repository\ProductRepository;
@@ -45,7 +44,10 @@ class WebsiteContactsType extends AbstractType
                 ],
                 'query_builder' => function (ProductRepository $er) {
                     return $er->createQueryBuilder('p')
-                        ->orderBy('p.ranking', 'ASC');
+                        ->where('p.includeInContactForm = :includeInContactForm')
+                        ->setParameter('includeInContactForm', true)
+                        ->orderBy('p.category', 'ASC')
+                        ->addOrderBy('p.ranking', 'ASC');
                 },
             ])
             ->add('status', ChoiceType::class, [

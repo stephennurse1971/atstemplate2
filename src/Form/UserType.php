@@ -4,13 +4,11 @@ namespace App\Form;
 
 use App\Entity\Languages;
 use App\Entity\User;
-use App\Services\TranslationsWorkerService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,8 +17,16 @@ use Symfony\Component\Security\Core\Security;
 
 class UserType extends AbstractType
 {
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // Add basic fields for the User entity
         $builder
             ->add('salutation', ChoiceType::class, [
                 'multiple' => false,
@@ -29,7 +35,8 @@ class UserType extends AbstractType
                     'Mr.' => 'Mr.',
                     'Ms.' => 'Ms.',
                     'Mrs.' => 'Mrs.'
-                ],])
+                ],
+            ])
             ->add('firstName', TextType::class, [
                 'required' => false
             ])
@@ -108,17 +115,17 @@ class UserType extends AbstractType
                 'required' => false,
                 'empty_data' => ''
             ])
-
             ->add('photo', FileType::class, [
                 'label' => 'Photo',
                 'mapped' => false,
                 'required' => false
-            ])
-        ;
-        $logged_user_roles = $this->security->getUser()->getRoles();
+            ]);
 
-        $user_roles = $options['user']->getRoles();
-        if (in_array('ROLE_ADMIN', $logged_user_roles) or in_array('ROLE_SUPER_ADMIN', $logged_user_roles)) {
+        // Add roles field for admins only
+        // Check if the 'user' option exists (is not null) and if we have the required admin roles
+        $loggedUser = $this->security->getUser(); // Get currently logged-in user
+        if ($loggedUser && (in_array('ROLE_ADMIN', $loggedUser->getRoles()) || in_array('ROLE_SUPER_ADMIN', $loggedUser->getRoles()))) {
+            // Add roles field for users with admin roles
             $builder
                 ->add('roles', ChoiceType::class, [
                     'multiple' => true,
@@ -128,7 +135,7 @@ class UserType extends AbstractType
                         'Admin' => 'ROLE_ADMIN',
                         'User' => 'ROLE_USER'
                     ],
-                    // 'mapped' => false
+                    'mapped' => false // Do not persist directly (or handle it as needed)
                 ])
                 ->add('company', TextType::class, [
                     'required' => false
@@ -136,19 +143,11 @@ class UserType extends AbstractType
         }
     }
 
-    public function __construct(Security $security)
-    {
-        $this->security = $security;
-    }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'email1' => null,
-            'email2' => null,
-            'user' => null
+            'user' => null, // Ensure this is handled in your form controller
         ]);
     }
-    
 }

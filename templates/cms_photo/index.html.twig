@@ -4,18 +4,8 @@
 
 {% block body %}
     <h1 style="color: red">CMS: Photos Index</h1>
-    <div class="row">
-        <div class="col-8">
-            <a target="_blank" class="btn btn-success btn-sm" href="{{ path('cms_photo_new') }}">New</a>
-            <a target="_blank" class="btn btn-outline-primary btn-sm" href="{{ path('cms_copy_index') }}">CMS Copy</a>
-        </div>
-        <div class="col-2 desktop">
-            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                <a class="btn btn-danger btn-sm" href="{{ path('cms_photos_delete_all_files') }}">Delete All Photos (but
-                    keep record)</a>
-            {% endif %}
-        </div>
-    </div>
+
+    {% include 'cms_photo/parts/import_and_export.html.twig' %}
 
     <table class="table table-responsive small">
         <thead>
@@ -23,6 +13,7 @@
             <th>Category</th>
             <th style="width: 150px">Product or <br>Static Page Name</th>
             <th>Photo</th>
+            <th>File</th>
             <th>Rotate</th>
             <th></th>
             <th>Order</th>
@@ -37,12 +28,11 @@
         <tbody>
         {% for cms_photo in cms_photos %}
             <tr>
-                <td>{{ cms_photo.category }}</td>
+                <td>{{ cms_photo.category|slice(0,7) }}</td>
                 <td>
                     {% if cms_photo.product is not null %}
                         <a target="_blank"
                            href="{{ path('cms_photo_edit', {'id': cms_photo.id}) }}">
-                            {{ cms_photo.product.ranking }}.
                             {{ cms_photo.product.product }}
                         </a>
                     {% else %}
@@ -61,7 +51,7 @@
                             {% if cms_photo.rotate ==0 %}
                                 <a class="btn btn-outline-danger btn-sm" target="_blank"
                                    href="{{ path('cms_photo_view', {'id': cms_photo.id}) }}">
-                                    <img height="50" width="50" src="{{ photo }}" class="rounded-circle test">
+                                    <img height="80" width="80" src="{{ photo }}">
                                 </a>
                             {% endif %}
 
@@ -92,9 +82,10 @@
                             </video>
                         {% endif %}
                     {% endif %}
-                    {{ cms_photo.photo }}
+
                 </td>
 
+                <td>{{ cms_photo.photo }}</td>
                 <td style="text-align: center">
                     {% if cms_photo.rotate is not null or cms_photo.rotate is not empty or cms_photo.rotate !=0 %}
                         {{ cms_photo.rotate }} <span style="font-size: small">o</span>
@@ -111,10 +102,11 @@
                 </td>
                 <td style="text-align: center">
                     {% if cms_photo.photoOrVideo == 'Video' %}
-                        <span style="background-color: yellow" title="{{ cms_photo.photoOrVideo }}">{{ cms_photo.photoOrVideo }}</span>
+                        <span style="background-color: yellow"
+                              title="{{ cms_photo.photoOrVideo }}">{{ cms_photo.photoOrVideo }}</span>
                     {% else %}
-                    <span title="{{ cms_photo.photoOrVideo }}">{{ cms_photo.photoOrVideo }}</span>
-                        {% endif %}
+                        <span title="{{ cms_photo.photoOrVideo }}">{{ cms_photo.photoOrVideo }}</span>
+                    {% endif %}
                 </td>
                 <td>
                     {{ cms_photo.title }}
@@ -142,14 +134,13 @@
                     {% if cms_photo.photo|length>0 %}
                         <a class="btn btn-outline-danger btn-sm"
                            href="{{ path('cms_photo_file_delete', {'id': cms_photo.id}) }}">
-{#                            <i class="fab fa-ban"></i>#}
+                            {#                            <i class="fab fa-ban"></i> #}
                             Delete Photo
                         </a>
                     {% endif %}
                 </td>
                 <td>
-                    <form method="post" action="{{ path('cms_photo_delete', {'id': cms_photo.id}) }}"
-                          onsubmit="return confirm('Are you sure you want to delete this item?');">
+                    <form method="post" action="{{ path('cms_photo_delete', {'id': cms_photo.id}) }}">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cms_photo.id) }}">
                         <button>
                             <i style="color: red" class="fa fa-trash"></i>
@@ -169,7 +160,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[0, 'asc'], [1, 'asc'], [5, 'asc']],
+                "order": [[0, 'desc'], [1, 'asc'], [5, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

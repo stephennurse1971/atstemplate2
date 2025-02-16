@@ -33,7 +33,7 @@ class CmsCopyType extends AbstractType
             ->add('pageLayout', EntityType::class, [
                 'label' => $this->translationsWorker->getTranslations('Page Layout'),
                 'class' => CmsCopyPageFormats::class,
-                'required' => false,
+                'required' => true,
                 'choice_label' => 'name'
             ])
             ->add('product', EntityType::class, [
@@ -43,9 +43,11 @@ class CmsCopyType extends AbstractType
                 'choice_label' => 'product',
                 'query_builder' => function (ProductRepository $er) {
                     return $er->createQueryBuilder('p')
-                        ->orderBy('p.ranking', 'ASC');
+                        ->orderBy('p.category', 'ASC')
+                        ->addOrderBy('p.ranking', 'ASC');
                 },
             ])
+
             ->add('tabTitle')
 
             ->add('tabTitleFR', TextType::class, [

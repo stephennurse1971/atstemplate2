@@ -4,14 +4,23 @@
 
 {% block body %}
 
-
     {% set image = asset('administration/Attachments/CMSPhotos/')~imagename.photo %}
 
     <div class="row ">
         <div class="col-12 m-auto">
             <div class="image-container">
+                {% if rotate ==0 %}
                     <img class="photosOnePage" src="{{ image }}">
-
+                {% endif %}
+                {% if rotate ==90 %}
+                    <img class="photosOnePage rotate-90" src="{{ image }}">
+                {% endif %}
+                {% if rotate ==180 %}
+                    <img class="photosOnePage rotate-180" src="{{ image }}">
+                {% endif %}
+                {% if rotate ==270 %}
+                    <img class="photosOnePage rotate-270" src="{{ image }}">
+                {% endif %}
             </div>
         </div>
     </div>

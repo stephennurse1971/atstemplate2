@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block title %}Website Contacts{% endblock %}
+
+{% block body %}
+<h1>Welcome</h1>
+
+<p>Welcome to {{ company_name }}!</p>
+
+<h2>Requested Products:</h2>
+{% if products_requested is empty %}
+    <p>No products were requested.</p>
+{% else %}
+    <ul>
+        {% for product_requested in products_requested %}
+            <li>{{ product_requested.product }}</li>
+        {% else %}
+            <li>No products requested.</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<p>Kind regards,<br>XYZ</p>
+{% endblock %}
+

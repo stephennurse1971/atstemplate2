@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ClientEmailsSent{% endblock %}
+
+{% block body %}
+    <h1>Create new ClientEmailsSent</h1>
+
+    {{ include('client_emails_sent/_form.html.twig') }}
+
+    <a href="{{ path('client_emails_sent_index') }}">back to list</a>
+{% endblock %}

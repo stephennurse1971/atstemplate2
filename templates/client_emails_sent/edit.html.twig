@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ClientEmailsSent{% endblock %}
+
+{% block body %}
+    <h1 style="color: red">Edit: Client Email Sent</h1>
+
+    {{ include('client_emails_sent/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('client_emails_sent_index') }}">Return to list</a>
+
+    {{ include('client_emails_sent/_delete_form.html.twig') }}
+{% endblock %}
