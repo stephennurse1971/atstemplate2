@@ -6,7 +6,7 @@ use App\Entity\MapIcons;
 use App\Form\ImportType;
 use App\Form\MapIconsType;
 use App\Repository\MapIconsRepository;
-use App\Services\MapIconsImportService;
+use App\Services\ImportMapIconsService;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -161,6 +161,7 @@ class MapIconsController extends AbstractController
         $concatenatedNotes = "Exported on: " . $exported_date_formatted;
         foreach ($map_icons_list as $map_icon) {
             $data[] = [
+                'MapIcons',
                 $map_icon->getName(),
                 $map_icon->getIconFile(),
             ];
@@ -168,8 +169,9 @@ class MapIconsController extends AbstractController
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Map Icons');
-        $sheet->getCell('A1')->setValue('Name');
-        $sheet->getCell('B1')->setValue('FileName');
+        $sheet->getCell('A1')->setValue('Entity');
+        $sheet->getCell('B1')->setValue('Name');
+        $sheet->getCell('C1')->setValue('FileName');
 
         $sheet->fromArray($data, null, 'A2', true);
         $total_rows = $sheet->getHighestRow();
@@ -191,7 +193,7 @@ class MapIconsController extends AbstractController
     /**
      * @Route ("/import", name="map_icons_import" )
      */
-    public function mapIconsImport(Request $request, SluggerInterface $slugger, MapIconsRepository $mapIconsRepository, MapIconsImportService $mapIconsImportService): Response
+    public function mapIconsImport(Request $request, SluggerInterface $slugger, MapIconsRepository $mapIconsRepository, ImportMapIconsService $mapIconsImportService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);

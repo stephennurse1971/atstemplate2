@@ -35,6 +35,7 @@ parameters:
   languages_import_directory:                '%kernel.project_dir%/public/administration/Import/Languages/'
   product_import_directory:                  '%kernel.project_dir%/public/administration/Import/Products/'
   translations_import_directory:             '%kernel.project_dir%/public/administration/Import/Translations/'
+  useful_links_import_directory:             '%kernel.project_dir%/public/administration/Import/UsefulLinks/'
   users_import_directory:                    '%kernel.project_dir%/public/administration/Import/Users/'
 
   public:                                    '%kernel.project_dir%/public/'

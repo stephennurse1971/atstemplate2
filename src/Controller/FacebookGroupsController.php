@@ -157,6 +157,7 @@ class FacebookGroupsController extends AbstractController
         $concatenatedNotes = "Exported on: " . $exported_date_formatted;
         foreach ($facebook_groups_list as $facebook_groups) {
             $data[] = [
+                "FacebookGroups",
                 $facebook_groups->getName(),
                 $facebook_groups->getLink(),
                 $facebook_groups->getComments(),
@@ -165,10 +166,11 @@ class FacebookGroupsController extends AbstractController
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Facebook Groups');
-        $sheet->getCell('A1')->setValue('Name');
-        $sheet->getCell('B1')->setValue('Link');
-        $sheet->getCell('C1')->setValue('Comments');
-        $sheet->getCell('D1')->setValue($concatenatedNotes);
+        $sheet->getCell('A1')->setValue('Entity');
+        $sheet->getCell('B1')->setValue('Name');
+        $sheet->getCell('C1')->setValue('Link');
+        $sheet->getCell('D1')->setValue('Comments');
+        $sheet->getCell('E1')->setValue($concatenatedNotes);
 
         $sheet->fromArray($data, null, 'A2', true);
         $total_rows = $sheet->getHighestRow();

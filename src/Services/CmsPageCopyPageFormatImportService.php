@@ -37,17 +37,18 @@ class CmsPageCopyPageFormatImportService
             fclose($handle);
         }
         foreach ($alldataFromCsv as $oneLineFromCsv) {
-            $name = trim($oneLineFromCsv[0]);
-            $description = trim($oneLineFromCsv[1]);
-            $uses = trim($oneLineFromCsv[2]);
-            $pros = trim($oneLineFromCsv[3]);
-            $cons = trim($oneLineFromCsv[4]);
+            $entity =  trim($oneLineFromCsv[0]);
+            $name = trim($oneLineFromCsv[1]);
+            $description = trim($oneLineFromCsv[2]);
+            $uses = trim($oneLineFromCsv[3]);
+            $pros = trim($oneLineFromCsv[4]);
+            $cons = trim($oneLineFromCsv[5]);
 
             $cms_copy_page_format = $this->cmsCopyPageFormatsRepository->findOneBy([
                 'name' => $name
             ]);
 
-            if (!$cms_copy_page_format) {
+            if (!$cms_copy_page_format and $entity== 'CMSCopyPageFormats') {
                 $cms_copy_page_format = new CmsCopyPageFormats();
                 $cms_copy_page_format->setName($name)
                     ->setDescription($description)

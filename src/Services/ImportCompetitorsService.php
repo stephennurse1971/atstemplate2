@@ -9,30 +9,10 @@ use App\Repository\BusinessTypesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class CompetitorsImportService
+class ImportCompetitorsService
 {
     public function importCompetitors(string $fileName)
     {
-        $status = '';
-        $businessOrPerson = '';
-        $businessType = '';
-        $company = '';
-        $firstName = '';
-        $lastName = '';
-        $website = '';
-        $email = '';
-        $landline = '';
-        $mobile = '';
-        $addressStreet = '';
-        $addressCity = '';
-        $addressCounty = '';
-        $addressPostCode = '';
-        $addressCountry = '';
-        $locationLongitude = '';
-        $locationLatitude = '';
-        $publicPrivate = '';
-        $notes = '';
-
         $filepath = $this->container->getParameter('business_contacts_import_directory');
         $fullpath = $filepath . $fileName;
         $alldataFromCsv = [];

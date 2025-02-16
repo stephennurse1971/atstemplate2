@@ -47,6 +47,17 @@ class UsefulLinksRepository extends ServiceEntityRepository
         }
     }
 
+    // src/Repository/UsefulLinksRepository.php
+
+    public function findUniqueCategories(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->select('DISTINCT u.category')  // Assuming the category field is named 'category'
+            ->getQuery()
+            ->getResult();
+    }
+
+
     // /**
     //  * @return UsefulLinks[] Returns an array of UsefulLinks objects
     //  */

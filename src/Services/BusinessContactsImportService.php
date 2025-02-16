@@ -51,24 +51,24 @@ class BusinessContactsImportService
             fclose($handle);
         }
         foreach ($alldataFromCsv as $oneLineFromCsv) {
-            $status = trim($oneLineFromCsv[0]);
-            $businessOrPerson = trim($oneLineFromCsv[1]);
-            $businessType = trim($oneLineFromCsv[2]);
-            $company = trim($oneLineFromCsv[3]);
-            $firstName = trim($oneLineFromCsv[4]);
-            $lastName = trim($oneLineFromCsv[5]);
-            $website = trim($oneLineFromCsv[6]);
-            $email = trim($oneLineFromCsv[7]);
-            $landline = trim($oneLineFromCsv[8]);
-            $mobile = trim($oneLineFromCsv[9]);
-            $addressStreet = trim($oneLineFromCsv[10]);
-            $addressCity = trim($oneLineFromCsv[11]);
-            $addressCounty = trim($oneLineFromCsv[12]);
-            $addressPostCode = trim($oneLineFromCsv[13]);
-            $addressCountry = trim($oneLineFromCsv[14]);
-            $locationLongitude = (float)trim($oneLineFromCsv[15]);
-            $locationLatitude = (float)trim($oneLineFromCsv[16]);
-            $notes = trim($oneLineFromCsv[17]);
+            $entity = trim($oneLineFromCsv[0]);
+            $status = trim($oneLineFromCsv[1]);
+            $businessOrPerson = trim($oneLineFromCsv[2]);
+            $businessType = trim($oneLineFromCsv[3]);
+            $company = trim($oneLineFromCsv[4]);
+            $firstName = trim($oneLineFromCsv[5]);
+            $lastName = trim($oneLineFromCsv[6]);
+            $website = trim($oneLineFromCsv[7]);
+            $email = trim($oneLineFromCsv[8]);
+            $landline = trim($oneLineFromCsv[9]);
+            $mobile = trim($oneLineFromCsv[10]);
+            $addressStreet = trim($oneLineFromCsv[11]);
+            $addressCity = trim($oneLineFromCsv[12]);
+            $addressCounty = trim($oneLineFromCsv[13]);
+            $addressPostCode = trim($oneLineFromCsv[14]);
+            $addressCountry = trim($oneLineFromCsv[15]);
+            $locationLongitude = (float)trim($oneLineFromCsv[16]);
+            $locationLatitude = (float)trim($oneLineFromCsv[17]);
 
             $landline = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $landline);
             if ($landline != '') {
@@ -85,7 +85,7 @@ class BusinessContactsImportService
                 'company' => $company,
             ]);
 
-            if (!$businessContact) {
+            if (!$businessContact and $entity=='BusinessContacts') {
                 $businessContact = new BusinessContacts();
                 $businessContact->setStatus($status)
                     ->setBusinessOrPerson($businessOrPerson)

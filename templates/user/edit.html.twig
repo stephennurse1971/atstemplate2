@@ -22,8 +22,8 @@
 
 
 {% endblock %}
-{% block additionaljs %}
 
+{% block additionaljs %}
     <script>
         $(document).ready(function() {
             $('#user_password').hide();
@@ -76,9 +76,7 @@
             }
         });
 
-
         let roles = [];
-
         {% for role in user.roles %}
         roles.push("{{ role }}");
         {% endfor %}
@@ -89,5 +87,4 @@
             $("#loader").fadeOut("fast"); // Hide loader when page is fully loaded
         });
     </script>
-
 {% endblock %}

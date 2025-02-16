@@ -17,6 +17,7 @@
             <th>Spanish</th>
             <th>Russian</th>
             <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -32,6 +33,15 @@
                     <a class="btn btn-outline-danger btn-sm"
                        href="{{ path('translation_edit', {'id': translation.id}) }}">Edit</a>
                 </td>
+                <td>
+                    <form method="post" action="{{ path('translation_delete', {'id': translation.id}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ translation.id) }}">
+                        <button class="btn btn-danger btn-sm">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </form>
+
+                </td>
             </tr>
         {% endfor %}
         </tbody>
@@ -44,9 +54,9 @@
             $('.table').DataTable({
                 'pageLength': 100,
                 "order": [[0, 'asc'], [1, 'asc']],
-                "paging": false,
+                "paging": true,
                 "searching": false,
-                "bInfo": false
+                "bInfo": true
             });
         });
     </script>

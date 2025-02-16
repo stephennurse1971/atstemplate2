@@ -7,7 +7,7 @@ use App\Form\ImportType;
 use App\Form\LanguagesType;
 use App\Repository\LanguagesRepository;
 use App\Repository\UserRepository;
-use App\Services\LanguagesImportService;
+use App\Services\ImportLanguagesService;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -263,6 +263,7 @@ class LanguagesController extends AbstractController
         $languages_list = $languagesRepository->findAll();
         foreach ($languages_list as $language) {
             $data[] = [
+                "Languages",
                 $language->getRanking(),
                 $language->isIsActive(),
                 $language->getLanguage(),
@@ -274,12 +275,13 @@ class LanguagesController extends AbstractController
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Languages');
-        $sheet->getCell('A1')->setValue('Ranking');
-        $sheet->getCell('B1')->setValue('IsActive');
-        $sheet->getCell('C1')->setValue('Language');
-        $sheet->getCell('D1')->setValue('Abbreviation');
-        $sheet->getCell('E1')->setValue('LinkedIn Other');
-        $sheet->getCell('F1')->setValue('Icon');
+        $sheet->getCell('A1')->setValue('Entity');
+        $sheet->getCell('B1')->setValue('Ranking');
+        $sheet->getCell('C1')->setValue('IsActive');
+        $sheet->getCell('D1')->setValue('Language');
+        $sheet->getCell('E1')->setValue('Abbreviation');
+        $sheet->getCell('F1')->setValue('LinkedIn Other');
+        $sheet->getCell('G1')->setValue('Icon');
 
         $sheet->fromArray($data, null, 'A2', true);
         $total_rows = $sheet->getHighestRow();
@@ -301,7 +303,7 @@ class LanguagesController extends AbstractController
     /**
      * @Route ("/import/languages", name="languages_import" )
      */
-    public function languagesImport(Request $request, SluggerInterface $slugger, LanguagesImportService $languagesImportService): Response
+    public function languagesImport(Request $request, SluggerInterface $slugger, ImportLanguagesService $languagesImportService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);

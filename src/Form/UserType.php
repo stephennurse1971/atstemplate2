@@ -80,6 +80,7 @@ class UserType extends AbstractType
                 'required' => false
             ])
             ->add('email')
+
             ->add('email2', TextType::class, [
                 'required' => false
             ])

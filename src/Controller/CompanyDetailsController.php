@@ -399,7 +399,6 @@ class CompanyDetailsController extends AbstractController
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Company Details');
 
-
         $sheet->getCell('A1')->setValue('CompanyDetails');
         $sheet->getCell('B1')->setValue('CompanyName');
         $sheet->getCell('C1')->setValue('CompanyWebsite');
@@ -498,7 +497,7 @@ class CompanyDetailsController extends AbstractController
     /**
      * @Route ("/import", name="company_details_import" )
      */
-    public function productImport(Request $request, SluggerInterface $slugger, CompanyDetailsRepository $companyDetailsRepository, ImportCompanyDetailsService $importCompanyDetailsService): Response
+    public function companyDetailsImport(Request $request, SluggerInterface $slugger, CompanyDetailsRepository $companyDetailsRepository, ImportCompanyDetailsService $importCompanyDetailsService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);

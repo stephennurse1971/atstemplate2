@@ -12,10 +12,6 @@ class FacebookGroupsImportService
 {
     public function importFacebookGroups(string $fileName)
     {
-        $name = '';
-        $link = '';
-        $comment = '';
-
         $filepath = $this->container->getParameter('facebook_groups_import_directory');
         $fullpath = $filepath . $fileName;
         $alldataFromCsv = [];
@@ -35,16 +31,17 @@ class FacebookGroupsImportService
             fclose($handle);
         }
         foreach ($alldataFromCsv as $oneLineFromCsv) {
-            $name = trim($oneLineFromCsv[0]);
-            $link = trim($oneLineFromCsv[1]);
-            $comments = trim($oneLineFromCsv[2]);
+            $entity = trim($oneLineFromCsv[0]);
+            $name = trim($oneLineFromCsv[1]);
+            $link = trim($oneLineFromCsv[2]);
+            $comments = trim($oneLineFromCsv[3]);
 
             $facebookGroup = $this->facebookGroupsRepository->findOneBy([
                 'name' => $name,
                 'link' => $link,
             ]);
 
-            if (!$facebookGroup) {
+            if (!$facebookGroup and $entity=="FacebookGroups") {
                 $facebookGroup = new FacebookGroups();
                 $facebookGroup->setName($name)
                     ->setLink($link)

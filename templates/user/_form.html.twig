@@ -30,7 +30,6 @@
         {{ form_row(form.firstName) }}
         {{ form_row(form.lastName) }}
         {{ form_row(form.emailVerified  ) }}
-
         {% if CompanyDetailsService.getCompanyDetails.userIncludeJobDetails == 1 %}
             <div class="container-job-details">
                 <h2 style="color: red">Company</h2>
@@ -45,12 +44,9 @@
                 {{ form_row(form.birthday) }}
                 {{ form_row(form.webPage) }}
                 {{ form_row(form.notes) }}
-
             </div>
         {% endif %}
     </div>
-
-
     <div class="col-3 col-lg-2">
         <h2 style="color: red">Email and Tel</h2>
         {{ form_row(form.email) }}
@@ -60,7 +56,6 @@
                 {{ form_row(form.email3) }}
             {% endif %}
         </div>
-
         {{ form_row(form.mobile) }}
         <div class="container-personal-details">
             {% if CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails == 1 %}

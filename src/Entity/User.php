@@ -23,6 +23,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: "string", length: 180, unique: true)]
     private string $email;
+
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email2 = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $email3 = null;
+
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $emailVerified = null;
     /**
      * @ORM\Column(type="json")
      */
@@ -33,17 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $password;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $fullName = null;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $mobile = null;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $plainPassword = null;
-
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $mobile2 = null;
+    private ?string $salutation = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $firstName = null;
@@ -51,26 +52,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $lastName = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $fullName = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $mobile = null;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $mobile2 = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $plainPassword = null;
+
+
     #[ORM\OneToMany(targetEntity: Log::class, mappedBy: 'user', orphanRemoval: true)]
     private $logs;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $company = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $businessPhone = null;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $homePhone = null;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $homePhone2 = null;
-
     #[ORM\Column(type: 'date', nullable: true)]
     private ?\DateTimeInterface $birthday = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $email3 = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $webPage = null;
@@ -78,19 +80,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $notes = null;
 
-
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $salutation = null;
-
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $jobTitle = null;
-
-
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $linkedIn = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $businessPhone = null;
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $businessStreet = null;
 
@@ -103,6 +100,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $businessCountry = null;
 
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $homePhone = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $homePhone2 = null;
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $homeStreet = null;
 
@@ -120,19 +123,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $photoLocations;
 
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $entryConflict = null;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $importTime = null;
-
-
-
-    #[ORM\Column(type: 'boolean', nullable: true)]
-    private ?bool $emailVerified = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $email2 = null;
 
     #[ORM\ManyToOne]
     private ?Languages $defaultLanguage = null;
@@ -154,6 +144,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
+    public function getSalutation(): ?string
+    {
+        return $this->salutation;
+    }
+
+    public function setSalutation(?string $salutation): self
+    {
+        $this->salutation = $salutation;
+        return $this;
+    }
+
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): self
+    {
+        $this->firstName = $firstName;
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $LastName): self
+    {
+        $this->lastName = $LastName;
+        return $this;
+    }
+
+
     public function getUserIdentifier(): string
     {
         // Typically, the identifier is the user's email or username
@@ -168,6 +193,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email ?? '';
+        return $this;
+    }
+
+
+    public function getEmail2(): ?string
+    {
+        return $this->email2;
+    }
+
+    public function setEmail2(?string $email2): static
+    {
+        $this->email2 = $email2;
+
+        return $this;
+    }
+
+    public function getEmail3(): ?string
+    {
+        return $this->email3;
+    }
+
+    public function setEmail3(?string $email3): self
+    {
+        $this->email3 = $email3;
         return $this;
     }
 
@@ -235,20 +284,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPlainPassword(): ?string
-    {
-        return $this->plainPassword;
-    }
-
-    public function setPlainPassword(?string $plainPassword): self
-    {
-        $this->plainPassword = $plainPassword;
-        return $this;
-    }
-
-
-
-
     public function getMobile2(): ?string
     {
         return $this->mobile2;
@@ -260,25 +295,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getFirstName(): ?string
+    public function getPlainPassword(): ?string
     {
-        return $this->firstName;
+        return $this->plainPassword;
     }
 
-    public function setFirstName(?string $firstName): self
+    public function setPlainPassword(?string $plainPassword): self
     {
-        $this->firstName = $firstName;
-        return $this;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(?string $LastName): self
-    {
-        $this->lastName = $LastName;
+        $this->plainPassword = $plainPassword;
         return $this;
     }
 
@@ -361,17 +385,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getEmail3(): ?string
-    {
-        return $this->email3;
-    }
-
-    public function setEmail3(?string $email3): self
-    {
-        $this->email3 = $email3;
-        return $this;
-    }
-
     public function getWebPage(): ?string
     {
         return $this->webPage;
@@ -396,17 +409,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
 
-
-    public function getSalutation(): ?string
-    {
-        return $this->salutation;
-    }
-
-    public function setSalutation(?string $salutation): self
-    {
-        $this->salutation = $salutation;
-        return $this;
-    }
 
     public function getJobTitle(): ?string
     {
@@ -557,29 +559,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    public function getEntryConflict(): ?string
-    {
-        return $this->entryConflict;
-    }
 
-    public function setEntryConflict(?string $entryConflict): self
-    {
-        $this->entryConflict = $entryConflict;
-
-        return $this;
-    }
-
-    public function getImportTime(): ?\DateTimeInterface
-    {
-        return $this->importTime;
-    }
-
-    public function setImportTime(?\DateTimeInterface $importTime): self
-    {
-        $this->importTime = $importTime;
-
-        return $this;
-    }
 
     public function getEmailVerified(): ?bool
     {
@@ -593,17 +573,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getEmail2(): ?string
-    {
-        return $this->email2;
-    }
-
-    public function setEmail2(?string $email2): static
-    {
-        $this->email2 = $email2;
-
-        return $this;
-    }
 
     public function getDefaultLanguage(): ?Languages
     {
@@ -640,6 +609,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
 
 }

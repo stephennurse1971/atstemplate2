@@ -7,6 +7,7 @@ use App\Form\ImportType;
 use App\Form\TranslationType;
 use App\Repository\TranslationRepository;
 use App\Services\TranslationsImportService;
+use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -91,11 +92,10 @@ class TranslationController extends AbstractController
     /**
      * @Route("/delete_all", name="translation_delete_all")
      */
-    public function deleteAllTranslations(TranslationRepository $translationRepository)
+    public function deleteAllTranslations(TranslationRepository $translationRepository, EntityManagerInterface $entityManager): Response
     {
         $translations = $translationRepository->findAll();
         foreach ($translations as $translation) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($translation);
             $entityManager->flush();
         }
@@ -110,6 +110,7 @@ class TranslationController extends AbstractController
         $translations = $translationRepository->findAll();
         foreach ($translations as $translation) {
             $data[] = [
+                "Translations",
                 $translation->getEntity(),
                 $translation->getEnglish(),
                 $translation->getFrench(),
@@ -121,12 +122,13 @@ class TranslationController extends AbstractController
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Translations');
-        $sheet->getCell('A1')->setValue('Entity');
-        $sheet->getCell('B1')->setValue('English');
-        $sheet->getCell('C1')->setValue('French');
-        $sheet->getCell('D1')->setValue('German');
-        $sheet->getCell('E1')->setValue('Spanish');
-        $sheet->getCell('F1')->setValue('Russian');
+        $sheet->getCell('A1')->setValue('Where Used');
+        $sheet->getCell('B1')->setValue('Entity');
+        $sheet->getCell('C1')->setValue('English');
+        $sheet->getCell('D1')->setValue('French');
+        $sheet->getCell('E1')->setValue('German');
+        $sheet->getCell('F1')->setValue('Spanish');
+        $sheet->getCell('G1')->setValue('Russian');
 
         $sheet->fromArray($data, null, 'A2', true);
         $total_rows = $sheet->getHighestRow();

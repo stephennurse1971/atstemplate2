@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 use App\Form\ImportType;
-use App\Services\CompetitorsImportService;
+use App\Services\ImportCompetitorsService;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
@@ -115,6 +115,7 @@ class CompetitorsController extends AbstractController
         $competitors_list = $competitorsRepository->findAll();
         foreach ($competitors_list as $competitor) {
             $data[] = [
+                "Competitors",
                 $competitor->getName(),
                 $competitor->getType(),
                 $competitor->getTelephone(),
@@ -134,20 +135,21 @@ class CompetitorsController extends AbstractController
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Business Types');
-        $sheet->getCell('A1')->setValue('Name');
-        $sheet->getCell('B1')->setValue('Business Type');
-        $sheet->getCell('C1')->setValue('Telephone');
-        $sheet->getCell('D1')->setValue('Website');
-        $sheet->getCell('E1')->setValue('Address Street');
-        $sheet->getCell('F1')->setValue('Address City');
-        $sheet->getCell('G1')->setValue('Address Post Code');
-        $sheet->getCell('H1')->setValue('Address Country');
-        $sheet->getCell('I1')->setValue('Longitude');
-        $sheet->getCell('J1')->setValue('Latitude');
-        $sheet->getCell('K1')->setValue('LinkedIn');
-        $sheet->getCell('L1')->setValue('Facebook');
-        $sheet->getCell('M1')->setValue('Instagram');
-        $sheet->getCell('N1')->setValue('Twitter');
+        $sheet->getCell('A1')->setValue('Entity');
+        $sheet->getCell('B1')->setValue('Name');
+        $sheet->getCell('C1')->setValue('Business Type');
+        $sheet->getCell('D1')->setValue('Telephone');
+        $sheet->getCell('E1')->setValue('Website');
+        $sheet->getCell('F1')->setValue('Address Street');
+        $sheet->getCell('G1')->setValue('Address City');
+        $sheet->getCell('H1')->setValue('Address Post Code');
+        $sheet->getCell('I1')->setValue('Address Country');
+        $sheet->getCell('J1')->setValue('Longitude');
+        $sheet->getCell('K1')->setValue('Latitude');
+        $sheet->getCell('L1')->setValue('LinkedIn');
+        $sheet->getCell('M1')->setValue('Facebook');
+        $sheet->getCell('N1')->setValue('Instagram');
+        $sheet->getCell('O1')->setValue('Twitter');
 
         $sheet->fromArray($data, null, 'A2', true);
         $total_rows = $sheet->getHighestRow();
@@ -168,7 +170,7 @@ class CompetitorsController extends AbstractController
     /**
      * @Route ("/import", name="competitors_import" )
      */
-    public function businessTypesImport(Request $request, SluggerInterface $slugger, CompetitorsRepository $competitorsRepository, CompetitorsImportService $competitorsImportService): Response
+    public function businessTypesImport(Request $request, SluggerInterface $slugger, CompetitorsRepository $competitorsRepository, ImportCompetitorsService $competitorsImportService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);
@@ -190,7 +192,7 @@ class CompetitorsController extends AbstractController
                 return $this->redirectToRoute('competitors_index');
             }
         }
-        return $this->render('BusinessContacts/import.html.twig', [
+        return $this->render('home/import.html.twig', [
             'form' => $form->createView(),
             'heading' => 'Competitors Import',
         ]);

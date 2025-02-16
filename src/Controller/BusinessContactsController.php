@@ -376,6 +376,7 @@ class BusinessContactsController extends AbstractController
         foreach ($business_contact_list as $business_contact) {
             $concatenatedNotes = "Exported on: " . $exported_date_formatted;
             $data[] = [
+                "BusinessContacts",
                 $business_contact->getStatus(),
                 $business_contact->getBusinessOrPerson(),
                 $business_contact->getBusinessType()->getBusinessType(),
@@ -395,38 +396,33 @@ class BusinessContactsController extends AbstractController
                 $business_contact->getAddressCountry(),
 
                 $business_contact->getLocationLongitude(),
-                $business_contact->getLocationLatitude(),
-                $business_contact->getPublicPrivate(),
-                $concatenatedNotes,
-                $business_contact->getId()
+                $business_contact->getLocationLatitude()
             ];
         }
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Business Contacts');
-        $sheet->getCell('A1')->setValue('Status');
-        $sheet->getCell('B1')->setValue('Business Or Person');
-        $sheet->getCell('C1')->setValue('Business Type');
-        $sheet->getCell('D1')->setValue('Company');
-        $sheet->getCell('E1')->setValue('First Name');
+        $sheet->getCell('A1')->setValue('Entity');
+        $sheet->getCell('B1')->setValue('Status');
+        $sheet->getCell('C1')->setValue('Business Or Person');
+        $sheet->getCell('D1')->setValue('Business Type');
+        $sheet->getCell('E1')->setValue('Company');
+        $sheet->getCell('F1')->setValue('First Name');
 
-        $sheet->getCell('F1')->setValue('Last Name');
-        $sheet->getCell('G1')->setValue('Web Page');
-        $sheet->getCell('H1')->setValue('E-mail');
-        $sheet->getCell('I1')->setValue('Business Phone');
-        $sheet->getCell('J1')->setValue('Mobile Phone');
+        $sheet->getCell('G1')->setValue('Last Name');
+        $sheet->getCell('H1')->setValue('Web Page');
+        $sheet->getCell('I1')->setValue('E-mail');
+        $sheet->getCell('J1')->setValue('Business Phone');
+        $sheet->getCell('K1')->setValue('Mobile Phone');
 
-        $sheet->getCell('K1')->setValue('Business Street');
-        $sheet->getCell('L1')->setValue('Business City');
-        $sheet->getCell('M1')->setValue('Business County');
-        $sheet->getCell('N1')->setValue('Business Postal Code');
-        $sheet->getCell('O1')->setValue('Business Country/Region');
+        $sheet->getCell('L1')->setValue('Business Street');
+        $sheet->getCell('M1')->setValue('Business City');
+        $sheet->getCell('N1')->setValue('Business County');
+        $sheet->getCell('O1')->setValue('Business Postal Code');
+        $sheet->getCell('P1')->setValue('Business Country/Region');
 
-        $sheet->getCell('P1')->setValue('Location Longitude');
-        $sheet->getCell('Q1')->setValue('Location Latitude');
-        $sheet->getCell('R1')->setValue('Public or Private');
-        $sheet->getCell('S1')->setValue('Notes');
-        $sheet->getCell('T1')->setValue('Id');
+        $sheet->getCell('Q1')->setValue('Location Longitude');
+        $sheet->getCell('R1')->setValue('Location Latitude');
 
         $sheet->fromArray($data, null, 'A2', true);
         $total_rows = $sheet->getHighestRow();

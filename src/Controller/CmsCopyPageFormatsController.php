@@ -123,6 +123,7 @@ class CmsCopyPageFormatsController extends AbstractController
         $cms_copy_page_formats_list = $cmsCopyPageFormatsRepository->findAll();
         foreach ($cms_copy_page_formats_list as $cms_copy_page_format) {
             $data[] = [
+                'CMSCopyPageFormats',
                 $cms_copy_page_format->getName(),
                 $cms_copy_page_format->getDescription(),
                 $cms_copy_page_format->getUses(),
@@ -134,12 +135,13 @@ class CmsCopyPageFormatsController extends AbstractController
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('CMS Copy Page Formats');
-        $sheet->getCell('A1')->setValue('Name');
-        $sheet->getCell('B1')->setValue('Description');
-        $sheet->getCell('C1')->setValue('Uses');
-        $sheet->getCell('D1')->setValue('Pros');
-        $sheet->getCell('E1')->setValue('Cons');
-        $sheet->getCell('F1')->setValue('Code');
+        $sheet->getCell('A1')->setValue('Entity');
+        $sheet->getCell('B1')->setValue('Name');
+        $sheet->getCell('C1')->setValue('Description');
+        $sheet->getCell('D1')->setValue('Uses');
+        $sheet->getCell('E1')->setValue('Pros');
+        $sheet->getCell('F1')->setValue('Cons');
+        $sheet->getCell('G1')->setValue('Code');
 
         $sheet->fromArray($data, null, 'A2', true);
         $total_rows = $sheet->getHighestRow();

@@ -7,7 +7,7 @@ use App\Form\BusinessTypesType;
 use App\Form\ImportType;
 use App\Repository\BusinessTypesRepository;
 use App\Repository\MapIconsRepository;
-use App\Services\BusinessTypesImportService;
+use App\Services\ImportBusinessTypesService;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -171,6 +171,7 @@ class BusinessTypesController extends AbstractController
         $business_types_list = $businessTypesRepository->findAll();
         foreach ($business_types_list as $business_type) {
             $data[] = [
+                "BusinessTypes",
                 $business_type->getRanking(),
                 $business_type->getBusinessType(),
                 $business_type->getDescription(),
@@ -180,10 +181,11 @@ class BusinessTypesController extends AbstractController
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Business Types');
-        $sheet->getCell('A1')->setValue('Ranking');
-        $sheet->getCell('B1')->setValue('Business Type');
-        $sheet->getCell('C1')->setValue('Description');
-        $sheet->getCell('D1')->setValue('Map Icon');
+        $sheet->getCell('A1')->setValue('Entity');
+        $sheet->getCell('B1')->setValue('Ranking');
+        $sheet->getCell('C1')->setValue('Business Type');
+        $sheet->getCell('D1')->setValue('Description');
+        $sheet->getCell('E1')->setValue('Map Icon');
 
         $sheet->fromArray($data, null, 'A2', true);
         $total_rows = $sheet->getHighestRow();
@@ -205,7 +207,7 @@ class BusinessTypesController extends AbstractController
      * @Route ("/import/BusinessTypes", name="business_types_import" )
      */
     public
-    function businessTypesImport(Request $request, SluggerInterface $slugger, BusinessTypesRepository $businessTypesRepository, BusinessTypesImportService $businessTypesImportService): Response
+    function businessTypesImport(Request $request, SluggerInterface $slugger, BusinessTypesRepository $businessTypesRepository, ImportBusinessTypesService $businessTypesImportService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);

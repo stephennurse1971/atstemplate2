@@ -7,7 +7,7 @@ use App\Repository\LanguagesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class LanguagesImportService
+class ImportLanguagesService
 {
     private LanguagesRepository $languagesRepository;
 
@@ -38,15 +38,16 @@ class LanguagesImportService
             fclose($handle);
         }
         foreach ($alldataFromCsv as $oneLineFromCsv) {
-            $ranking = trim($oneLineFromCsv[0]);
-            $isActive = trim($oneLineFromCsv[1]);
-            $languageName = trim($oneLineFromCsv[2]);
-            $abbreviation = trim($oneLineFromCsv[3]);
-            $linkedInOther = trim($oneLineFromCsv[4]);
-            $icon = trim($oneLineFromCsv[5]);
+            $entity = trim($oneLineFromCsv[0]);
+            $ranking = trim($oneLineFromCsv[1]);
+            $isActive = trim($oneLineFromCsv[2]);
+            $languageName = trim($oneLineFromCsv[3]);
+            $abbreviation = trim($oneLineFromCsv[4]);
+            $linkedInOther = trim($oneLineFromCsv[5]);
+            $icon = trim($oneLineFromCsv[6]);
 
             $previous_language = $this->languagesRepository->findOneBy(['language' => $languageName]);
-            if (!$previous_language) {
+            if (!$previous_language and $entity=='Languages') {
                 $language = new Languages();
                 $language->setRanking($ranking)
                     ->setIsActive($isActive)
