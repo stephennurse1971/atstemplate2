@@ -6,11 +6,9 @@ use App\Entity\CmsCopy;
 use App\Form\CmsCopyType;
 use App\Form\ImportType;
 use App\Repository\CmsCopyRepository;
-use App\Repository\CompanyDetailsRepository;
 use App\Repository\PhotoLocationsRepository;
 use App\Repository\ProductRepository;
 use App\Services\ImportCMSCopyService;
-use App\Services\ImportCompanyDetailsService;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -188,13 +186,21 @@ class CmsCopyController extends AbstractController
      */
     public function delete(Request $request, CmsCopy $cmsCopy, EntityManagerInterface $entityManager): Response
     {
+        $referer = $request->headers->get('referer');
+        $fileName = $cmsCopy->getAttachment();
+        $file = $this->getParameter('cms_copy_attachments_directory') . $fileName;
+        if (file_exists($file)) {
+            unlink($file);
+        }
+        $cmsCopy->setAttachment(null);
+        $entityManager->flush();
+
         if ($this->isCsrfTokenValid('delete' . $cmsCopy->getId(), $request->request->get('_token'))) {
             $entityManager = $this->entityManager;
             $entityManager->remove($cmsCopy);
             $entityManager->flush();
         }
-
-        return $this->redirectToRoute('cms_copy_index');
+        return $this->redirect($referer);
     }
 
     /**

@@ -1,0 +1,5 @@
+{% if CompanyDetailsService.getCompanyDetails.userIncludeHomeAddress == 1 %}
+    <td style="text-align: right; color: green">
+        {{ user.homeStreet }}, {{ user.homeCity }} {{ user.homePostalCode }} {{ user.homeCountry }}
+    </td>
+{% endif %}

@@ -1,24 +1,28 @@
-{% extends 'base.html.twig' %}
-{% block title %}Website Contacts{% endblock %}
-
 {% block body %}
-<h1>Welcome</h1>
 
-<p>Welcome to {{ company_name }}!</p>
+    <h2>Welcome to {{ CompanyDetailsService.companyDetails.companyName }}</h2>
+    <p>
+        Please click on the link below to verify your email address.<br>
+        <a class="btn btn-success btn-sm" href="{{ verifyEmailURL }}">Verify E-mail</a>
+    </p>
 
-<h2>Requested Products:</h2>
-{% if products_requested is empty %}
-    <p>No products were requested.</p>
-{% else %}
-    <ul>
-        {% for product_requested in products_requested %}
-            <li>{{ product_requested.product }}</li>
-        {% else %}
-            <li>No products requested.</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+    {% if products_requested_email is not empty %}
+        <h2>Topics</h2>
+        <ul>
+            {% for product_requested in products_requested_email %}
+                <h4><b>{{ product_requested.product.product }}</b></h4>
+                {{ product_requested.product.newClientEmail|raw }}
+                <hr><br>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
-<p>Kind regards,<br>XYZ</p>
+    <p>
+        Kind regards,
+        <br>
+        {{ CompanyDetailsService.companyDetails.contactFirstName }} {{ CompanyDetailsService.companyDetails.contactLastName }}
+    </p>
+
+    {% include 'website_contacts/footer.html.twig' %}
 {% endblock %}
 

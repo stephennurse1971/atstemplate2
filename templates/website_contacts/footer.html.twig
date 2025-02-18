@@ -1,0 +1,4 @@
+{% if CompanyDetailsService.companyDetails.companyQrCode is not null %}
+    {% set qrCode = asset('/administration/Attachments/Favicons/'~CompanyDetailsService.companyDetails.companyQrCode) %}
+    <img height="50" width="50" src="{{ qrCode }}">
+{% endif %}

@@ -23,7 +23,7 @@
         </div>
 
         {% if business_contact.photo is not empty %}
-            <h4>Photo</h4>
+            <h4>Logo</h4>
             {% set photo = asset('/administration/Attachments/BusinessContacts/Photos/'~business_contact.photo) %}
             <a class="btn btn-outline-danger btn-sm" target="_blank"
                href="{{ path('view_business_contact_photo', {id:business_contact.id}) }}">
@@ -32,7 +32,7 @@
             <br>
             <b>{{ business_contact.photo }}</b><br>
             <a class="btn btn-sm btn-outline-danger mb-1"
-               href="{{ path('business_contact_delete_photo_file', {'id': business_contact.id }) }} ">Delete photo</a>
+               href="{{ path('business_contact_delete_photo_file', {'id': business_contact.id }) }} ">Delete logo</a>
         {% endif %}
         <div class="business_contact_photo_container">
             {{ form_row(form.photo) }}
@@ -77,7 +77,9 @@
                    href="{{ path('business_contact_show_attachment',{id : business_contact.id}) }}">
                     <i class="fa fa-paperclip"></i></a>
                 <br>
+
                 <b>{{ business_contact.files }}</b><br>
+
                 <a class="btn btn-sm btn-outline-danger"
                    href="{{ path('business_contact_delete_attachment_file', {'id': business_contact.id }) }} ">Delete
                     file</a>

@@ -24,118 +24,163 @@
         </tr>
 
         {% if business_contact.firstName is not empty %}
-        <tr>
-            <th> Name</th>
-            <td>{{ business_contact.firstName }} {{ business_contact.LastName }}</td>
-        </tr>
+            <tr>
+                <th> Name</th>
+                <td>{{ business_contact.firstName }} {{ business_contact.LastName }}</td>
+            </tr>
         {% endif %}
 
-        {% if business_contact.email is not empty %}
-        <tr>
-            <th>Email</th>
-            <td>
-                {% if business_contact.email is not null %}
-                    <a title="{{ business_contact.email }}" href="mailto:{{ business_contact.email }}"
-                       class="action" data-id="{{ business_contact.id }}"
-                       data-action="Email"><i
-                                class="fas fa-envelope"> </i>
-                        {{ business_contact.email }}
-                    </a>
-                {% endif %}
-            </td>
-        </tr>
-        {% endif %}
 
-        {% if business_contact.website is not empty %}
-        <tr>
-            <th>Website</th>
-            <td>
-                {% if business_contact.website|length >1 %}
-                    {% if business_contact.website starts with 'http' %}
-                        {% set business_contact_website = business_contact.website %}
-                    {% else %}
-                        {% set business_contact_website = 'https://'~ business_contact.website %}
+
+
+        {% if business_contact.email is not empty or is_granted('ROLE_ADMIN') %}
+            {% if business_contact.email|length>1 %}
+                {% set colour = "black" %}
+            {% else %}
+                {% set colour = "red" %}
+            {% endif %}
+            <tr>
+                <th style="color: {{ colour }}">Email</th>
+                <td>
+                    {% if business_contact.email is not null %}
+                        <a title="{{ business_contact.email }}" href="mailto:{{ business_contact.email }}"
+                           class="action" data-id="{{ business_contact.id }}"
+                           data-action="Email"><i
+                                    class="fas fa-envelope"> </i>
+                            {{ business_contact.email }}
+                        </a>
                     {% endif %}
-                    <a data-title="{{ business_contact_website }}" target="_blank"
-                       title="{{ business_contact_website }}"
-                       href="{{ business_contact_website }}" class="action"
-                       data-id="{{ business_contact.id }}" data-action="Website">
-                        <i class="fas fa-link"> </i></a>
-                {% endif %}
-            </td>
-
-
-        </tr>
+                </td>
+            </tr>
         {% endif %}
 
-        {% if business_contact.mobile is not empty %}
-        <tr>
-            <th>Mobile</th>
-            <td>
-                {% if business_contact.mobile is not null %}
-                    <a title="{{ business_contact.mobile }}" target="_blank"
-                       href="https://wa.me/{{ business_contact.mobile|replace({' ': ''}) }}"
-                       class="action"
-                       data-id="{{ business_contact.id }}"
-                       data-action="WhatsApp">
-                        <i class="fab fa-whatsapp" style="color:green; text-align: center"></i></a>
-                    {{ business_contact.mobile }}
-                {% endif %}
-            </td>
-        </tr>
+
+
+
+
+        {% if business_contact.website is not empty or is_granted('ROLE_ADMIN') %}
+            {% if business_contact.website|length>1 %}
+                {% set colour = "black" %}
+            {% else %}
+                {% set colour = "red" %}
+            {% endif %}
+            <tr>
+                <th style="color: {{ colour }}">Website</th>
+                <td>
+                    {% if business_contact.website|length >1 %}
+                        {% if business_contact.website starts with 'http' %}
+                            {% set business_contact_website = business_contact.website %}
+                        {% else %}
+                            {% set business_contact_website = 'https://'~ business_contact.website %}
+                        {% endif %}
+                        <a data-title="{{ business_contact_website }}" target="_blank"
+                           title="{{ business_contact_website }}"
+                           href="{{ business_contact_website }}" class="action"
+                           data-id="{{ business_contact.id }}" data-action="Website">
+                            <i class="fas fa-link"> </i>
+                            {{ business_contact.website }}
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
         {% endif %}
 
-        {% if business_contact.landline is not empty %}
-        <tr>
-            <th>Landline</th>
-            <td>
-                {% if business_contact.landline is not null %}
-                    <a title="{{ business_contact.landline }}"
-                       href="tel:{{ business_contact.landline|replace({' ': ''}) }}" class="action"
-                       data-id="{{ business_contact.id }}"
-                       data-action="Phone">
-                        <i class="fa fa-phone" style="color:green; text-align: center"></i></a>
-                    {{ business_contact.landline }}
-                {% endif %}
-            </td>
-        </tr>
+
+
+
+        {% if business_contact.mobile is not empty or is_granted('ROLE_ADMIN') %}
+            {% if business_contact.mobile|length>1 %}
+                {% set colour = "black" %}
+            {% else %}
+                {% set colour = "red" %}
+            {% endif %}
+            <tr>
+                <th style="color: {{ colour }}">Mobile</th>
+                <td>
+                    {% if business_contact.mobile is not null %}
+                        <a title="{{ business_contact.mobile }}" target="_blank"
+                           href="https://wa.me/{{ business_contact.mobile|replace({' ': ''}) }}"
+                           class="action"
+                           data-id="{{ business_contact.id }}"
+                           data-action="WhatsApp">
+                            <i class="fab fa-whatsapp" style="color:green; text-align: center"></i></a>
+                        {{ business_contact.mobile }}
+                    {% endif %}
+                </td>
+            </tr>
         {% endif %}
 
-        {% if business_contact.addressStreet is not empty %}
-        <tr>
-            <th>Address</th>
-            <td>
-                {% if business_contact.addressStreet is not empty %}
-                    {{ business_contact.addressStreet }},
-                    {{ business_contact.addressCity }},
-                    {{ business_contact.addressPostCode }}
-                {% endif %}
-            </td>
-        </tr>
+
+
+        {% if business_contact.landline is not empty or is_granted('ROLE_ADMIN') %}
+            {% if business_contact.landline|length>1 %}
+                {% set colour = "black" %}
+            {% else %}
+                {% set colour = "red" %}
+            {% endif %}
+            <tr>
+                <th style="color: {{ colour }}">Landline</th>
+                <td>
+                    {% if business_contact.landline is not null %}
+                        <a title="{{ business_contact.landline }}"
+                           href="tel:{{ business_contact.landline|replace({' ': ''}) }}" class="action"
+                           data-id="{{ business_contact.id }}"
+                           data-action="Phone">
+                            <i class="fa fa-phone" style="color:green; text-align: center"></i></a>
+                        {{ business_contact.landline }}
+                    {% endif %}
+                </td>
+            </tr>
         {% endif %}
+
+
+
+        {% if business_contact.addressStreet is not empty or is_granted('ROLE_ADMIN') %}
+            {% if business_contact.addressStreet|length>1  %}
+                {% set colour = "black" %}
+            {% else %}
+                {% set colour = "red" %}
+            {% endif %}
+            <tr>
+                <th style="color: {{ colour }}">Address</th>
+                <td>
+                    {% if business_contact.addressStreet is not empty %}
+                        {{ business_contact.addressStreet }},
+                        {{ business_contact.addressCity }},
+                        {{ business_contact.addressPostCode }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endif %}
+
 
         {% if is_granted('ROLE_ADMIN') or business_contact.locationLongitude|length >1 %}
-        <tr>
-            <th>Map</th>
-            <td>
-                {% if business_contact.locationLongitude is empty %}
-                    {% if is_granted('ROLE_STAFF') %}
-                        <button class="btn btn-primary btn-sm"
-                                onclick="getLocation('{{ business_contact.id }}')">
-                            Get Coordinates
-                        </button>
+            {% if business_contact.locationLongitude|length>1 %}
+                {% set colour = "black" %}
+            {% else %}
+                {% set colour = "red" %}
+            {% endif %}
+            <tr>
+                <th style="color: {{ colour }}">Map</th>
+                <td>
+                    {% if business_contact.locationLongitude is empty  %}
+                        {% if is_granted('ROLE_STAFF') %}
+                            <button class="btn btn-primary btn-sm"
+                                    onclick="getLocation('{{ business_contact.id }}')">
+                                Get Coordinates
+                            </button>
+                        {% else %}
+                            -
+                        {% endif %}
                     {% else %}
-                        -
+                        <a target="_blank"
+                           href="{{ path('show_location_google_maps',{id: business_contact.id}) }}"
+                           class="action" data-id="{{ business_contact.id }}"
+                           data-action="Map">
+                            <i title="Go to map" class='fas fa-map-marker-alt text-danger'></i></a>
                     {% endif %}
-                {% else %}
-                    <a target="_blank"
-                       href="{{ path('show_location_google_maps',{id: business_contact.id}) }}"
-                       class="action" data-id="{{ business_contact.id }}"
-                       data-action="Map">
-                        <i title="Go to map" class='fas fa-map-marker-alt text-danger'></i></a>
-                {% endif %}
-            </td>
-        </tr>
+                </td>
+            </tr>
         {% endif %}
 
 
@@ -151,8 +196,15 @@
         </tr>
         </tbody>
     </table>
+    <hr>
 
-    <a class="btn btn-outline-primary btn-sm" href="{{ path('business_contacts_index') }}">Return to list</a>
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('business_contacts_index') }}"> << </a>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a class="btn btn-outline-danger btn-sm" target="_blank"
+           href="{{ path('business_contacts_edit', {'id': business_contact.id}) }}">
+            <i style="color: red" class="fa fa-pen"></i>
+        </a>
+    {% endif %}
 {% endblock %}
 
 {% block datatable %}

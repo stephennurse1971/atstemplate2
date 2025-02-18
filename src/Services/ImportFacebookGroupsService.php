@@ -8,7 +8,7 @@ use App\Repository\FacebookGroupsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class FacebookGroupsImportService
+class ImportFacebookGroupsService
 {
     public function importFacebookGroups(string $fileName)
     {

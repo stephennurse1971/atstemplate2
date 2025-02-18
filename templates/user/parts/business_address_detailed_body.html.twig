@@ -1,0 +1,6 @@
+{% if CompanyDetailsService.getCompanyDetails.userIncludeBusinessAddress == 1 %}
+    <td style="text-align: right; color: blue">{{ user.businessStreet }}</td>
+    <td style="text-align: right; color: blue">{{ user.businessCity }}</td>
+    <td style="text-align: right; color: blue">{{ user.businessPostalCode }}</td>
+    <td style="text-align: right; color: blue">{{ user.businessCountry }}</td>
+{% endif %}

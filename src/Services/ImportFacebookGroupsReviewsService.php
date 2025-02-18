@@ -8,15 +8,10 @@ use App\Repository\FacebookGroupsReviewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class FacebookGroupsReviewsImportService
+class ImportFacebookGroupsReviewsService
 {
     public function importFacebookGroupsReviews(string $fileName)
     {
-        $name = '';
-        $reviewer = '';
-        $date = '';
-        $comments = '';
-
         $filepath = $this->container->getParameter('facebook_groups_reviews_import_directory');
         $fullpath = $filepath . $fileName;
         $alldataFromCsv = [];

@@ -16,7 +16,6 @@ twig:
     LanguagesService: '@App\Services\LanguagesService'
     PhotoAuthorsByLocation: '@App\Services\PhotoAuthorsByLocation'
     ProductService: '@App\Services\ProductService'
-    TranslationsImportService: '@App\Services\TranslationsImportService'
     TranslationsWorkerService: '@App\Services\TranslationsWorkerService'
     WeatherService: '@App\Services\WeatherService'
 

@@ -31,7 +31,7 @@ class CmsPhotoType extends AbstractType
             ->add('rotate', ChoiceType::class, [
                 'label' => $this->translationsWorker->getTranslations('Rotate'),
                 'multiple' => false,
-                'data'=>'0',
+                'required' => true,
                 'expanded' => true,
                 'choices' => [
                     '0' => '0',

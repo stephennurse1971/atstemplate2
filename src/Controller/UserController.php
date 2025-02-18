@@ -39,7 +39,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/", name="user_index", methods={"GET"})
+     * @Route("/index", name="user_index", methods={"GET"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function index(UserRepository $userRepository): Response
@@ -85,7 +85,7 @@ class UserController extends AbstractController
     public function new(MailerInterface $mailer, Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user, ['email1' => $user->getEmail(), 'email2' => $user->getEmail2(), 'user' => $user]);
+        $form = $this->createForm(UserType::class, $user);
         $roles = $this->getUser()->getRoles();
 
         $form->handleRequest($request);
@@ -160,7 +160,7 @@ class UserController extends AbstractController
         if ($this->getUser()->getId() == $id || $hasAccess) {
             $old_password = $user->getPassword();
             $roles = $user->getRoles();
-            $form = $this->createForm(UserType::class, $user, ['email1' => $user->getEmail(), 'email2' => $user->getEmail2(), 'user' => $user]);
+            $form = $this->createForm(UserType::class, $user);
 
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
@@ -332,8 +332,7 @@ class UserController extends AbstractController
      * @Route("/reset_user_password/{userId}", name="reset_user_password", methods={"GET"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public
-    function resetUserPasswords(Request $request, $userId, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager): Response
+    public function resetUserPasswords(Request $request, $userId, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager): Response
     {
 
         if ($userId != 'All') {
@@ -450,7 +449,7 @@ class UserController extends AbstractController
         $sheet->getCell('V1')->setValue('Business phone');
         $sheet->getCell('W1')->setValue('Home Phone1');
         $sheet->getCell('X1')->setValue('Home Phone2');
-        $sheet->getCell('Y1')->setValue('Email1');
+        $sheet->getCell('Y1')->setValue('Email');
         $sheet->getCell('Z1')->setValue('Email2');
         $sheet->getCell('AA1')->setValue('Email3');
 

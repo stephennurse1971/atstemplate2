@@ -56,6 +56,7 @@
 {% block datatable %}
     <script>
         $(document).ready(function () {
+            $('table:not(.cke_editable table)').DataTable();
             $('.table').DataTable({
                 'pageLength': 100,
                 "order": [[0, 'asc']],

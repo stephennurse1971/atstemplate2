@@ -25,17 +25,19 @@
     {% set language= user.defaultLanguage.language %}
 {% endif %}
 
-                {% if CompanyDetailsService.companyDetails.multiLingual ==1 %}
-                    <td style="text-align: center" data-sort="{{ language }}">
-                        {% if user.defaultLanguage is not null %}
-                            {% set image = asset('administration/ATSSharedFiles/LanguageIcons/'~ user.defaultLanguage.icon) %}
-                            <img title="{{ user.defaultLanguage.language }}" height="30" width="30" src="{{ image }}">
-                        {% endif %}
-                    </td>
-                {% endif %}
+{% if CompanyDetailsService.companyDetails.multiLingual ==1 %}
+    <td style="text-align: center" data-sort="{{ language }}">
+        {% if user.defaultLanguage is not null %}
+            {% set image = asset('administration/ATSSharedFiles/LanguageIcons/'~ user.defaultLanguage.icon) %}
+            <img title="{{ user.defaultLanguage.language }}" height="30" width="30" src="{{ image }}">
+        {% endif %}
+    </td>
+{% endif %}
+
 <td style="text-align: right">
     {{ CountUserLogsService.count(user.id)|number_format }}
 </td>
+
 <td>
     <a class="btn btn-outline-danger btn-sm" target="_blank"
        href="{{ path('user_edit', {'id': user.id}) }}">

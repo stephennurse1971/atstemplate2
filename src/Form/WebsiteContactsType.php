@@ -53,9 +53,8 @@ class WebsiteContactsType extends AbstractType
             ->add('status', ChoiceType::class, [
                 'multiple' => false,
                 'placeholder' => false,
-                'data'=>'Pending',
                 'expanded' => true,
-                'required' => false,
+                'required' => true,
                 'choices' => [
                     'Pending' => 'Pending',
                     'Accepted' => 'Accepted',

@@ -36,11 +36,17 @@
             if (category === 'Static') {
                 $(".static-container").show();
                 $(".product-container").hide();
+                $('#cms_photo_product').val('');
             } else {
                 $(".static-container").hide();
+                $('#cms_photo_staticPageName').val('');
                 $(".product-container").show();
             }
         })
+
+        $("[id^='cms_photo_photoOrVideo_']").click(function () {
+            $(".rotate-input-field").toggle($(this).val() !== 'Video');
+        });
 
         var photo_present = $("#cms_photo_photo").val();
             if ($('#cms_photo_id').attr('src') && $('#cms_photo_id').attr('src') !== '') {

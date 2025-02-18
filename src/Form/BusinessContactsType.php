@@ -31,7 +31,7 @@ class BusinessContactsType extends AbstractType
                 ],])
 
             ->add('photo', FileType::class, [
-                'label' => $this->translationsWorker->getTranslations('Photo'),
+                'label' => $this->translationsWorker->getTranslations('Logo'),
                 'mapped' => false,
                 'required' => false
             ])

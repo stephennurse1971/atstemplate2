@@ -6,7 +6,7 @@ use App\Entity\Translation;
 use App\Form\ImportType;
 use App\Form\TranslationType;
 use App\Repository\TranslationRepository;
-use App\Services\TranslationsImportService;
+use App\Services\ImportTranslationsService;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -151,7 +151,7 @@ class TranslationController extends AbstractController
     /**
      * @Route("/import", name="translation_import")
      */
-    public function translationImport(Request $request,SluggerInterface $slugger, TranslationRepository $translationRepository, TranslationsImportService $translationsImportService): Response
+    public function translationImport(Request $request, SluggerInterface $slugger, TranslationRepository $translationRepository, ImportTranslationsService $translationsImportService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);

@@ -7,7 +7,7 @@ use App\Form\FacebookGroupsReviewsType;
 use App\Form\ImportType;
 use App\Repository\FacebookGroupsRepository;
 use App\Repository\FacebookGroupsReviewsRepository;
-use App\Services\FacebookGroupsReviewsImportService;
+use App\Services\ImportFacebookGroupsReviewsService;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -189,7 +189,7 @@ class FacebookGroupsReviewsController extends AbstractController
     /**
      * @Route ("/import", name="facebook_groups_reviews_import" )
      */
-    public function facebookGroupsReviewsImport(Request $request, SluggerInterface $slugger,  FacebookGroupsReviewsRepository $facebookGroupsReviewsRepository, FacebookGroupsReviewsImportService $facebookGroupsReviewsImportService): Response
+    public function facebookGroupsReviewsImport(Request $request, SluggerInterface $slugger, FacebookGroupsReviewsRepository $facebookGroupsReviewsRepository, ImportFacebookGroupsReviewsService $facebookGroupsReviewsImportService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);

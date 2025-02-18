@@ -9,7 +9,7 @@ use App\Repository\BusinessTypesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class BusinessContactsImportService
+class ImportBusinessContactsService
 {
     public function importBusinessContacts(string $fileName)
     {

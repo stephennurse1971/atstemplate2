@@ -157,6 +157,12 @@ class WebsiteContacts
         return $this;
     }
 
+    public function setProductsRequested(Collection $productsRequested): self
+    {
+        $this->productsRequested = $productsRequested;
+
+        return $this;
+    }
 
 
 }

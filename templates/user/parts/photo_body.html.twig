@@ -1,0 +1,11 @@
+{% if CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails == 1 %}
+    <td>
+        {% if user.photo is not empty %}
+            {% set loc = asset(user_photos_directory ~ user.photo) %}
+            <a class="btn btn-outline-danger btn-sm" target="_blank"
+               href="{{ path('user_photo_view', {'id': user.id}) }}">
+                <img height="50" width="50" src="{{ loc }}"></a>
+            <br>
+        {% endif %}
+    </td>
+{% endif %}

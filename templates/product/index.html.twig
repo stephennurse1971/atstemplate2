@@ -10,6 +10,7 @@
         <thead>
         <tr>
             <th>Rank</th>
+            <th>ID</th>
             <th style="width: 60px"></th>
             <th style="width: 240px">Product</th>
             <th>Main/<br>Sub</th>
@@ -27,7 +28,8 @@
         <tbody>
         {% for product in products %}
             <tr>
-                <td style="text-align: center">{{ product.ranking *1 }}</td>
+                <td style="text-align: center">{{ product.ranking }}</td>
+                <td style="text-align: center">{{ product.id }}</td>
                 <td>
                     <a class="btn btn-outline-success btn-sm"
                        href="{{ path('product_change_ranking', {'id':product.id, 'change':'Up'}) }}">

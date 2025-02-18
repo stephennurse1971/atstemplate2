@@ -7,7 +7,7 @@ use App\Form\BusinessContactsType;
 use App\Form\ImportType;
 use App\Repository\BusinessContactsRepository;
 use App\Repository\BusinessTypesRepository;
-use App\Services\BusinessContactsImportService;
+use App\Services\ImportBusinessContactsService;
 use App\Services\CompanyDetailsService;
 use App\Services\CountBusinessContactsService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -525,7 +525,7 @@ class BusinessContactsController extends AbstractController
     /**
      * @Route ("/import/BusinessContacts", name="business_contacts_import" )
      */
-    public function businessContactsImport(Request $request, SluggerInterface $slugger, BusinessContactsRepository $businessContactsRepository, BusinessContactsImportService $businessContactsImportService): Response
+    public function businessContactsImport(Request $request, SluggerInterface $slugger, BusinessContactsRepository $businessContactsRepository, ImportBusinessContactsService $businessContactsImportService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);
@@ -649,7 +649,7 @@ class BusinessContactsController extends AbstractController
      * @Route("/importContacts", name="importContacts")
      */
     public
-    function userImportContacts(Request $request, SluggerInterface $slugger, BusinessContactsImportService $businessContactsImportService): Response
+    function userImportContacts(Request $request, SluggerInterface $slugger, ImportBusinessContactsService $businessContactsImportService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);

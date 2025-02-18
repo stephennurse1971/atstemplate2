@@ -8,7 +8,7 @@ use App\Repository\CmsCopyPageFormatsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class CmsPageCopyPageFormatImportService
+class ImportCmsPageCopyPageFormatService
 {
     public function importCmsCopyPageFormats(string $fileName)
     {

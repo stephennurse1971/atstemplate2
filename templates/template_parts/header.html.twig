@@ -4,6 +4,13 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-gray-100 fixed-top shadow">
         <div class="container-fluid">
             <div class="logo">
+                <a class="navbar-brand" href="{{ path('app_home') }}">
+                    {% if CompanyDetailsService.getCompanyDetails is not null %}
+                        <a style="color: black" href="{{ path('app_home') }}">
+                            <i class="fa fa-home"></i><span>    </span> {{ CompanyDetailsService.getCompanyDetails.companyName }}
+                        </a>
+                    {% endif %}
+                </a>
                 {% if is_granted('ROLE_ADMIN') %}
                     {% if CompanyDetailsService.getCompanyDetails is not null %}
                         <a target="_blank" href="{{ path('company_details_edit', {'id': '1'}) }}">
@@ -19,13 +26,7 @@
                         </a>
                     {% endif %}
                 {% endif %}
-                <a class="navbar-brand" href="{{ path('app_home') }}">
-                    {% if CompanyDetailsService.getCompanyDetails is not null %}
-                        <a style="color: black" href="{{ path('app_home') }}">
-                            {{ CompanyDetailsService.getCompanyDetails.companyName }}
-                        </a>
-                    {% endif %}
-                </a>
+
             </div>
 
             <button class=" navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -37,11 +38,11 @@
                 <ul class="navbar-nav ml-auto ">
 
                     <!-- Nav Item #1 - Home -->
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ path('app_home') }}">
-                            <i class="fa fa-home"></i>
-                        </a>
-                    </li>
+{#                    <li class="nav-item active">#}
+{#                        <a class="nav-link" href="{{ path('app_home') }}">#}
+{#                            <i class="fa fa-home"></i>#}
+{#                        </a>#}
+{#                    </li>#}
 
                     <!-- Nav Item #2 - Dashboard -->
                     {% if is_granted('ROLE_ADMIN') %}

@@ -8,7 +8,9 @@
 
 {% block body %}
     <h1 style="color: red">Edit: {{business_contact.company }}</h1>
+    {% if business_contact.locationLatitude is empty %}
     <button class="btn btn-primary " onclick="getLocation()">Get Coordinates</button>
+    {% endif %}
 
     {{ include('business_contacts/_form.html.twig', {'button_label': 'Update'}) }}
 

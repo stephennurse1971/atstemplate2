@@ -8,7 +8,7 @@ use App\Form\ImportType;
 use App\Repository\CompanyDetailsRepository;
 use App\Repository\FacebookGroupsRepository;
 use App\Repository\FacebookGroupsReviewsRepository;
-use App\Services\FacebookGroupsImportService;
+use App\Services\ImportFacebookGroupsService;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -192,7 +192,7 @@ class FacebookGroupsController extends AbstractController
     /**
      * @Route ("/import", name="facebook_groups_import" )
      */
-    public function facebookGroupsImport(Request $request, SluggerInterface $slugger, FacebookGroupsRepository $facebookGroupsRepository, FacebookGroupsImportService $facebookGroupsImportService): Response
+    public function facebookGroupsImport(Request $request, SluggerInterface $slugger, ImportFacebookGroupsService $importFacebookGroupsService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);
@@ -210,7 +210,7 @@ class FacebookGroupsController extends AbstractController
                 } catch (FileException $e) {
                     die('Import failed');
                 }
-                $facebookGroupsImportService->importFaceBookGroups($newFilename);
+                $importFacebookGroupsService->importFaceBookGroups($newFilename);
                 return $this->redirectToRoute('facebook_groups_index');
             }
         }

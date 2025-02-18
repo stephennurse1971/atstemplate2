@@ -34,9 +34,6 @@
                 <li style="margin-left: 20px">
                     <a target="_blank" href="{{ path('cms_copy_page_formats_index') }}">CMS Page Format</a>
                 </li>
-                <li style="margin-left: 20px">
-                    <a target="_blank" href="{{ path('map_icons_index') }}">Map Icons</a>
-                </li>
             </div>
         </div>
         {% if CompanyDetailsService.companyDetails is not null %}
@@ -166,6 +163,11 @@
                         <li style="margin-left: 20px">
                             <a target="_blank" href="{{ path('referrals_index') }}">Referrals Log</a>
                         </li>
+                        <hr>
+                        <li style="margin-left: 20px">
+                            <a target="_blank" href="{{ path('map_icons_index') }}">Map Icons</a>
+                        </li>
+
                     </div>
                 </div>
             {% endif %}
@@ -199,11 +201,15 @@
                     </li>
                     <li style="margin-left: 20px">
                         <a href="">Clear all Import files and directories</a>
-                        {clear administration/Import
+                        <i title="Clear Administration->Import" class="fa fa-info-circle"></i>
                     </li>
                     <li style="margin-left: 20px">
-                        <a href="">Clear all Attachment files</a>
-                        Clear admin/Attachments
+                        <a href="{{ path('delete_all_files_directories_in_import') }}">Clear all Attachment files</a>
+                        <i title="Clear Admin/Attachments" class="fa fa-info-circle"></i>
+
+                    </li>
+                    <li style="margin-left: 20px">
+                        <a href="{{ path('project_set_up_initial_import') }}">Project Set Up Import</a>
                     </li>
                 </div>
             </div>

@@ -18,15 +18,16 @@
        {% endif %}
 
 
-       var category = $("#cms_copy_category").val();
-       if(category==='Static'){
-           $(".static-container").show();
-           $(".product-container").hide();
-       }
-       else{
-           $(".static-container").hide();
-           $(".product-container").show();
-       }
+       // var category = $("#cms_copy_category").val();
+       // if(category==='Static'){
+       //     $(".static-container").show();
+       //
+       //     $(".product-container").hide();
+       // }
+       // else{
+       //     $(".static-container").hide();
+       //     $(".product-container").show();
+       // }
        $("#cms_copy_category").change(function (){
            var category = $(this).val();
            if(category==='Static'){

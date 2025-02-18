@@ -1,0 +1,18 @@
+<td>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('business_contacts_show', {'id': business_contact.id}) }}">{{ business_contact.company }}</a>
+    {% else %}
+        <a href="{{ path('business_contacts_show', {'id': business_contact.id}) }}">{{ business_contact.company }}</a>
+    {% endif %}
+</td>
+{% if list_or_map=='map' %}
+    <td style="width: 20px"></td>
+{% endif %}
+<td>
+    {% if business_contact.firstName is not empty or business_contact.lastName is not empty %}
+        <a href="{{ path('business_contacts_show', {'id': business_contact.id}) }}">
+            <i style="color: grey" class="fa fa-user"></i>
+            {{ business_contact.firstName }} {{ business_contact.LastName }}
+        </a>
+    {% endif %}
+</td>

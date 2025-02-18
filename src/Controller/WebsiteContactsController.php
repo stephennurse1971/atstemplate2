@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Route("/website/contacts")
@@ -41,8 +42,21 @@ class WebsiteContactsController extends AbstractController
      */
     public function index(WebsiteContactsRepository $websiteContactsRepository, UserRepository $userRepository, CheckIfUserService $checkIfUser): Response
     {
+        $websiteContacts = $websiteContactsRepository->findAll();
+        foreach ($websiteContacts as $websiteContact) {
+            // Fetch productsRequested for each websiteContact
+            $productsRequested = $websiteContact->getProductsRequested()->toArray();
+
+            // Sort products by Ranking (using usort)
+            usort($productsRequested, function($a, $b) {
+                return $a->getRanking() <=> $b->getRanking();
+            });
+
+            // Set the sorted products back to the website contact (optional)
+            $websiteContact->setProductsRequested(new ArrayCollection($productsRequested));
+        }
         return $this->render('website_contacts/index.html.twig', [
-            'website_contacts' => $websiteContactsRepository->findAll(),
+            'website_contacts' => $websiteContacts,
             'Users' => $userRepository->findAll()
         ]);
     }
@@ -137,6 +151,16 @@ class WebsiteContactsController extends AbstractController
         $company_name = $companyDetailsService->getCompanyDetails()->getCompanyName();
         $products_request = $websiteContact->getProductsRequested();
 
+        $products_requested_email = [];
+
+        foreach ($products_request as $product) {
+            $clientEmail = $product->getNewClientEmail();
+            $products_requested_email[] = [
+                'product' => $product,
+                'client_email' => $clientEmail
+            ];
+        }
+
         // Proper comparison with '=='
         if ($new_status == "Junk") {
             $websiteContact->setStatus('Junk');
@@ -159,11 +183,12 @@ class WebsiteContactsController extends AbstractController
                 ->setPassword('password')  // Make sure to set a secure password
                 ->setRoles(['ROLE_USER']);
 
-            // Sending the email
+            $verifyEmailURL =  "http://" . $_SERVER['HTTP_HOST'] . "/verify/email/" . $new_user->getId();
             $html = $this->renderView('website_contacts/welcome_new_website_contacts_email.html.twig', [
                 'contact' => $websiteContact,
-                'products_requested' => $products_request,
-                'company_name' => $company_name
+                'company_name' => $company_name,
+                'products_requested_email' => $products_requested_email,
+                'verifyEmailURL' => $verifyEmailURL,
             ]);
 
             $email = (new Email())

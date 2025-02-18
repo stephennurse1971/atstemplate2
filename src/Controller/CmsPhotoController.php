@@ -184,12 +184,23 @@ class CmsPhotoController extends AbstractController
      */
     public function delete(Request $request, CmsPhoto $cmsPhoto, EntityManagerInterface $entityManager): Response
     {
+        $referer = $request->headers->get('referer');
+        $file_name = $cmsPhoto->getPhoto();
+        if ($file_name) {
+            $file = $this->getParameter('cms_photos_directory') . $file_name;
+            if (file_exists($file)) {
+                unlink($file);
+            }
+            $cmsPhoto->setPhoto('');
+            $entityManager->flush();
+        }
+
         if ($this->isCsrfTokenValid('delete' . $cmsPhoto->getId(), $request->request->get('_token'))) {
             $entityManager = $this->entityManager;
             $entityManager->remove($cmsPhoto);
             $entityManager->flush();
         }
-        return $this->redirectToRoute('cms_photo_index');
+        return $this->redirect($referer);
     }
 
     /**

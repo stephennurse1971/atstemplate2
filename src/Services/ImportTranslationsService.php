@@ -7,7 +7,7 @@ use App\Repository\TranslationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class TranslationsImportService
+class ImportTranslationsService
 {
     public function importTranslations(string $fileName)
     {

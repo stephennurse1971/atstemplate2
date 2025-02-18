@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Languages;
 use App\Entity\User;
+use App\Repository\LanguagesRepository;
+use App\Repository\ProductRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -50,8 +52,13 @@ class UserType extends AbstractType
             ->add('defaultLanguage', EntityType::class, [
                 'class' => Languages::class,
                 'required' => false,
-                'choice_label' => 'language'
+                'choice_label' => 'language',
+                'query_builder' => function (LanguagesRepository $er) {
+                    return $er->createQueryBuilder('p')
+                        ->orderBy('p.ranking', 'ASC');
+                }
             ])
+
             ->add('linkedIn', TextType::class, [
                 'required' => false
             ])

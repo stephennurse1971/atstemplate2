@@ -13,24 +13,30 @@
 {% block additionaljs %}
     <script>
         var category = $("#cms_photo_category").val();
-        if(category==='Static'){
+        if (category === 'Static') {
             $(".static-container").show();
             $(".product-container").hide();
-        }
-        else{
+        } else {
             $(".static-container").hide();
             $(".product-container").show();
         }
-        $("#cms_photo_category").change(function (){
+        $("#cms_photo_category").change(function () {
             var category = $(this).val();
-            if(category==='Static'){
+            if (category === 'Static') {
                 $(".static-container").show();
                 $(".product-container").hide();
-            }
-            else{
+                $('#cms_photo_product').val('');
+            } else {
                 $(".static-container").hide();
+                $('#cms_photo_staticPageName').val('');
                 $(".product-container").show();
             }
         })
+
+
+        $("[id^='cms_photo_photoOrVideo_']").click(function () {
+            $(".rotate-input-field").toggle($(this).val() !== 'Video');
+        });
+
     </script>
 {% endblock %}
