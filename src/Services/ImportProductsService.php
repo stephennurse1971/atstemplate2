@@ -12,12 +12,22 @@ class ImportProductsService
 {
     public function importProducts(string $fileName)
     {
-        $name = '';
-        $link = '';
-        $comment = '';
+        $directories = [
+            $this->container->getParameter('products_import_directory'),
+            $this->container->getParameter('project_set_up_import_directory')
+        ];
+        $fullpath = null;
+        foreach ($directories as $directory) {
+            $potentialPath = $directory . DIRECTORY_SEPARATOR . $fileName;
+            if (file_exists($potentialPath)) {
+                $fullpath = $potentialPath;
+                break;
+            }
+        }
+        if (!$fullpath) {
+            throw new \Exception("File not found in either directory: $fileName");
+        }
 
-        $filepath = $this->container->getParameter('product_import_directory');
-        $fullpath = $filepath . $fileName;
         $alldataFromCsv = [];
         $row = 0;
         if (($handle = fopen($fullpath, "r")) !== FALSE) {
@@ -52,7 +62,7 @@ class ImportProductsService
 
             if (!$product and $entity=='Products') {
                 $product = new Product();
-                $product->setRanking($ranking)
+                $product->setRanking((int)$ranking)
                     ->setCategory($category)
                     ->setProduct($productName)
                     ->setIsActive($isActive)

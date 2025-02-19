@@ -14,12 +14,23 @@ class ImportCMSCopyService
 {
     public function importCMSCopy(string $fileName)
     {
-        $name = '';
-        $link = '';
-        $comment = '';
+        $directories = [
+            $this->container->getParameter('cms_copy_import_directory'),
+            $this->container->getParameter('project_set_up_import_directory')
+        ];
+        $fullpath = null;
+        foreach ($directories as $directory) {
+            $potentialPath = $directory . DIRECTORY_SEPARATOR . $fileName;
+            if (file_exists($potentialPath)) {
+                $fullpath = $potentialPath;
+                break;
+            }
+        }
+        if (!$fullpath) {
+            throw new \Exception("File not found in either directory: $fileName");
+        }
 
-        $filepath = $this->container->getParameter('cms_copy_import_directory');
-        $fullpath = $filepath . $fileName;
+        $alldataFromCsv = [];
         $alldataFromCsv = [];
         $row = 0;
         if (($handle = fopen($fullpath, "r")) !== FALSE) {
@@ -70,15 +81,15 @@ class ImportCMSCopyService
                 'tabTitle'=>$tabTitle
             ]);
 
-            if (!$cms_copy and $entity != 'CMSCopy') {
+            if (!$cms_copy and $entity == 'CMSCopy') {
                 $cms_copy = new CmsCopy();
                 $cms_copy->setCategory($category)
                     ->setProduct($product)
-                    ->setRanking($ranking)
+                    ->setRanking((int)$ranking)
                     ->setHyperlinks($hyperlink)
                     ->setAttachment($attachment)
-                    ->setPageCountUsers($pageCountUser)
-                    ->setPageCountAdmin($pageCountAdmin)
+                    ->setPageCountUsers((int)$pageCountUser)
+                    ->setPageCountAdmin((int)$pageCountAdmin)
                     ->setPageLayout($pageLayout)
                     ->setTabTitle($tabTitle)
                     ->setTabTitleFR($tabTitleFR)

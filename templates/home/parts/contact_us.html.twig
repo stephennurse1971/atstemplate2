@@ -14,9 +14,11 @@
         outline: none;
         background: transparent;
     }
-    .user-box .form-control:focus{
+
+    .user-box .form-control:focus {
         color: black !important;
     }
+
     .user-box label {
         /*position: absolute;*/
         /*top: 0;*/
@@ -58,14 +60,17 @@
             </div>
 
             <div class="user-box">
-                {{ form_label(form.mobile, 'Phone', { 'label_attr': {'class': 'form-label'} }) }}<sup style="padding-left:5px">*</sup>
+                {{ form_label(form.mobile, 'Phone', { 'label_attr': {'class': 'form-label'} }) }}<sup
+                        style="padding-left:5px">*</sup>
                 {{ form_widget(form.mobile, { 'attr': {'class': 'form-control', 'required': 'required'} }) }}
             </div>
 
-            <div class="user-box-radio">
-                <label class="pr-5">Interested in:</label>
-                {{ form_row(form.productsRequested) }}
-            </div>
+            {% if ProductService.getProductContactFormCount() >1 %}
+                <div class="user-box-radio">
+                    <label class="pr-5">Interested in:</label>
+                    {{ form_row(form.productsRequested) }}
+                </div>
+            {% endif %}
 
             <div class="user-box">
                 {{ form_label(form.notes, 'Message', { 'label_attr': {'class': 'form-label pr-5'} }) }}

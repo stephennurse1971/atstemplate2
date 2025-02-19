@@ -67,4 +67,15 @@ class ProductService
     {
         $this->productRepository = $productRepository;
     }
+
+
+
+
+    public function getProductContactFormCount(): int
+    {
+        return $this->productRepository->countProductsInContactForm();
+    }
+
+
+
 }

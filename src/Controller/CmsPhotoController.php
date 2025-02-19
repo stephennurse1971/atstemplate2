@@ -60,7 +60,7 @@ class CmsPhotoController extends AbstractController
             $photo = $form->get('photo')->getData();
             if ($photo) {
                 $uniqueId = uniqid(); // Generates a unique ID
-                $uniqueId3digits = substr($uniqueId, 0, 3);
+                $uniqueId3digits = substr($uniqueId, 10, 3);
                 $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
                 if ($cmsPhoto->getProduct()) {
                     $safeFilename = $cmsPhoto->getProduct()->getProduct() . '_' . $cmsPhoto->getRanking() . '_' . $uniqueId3digits;
@@ -120,13 +120,13 @@ class CmsPhotoController extends AbstractController
             if ($photo) {
                 $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
                 $uniqueId = uniqid(); // Generates a unique ID
-                $uniqueId3digits = substr($uniqueId, 0, 3); // Extracts the first 3 digits
+                $uniqueId3digits = substr($uniqueId, 10, 3); // Extracts the first 3 digits
 
                 if ($cmsPhoto->getProduct()) {
-                    $safeFilename = $cmsPhoto->getProduct()->getProduct() . '_' . $cmsPhoto->getRanking() . '_' . $uniqueId;
+                    $safeFilename = $cmsPhoto->getProduct()->getProduct() . '_' . $cmsPhoto->getRanking() . '_' . $uniqueId3digits;
                 }
                 if ($cmsPhoto->getStaticPageName()) {
-                    $safeFilename = $cmsPhoto->getStaticPageName() . '_' . $cmsPhoto->getRanking() . '_' . $uniqueId;
+                    $safeFilename = $cmsPhoto->getStaticPageName() . '_' . $cmsPhoto->getRanking() . '_' . $uniqueId3digits;
                 }
                 $newFilename = $safeFilename . '.' . $photo->guessExtension();
                 try {
@@ -218,6 +218,47 @@ class CmsPhotoController extends AbstractController
             $cmsPhoto->setPhoto('');
             $entityManager->flush();
         }
+        return $this->redirect($referer);
+    }
+
+
+    /**
+     * @Route("/cms_photo_update_ranking", name="cms_photo_update_ranking", methods={"GET", "POST"})
+     */
+    public function updateCMSPhotoRanking(CmsPhotoRepository $cmsPhotoRepository, Request $request, EntityManagerInterface $manager): Response
+    {
+        $referer = $request->headers->get('Referer');
+        $cms_photos = $cmsPhotoRepository->findAll();
+
+        // Group photos by product ID or StaticPageName
+        $groupedPhotos = [];
+        foreach ($cms_photos as $photo) {
+            if ($photo->getProduct() !== null) {
+                $groupKey = $photo->getProduct()->getId(); // Use product ID if available
+            } elseif (!empty($photo->getStaticPageName())) {
+                $groupKey = $photo->getStaticPageName(); // Use StaticPageName if product is null
+            } else {
+                $groupKey = 'default'; // Fallback if both are missing
+            }
+
+            $groupedPhotos[$groupKey][] = $photo;
+        }
+
+        // Sort and re-rank within each group
+        foreach ($groupedPhotos as $groupKey => $photos) {
+            // Sort by current ranking
+            usort($photos, fn($a, $b) => $a->getRanking() <=> $b->getRanking());
+
+            // Assign new consecutive rankings
+            $rank = 1;
+            foreach ($photos as $photo) {
+                $photo->setRanking($rank);
+                $rank++;
+            }
+        }
+
+        $manager->flush(); // Persist all changes at once
+
         return $this->redirect($referer);
     }
 

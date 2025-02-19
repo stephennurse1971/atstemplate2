@@ -13,8 +13,8 @@
             <th>Title</th>
             <th>Content</th>
             <th>Image</th>
-            <th>#</th>
-            <th>#</th>
+            <th style="width: 25px"></th>
+            <th style="width: 25px"></th>
         </tr>
         </thead>
         <tbody>
@@ -37,7 +37,9 @@
                 </td>
                 <td>
                     <a class="btn btn-outline-danger btn-sm"
-                       href="{{ path('sub_page_edit', {'id': sub_page.id}) }}">Edit</a>
+                       href="{{ path('sub_page_edit', {'id': sub_page.id}) }}">
+                        <i class="fa fa-pen"></i>
+                    </a>
                 </td>
                 <td>
                     <form method="post" action="{{ path('sub_page_delete', {'id': sub_page.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">

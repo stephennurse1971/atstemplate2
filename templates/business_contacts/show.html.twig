@@ -17,15 +17,26 @@
 
     <table class="table">
         <tbody>
-
+        {% if business_contact.company is not empty or is_granted('ROLE_ADMIN') %}
+        {% if business_contact.company|length>1 %}
+            {% set colour = "black" %}
+        {% else %}
+            {% set colour = "red" %}
+        {% endif %}
         <tr>
-            <th>Company</th>
+            <th style="color: black">Company</th>
             <td>{{ business_contact.company }}</td>
         </tr>
+        {% endif %}
 
-        {% if business_contact.firstName is not empty %}
+        {% if business_contact.firstName is not empty or is_granted('ROLE_ADMIN') %}
+            {% if business_contact.firstName|length>1 %}
+                {% set colour = "black" %}
+            {% else %}
+                {% set colour = "red" %}
+            {% endif %}
             <tr>
-                <th> Name</th>
+                <th style="color: {{ colour }}"> Name</th>
                 <td>{{ business_contact.firstName }} {{ business_contact.LastName }}</td>
             </tr>
         {% endif %}
@@ -185,9 +196,7 @@
 
 
         <tr>
-            <th>
-                VCF
-            </th>
+            <th style="color: black">VCF</th>
             <td>
                 <a href="{{ path('create_vcard', {id: business_contact.id} ) }}" class="action"
                    data-id="{{ business_contact.id }}"

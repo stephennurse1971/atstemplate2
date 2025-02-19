@@ -88,7 +88,7 @@
                 <td>{{ cms_photo.photo }}</td>
                 <td style="text-align: center">
                     {% if cms_photo.rotate is not null or cms_photo.rotate is not empty or cms_photo.rotate !=0 %}
-                        {{ cms_photo.rotate }} <span style="font-size: small">o</span>
+                        {{ cms_photo.rotate }} <span style="font-size: small">&deg;</span>
                     {% endif %}
                 </td>
                 <td>
@@ -160,10 +160,10 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 "pageLength": 100,
-                "order": [[0, 'desc'], [1, 'asc'], [5, 'asc']],
+                "order": [[0, 'desc'], [1, 'asc'], [6, 'asc']],
                 "paging": false,
                 "searching": false,
-                "bInfo": false
+                "bInfo": true
             });
         });
     </script>

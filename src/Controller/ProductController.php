@@ -254,7 +254,7 @@ class ProductController extends AbstractController
                 $newFilename = $safeFilename . '.' . 'csv';
                 try {
                     $importFile->move(
-                        $this->getParameter('product_import_directory'),
+                        $this->getParameter('products_import_directory'),
                         $newFilename
                     );
                 } catch (FileException $e) {

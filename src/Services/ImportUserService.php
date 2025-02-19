@@ -10,11 +10,25 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ImportUserService
 {
-    public function importUser(string $fileName)
+    public function importUsers(string $fileName)
     {
-        $filepath = $this->container->getParameter('users_import_directory');
-        $fullpath = $filepath . $fileName;
-        $all_data_from_csv = [];
+        $directories = [
+            $this->container->getParameter('users_import_directory'),
+            $this->container->getParameter('project_set_up_import_directory')
+        ];
+        $fullpath = null;
+        foreach ($directories as $directory) {
+            $potentialPath = $directory . DIRECTORY_SEPARATOR . $fileName;
+            if (file_exists($potentialPath)) {
+                $fullpath = $potentialPath;
+                break;
+            }
+        }
+        if (!$fullpath) {
+            throw new \Exception("File not found in either directory: $fileName");
+        }
+
+        $alldataFromCsv = [];
         $row = 0;
 
         if (($handle = fopen($fullpath, "r")) !== FALSE) {

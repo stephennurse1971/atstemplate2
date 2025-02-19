@@ -12,14 +12,23 @@ class ImportCmsPageCopyPageFormatService
 {
     public function importCmsCopyPageFormats(string $fileName)
     {
-        $name = '';
-        $description = '';
-        $uses = '';
-        $pros = '';
-        $cons = '';
+        $directories = [
+            $this->container->getParameter('cms_copy_page_formats_import_directory'),
+            $this->container->getParameter('project_set_up_import_directory')
+        ];
+        $fullpath = null;
+        foreach ($directories as $directory) {
+            $potentialPath = $directory . DIRECTORY_SEPARATOR . $fileName;
+            if (file_exists($potentialPath)) {
+                $fullpath = $potentialPath;
+                break;
+            }
+        }
+        if (!$fullpath) {
+            throw new \Exception("File not found in either directory: $fileName");
+        }
 
-        $filepath = $this->container->getParameter('cms_copy_page_formats_import_directory');
-        $fullpath = $filepath . $fileName;
+        $alldataFromCsv = [];
         $alldataFromCsv = [];
         $row = 0;
         if (($handle = fopen($fullpath, "r")) !== FALSE) {

@@ -62,12 +62,14 @@ class CmsCopyController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $attachment = $form->get('attachment')->getData();
             if ($attachment) {
+                $uniqueId = uniqid(); // Generates a unique ID
+                $uniqueId3digits = substr($uniqueId, 10, 3);
                 $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
                 if ($cmsCopy->getProduct()) {
-                    $safeFilename = $cmsCopy->getProduct()->getProduct() . uniqid();
+                    $safeFilename = $cmsCopy->getProduct()->getProduct() . '_' . $cmsCopy->getRanking() . '_' . $uniqueId3digits;
                 }
                 if ($cmsCopy->getStaticPageName()) {
-                    $safeFilename = $cmsCopy->getStaticPageName() . uniqid();
+                    $safeFilename = $cmsCopy->getStaticPageName() . '_' . $cmsCopy->getRanking() . '_' . $uniqueId3digits ;
                 }
                 $newFilename = $safeFilename . '.' . $attachment->guessExtension();
                 try {
@@ -118,7 +120,15 @@ class CmsCopyController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $attachment = $form->get('attachment')->getData();
             if ($attachment) {
+                $uniqueId = uniqid(); // Generates a unique ID
+                $uniqueId3digits = substr($uniqueId, 10, 3);
                 $originalFilename = pathinfo($attachment->getClientOriginalName(), PATHINFO_FILENAME);
+                if ($cmsCopy->getProduct()) {
+                    $safeFilename = $cmsCopy->getProduct()->getProduct() . '_' . $cmsCopy->getRanking() . '_' . $uniqueId3digits;
+                }
+                if ($cmsCopy->getStaticPageName()) {
+                    $safeFilename = $cmsCopy->getStaticPageName() . '_' . $cmsCopy->getRanking() . '_' . $uniqueId3digits ;
+                }
                 $newFilename = $originalFilename . '.' . $attachment->guessExtension();
                 try {
                     $attachment->move(
@@ -180,6 +190,47 @@ class CmsCopyController extends AbstractController
 
     }
 
+
+
+    /**
+     * @Route("/cms_copy_update_ranking", name="cms_copy_update_ranking", methods={"GET", "POST"})
+     */
+    public function updateCMSPhotoRanking(CmsCopyRepository $cmsCopyRepository, Request $request, EntityManagerInterface $manager): Response
+    {
+        $referer = $request->headers->get('Referer');
+        $cms_copys = $cmsCopyRepository->findAll();
+
+        // Group copy by product ID or StaticPageName
+        $groupedCopys = [];
+        foreach ($cms_copys as $cms_copy) {
+            if ($cms_copy->getProduct() !== null) {
+                $groupKey = $cms_copy->getProduct()->getId(); // Use product ID if available
+            } elseif (!empty($cms_copy->getStaticPageName())) {
+                $groupKey = $cms_copy->getStaticPageName(); // Use StaticPageName if product is null
+            } else {
+                $groupKey = 'default'; // Fallback if both are missing
+            }
+
+            $groupedCopys[$groupKey][] = $cms_copy;
+        }
+
+        // Sort and re-rank within each group
+        foreach ($groupedCopys as $groupKey => $copys) {
+            // Sort by current ranking
+            usort($copys, fn($a, $b) => $a->getRanking() <=> $b->getRanking());
+
+            // Assign new consecutive rankings
+            $rank = 1;
+            foreach ($copys as $copy) {
+                $copy->setRanking($rank);
+                $rank++;
+            }
+        }
+
+        $manager->flush(); // Persist all changes at once
+
+        return $this->redirect($referer);
+    }
 
     /**
      * @Route("/delete/{id}", name="cms_copy_delete", methods={"POST"})
@@ -277,9 +328,6 @@ class CmsCopyController extends AbstractController
         }
         return $this->redirect($referer);
     }
-
-
-
 
 
     /**

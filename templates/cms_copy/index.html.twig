@@ -22,9 +22,9 @@
             <th style="width: 60px; border-right: dotted 1px">File</th>
             <th style="width: 20px">Count:<br>Users</th>
             <th style="width: 20px; border-right: dotted 1px">Count:<br>Admin</th>
-            <th style="width: 20px"></th>
-            <th style="width: 20px"></th>
-            <th style="width: 20px"></th>
+            <th style="width: 25px"></th>
+            <th style="width: 25px"></th>
+            <th style="width: 25px"></th>
         </tr>
         </thead>
         <tbody>
@@ -111,7 +111,7 @@
                            href="{{ path('cms_copy_show_attachment',{id : cms_copy.id }) }}">
                             <i class="fa fa-paperclip"></i>
                         </a>
-                        <a class="d-inline btn btn-outline-danger btn-sm" target="_blank"
+                        <a class="d-inline btn btn-outline-danger btn-sm"
                            href="{{ path('cms_copy_delete_file', {'id': cms_copy.id}) }}">
                             <i class="fa fa-trash"></i>
                         </a>
@@ -157,7 +157,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                 'pageLength': 100,
-                "order": [[0, 'desc'], [1, 'asc'], [2, 'asc']],
+                "order": [[0, 'desc'], [1, 'desc'], [2, 'asc'], [3, 'asc']],
                 "paging": false,
                 "searching": false,
                 "bInfo": false

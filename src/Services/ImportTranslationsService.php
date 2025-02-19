@@ -11,9 +11,23 @@ class ImportTranslationsService
 {
     public function importTranslations(string $fileName)
     {
-        $filepath = $this->container->getParameter('translations_import_directory');
-        $fullpath = $filepath . $fileName;
-        $alldatatsFromCsv = [];
+        $directories = [
+            $this->container->getParameter('translations_import_directory'),
+            $this->container->getParameter('project_set_up_import_directory')
+        ];
+        $fullpath = null;
+        foreach ($directories as $directory) {
+            $potentialPath = $directory . DIRECTORY_SEPARATOR . $fileName;
+            if (file_exists($potentialPath)) {
+                $fullpath = $potentialPath;
+                break;
+            }
+        }
+        if (!$fullpath) {
+            throw new \Exception("File not found in either directory: $fileName");
+        }
+
+        $alldataFromCsv = [];
         $row = 0;
         if (($handle = fopen($fullpath, "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {

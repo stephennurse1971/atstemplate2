@@ -39,6 +39,17 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
+    public function countProductsInContactForm(): int
+    {
+        return $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->where('p.includeInContactForm = :value')
+            ->setParameter('value', 1)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+
 //    /**
 //     * @return ProductService[] Returns an array of ProductService objects
 //     */

@@ -13,27 +13,23 @@ class ImportBusinessContactsService
 {
     public function importBusinessContacts(string $fileName)
     {
-        $status = '';
-        $businessOrPerson = '';
-        $businessType = '';
-        $company = '';
-        $firstName = '';
-        $lastName = '';
-        $website = '';
-        $email = '';
-        $landline = '';
-        $mobile = '';
-        $addressStreet = '';
-        $addressCity = '';
-        $addressCounty = '';
-        $addressPostCode = '';
-        $addressCountry = '';
-        $locationLongitude = '';
-        $locationLatitude = '';
-        $notes = '';
+        $directories = [
+            $this->container->getParameter('business_contacts_import_directory'),
+            $this->container->getParameter('project_set_up_import_directory')
+        ];
+        $fullpath = null;
+        foreach ($directories as $directory) {
+            $potentialPath = $directory . DIRECTORY_SEPARATOR . $fileName;
+            if (file_exists($potentialPath)) {
+                $fullpath = $potentialPath;
+                break;
+            }
+        }
+        if (!$fullpath) {
+            throw new \Exception("File not found in either directory: $fileName");
+        }
 
-        $filepath = $this->container->getParameter('business_contacts_import_directory');
-        $fullpath = $filepath . $fileName;
+        $alldataFromCsv = [];
         $alldataFromCsv = [];
         $row = 0;
         if (($handle = fopen($fullpath, "r")) !== FALSE) {
@@ -69,6 +65,7 @@ class ImportBusinessContactsService
             $addressCountry = trim($oneLineFromCsv[15]);
             $locationLongitude = (float)trim($oneLineFromCsv[16]);
             $locationLatitude = (float)trim($oneLineFromCsv[17]);
+            $notes = trim($oneLineFromCsv[18]);
 
             $landline = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $landline);
             if ($landline != '') {
@@ -105,8 +102,7 @@ class ImportBusinessContactsService
                     ->setLocationLatitude($locationLatitude)
                     ->setNotes($notes)
                     ->setBusinessType($this->businessTypeRepository->findOneBy([
-                        'businessType' => $businessType])
-                    );
+                        'businessType' => $businessType]));
                 $this->manager->persist($businessContact);
                 $this->manager->flush();
             }

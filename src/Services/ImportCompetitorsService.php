@@ -4,8 +4,10 @@
 namespace App\Services;
 
 use App\Entity\BusinessContacts;
+use App\Entity\Competitors;
 use App\Repository\BusinessContactsRepository;
 use App\Repository\BusinessTypesRepository;
+use App\Repository\CompetitorsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -13,8 +15,23 @@ class ImportCompetitorsService
 {
     public function importCompetitors(string $fileName)
     {
-        $filepath = $this->container->getParameter('business_contacts_import_directory');
-        $fullpath = $filepath . $fileName;
+        $directories = [
+            $this->container->getParameter('competitors_import_directory'),
+            $this->container->getParameter('project_set_up_import_directory')
+        ];
+        $fullpath = null;
+        foreach ($directories as $directory) {
+            $potentialPath = $directory . DIRECTORY_SEPARATOR . $fileName;
+            if (file_exists($potentialPath)) {
+                $fullpath = $potentialPath;
+                break;
+            }
+        }
+        if (!$fullpath) {
+            throw new \Exception("File not found in either directory: $fileName");
+        }
+
+        $alldataFromCsv = [];
         $alldataFromCsv = [];
         $row = 0;
         if (($handle = fopen($fullpath, "r")) !== FALSE) {
@@ -32,25 +49,21 @@ class ImportCompetitorsService
             fclose($handle);
         }
         foreach ($alldataFromCsv as $oneLineFromCsv) {
-            $status = trim($oneLineFromCsv[0]);
-            $businessOrPerson = trim($oneLineFromCsv[1]);
+            $entity = trim($oneLineFromCsv[0]);
+            $companyName = trim($oneLineFromCsv[1]);
             $businessType = trim($oneLineFromCsv[2]);
-            $company = trim($oneLineFromCsv[3]);
-            $firstName = trim($oneLineFromCsv[4]);
-            $lastName = trim($oneLineFromCsv[5]);
-            $website = trim($oneLineFromCsv[6]);
-            $email = trim($oneLineFromCsv[7]);
-            $landline = trim($oneLineFromCsv[8]);
-            $mobile = trim($oneLineFromCsv[9]);
-            $addressStreet = trim($oneLineFromCsv[10]);
-            $addressCity = trim($oneLineFromCsv[11]);
-            $addressCounty = trim($oneLineFromCsv[12]);
-            $addressPostCode = trim($oneLineFromCsv[13]);
-            $addressCountry = trim($oneLineFromCsv[14]);
-            $locationLongitude = (float)trim($oneLineFromCsv[15]);
-            $locationLatitude = (float)trim($oneLineFromCsv[16]);
-            $publicPrivate = trim($oneLineFromCsv[17]);
-            $notes = trim($oneLineFromCsv[18]);
+            $tel = trim($oneLineFromCsv[3]);
+            $website = trim($oneLineFromCsv[4]);
+            $addressStreet = trim($oneLineFromCsv[5]);
+            $addressCity = trim($oneLineFromCsv[6]);
+            $addressPostCode = trim($oneLineFromCsv[7]);
+            $addressCountry = trim($oneLineFromCsv[8]);
+            $locationLongitude = (float)trim($oneLineFromCsv[9]);
+            $locationLatitude = (float)trim($oneLineFromCsv[10]);
+            $linkedIN = trim($oneLineFromCsv[11]);
+            $facebook = trim($oneLineFromCsv[12]);
+            $instagram = trim($oneLineFromCsv[13]);
+            $twitter = trim($oneLineFromCsv[14]);
             if (count($oneLineFromCsv) >= 31) {
                 $landline = trim($oneLineFromCsv[9]);
                 $landline = str_replace([' ', "(0)", "(", ")", "-", "Switchboard", "+"], "", $landline);
@@ -69,35 +82,27 @@ class ImportCompetitorsService
             if (count($oneLineFromCsv) < 91) {
                 $website = '';
             }
-            $businessContact = $this->businessContactsRepository->findOneBy([
-                'firstName' => $firstName,
-                'lastName' => $lastName,
-                'company' => $company,
+            $existing_competitor = $this->competitorsRepository->findOneBy([
+                'name' => $companyName,
             ]);
 
-            if (!$businessContact) {
-                $businessContact = new BusinessContacts();
-                $businessContact->setStatus($status)
-                    ->setBusinessOrPerson($businessOrPerson)
-                    ->setCompany($company)
-                    ->setFirstName($firstName)
-                    ->setLastName($lastName)
-                    ->setWebsite($website)
-                    ->setEmail($email)
-                    ->setLandline($landline)
-                    ->setMobile($mobile)
-                    ->setAddressStreet($addressStreet)
-                    ->setAddressCity($addressCity)
-                    ->setAddressCounty($addressCounty)
-                    ->setAddressPostCode($addressPostCode)
-                    ->setAddressCountry($addressCountry)
-                    ->setLocationLongitude($locationLongitude)
-                    ->setLocationLatitude($locationLatitude)
-                    ->setPublicPrivate($publicPrivate)
-                    ->setNotes($notes)
-                    ->setBusinessType($this->businessTypeRepository->findOneBy([
-                        'businessType' => $businessType])
-                    );
+            if (!$existing_competitor) {
+                $businessContact = new Competitors();
+                $businessContact->setName($companyName)
+                    ->setType($businessType)
+                    ->setTelephone($tel)
+                    ->setWebSite($website)
+                    ->setCompetitorAddressStreet($addressStreet)
+                    ->setCompetitorAddressCity($addressCity)
+                    ->setCompetitorAddressPostalCode($addressPostCode)
+                    ->setCompetitorAddressCountry($addressCountry)
+                    ->setCompetitorAddressLongitude($locationLongitude)
+                    ->setCompetitorAddressLatitude($locationLatitude)
+                    ->setLinkedIn($linkedIN)
+                    ->setFacebook($facebook)
+                    ->setInstagram($instagram)
+                    ->setTwitter($twitter)
+                    ;
                 $this->manager->persist($businessContact);
                 $this->manager->flush();
             }
@@ -107,11 +112,10 @@ class ImportCompetitorsService
         return null;
     }
 
-    public function __construct(BusinessContactsRepository $businessContactsRepository, BusinessTypesRepository $businessTypesRepository, ContainerInterface $container, EntityManagerInterface $manager)
+    public function __construct(CompetitorsRepository $competitorsRepository, ContainerInterface $container, EntityManagerInterface $manager)
     {
         $this->container = $container;
         $this->manager = $manager;
-        $this->businessContactsRepository = $businessContactsRepository;
-        $this->businessTypeRepository = $businessTypesRepository;
+        $this->competitorsRepository = $competitorsRepository;
     }
 }

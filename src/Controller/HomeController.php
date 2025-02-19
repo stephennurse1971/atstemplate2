@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\CmsPhoto;
 use App\Entity\User;
 use App\Entity\WebsiteContacts;
 use App\Form\ImportType;
@@ -10,7 +9,6 @@ use App\Form\WebsiteContactsType;
 use App\Repository\CmsCopyRepository;
 use App\Repository\CmsPhotoRepository;
 use App\Repository\CompanyDetailsRepository;
-use App\Repository\FacebookGroupsRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use App\Repository\SubPageRepository;
@@ -25,6 +23,7 @@ use App\Services\ImportFacebookGroupsService;
 use App\Services\ImportLanguagesService;
 use App\Services\ImportMapIconsService;
 use App\Services\ImportProductsService;
+use App\Services\ImportTranslationsService;
 use App\Services\ImportUsefulLinksService;
 use App\Services\ImportUserService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -299,7 +298,7 @@ class   HomeController extends AbstractController
     /**
      * @Route ("/import", name="project_set_up_initial_import" )
      */
-    public function projectSetUpInitialImport(Request $request, SluggerInterface $slugger, ImportBusinessContactsService $importBusinessContactsService, ImportBusinessTypesService $importBusinessTypesService, ImportCMSCopyService $importCMSCopyService, ImportCMSPhotoService $importCMSPhotoService, ImportCmsPageCopyPageFormatService $importCmsPageCopyPageFormatService, ImportCompanyDetailsService $importCompanyDetailsService, ImportCompetitorsService $importCompetitorsService, ImportFacebookGroupsService $importFacebookGroupsService, ImportLanguagesService $importLanguagesService, ImportMapIconsService $importMapIconsService, ImportProductsService $importProductsService, ImportUsefulLinksService $importUsefulLinksService, ImportUserService $importUserService): Response
+    public function projectSetUpInitialImport(Request $request, SluggerInterface $slugger, ImportTranslationsService $importTranslationsService , ImportBusinessContactsService $importBusinessContactsService, ImportBusinessTypesService $importBusinessTypesService, ImportCMSCopyService $importCMSCopyService, ImportCMSPhotoService $importCMSPhotoService, ImportCmsPageCopyPageFormatService $importCmsPageCopyPageFormatService, ImportCompanyDetailsService $importCompanyDetailsService, ImportCompetitorsService $importCompetitorsService, ImportFacebookGroupsService $importFacebookGroupsService, ImportLanguagesService $importLanguagesService, ImportMapIconsService $importMapIconsService, ImportProductsService $importProductsService, ImportUsefulLinksService $importUsefulLinksService, ImportUserService $importUserService): Response
     {
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);
@@ -317,21 +316,20 @@ class   HomeController extends AbstractController
                 } catch (FileException $e) {
                     die('Import failed');
                 }
-
                 $importCompanyDetailsService->importCompanyDetails($newFilename);
-                $importBusinessContactsService->importBusinessContacts($newFilename);
-                $importBusinessTypesService->importBusinessTypes($newFilename);
-                $importCMSCopyService->importCMSCopy($newFilename);
-                $importCMSPhotoService->importCMSPhoto($newFilename);
-
                 $importCmsPageCopyPageFormatService->importCmsCopyPageFormats($newFilename);
+                $importMapIconsService->importMapIcons($newFilename);
+                $importLanguagesService->importLanguages($newFilename);
+                $importTranslationsService->importTranslations($newFilename);
+                $importUsefulLinksService->importUsefulLink($newFilename);
                 $importCompetitorsService->importCompetitors($newFilename);
                 $importFacebookGroupsService->importFacebookGroups($newFilename);
-                $importLanguagesService->importLanguages($newFilename);
-                $importMapIconsService->importMapIcons($newFilename);
                 $importProductsService->importProducts($newFilename);
-                $importUsefulLinksService->importUsefulLink($newFilename);
-                $importUserService->importUser($newFilename);
+                $importCMSCopyService->importCMSCopy($newFilename);
+                $importCMSPhotoService->importCMSPhoto($newFilename);
+                $importBusinessTypesService->importBusinessTypes($newFilename);
+                $importBusinessContactsService->importBusinessContacts($newFilename);
+//                $importUserService->importUsers($newFilename);
 
                 return $this->redirectToRoute('dashboard');
             }
@@ -375,7 +373,6 @@ class   HomeController extends AbstractController
             }
         }
     }
-
 
 
 }

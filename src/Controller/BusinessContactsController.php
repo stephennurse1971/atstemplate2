@@ -153,11 +153,13 @@ class BusinessContactsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $photo = $form['photo']->getData();
             if ($photo) {
+                $uniqueId = uniqid(); // Generates a unique ID
+                $uniqueId3digits = substr($uniqueId, 10, 3); // Extracts the first 3 digits
                 $files_name = [];
                 $photo_directory = $this->getParameter('business_contacts_photos_directory');
                 $fileName = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
                 $file_extension = $photo->guessExtension();
-                $newFileName = $businessContact->getCompany() . "_" . $businessContact->getFirstName() . "_" . $businessContact->getLastName() . "." . $file_extension;
+                $newFileName = $businessContact->getCompany() . "_" . $uniqueId3digits. "." . $file_extension;
                 $photo->move($photo_directory, $newFileName);
                 $businessContact->setPhoto($newFileName);
             }
@@ -396,7 +398,8 @@ class BusinessContactsController extends AbstractController
                 $business_contact->getAddressCountry(),
 
                 $business_contact->getLocationLongitude(),
-                $business_contact->getLocationLatitude()
+                $business_contact->getLocationLatitude(),
+                $business_contact->getNotes()
             ];
         }
         $spreadsheet = new Spreadsheet();

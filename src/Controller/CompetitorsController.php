@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Competitors;
 use App\Form\CompetitorsType;
+use App\Repository\CmsCopyRepository;
 use App\Repository\CompetitorServiceRepository;
 use App\Repository\CompetitorsRepository;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -99,6 +101,21 @@ class CompetitorsController extends AbstractController
         return $this->redirectToRoute('competitors_index', [], Response::HTTP_SEE_OTHER);
     }
 
+
+    /**
+     * @Route("/competitors_delete_all", name="competitors_delete_all",)
+     */
+    public function deleteCmsCopyAllFiles(Request $request, CompetitorsRepository $competitorsRepository, EntityManagerInterface $entityManager): Response
+    {
+        $referer = $request->server->get('HTTP_REFERER');
+        $competitors = $competitorsRepository->findAll();
+
+        foreach ($competitors as $competitor) {
+            $entityManager->remove($competitor);
+            $entityManager->flush();
+        }
+        return $this->redirect($referer);
+    }
 
     /**
      * @Route ("/export", name="competitors_export" )

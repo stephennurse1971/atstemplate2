@@ -12,8 +12,22 @@ class ImportFacebookGroupsService
 {
     public function importFacebookGroups(string $fileName)
     {
-        $filepath = $this->container->getParameter('facebook_groups_import_directory');
-        $fullpath = $filepath . $fileName;
+        $directories = [
+            $this->container->getParameter('facebook_groups_import_directory'),
+            $this->container->getParameter('project_set_up_import_directory')
+        ];
+        $fullpath = null;
+        foreach ($directories as $directory) {
+            $potentialPath = $directory . DIRECTORY_SEPARATOR . $fileName;
+            if (file_exists($potentialPath)) {
+                $fullpath = $potentialPath;
+                break;
+            }
+        }
+        if (!$fullpath) {
+            throw new \Exception("File not found in either directory: $fileName");
+        }
+
         $alldataFromCsv = [];
         $row = 0;
         if (($handle = fopen($fullpath, "r")) !== FALSE) {
