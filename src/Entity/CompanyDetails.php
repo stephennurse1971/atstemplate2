@@ -4,6 +4,7 @@ namespace App\Entity;
 
 
 use App\Repository\CompanyDetailsRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompanyDetailsRepository::class)]
@@ -220,6 +221,12 @@ class CompanyDetails
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $websiteContactsAutoReply = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $contactFromResponse = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $defaultUserPassword = null;
 
 
 
@@ -964,6 +971,30 @@ class CompanyDetails
     public function setWebsiteContactsAutoReply(?string $websiteContactsAutoReply): static
     {
         $this->websiteContactsAutoReply = $websiteContactsAutoReply;
+
+        return $this;
+    }
+
+    public function getContactFromResponse(): ?string
+    {
+        return $this->contactFromResponse;
+    }
+
+    public function setContactFromResponse(?string $contactFromResponse): static
+    {
+        $this->contactFromResponse = $contactFromResponse;
+
+        return $this;
+    }
+
+    public function getDefaultUserPassword(): ?string
+    {
+        return $this->defaultUserPassword;
+    }
+
+    public function setDefaultUserPassword(?string $defaultUserPassword): static
+    {
+        $this->defaultUserPassword = $defaultUserPassword;
 
         return $this;
     }

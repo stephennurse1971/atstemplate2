@@ -59,6 +59,10 @@
             <button onclick="fillForm3()"><i class="fa fa-info-circle"> </i> stephen@stephen-nurse.com
                 (Unverified)
             </button>
+            <br>
+            <br>
+            <button onclick="fillForm4()"><i class="fa fa-info-circle"> </i> Tech Arete  (Unverified)
+            </button>
         {% endif %}
     {% else %}
         <b>Please set up your "Company Details" profile.</b>
@@ -80,6 +84,11 @@
         function fillForm3() {
             $("#inputEmail").val("stephen@stephen-nurse.com").change();
             $("#inputPassword").val("password").change();
+        }
+
+        function fillForm4() {
+            $("#inputEmail").val("techarrete@atts-systems.com").change();
+            $("#inputPassword").val("password123").change();
         }
     </script>
 {% endblock %}

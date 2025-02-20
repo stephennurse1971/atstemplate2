@@ -57,7 +57,7 @@ class WebsiteContactsType extends AbstractType
                 'required' => true,
                 'choices' => [
                     'Pending' => 'Pending',
-                    'Accepted' => 'Accepted',
+                    'Converted to User' => 'Converted to User',
                     'Spam' => 'Spam',
                 ],
             ])

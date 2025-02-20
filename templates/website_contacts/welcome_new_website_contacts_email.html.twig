@@ -1,10 +1,29 @@
 {% block body %}
-
     <h2>Welcome to {{ CompanyDetailsService.companyDetails.companyName }}</h2>
-    <p>
-        Please click on the link below to verify your email address.<br>
-        <a class="btn btn-success btn-sm" href="{{ verifyEmailURL }}">Verify E-mail</a>
-    </p>
+    {{ CompanyDetailsService.companyDetails.contactFromResponse|raw }}
+    <br>
+    <table role="presentation" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td align="center" bgcolor="#28a745" style="border-radius: 5px;">
+                <a href="{{ verifyEmailURL }}" target="_blank"
+                   style="display: inline-block; font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; color: #ffffff; text-decoration: none; background-color: #28a745; padding: 10px 20px; border-radius: 5px;">
+                    Verify E-mail
+                </a>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+    <br>
+    <hr>
+    <li>
+        <b>Name:</b> {{ website_contact.firstName }} {{ website_contact.lastName }}
+    </li>
+    <li>
+        <b>Login (email):</b> {{ website_contact.email }}
+    </li>
+
+    <hr>
 
     {% if products_requested_email is not empty %}
         <h2>Topics</h2>
@@ -17,11 +36,6 @@
         </ul>
     {% endif %}
 
-    <p>
-        Kind regards,
-        <br>
-        {{ CompanyDetailsService.companyDetails.contactFirstName }} {{ CompanyDetailsService.companyDetails.contactLastName }}
-    </p>
 
     {% include 'website_contacts/contact_details_signature.html.twig' %}
 {% endblock %}

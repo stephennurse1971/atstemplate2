@@ -148,8 +148,7 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
-    public
-    function edit(int $id, MailerInterface $mailer, Request $request, UserPasswordHasherInterface $passwordHasher, CmsCopyRepository $cmsCopyRepository, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    public function edit(int $id, MailerInterface $mailer, Request $request, UserPasswordHasherInterface $passwordHasher, CmsCopyRepository $cmsCopyRepository, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
     {
         $user = $userRepository->findOneBy([
             'id' => $id,
@@ -157,20 +156,27 @@ class UserController extends AbstractController
         $referer = $request->server->get('HTTP_REFERER');
         $hasAccess = in_array('ROLE_ADMIN', $this->getUser()->getRoles());
 
+
         if ($this->getUser()->getId() == $id || $hasAccess) {
             $old_password = $user->getPassword();
             $roles = $user->getRoles();
             $form = $this->createForm(UserType::class, $user);
+//            $form = $this->createForm(UserType::class, $user, [
+//                'data' => ['roles' => $user->getRoles()],
+//            ]);
 
+            // Handle form submission
             $form->handleRequest($request);
+
+            // Check if the form is submitted and valid
             if ($form->isSubmitted() && $form->isValid()) {
                 $referer = $request->request->get('referer');
-
                 $photo = $form->get('photo')->getData();
+
+                // Handle photo upload
                 if ($photo) {
-                    $uniqueId = uniqid(); // Generates a unique ID
-                    $uniqueId3 = substr($uniqueId, 0, 3);
-                    $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                    $uniqueId = uniqid();
+                    $uniqueId3 = substr($uniqueId, 10, 3);
                     $newFilename = $user->getFirstName() . '_' . $user->getLastName() . '_' . $uniqueId3 . '.' . $photo->guessExtension();
                     try {
                         $photo->move(
@@ -183,32 +189,37 @@ class UserController extends AbstractController
                     }
                 }
 
-                if ($form->has('role')) {
-                    $get_roles = $form->get('role')->getData();
+                // Handle role updates
+                if ($form->has('roles')) {
+                    $get_roles = $form->get('roles')->getData();
                     $roles = $get_roles;
                     $user->setRoles($roles);
                 }
 
+                // Update full name
                 $firstName = $user->getFirstName();
                 $lastName = $user->getLastName();
                 $user->setFullName($firstName . ' ' . $lastName);
 
-                if ($form->has('password')) {
-                    $password = $form->get('password')->getData();
+                // Check if the password is empty
+                $password = $form->get('password')->getData();
 
-                    if (!empty($password)) {
-                        // Use the new password hasher interface here
-                        $encodedPassword = $passwordHasher->hashPassword($user, $password);
-                        $user->setPassword($encodedPassword);
-                    } else {
-                        // Ensure password is set to an empty string if it's empty (no change to password)
-                        $user->setPassword('');  // Set to empty string, not null
-                    }
+                // Only update password if it is not empty
+                if (!empty($password)) {
+                    $encodedPassword = $passwordHasher->hashPassword($user, $password);
+                    $user->setPassword($encodedPassword);
+                } else {
+                    // Ensure the old password is preserved if the new one is empty
+                    $user->setPassword($old_password);
                 }
 
+                // Persist changes to database
                 $entityManager->flush();
+
                 return $this->redirect($referer);
             }
+
+            // Render the edit form
             return $this->render('user/edit.html.twig', [
                 'user' => $user,
                 'form' => $form->createView(),
@@ -217,6 +228,7 @@ class UserController extends AbstractController
             ]);
         }
 
+        // Redirect to the previous page or the user index if access is denied
         if ($referer) {
             return $this->redirect($referer);
         } else {
@@ -356,7 +368,6 @@ class UserController extends AbstractController
     }
 
 
-
     /**
      * @Route ("export", name="user_export" )
      * @Security("is_granted('ROLE_ADMIN')")
@@ -473,7 +484,6 @@ class UserController extends AbstractController
         $response->headers->set('Cache-Control', 'max-age=0');
         return $response;
     }
-
 
 
     /**

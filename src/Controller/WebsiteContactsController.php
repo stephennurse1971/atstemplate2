@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -48,7 +49,7 @@ class WebsiteContactsController extends AbstractController
             $productsRequested = $websiteContact->getProductsRequested()->toArray();
 
             // Sort products by Ranking (using usort)
-            usort($productsRequested, function($a, $b) {
+            usort($productsRequested, function ($a, $b) {
                 return $a->getRanking() <=> $b->getRanking();
             });
 
@@ -88,24 +89,7 @@ class WebsiteContactsController extends AbstractController
     }
 
 
-    #[NoReturn] #[Route('/new_website_contact_from_contact_form', name: 'new_website_contact_from_contact_form', methods: ['GET', 'POST'])]
-    public function newFromContact(Request $request, EntityManagerInterface $entityManager, ProductRepository $productRepository, WebsiteContactsRepository $websiteContactsRepository): Response
-    {
-        $now = new \DateTime('now');
-        $website_contact = new WebsiteContacts();
-        $form = $this->createForm(WebsiteContactsType::class, $website_contact);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $website_contact->setDateTime(new \DateTime('now'))
-                ->setStatus('Pending');
-            $entityManager->persist($website_contact);
-            $entityManager->flush();
-            $this->addFlash('success', 'Your contact request has been submitted.');
-            return $this->redirectToRoute('app_home');
-        }
-            return $this->redirectToRoute('app_home');
-    }
 
     /**
      * @Route("/show/{id}", name="website_contacts_show", methods={"GET"})
@@ -139,18 +123,47 @@ class WebsiteContactsController extends AbstractController
         ]);
     }
 
+    #[NoReturn] #[Route('/new_website_contact_from_contact_form', name: 'new_website_contact_from_contact_form', methods: ['GET', 'POST'])]
+    public function newFromContact(Request $request, EntityManagerInterface $entityManager, ProductRepository $productRepository, WebsiteContactsRepository $websiteContactsRepository, CompanyDetailsService $companyDetailsService): Response
+    {
+        $now = new \DateTime('now');
+        $automatic_reply = $companyDetailsService->getCompanyDetails()->getWebsiteContactsAutoReply();
+        $website_contact = new WebsiteContacts();
+        $form = $this->createForm(WebsiteContactsType::class, $website_contact);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $website_contact->setDateTime(new \DateTime('now'))
+                ->setStatus('Pending');
+            $entityManager->persist($website_contact);
+            $entityManager->flush();
+            $this->addFlash('success', 'Your contact request has been submitted.');
+            $website_contact_id = $website_contact->getId();
+            if($automatic_reply=="Auto") {
+                return $this->redirectToRoute('website_contacts_update_status', [
+                    'new_status' => 'New User',
+                    'id' => $website_contact_id
+                ]);
+            }
+        }
+            return $this->redirectToRoute('app_home');
+
+    }
+
+
     /**
      * @Route("/update_status/{new_status}/{id}", name="website_contacts_update_status", methods={"GET", "POST"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function updateWebsiteContact(Request $request, string $new_status, WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository, EntityManagerInterface $manager, CompanyDetailsService $companyDetailsService): Response
+    public function updateWebsiteContact(Request $request, string $new_status, WebsiteContacts $websiteContact, WebsiteContactsRepository $websiteContactsRepository, EntityManagerInterface $manager, CompanyDetailsService $companyDetailsService, UserPasswordHasherInterface $passwordHasher): Response
 
     {
         $referer = $request->headers->get('Referer');
         $company_email = $companyDetailsService->getCompanyDetails()->getCompanyEmail();
         $company_name = $companyDetailsService->getCompanyDetails()->getCompanyName();
         $products_request = $websiteContact->getProductsRequested();
-
+        $default_user_password = $companyDetailsService->getCompanyDetails()->getDefaultUserPassword();
+        $automatic_reply = $companyDetailsService->getCompanyDetails()->getWebsiteContactsAutoReply();
         $products_requested_email = [];
 
         foreach ($products_request as $product) {
@@ -160,32 +173,34 @@ class WebsiteContactsController extends AbstractController
                 'client_email' => $clientEmail
             ];
         }
-
-        // Proper comparison with '=='
         if ($new_status == "Junk") {
             $websiteContact->setStatus('Junk');
             $manager->flush();
         }
-
         if ($new_status == "Pending") {
             $websiteContact->setStatus('Pending');
             $manager->flush();
         }
-
         if ($new_status == "New User") {
-            $websiteContact->setStatus('Accepted');
+            $websiteContact->setStatus('Converted to User');
             $new_user = new User();
-
             $new_user->setEmail($websiteContact->getEmail())
                 ->setFirstName($websiteContact->getFirstName())
                 ->setLastName($websiteContact->getLastName())
                 ->setMobile($websiteContact->getMobile())
-                ->setPassword('password')  // Make sure to set a secure password
+                ->setPassword(
+                    $passwordHasher->hashPassword(
+                        $new_user,
+                        $default_user_password
+                    )
+                )
                 ->setRoles(['ROLE_USER']);
+            $manager->persist($new_user);
+            $manager->flush();
 
-            $verifyEmailURL =  "http://" . $_SERVER['HTTP_HOST'] . "/verify/email/" . $new_user->getId();
+            $verifyEmailURL = "http://" . $_SERVER['HTTP_HOST'] . "/verify/email/" . $new_user->getId();
             $html = $this->renderView('website_contacts/welcome_new_website_contacts_email.html.twig', [
-                'contact' => $websiteContact,
+                'website_contact' => $websiteContact,
                 'company_name' => $company_name,
                 'products_requested_email' => $products_requested_email,
                 'verifyEmailURL' => $verifyEmailURL,
@@ -199,8 +214,7 @@ class WebsiteContactsController extends AbstractController
                 ->html($html);  // Sending the rendered HTML email content
             $this->mailer->send($email);  // Send the email
 
-            $manager->persist($new_user);
-            $manager->flush();
+
         }
 
         // Always flush websiteContact in the end, regardless of the new_status
@@ -208,7 +222,6 @@ class WebsiteContactsController extends AbstractController
 
         return $this->redirect($referer); // Redirect back to the referring page
     }
-
 
 
     /**

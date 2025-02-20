@@ -213,6 +213,15 @@ class CompanyDetailsType extends AbstractType
                 'required' => false,
             ])
 
+            ->add('contactFromResponse', TextareaType::class, [
+                'label' => $this->translationsWorker->getTranslations('Contact Form Response'),
+                'required' => false,
+            ])
+            ->add('defaultUserPassword',  TextType::class, [
+                'label' => $this->translationsWorker->getTranslations('Default User Password'),
+                'required' => false,
+            ])
+
             ->add('websiteContactsEmailAlert', CheckboxType::class, [
                 'label' => $this->translationsWorker->getTranslations('Email alert'),
                 'required' => false])

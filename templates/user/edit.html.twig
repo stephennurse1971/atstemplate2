@@ -16,7 +16,7 @@
     </div>
     {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a class="btn btn-outline-primary btn-sm" href="{{ path('user_index', {status: 'All'}) }}">Return to list</a>
+    <a class="btn btn-outline-primary btn-sm mb-1" href="{{ path('user_index', {status: 'All'}) }}">Return to list</a>
 
     {{ include('user/_delete_form.html.twig') }}
 
@@ -26,30 +26,37 @@
 {% block additionaljs %}
     <script>
         $(document).ready(function() {
-            $('#user_password').hide();
+            $('.password_reset_container').hide();
 
+            // Ensure password field is not required initially
             $("input[name='user[password]']").removeAttr("required");
 
             $(".password-reset").click(function () {
-                $('#user_password').toggle();
-                $("input[name='user[password]']").attr("required", "required");
+                $('.password_reset_container').toggle();
+
+                // Toggle required attribute based on container visibility
+                if ($('.password_reset_container').is(':visible')) {
+                    $("input[name='user[password]']").attr("required", "required");
+                } else {
+                    $("input[name='user[password]']").removeAttr("required");
+                }
             });
 
             // If the user removes focus without entering a password, remove required again
             $("input[name='user[password]']").blur(function () {
-                if ($(this).val() === "") {
+                if ($(this).val().trim() === "") {
                     $(this).removeAttr("required");
                 }
             });
 
             if ("{{ CompanyDetailsService.getCompanyDetails.userIncludeJobDetails }}" === "") {
-                // alert("in job details")
                 $("input[name='user[company]']").closest(".form-group").remove();
                 $("input[name='user[jobTitle]']").closest(".form-group").remove();
                 $("input[name='user[linkedIn]']").closest(".form-group").remove();
             }
 
             if ("{{ CompanyDetailsService.getCompanyDetails.userIncludePersonalDetails }}" === "") {
+                $("input[name='user[photo]']").closest(".form-group").remove();
                 $("input[name='user[email2]']").closest(".form-group").remove();
                 $("input[name='user[email3]']").closest(".form-group").remove();
                 $("input[name='user[mobile2]']").closest(".form-group").remove();

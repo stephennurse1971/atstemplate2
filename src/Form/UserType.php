@@ -28,11 +28,11 @@ class UserType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // Add basic fields for the User entity
         $builder
             ->add('salutation', ChoiceType::class, [
                 'multiple' => false,
                 'expanded' => false,
+                'required' => false,
                 'choices' => [
                     'Mr.' => 'Mr.',
                     'Ms.' => 'Ms.',
@@ -45,7 +45,6 @@ class UserType extends AbstractType
             ->add('lastName', TextType::class, [
                 'required' => false
             ])
-            ->add('emailVerified')
             ->add('jobTitle', TextType::class, [
                 'required' => false
             ])
@@ -58,7 +57,6 @@ class UserType extends AbstractType
                         ->orderBy('p.ranking', 'ASC');
                 }
             ])
-
             ->add('linkedIn', TextType::class, [
                 'required' => false
             ])
@@ -87,7 +85,6 @@ class UserType extends AbstractType
                 'required' => false
             ])
             ->add('email')
-
             ->add('email2', TextType::class, [
                 'required' => false
             ])
@@ -127,26 +124,24 @@ class UserType extends AbstractType
                 'label' => 'Photo',
                 'mapped' => false,
                 'required' => false
+            ])
+            ->add('company', TextType::class, [
+                'required' => false
             ]);
 
-        // Add roles field for admins only
-        // Check if the 'user' option exists (is not null) and if we have the required admin roles
-        $loggedUser = $this->security->getUser(); // Get currently logged-in user
+        $loggedUser = $this->security->getUser();
         if ($loggedUser && (in_array('ROLE_ADMIN', $loggedUser->getRoles()) || in_array('ROLE_SUPER_ADMIN', $loggedUser->getRoles()))) {
-            // Add roles field for users with admin roles
             $builder
+                ->add('emailVerified')
                 ->add('roles', ChoiceType::class, [
                     'multiple' => true,
+                    'required' => true,
                     'expanded' => true,
                     'choices' => [
-                        'Super-Admin' => 'ROLE_SUPER_ADMIN',
+                        'Super Admin' => 'ROLE_SUPER_ADMIN',
                         'Admin' => 'ROLE_ADMIN',
                         'User' => 'ROLE_USER'
                     ],
-                    'mapped' => false // Do not persist directly (or handle it as needed)
-                ])
-                ->add('company', TextType::class, [
-                    'required' => false
                 ]);
         }
     }

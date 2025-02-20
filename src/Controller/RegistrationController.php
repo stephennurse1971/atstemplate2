@@ -64,7 +64,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/verify/email/{id}", name="app_register_verify_email")
      */
-    public function verifyEmail($id, UserRepository $userRepository, EntityManagerInterface $entityManager, Request $request): Response
+    public function verifyEmail(Request $request, int $id, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
     {
         $user = $userRepository->find($id);
         $user->setEmailVerified(true);
