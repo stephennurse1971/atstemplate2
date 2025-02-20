@@ -36,14 +36,13 @@
                     <div class="col-12">
                         {% endif %}
                         {% for cms_copy in cms_copy_array|sort((a, b) => a.ranking <=> b.ranking) %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
+                                    <i title="{{ cms_copy.getPageLayout.name }}" style="color: red"
+                                       class="fa fa-pen"></i>
+                                </a>
+                            {% endif %}
                             {% if cms_copy.pageLayout is not null %}
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
-                                        <i title="{{ cms_copy.getPageLayout.name }}" style="color: red"
-                                           class="fa fa-pen"></i>
-                                    </a>
-                                {% endif %}
-
                                 {% if cms_copy.getPageLayout.name  == "Accordion" or cms_copy.pageLayout is null %}
                                     {% include 'home/products_page/formats/accordion.html.twig' %}
                                 {% endif %}
@@ -104,11 +103,6 @@
                                     {% include 'home/products_page/formats/timeline_layout.html.twig' %}
                                 {% endif %}
                             {% else %}
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    <a target="_blank" href="{{ path('cms_copy_edit', {'id': cms_copy.id}) }}">
-                                        <i title="Format TBC" style="color: red" class="fa fa-pen">!</i>
-                                    </a>
-                                {% endif %}
                                 {% include 'home/products_page/formats/accordion.html.twig' %}
                             {% endif %}
 

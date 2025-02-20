@@ -2,14 +2,11 @@
     <div class="row">
         <div class="col-9">
             {% if cms_copy.ranking == 1 %}
+            {% if cms_copy.hyperlinks is not empty %}
+                <a target="_blank" href="{{ cms_copy.hyperlinks }}"><i class="fa fa-link"></i> </a>
+            {% endif %}
             <h4>
-                {% if cms_copy.hyperlinks is empty %}
-                    {{ attribute(cms_copy,'contentTitle'~LanguagesService.getSelectedLanguageCode)|raw }}
-                {% else %}
-                    <a target="_blank" href="{{ cms_copy.hyperlinks }}">
-                        {{ attribute(cms_copy,'contentTitle'~LanguagesService.getSelectedLanguageCode)|raw }}
-                    </a>
-                {% endif %}
+                {{ attribute(cms_copy,'contentTitle'~LanguagesService.getSelectedLanguageCode)|raw }}
             </h4>
         </div>
         <div class="col-3">

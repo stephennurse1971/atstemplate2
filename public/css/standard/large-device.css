@@ -51,6 +51,7 @@
         width: 100%; /* Allow image to scale properly */
         object-fit: cover;
         transition: transform 0.3s ease;
+        min-height: 300px;
     }
 
     .dashboard {
